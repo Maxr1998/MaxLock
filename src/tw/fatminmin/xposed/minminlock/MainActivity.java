@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.support.v7.app.ActionBarActivity;
@@ -192,14 +195,26 @@ public class MainActivity extends ActionBarActivity {
 
 
             List<Preference> prefList = new ArrayList<Preference>();
-            for(ApplicationInfo info : list) {
+            for(final ApplicationInfo info : list) {
 
                 if((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
                     CheckBoxPreference cp = new CheckBoxPreference(activity);
                     cp.setTitle(pm.getApplicationLabel(info));
                     cp.setKey(info.packageName);
                     cp.setIcon(pm.getApplicationIcon(info));
-
+                    
+                    cp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                        
+                        @Override
+                        public boolean onPreferenceChange(Preference preference, Object newValue) {
+                            
+                            ActivityManager am = (ActivityManager) getActivity().getSystemService(Activity.ACTIVITY_SERVICE);
+                            am.killBackgroundProcesses(info.packageName);
+                            
+                            return true;
+                        }
+                    });
+                    
                     prefList.add(cp);
                 }
             }
