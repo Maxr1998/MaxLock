@@ -27,14 +27,14 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
     
-    static final String PASSWORD_KEY = "password";
+    
     SharedPreferences pref;
     
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        pref = getSharedPreferences(PASSWORD_KEY, MODE_PRIVATE);
+        pref = getSharedPreferences(Common.KEY_PASSWORD, MODE_PRIVATE);
         
         if(pref.getString("password", "").length() == 0) {
             setPassword();
@@ -66,7 +66,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 String val = input.getText().toString();
-                if(val.equals(pref.getString(PASSWORD_KEY, ""))) {
+                if(val.equals(pref.getString(Common.KEY_PASSWORD, ""))) {
                     dialog.dismiss();
                 }
                 else {
@@ -110,7 +110,7 @@ public class MainActivity extends ActionBarActivity {
                 else {
                     dialog.dismiss();
                     pref.edit()
-                        .putString(PASSWORD_KEY, v1)
+                        .putString(Common.KEY_PASSWORD, v1)
                         .commit();
                     Toast.makeText(MainActivity.this, R.string.msg_password_changed, Toast.LENGTH_SHORT)
                         .show();
@@ -120,11 +120,11 @@ public class MainActivity extends ActionBarActivity {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!(pref.getString(PASSWORD_KEY, "").length() == 0)) {
+                if(!(pref.getString(Common.KEY_PASSWORD, "").length() == 0)) {
                     dialog.dismiss();
                 }
                 else {
-                    Toast.makeText(MainActivity.this, R.string.msg_password_inconsistent, Toast.LENGTH_SHORT)
+                    Toast.makeText(MainActivity.this, R.string.msg_password_null, Toast.LENGTH_SHORT)
                         .show();
                 }
             }
@@ -151,7 +151,7 @@ public class MainActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    
     /**
      * A placeholder fragment containing a simple view.
      */
