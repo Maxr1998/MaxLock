@@ -18,6 +18,7 @@ public class LockActivity extends Activity {
     private SharedPreferences pref, passPref;
     private String requestPkg;
     private Handler handler = new Handler();
+    private AlertDialog dialog;
     
     @SuppressLint("WorldReadableFiles")
     @SuppressWarnings("deprecation")
@@ -25,10 +26,16 @@ public class LockActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        
         pref = getSharedPreferences(getPackageName() + "_preferences", MODE_WORLD_READABLE);
         passPref = getSharedPreferences("password", MODE_PRIVATE);
         
         requestPkg = getIntent().getStringExtra(Common.KEY_APP_ACCESS);
+        
+        
+        ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
+        am.killBackgroundProcesses(requestPkg);
+        
         askPassword();
         
     }
@@ -39,6 +46,9 @@ public class LockActivity extends Activity {
         pref.edit()
             .putBoolean(requestPkg + "_tmp", false)
             .commit();
+        if(dialog != null) {
+            dialog.cancel();
+        }
         
     }
     
@@ -46,7 +56,7 @@ public class LockActivity extends Activity {
         final EditText input = new EditText(LockActivity.this);
         
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        final AlertDialog dialog = new AlertDialog.Builder(LockActivity.this)
+        dialog = new AlertDialog.Builder(LockActivity.this)
                                     .setCancelable(false)
                                     .setTitle("Password")
                                     .setView(input)

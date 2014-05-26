@@ -25,16 +25,21 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
         
         pref.reload();
+        
         final String packageName = lpparam.packageName;
         
         if(!pref.getBoolean(packageName, false) || pref.getBoolean(packageName + "_tmp", false)) {
             return;
         }
         
+        XposedBridge.log("haha");
+        
         Class<?> activity = XposedHelpers.findClass("android.app.Activity", lpparam.classLoader);
         XposedBridge.hookAllMethods(activity, "onCreate", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                super.beforeHookedMethod(param);
+                                
                 final Activity app = (Activity) param.thisObject;
                 
                 Intent it = new Intent();
@@ -42,6 +47,14 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 it.putExtra(Common.KEY_APP_ACCESS, packageName);
                 app.startActivity(it);
                 
+                app.setResult(Activity.RESULT_CANCELED);
+                app.finish();
+            }
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+                final Activity app = (Activity) param.thisObject;
+                app.setResult(Activity.RESULT_CANCELED);
                 app.finish();
             }
         });

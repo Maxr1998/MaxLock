@@ -28,7 +28,8 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
     
     
-    SharedPreferences pref;
+    private SharedPreferences pref;
+    private AlertDialog dialog;
     
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -49,11 +50,20 @@ public class MainActivity extends ActionBarActivity {
                 .commit();
         }
     }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(dialog != null) {
+            dialog.cancel();
+        }
+    }
+    
     private void askPassword() {
         final EditText input = new EditText(MainActivity.this);
         
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+        dialog = new AlertDialog.Builder(MainActivity.this)
                                     .setCancelable(false)
                                     .setTitle("Password")
                                     .setView(input)
