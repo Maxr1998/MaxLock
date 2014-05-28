@@ -1,23 +1,11 @@
-package tw.fatminmin.xposed.minminlock;
+package tw.fatminmin.xposed.minminlock.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import android.app.Activity;
-import android.app.ActivityManager;
+import tw.fatminmin.xposed.minminlock.Common;
+import tw.fatminmin.xposed.minminlock.R;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceGroup;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -32,13 +20,21 @@ public class MainActivity extends ActionBarActivity {
     
     
     private SharedPreferences pref;
+    public static SharedPreferences mainPref;
     private AlertDialog dialog;
     
+    @SuppressLint("WorldReadableFiles")
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+//        Intent it = getPackageManager().getLaunchIntentForPackage("com.facebook.katana");
+//        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(it);
+        
         pref = getSharedPreferences(Common.KEY_PASSWORD, MODE_PRIVATE);
+        mainPref = getSharedPreferences(getPackageName() + "_preferences", MODE_WORLD_READABLE);
         
         if(pref.getString("password", "").length() == 0) {
             setPassword();
@@ -49,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
         
         if(savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new PlaceholderFragment())
+                .replace(android.R.id.content, new MainFragment())
                 .commit();
         }
     }
@@ -163,75 +159,6 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends PreferenceFragment {
-        
-        @SuppressWarnings("deprecation")
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            
-            getPreferenceManager().setSharedPreferencesMode(MODE_WORLD_READABLE);
-            addPreferencesFromResource(R.xml.preferences);
-            
-            setupAppList();
-            
-        }
-        
-        
-        private void setupAppList() {
-
-            PreferenceGroup pc = (PreferenceGroup) findPreference("main");
-
-
-            Context activity = getActivity();
-
-            PackageManager pm = activity.getPackageManager();
-            List<ApplicationInfo> list = pm.getInstalledApplications(0);
-
-
-            List<Preference> prefList = new ArrayList<Preference>();
-            for(final ApplicationInfo info : list) {
-
-                if((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                    CheckBoxPreference cp = new CheckBoxPreference(activity);
-                    cp.setTitle(pm.getApplicationLabel(info));
-                    cp.setKey(info.packageName);
-                    cp.setIcon(pm.getApplicationIcon(info));
-                    
-                    cp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                        
-                        @Override
-                        public boolean onPreferenceChange(Preference preference, Object newValue) {
-                            
-                            ActivityManager am = (ActivityManager) getActivity().getSystemService(Activity.ACTIVITY_SERVICE);
-                            am.killBackgroundProcesses(info.packageName);
-                            
-                            return true;
-                        }
-                    });
-                    
-                    prefList.add(cp);
-                }
-            }
-
-            Collections.sort(prefList, new Comparator<Preference>() {
-                @Override
-                public int compare(Preference lhs, Preference rhs) {
-                    return lhs.getTitle().toString().compareTo(rhs.getTitle().toString());
-                }
-
-            });
-
-            for(Preference pref : prefList) {
-                pc.addPreference(pref);
-            }
-
-        }
     }
 
 }

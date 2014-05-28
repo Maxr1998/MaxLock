@@ -10,8 +10,13 @@
     <string name="msg_password_inconsistent">Password is inconsistent!</string>
     <string name="msg_password_null">Password can not be empty!</string>
     <string name="msg_password_changed">Password is changed!</string>
+    <string name="msg_search">Search</string>
     
+    <string name="txt_settings">Settings</string>
     <string name="txt_type_password">Password: </string>
     <string name="txt_retype_password">Retype password: </string>
-
+	<string name="txt_fack_die">Fake die</string>
+    <string name="txt_lock_on">On</string>
+    <string name="txt_lock_off">Off</string>
+    
 </resources>

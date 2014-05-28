@@ -1,5 +1,6 @@
-package tw.fatminmin.xposed.minminlock;
+package tw.fatminmin.xposed.minminlock.ui;
 
+import tw.fatminmin.xposed.minminlock.Common;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -7,7 +8,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,6 @@ public class LockActivity extends Activity {
     
     private SharedPreferences pref, passPref;
     private String requestPkg;
-    private Handler handler = new Handler();
     private AlertDialog dialog;
     
     @SuppressLint("WorldReadableFiles")
@@ -32,22 +31,20 @@ public class LockActivity extends Activity {
         
         requestPkg = getIntent().getStringExtra(Common.KEY_APP_ACCESS);
         
-        
         ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses(requestPkg);
+        am.killBackgroundProcesses("tw.fatminmin.xposed.minminlock");
         
-        askPassword();
-        
-    }
-    
-    @Override
-    protected void onDestroy() {
-        super.onPause();
-        pref.edit()
-            .putBoolean(requestPkg + "_tmp", false)
-            .commit();
-        if(dialog != null) {
-            dialog.cancel();
+        Long timestamp = System.currentTimeMillis();
+        Long permitTimestamp = pref.getLong(requestPkg + "_tmp", 0);
+        if(permitTimestamp != 0 && timestamp - permitTimestamp <= 10000) {
+            Intent it = LockActivity.this.getPackageManager().getLaunchIntentForPackage(requestPkg);
+            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            LockActivity.this.startActivity(it);
+            finish();
+        }
+        else {
+            askPassword();
         }
         
     }
@@ -68,28 +65,24 @@ public class LockActivity extends Activity {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
+                ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
+                am.killBackgroundProcesses(requestPkg);
+                am.killBackgroundProcesses("tw.fatminmin.xposed.minminlock");
+                
                 String val = input.getText().toString();
                 if(val.equals(passPref.getString(Common.KEY_PASSWORD, ""))) {
                     dialog.dismiss();
                     pref.edit()
-                        .putBoolean(requestPkg + "_tmp", true)
+                        .putLong(requestPkg + "_tmp", System.currentTimeMillis())
                         .commit();
                     
-                    ActivityManager am = (ActivityManager) LockActivity.this.getSystemService(Activity.ACTIVITY_SERVICE);
                     am.killBackgroundProcesses(requestPkg);
+                    am.killBackgroundProcesses("tw.fatminmin.xposed.minminlock");
                     Intent it = LockActivity.this.getPackageManager().getLaunchIntentForPackage(requestPkg);
                     it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     LockActivity.this.startActivity(it);
-                    
-                    handler.postDelayed(new Runnable() {
-                        
-                        @Override
-                        public void run() {
-                            pref.edit()
-                                .putBoolean(requestPkg + "_tmp", false)
-                                .commit();
-                        }
-                    }, 10000);
+                    finish();
                 }
                 else {
                     input.setText("");
