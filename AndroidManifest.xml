@@ -27,8 +27,8 @@
         
         <activity 
             android:name="tw.fatminmin.xposed.minminlock.ui.LockActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true" 
+            android:excludeFromRecents="true" />
         
         <meta-data
             android:name="xposedmodule"
