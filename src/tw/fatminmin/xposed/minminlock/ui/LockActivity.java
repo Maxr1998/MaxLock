@@ -50,9 +50,15 @@ public class LockActivity extends Activity {
     }
     
     private void askPassword() {
+        
         final EditText input = new EditText(LockActivity.this);
         
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        if ((passPref.getString(Common.KEY_PASSWORD, "")).matches("[0-9]+")) {
+            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        } else {
+            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        }
         dialog = new AlertDialog.Builder(LockActivity.this)
                                     .setCancelable(false)
                                     .setTitle("Password")
