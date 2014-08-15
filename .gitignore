@@ -34,8 +34,7 @@ proguard-project.txt
 .idea/
 
 #Gradle
-build.gradle
-settings.gradle
+*.gradle
 gradle/
 .gradle/
 gradlew*
