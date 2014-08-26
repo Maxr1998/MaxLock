@@ -94,8 +94,7 @@ public class AppsListFragment extends Fragment {
         for (ApplicationInfo info : list) {
             if (pref.getBoolean("show_system_apps", false) ?
                     activity.getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
-                    (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
-            {
+                    (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
 
                 Map<String, Object> map = new HashMap<String, Object>();
 

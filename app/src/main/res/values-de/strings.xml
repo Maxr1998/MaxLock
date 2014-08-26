@@ -2,20 +2,36 @@
 <resources>
 
     <string name="app_name">MinMinLock</string>
-    <string name="hello_world">Hallo Welt!</string>
-    <string name="action_settings">Einstellungen</string>
-    <string name="action_set_password">Passwort einrichten</string>
 
+    <!-- Main Screen -->
+    <string name="pref_category_password">Passwort</string>
+    <string name="pref_lock_type">Sperrart</string>
+    <string-array name="lock_types">
+        <item>Passwort</item>
+        <item>PIN</item>
+        <item>Muster</item>
+    </string-array>
+
+    <string name="pref_password_options">Optionen</string>
+    <string name="pref_set_password">Passwort ändern</string>
+
+    <string name="pref_category_apps">Anwendungen</string>
+    <string name="pref_show_system_app">Zeige startbare System-Anwendungen</string>
+    <string name="pref_show_system_app_summary_on">Zeige System-Anwendungen</string>
+    <string name="pref_show_system_app_summary_off">Zeige keine System-Anwendungen</string>
+
+    <string name="choose_apps">Anwendungen wählen</string>
+    <string name="choose_apps_summary">Wähle gesperrte Anwendungen</string>
 
     <string name="msg_password_inconsistent">Passwörter stimmen nicht überein!</string>
     <string name="msg_password_null">Das Passwort darf nicht leer sein!</string>
     <string name="msg_password_changed">Passwort wurde geändert!</string>
+    <string name="msg_password_incorrect">Passwort inkorrekt!</string>
     <string name="msg_search">Suche</string>
-
-    <string name="txt_settings">Einstellungen</string>
+    <string name="txt_settings">Optionen</string>
     <string name="txt_type_password">Passwort: </string>
     <string name="txt_retype_password">Passwort wiederholen: </string>
-    <string name="txt_fack_die">Vorgetäuschter Absturz</string>
+    <string name="txt_fake_die">Vorgetäuschter Absturz</string>
     <string name="txt_lock_on">An</string>
     <string name="txt_lock_off">Aus</string>
 

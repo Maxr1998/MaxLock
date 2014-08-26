@@ -1,11 +1,5 @@
 package tw.fatminmin.xposed.minminlock.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import tw.fatminmin.xposed.minminlock.R;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -26,6 +20,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import tw.fatminmin.xposed.minminlock.R;
 
 public class CheckBoxAdapter extends BaseAdapter {
 

@@ -2,21 +2,48 @@
 <resources>
 
     <string name="app_name">MinMinLock</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_set_password">Set password</string>
+
+    <!-- Main screen -->
+    <string name="pref_category_password">Password</string>
+    <string name="pref_lock_type">Locking type</string>
+    <string-array name="lock_types">
+        <item>Password</item>
+        <item>PIN</item>
+        <item>Pattern</item>
+    </string-array>
+
+    <string-array name="lock_type_values">
+        <!-- Do not translate -->
+        <item>pwd</item>
+        <item>pin</item>
+        <item>ptn</item>
+        <!-- /Do not translate -->
+    </string-array>
+
+    <string name="pref_password_options">Password options</string>
+    <string name="pref_set_password">Set password</string>
+
+    <string name="pref_category_apps">Choose apps</string>
+    <string name="pref_show_system_app">Show launchable system apps</string>
+    <string name="pref_show_system_app_summary_on">System apps will be shown</string>
+    <string name="pref_show_system_app_summary_off">System apps will not be shown</string>
+
+    <string name="choose_apps">Choose apps</string>
+    <string name="choose_apps_summary">Select apps to be locked</string>
 
 
     <string name="msg_password_inconsistent">Password is inconsistent!</string>
     <string name="msg_password_null">Password can not be empty!</string>
     <string name="msg_password_changed">Password is changed!</string>
+    <string name="msg_password_incorrect">Password incorrect!</string>
     <string name="msg_search">Search</string>
-
     <string name="txt_settings">Settings</string>
     <string name="txt_type_password">Password: </string>
     <string name="txt_retype_password">Retype password: </string>
-    <string name="txt_fack_die">Fake die</string>
+    <string name="txt_fake_die">Fake die</string>
     <string name="txt_lock_on">On</string>
     <string name="txt_lock_off">Off</string>
+
+
 
 </resources>

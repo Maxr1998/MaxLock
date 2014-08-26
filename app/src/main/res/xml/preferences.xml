@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="main"></PreferenceScreen>
+    android:key="main">
+    <PreferenceCategory
+        android:title="@string/pref_category_password">
+        <ListPreference
+            android:entries="@array/lock_types"
+            android:entryValues="@array/lock_type_values"
+            android:key="password_type"
+            android:title="@string/pref_lock_type" />
+
+        <PreferenceScreen
+            android:key="password_options"
+            android:title="@string/pref_password_options">
+            <Preference
+                android:key="set_password"
+                android:title="@string/pref_set_password" />
+        </PreferenceScreen>
+        </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_apps">
+        <CheckBoxPreference
+            android:key="show_system_apps"
+            android:title="@string/pref_show_system_app"
+            android:summaryOn="@string/pref_show_system_app_summary_on"
+            android:summaryOff="@string/pref_show_system_app_summary_off" />
+
+        <Preference
+            android:key="choose_apps"
+            android:title="@string/choose_apps"
+            android:summary="@string/choose_apps_summary" />
+        </PreferenceCategory>
+
+</PreferenceScreen>

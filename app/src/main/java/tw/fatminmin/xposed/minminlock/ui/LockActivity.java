@@ -1,7 +1,5 @@
 package tw.fatminmin.xposed.minminlock.ui;
 
-import tw.fatminmin.xposed.minminlock.Common;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -13,6 +11,10 @@ import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import tw.fatminmin.xposed.minminlock.Common;
+import tw.fatminmin.xposed.minminlock.R;
 
 public class LockActivity extends Activity {
 
@@ -91,6 +93,8 @@ public class LockActivity extends Activity {
                     finish();
                 } else {
                     input.setText("");
+                    Toast.makeText(LockActivity.this, getString(R.string.msg_password_incorrect), Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

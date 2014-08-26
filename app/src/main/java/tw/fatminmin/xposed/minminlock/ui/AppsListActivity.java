@@ -15,7 +15,7 @@ public class AppsListActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             getFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, new MainFragment(), "Main")
+                    .add(android.R.id.content, new AppsListFragment(), "Main")
                     .commit();
         }
     }

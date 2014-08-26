@@ -3,5 +3,5 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tw.fatminmin.xposed.minminlock.ui.MainActivity"
+    tools:context="tw.fatminmin.xposed.minminlock.ui.AppsListActivity"
     tools:ignore="MergeRootFrame" />
