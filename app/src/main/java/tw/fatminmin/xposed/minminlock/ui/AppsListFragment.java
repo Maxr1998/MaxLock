@@ -1,16 +1,9 @@
 package tw.fatminmin.xposed.minminlock.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import tw.fatminmin.xposed.minminlock.R;
-
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -22,7 +15,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class MainFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import tw.fatminmin.xposed.minminlock.R;
+
+public class AppsListFragment extends Fragment {
 
     public ListView listView;
 
@@ -30,6 +32,7 @@ public class MainFragment extends Fragment {
     private EditText search;
     private List<Map<String, Object>> itemList;
     private ViewGroup root;
+    private SharedPreferences pref;
 
     public void refresh() {
         setupAppList();
@@ -52,6 +55,8 @@ public class MainFragment extends Fragment {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_main, container);
         listView = (ListView) root.findViewById(R.id.listview);
         search = (EditText) root.findViewById(R.id.search);
+
+        pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Activity.MODE_WORLD_READABLE);
 
         refresh();
 
@@ -87,8 +92,10 @@ public class MainFragment extends Fragment {
 
         itemList = new ArrayList<Map<String, Object>>();
         for (ApplicationInfo info : list) {
-
-            if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+            if (pref.getBoolean("show_system_apps", false) ?
+                    activity.getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
+                    (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
+            {
 
                 Map<String, Object> map = new HashMap<String, Object>();
 
