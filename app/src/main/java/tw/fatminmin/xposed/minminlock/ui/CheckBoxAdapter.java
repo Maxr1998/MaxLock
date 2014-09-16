@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import tw.fatminmin.xposed.minminlock.Common;
 import tw.fatminmin.xposed.minminlock.R;
 
 public class CheckBoxAdapter extends BaseAdapter {
@@ -40,7 +40,7 @@ public class CheckBoxAdapter extends BaseAdapter {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         oriItemList = mItemList = itemList;
-        pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        pref = mContext.getSharedPreferences(Common.PREF_PACKAGE, Activity.MODE_WORLD_READABLE);
         mFilter = new MyFilter();
     }
 

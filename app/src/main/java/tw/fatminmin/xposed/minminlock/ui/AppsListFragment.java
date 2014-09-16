@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tw.fatminmin.xposed.minminlock.Common;
 import tw.fatminmin.xposed.minminlock.R;
 
 public class AppsListFragment extends Fragment {
@@ -52,11 +53,11 @@ public class AppsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        root = (ViewGroup) inflater.inflate(R.layout.fragment_main, container);
+        root = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container);
         listView = (ListView) root.findViewById(R.id.listview);
         search = (EditText) root.findViewById(R.id.search);
 
-        pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Activity.MODE_WORLD_READABLE);
+        pref = getActivity().getSharedPreferences(Common.PREF, Activity.MODE_WORLD_READABLE);
 
         refresh();
 

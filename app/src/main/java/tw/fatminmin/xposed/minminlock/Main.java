@@ -19,7 +19,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        pref = new XSharedPreferences(MY_PACKAGE_NAME);
+        pref = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREF_PACKAGE);
         XposedBridge.log(pref.getFile().getName());
     }
 

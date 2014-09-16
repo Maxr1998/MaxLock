@@ -6,19 +6,15 @@
     <!-- Main Screen -->
     <string name="pref_category_password">Passwort</string>
     <string name="pref_lock_type">Sperrart</string>
-    <string-array name="lock_types">
-        <item>Passwort</item>
-        <item>PIN</item>
-        <item>Muster</item>
-    </string-array>
+
 
     <string name="pref_password_options">Optionen</string>
     <string name="pref_set_password">Passwort ändern</string>
 
     <string name="pref_category_apps">Anwendungen</string>
-    <string name="pref_show_system_app">Zeige startbare System-Anwendungen</string>
-    <string name="pref_show_system_app_summary_on">Zeige System-Anwendungen</string>
-    <string name="pref_show_system_app_summary_off">Zeige keine System-Anwendungen</string>
+    <string name="pref_show_system_app">Zeige System-Anwendungen</string>
+    <string name="pref_show_system_app_summary_on">Zeige startbare System-Anwendungen</string>
+    <string name="pref_show_system_app_summary_off">Verstecke startbare System-Anwendungen</string>
 
     <string name="choose_apps">Anwendungen wählen</string>
     <string name="choose_apps_summary">Wähle gesperrte Anwendungen</string>

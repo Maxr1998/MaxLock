@@ -16,8 +16,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.AppsListActivity"
-            android:label="@string/choose_apps">
-        </activity>
+            android:label="@string/choose_apps"></activity>
 
         <activity
             android:name="tw.fatminmin.xposed.minminlock.ui.SettingsActivity"
@@ -32,7 +31,8 @@
         <activity
             android:name="tw.fatminmin.xposed.minminlock.ui.LockActivity"
             android:excludeFromRecents="true"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/TranslucentStatusBar" />
 
         <meta-data
             android:name="xposedmodule"
