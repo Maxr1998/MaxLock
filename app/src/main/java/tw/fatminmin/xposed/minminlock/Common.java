@@ -29,4 +29,6 @@ public class Common {
     // Fragment tags
    public static final String TAG_KCF = "knock_code_fragment";
 
+    public static String REQUEST_PKG = "";
+
 }

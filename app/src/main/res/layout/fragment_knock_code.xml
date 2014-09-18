@@ -4,30 +4,51 @@
     android:id="@+id/kc_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue"
     android:clickable="true"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/kc_app_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_weight="1.5"
+        android:drawablePadding="20dp"
+        android:textSize="40dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="2"
-        android:fitsSystemWindows="true"
-        android:textSize="75sp" />
+        android:layout_weight="1.25"
+        android:textSize="34dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/light_white" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_weight="5"
-        android:fitsSystemWindows="true"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/knock_button_1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/knock_button_background" />
 
         <View
             android:layout_width="1dp"
@@ -38,27 +59,33 @@
             android:id="@+id/knock_button_2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/knock_button_background" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/light_white"
-        android:fitsSystemWindows="true" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/light_white" />
 
     <LinearLayout
+        android:id="@+id/kc_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_weight="5"
-        android:fitsSystemWindows="true"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/knock_button_3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/knock_button_background" />
 
         <View
             android:layout_width="1dp"
@@ -69,6 +96,7 @@
             android:id="@+id/knock_button_4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/knock_button_background" />
     </LinearLayout>
 </LinearLayout>

@@ -41,6 +41,8 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
 
         requestPkg = getIntent().getStringExtra(Common.KEY_APP_ACCESS);
 
+        Common.REQUEST_PKG = requestPkg;
+
         am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses(requestPkg);
         am.killBackgroundProcesses("tw.fatminmin.xposed.minminlock");

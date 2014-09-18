@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TranslucentStatusBar" parent="AppTheme">
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+    <style name="TranslucentStatusBar" parent="android:Theme.Holo.Light.NoActionBar.TranslucentDecor">
     </style>
+
 </resources>

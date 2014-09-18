@@ -4,11 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.WallpaperManager;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import tw.fatminmin.xposed.minminlock.AuthenticationSucceededListener;
@@ -42,11 +47,39 @@ public class KnockCodeFragment extends Fragment {
             getActivity().getActionBar().hide();
 
         View kcMainLayout = rootView.findViewById(R.id.kc_main_layout);
-
         kcMainLayout.setBackground(WallpaperManager.getInstance(getActivity()).getDrawable());
 
-        key = new StringBuilder("");
+        TextView kcAppName = (TextView) rootView.findViewById(R.id.kc_app_name);
 
+        if (getActivity().getActionBar() == null) {
+            LinearLayout.LayoutParams paramsTop = (LinearLayout.LayoutParams) kcAppName.getLayoutParams();
+            paramsTop.setMargins(16, 41, 16, 0);
+            kcAppName.setLayoutParams(paramsTop);
+
+            LinearLayout bottomLayout = (LinearLayout) rootView.findViewById(R.id.kc_bottom_layout);
+            LinearLayout.LayoutParams paramsBottom = (LinearLayout.LayoutParams) bottomLayout.getLayoutParams();
+            paramsBottom.setMargins(0, 0, 0, getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")));
+            bottomLayout.setLayoutParams(paramsBottom);
+        }
+
+        PackageManager pm = getActivity().getApplicationContext().getPackageManager();
+        ApplicationInfo info;
+
+        try {
+            info = pm.getApplicationInfo(Common.REQUEST_PKG, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            info = null;
+        }
+        String requestPkgFullName = (String) (info != null ? pm.getApplicationLabel(info) : "(unknown)");
+
+        if (info != null) {
+            Drawable requestPkgAppIcon = pm.getApplicationIcon(info);
+            kcAppName.setCompoundDrawables(requestPkgAppIcon, null, null, null);
+        }
+
+        kcAppName.setTextColor(getResources().getColor(R.color.white));
+        kcAppName.setText(requestPkgFullName);
+        key = new StringBuilder("");
 
         tvv = rootView.findViewById(R.id.textView);
         tv = (TextView) tvv;
@@ -107,7 +140,7 @@ public class KnockCodeFragment extends Fragment {
         StringBuilder x = new StringBuilder("");
 
         for (int i = 0; i < str.length(); i++) {
-            x.append("*");
+            x.append("\u2022");
         }
         return x.toString();
     }

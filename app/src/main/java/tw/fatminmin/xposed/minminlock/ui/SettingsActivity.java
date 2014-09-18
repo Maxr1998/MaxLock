@@ -20,6 +20,8 @@ public class SettingsActivity extends Activity implements AuthenticationSucceede
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        Common.REQUEST_PKG = getApplicationContext().getPackageName();
+
         fm = getFragmentManager();
 
         if (savedInstanceState == null)
