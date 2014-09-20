@@ -137,7 +137,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(keysPref.getString(Common.KEY_PASSWORD, "").length() == 0)) {
+                if (!(keysPref.getString(Common.LOCK_TYPE, "").equals("pw"))) {
                     dialog.dismiss();
                 } else {
                     Toast.makeText(getActivity(), R.string.msg_password_null, Toast.LENGTH_SHORT)
@@ -155,15 +155,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                     .commit();
             setPassword();
         } else if (preference == findPreference(Common.LOCK_TYPE_KNOCK_CODE)) {
-            pref.edit()
-                    .putString(Common.LOCK_TYPE, Common.KEY_KNOCK_CODE)
-                    .commit();
-            keysPref.edit()
-                    .putString(Common.KEY_KNOCK_CODE, Util.sha1Hash("12243"))
-                    .remove(Common.KEY_PASSWORD)
-                    .remove(Common.KEY_PIN)
-                    .commit();
-            Toast.makeText(getActivity(), "Set Knock-Code Lock-Type", Toast.LENGTH_SHORT).show();
+            getActivity().getFragmentManager().beginTransaction().replace(R.id.frame_container, new KnockCodeSetupFragment()).commit();
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
             Intent intent = new Intent(getActivity(), AppsListActivity.class);
             startActivity(intent);

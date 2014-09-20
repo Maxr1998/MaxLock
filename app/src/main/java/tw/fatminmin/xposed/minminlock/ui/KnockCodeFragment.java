@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,13 +20,15 @@ import tw.fatminmin.xposed.minminlock.Common;
 import tw.fatminmin.xposed.minminlock.R;
 import tw.fatminmin.xposed.minminlock.Util;
 
-public class KnockCodeFragment extends Fragment {
+public class KnockCodeFragment extends Fragment implements View.OnClickListener {
 
     public AuthenticationSucceededListener authenticationSucceededListener;
-    private ViewGroup rootView;
+    ViewGroup rootView;
+    View kcMainLayout, mInputView;
+    TextView kcAppName;
+    ApplicationInfo requestPkgInfo;
     private StringBuilder key;
-    private View tvv;
-    private TextView tv;
+    private TextView mInputText;
 
     @Override
     public void onAttach(Activity activity) {
@@ -42,57 +43,13 @@ public class KnockCodeFragment extends Fragment {
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Views
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_knock_code, container, false);
-        if (getActivity().getActionBar() != null)
-            getActivity().getActionBar().hide();
-
-        View kcMainLayout = rootView.findViewById(R.id.kc_main_layout);
-        kcMainLayout.setBackground(WallpaperManager.getInstance(getActivity()).getDrawable());
-
-        TextView kcAppName = (TextView) rootView.findViewById(R.id.kc_app_name);
-
-        if (getActivity().getActionBar() == null) {
-            LinearLayout.LayoutParams paramsTop = (LinearLayout.LayoutParams) kcAppName.getLayoutParams();
-            paramsTop.setMargins(16, 41, 16, 0);
-            kcAppName.setLayoutParams(paramsTop);
-
-            LinearLayout bottomLayout = (LinearLayout) rootView.findViewById(R.id.kc_bottom_layout);
-            LinearLayout.LayoutParams paramsBottom = (LinearLayout.LayoutParams) bottomLayout.getLayoutParams();
-            paramsBottom.setMargins(0, 0, 0, getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")));
-            bottomLayout.setLayoutParams(paramsBottom);
-        }
-
-        PackageManager pm = getActivity().getApplicationContext().getPackageManager();
-        ApplicationInfo info;
-
-        try {
-            info = pm.getApplicationInfo(Common.REQUEST_PKG, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            info = null;
-        }
-        String requestPkgFullName = (String) (info != null ? pm.getApplicationLabel(info) : "(unknown)");
-
-        if (info != null) {
-            Drawable requestPkgAppIcon = pm.getApplicationIcon(info);
-            kcAppName.setCompoundDrawables(requestPkgAppIcon, null, null, null);
-        }
-
-        kcAppName.setTextColor(getResources().getColor(R.color.white));
-        kcAppName.setText(requestPkgFullName);
-        key = new StringBuilder("");
-
-        tvv = rootView.findViewById(R.id.textView);
-        tv = (TextView) tvv;
-        tv.setTextColor(getResources().getColor(R.color.white));
-        tvv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                key.setLength(0);
-                tv.setText(tvc(key));
-
-            }
-        });
-
+        kcMainLayout = rootView.findViewById(R.id.kc_main_layout);
+        kcAppName = (TextView) rootView.findViewById(R.id.kc_app_name);
+        mInputView = rootView.findViewById(R.id.inputView);
+        mInputView.setOnClickListener(this);
+        mInputText = (TextView) mInputView;
         View[] knockButtons = new View[]{
                 rootView.findViewById(R.id.knock_button_1),
                 rootView.findViewById(R.id.knock_button_2),
@@ -100,43 +57,82 @@ public class KnockCodeFragment extends Fragment {
                 rootView.findViewById(R.id.knock_button_4)
         };
         Button[] kb = new Button[knockButtons.length];
-
         for (int i = 0; i < knockButtons.length; i++) {
             kb[i] = (Button) knockButtons[i];
-            kb[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int nr;
-                    switch (view.getId()) {
-                        case R.id.knock_button_1:
-                            nr = 1;
-                            break;
-                        case R.id.knock_button_2:
-                            nr = 2;
-                            break;
-                        case R.id.knock_button_3:
-                            nr = 3;
-                            break;
-                        case R.id.knock_button_4:
-                            nr = 4;
-                            break;
-                        default:
-                            nr = 0;
-                            break;
-                    }
-                    key.append(nr);
-                    tv.setText(tvc(key));
-                    if (Util.checkInput(key.toString(), Common.KEY_KNOCK_CODE, getActivity())) {
-                        authenticationSucceededListener.onAuthenticationSucceeded(Common.TAG_KCF);
-                    }
-                }
-            });
+            kb[i].setOnClickListener(this);
         }
+
+        // Strings
+        key = new StringBuilder("");
+
+        // Setup view
+        kcMainLayout.setBackground(WallpaperManager.getInstance(getActivity()).getDrawable());
+        if (getActivity().getActionBar() != null)
+            getActivity().getActionBar().hide();
+        if (getActivity().getActionBar() == null) {
+            LinearLayout.LayoutParams paramsTop = (LinearLayout.LayoutParams) kcAppName.getLayoutParams();
+            paramsTop.setMargins(getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin),
+                    getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android")) + 16,
+                    getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin), 0);
+            kcAppName.setLayoutParams(paramsTop);
+
+            LinearLayout bottomLayout = (LinearLayout) rootView.findViewById(R.id.kc_bottom_layout);
+            LinearLayout.LayoutParams paramsBottom = (LinearLayout.LayoutParams) bottomLayout.getLayoutParams();
+            paramsBottom.setMargins(getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin), 0,
+                    getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin),
+                    getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")));
+            bottomLayout.setLayoutParams(paramsBottom);
+        }
+        PackageManager pm = getActivity().getApplicationContext().getPackageManager();
+        try {
+            requestPkgInfo = pm.getApplicationInfo(Common.REQUEST_PKG, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            requestPkgInfo = null;
+        }
+        String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
+        kcAppName.setText(requestPkgFullName);
+        if (requestPkgInfo != null) {
+            Drawable requestPkgAppIcon = pm.getApplicationIcon(requestPkgInfo);
+            kcAppName.setCompoundDrawablesWithIntrinsicBounds(requestPkgAppIcon, null, null, null);
+        }
+
         return rootView;
     }
 
+    public void onClick(View v) {
+        int nr = 0;
+        boolean knockButton = false;
+        switch (v.getId()) {
+            case R.id.inputView:
+                key.setLength(0);
+                mInputText.setText(genPass(key));
+                break;
+            case R.id.knock_button_1:
+                nr = 1;
+                knockButton = true;
+                break;
+            case R.id.knock_button_2:
+                nr = 2;
+                knockButton = true;
+                break;
+            case R.id.knock_button_3:
+                nr = 3;
+                knockButton = true;
+                break;
+            case R.id.knock_button_4:
+                nr = 4;
+                knockButton = true;
+                break;
+        }
+        if (knockButton) key.append(nr);
+        mInputText.setText(genPass(key));
+        if (Util.checkInput(key.toString(), Common.KEY_KNOCK_CODE, getActivity())) {
+            authenticationSucceededListener.onAuthenticationSucceeded(Common.TAG_KCF);
+        }
+    }
 
-    String tvc(StringBuilder str) {
+
+    String genPass(StringBuilder str) {
         StringBuilder x = new StringBuilder("");
 
         for (int i = 0; i < str.length(); i++) {

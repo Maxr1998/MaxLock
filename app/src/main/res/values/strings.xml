@@ -9,7 +9,7 @@
 
     <string name="lock_type_password">Password</string>
     <string name="lock_type_pin">PIN</string>
-    <string name="lock_type_knockcode">Knock Code</string>
+    <string name="lock_type_knockcode">Knock code</string>
 
     <string name="pref_password_options">Password options</string>
     <string name="pref_set_password">Set password</string>
@@ -35,5 +35,11 @@
     <string name="txt_lock_on">On</string>
     <string name="txt_lock_off">Off</string>
 
+    <string name="continue_done">Touch continue when done</string>
+    <string name="button_continue">Continue</string>
+
+    <string name="choose_knock_code">Choose your knock code</string>
+    <string name="knock_code_too_short">Knock code must be a least 4 touches</string>
+    <string name="confirm_knock_code">Confirm your knock code</string>
 
 </resources>

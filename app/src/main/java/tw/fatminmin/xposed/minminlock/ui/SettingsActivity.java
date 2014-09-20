@@ -29,11 +29,9 @@ public class SettingsActivity extends Activity implements AuthenticationSucceede
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         String lock_type = pref.getString(Common.LOCK_TYPE, "");
-        if (lock_type.equals(Common.KEY_PASSWORD)) {
-            //
-        } else if (lock_type.equals(Common.KEY_PIN)) {
+        if (lock_type.equals(Common.KEY_PIN) & savedInstanceState == null) {
             // Show string fragment
-        } else if (lock_type.equals(Common.KEY_KNOCK_CODE)) {
+        } else if (lock_type.equals(Common.KEY_KNOCK_CODE) & savedInstanceState == null) {
             fm.beginTransaction().replace(R.id.frame_container, new KnockCodeFragment()).commit();
         }
     }
