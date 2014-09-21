@@ -1,7 +1,7 @@
-package tw.fatminmin.xposed.minminlock;
+package de.Maxr1998.xposed.maxlock;
 
 public class Common {
-    public static final String PKG_NAME = "tw.fatminmin.xposed.minminlock";
+    public static final String PKG_NAME = "de.Maxr1998.xposed.maxlock";
     public static final String ACTION_APP_LOADED = PKG_NAME + ".APP_LOADED";
 
     public static final String KEY_APP_ACCESS = "app_access";
@@ -22,7 +22,7 @@ public class Common {
     public static final String KEY_KNOCK_CODE = "knock_code";
 
     // Preference files
-    public static final String PREF = "tw.fatminmin.xposed.minminlock_preferences";
+    public static final String PREF = "de.Maxr1998.xposed.maxlock_preferences";
     public static final String PREF_KEYS = "keys";
     public static final String PREF_PACKAGE = "packages";
 

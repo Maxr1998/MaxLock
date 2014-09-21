@@ -1,4 +1,4 @@
-package tw.fatminmin.xposed.minminlock.ui;
+package de.Maxr1998.xposed.maxlock.ui;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -6,9 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import tw.fatminmin.xposed.minminlock.AuthenticationSucceededListener;
-import tw.fatminmin.xposed.minminlock.Common;
-import tw.fatminmin.xposed.minminlock.R;
+import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
+import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.R;
+
 
 public class SettingsActivity extends Activity implements AuthenticationSucceededListener {
 

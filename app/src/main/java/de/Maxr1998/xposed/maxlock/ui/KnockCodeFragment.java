@@ -1,4 +1,4 @@
-package tw.fatminmin.xposed.minminlock.ui;
+package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,10 +15,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import tw.fatminmin.xposed.minminlock.AuthenticationSucceededListener;
-import tw.fatminmin.xposed.minminlock.Common;
-import tw.fatminmin.xposed.minminlock.R;
-import tw.fatminmin.xposed.minminlock.Util;
+import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
+import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.Util;
 
 public class KnockCodeFragment extends Fragment implements View.OnClickListener {
 

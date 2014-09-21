@@ -1,4 +1,4 @@
-package tw.fatminmin.xposed.minminlock;
+package de.Maxr1998.xposed.maxlock;
 
 public interface AuthenticationSucceededListener {
     void onAuthenticationSucceeded(String tag);

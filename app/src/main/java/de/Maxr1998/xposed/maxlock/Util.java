@@ -1,7 +1,6 @@
-package tw.fatminmin.xposed.minminlock;
+package de.Maxr1998.xposed.maxlock;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 

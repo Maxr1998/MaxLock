@@ -1,4 +1,4 @@
-package tw.fatminmin.xposed.minminlock.ui;
+package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

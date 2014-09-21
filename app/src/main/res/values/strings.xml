@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MinMinLock</string>
+    <string name="app_name">MaxLock</string>
 
     <!-- Main screen -->
     <string name="pref_category_password">Password</string>
@@ -41,5 +41,9 @@
     <string name="choose_knock_code">Choose your knock code</string>
     <string name="knock_code_too_short">Knock code must be a least 4 touches</string>
     <string name="confirm_knock_code">Confirm your knock code</string>
+
+    <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
+    <string name="report">Report</string>
+    <string name="report_problem">Report problem:</string>
 
 </resources>

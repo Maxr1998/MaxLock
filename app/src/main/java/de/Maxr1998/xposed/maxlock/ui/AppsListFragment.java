@@ -1,4 +1,4 @@
-package tw.fatminmin.xposed.minminlock.ui;
+package de.Maxr1998.xposed.maxlock.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -22,8 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tw.fatminmin.xposed.minminlock.Common;
-import tw.fatminmin.xposed.minminlock.R;
+import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.R;
+
 
 public class AppsListFragment extends Fragment {
 

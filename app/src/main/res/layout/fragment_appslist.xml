@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <tw.fatminmin.xposed.minminlock.ui.SearchEditText
+        <de.Maxr1998.xposed.maxlock.ui.SearchEditText
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package tw.fatminmin.xposed.minminlock.ui;
+package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,10 +15,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import tw.fatminmin.xposed.minminlock.AuthenticationSucceededListener;
-import tw.fatminmin.xposed.minminlock.Common;
-import tw.fatminmin.xposed.minminlock.R;
-import tw.fatminmin.xposed.minminlock.Util;
+import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
+import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.Util;
 
 public class LockActivity extends Activity implements AuthenticationSucceededListener {
 
@@ -45,7 +45,8 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
 
         am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses(requestPkg);
-        am.killBackgroundProcesses("tw.fatminmin.xposed.minminlock");
+        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
+
 
         Long timestamp = System.currentTimeMillis();
         Long permitTimestamp = packagePref.getLong(requestPkg + "_tmp", 0);
@@ -85,7 +86,7 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
                 public void onClick(View v) {
 
                     am.killBackgroundProcesses(requestPkg);
-                    am.killBackgroundProcesses("tw.fatminmin.xposed.minminlock");
+                    am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
 
                     String val = input.getText().toString();
                     if (Util.checkInput(val, Common.KEY_PASSWORD, LockActivity.this)) {
@@ -95,7 +96,7 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
                                 .commit();
 
                         am.killBackgroundProcesses(requestPkg);
-                        am.killBackgroundProcesses("tw.fatminmin.xposed.minminlock");
+                        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
                         Intent it = LockActivity.this.getPackageManager().getLaunchIntentForPackage(requestPkg);
                         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         LockActivity.this.startActivity(it);
@@ -122,7 +123,7 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
                 .commit();
 
         am.killBackgroundProcesses(requestPkg);
-        am.killBackgroundProcesses("tw.fatminmin.xposed.minminlock");
+        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
         Intent it = LockActivity.this.getPackageManager().getLaunchIntentForPackage(requestPkg);
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         LockActivity.this.startActivity(it);

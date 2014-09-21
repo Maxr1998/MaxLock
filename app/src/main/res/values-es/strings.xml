@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main screen -->
+    <string name="pref_category_password">Contraseña</string>
+    <string name="pref_lock_type">Tipo de bloqueo</string>
+    <string name="lock_type_password">Contraseña</string>
+    <string name="lock_type_pin">PIN</string>
+    <string name="lock_type_knockcode">Knock code</string>
+    <string name="pref_password_options">Opciones de contraseña</string>
+    <string name="pref_set_password">Establecer contraseña</string>
+    <string name="pref_category_apps">Elegir aplicaciones</string>
+    <string name="pref_show_system_app">Mostrar aplicaciones del sistema</string>
+    <string name="pref_show_system_app_summary_on">Mostrar aplicaciones del sistema lanzables</string>
+    <string name="pref_show_system_app_summary_off">Ocultar aplicaciones del sistema lanzables</string>
+    <string name="choose_apps">Elegir aplicaciones</string>
+    <string name="choose_apps_summary">Seleccionar aplicaciones para ser bloqueadas</string>
+    <string name="msg_password_inconsistent">La contraseña es inconsistente!</string>
+    <string name="msg_password_null">La contraseña no puede estar vacía!</string>
+    <string name="msg_password_changed">La contraseña se cambió!</string>
+    <string name="msg_password_incorrect">Contraseña incorrecta!</string>
+    <string name="msg_search">Búsqueda</string>
+    <string name="txt_settings">Ajustes</string>
+    <string name="txt_type_password">Contraseña: </string>
+    <string name="txt_retype_password">Vuelva a escribir la contraseña: </string>
+    <string name="txt_fake_die">Falsa muerte</string>
+    <string name="txt_lock_on">Encendido</string>
+    <string name="txt_lock_off">Apagado</string>
+    <string name="continue_done">Pulse Continuar cuando haya terminado</string>
+    <string name="button_continue">Continuar</string>
+    <string name="choose_knock_code">Elija su knock code</string>
+    <string name="knock_code_too_short">Knock code debe ser como mínimo de 4 toques</string>
+    <string name="confirm_knock_code">Confirme su knock code</string>
+</resources>

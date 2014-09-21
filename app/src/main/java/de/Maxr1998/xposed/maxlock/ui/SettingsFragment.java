@@ -1,4 +1,4 @@
-package tw.fatminmin.xposed.minminlock.ui;
+package de.Maxr1998.xposed.maxlock.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,9 +16,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import tw.fatminmin.xposed.minminlock.Common;
-import tw.fatminmin.xposed.minminlock.R;
-import tw.fatminmin.xposed.minminlock.Util;
+import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.Util;
+
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
     private SharedPreferences pref, keysPref;
