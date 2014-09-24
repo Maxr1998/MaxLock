@@ -10,10 +10,14 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
@@ -24,12 +28,14 @@ import de.Maxr1998.xposed.maxlock.Util;
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
     private SharedPreferences pref, keysPref;
     private AlertDialog dialog;
+    private Switch masterSwitch;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getActivity().getActionBar() != null)
             getActivity().getActionBar().show();
+        setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.preferences);
 
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -42,6 +48,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                 askPassword();
             }
         }
+
+
 
         Preference ltpw = findPreference(Common.LOCK_TYPE_PASSWORD);
         ltpw.setOnPreferenceClickListener(this);
@@ -57,6 +65,27 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         if (dialog != null) {
             dialog.cancel();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        getActivity().getMenuInflater().inflate(R.menu.menu, menu);
+
+        //ViewGroup menuView = (ViewGroup) menu;
+        //View masterSwitchView = menuView.findViewById(R.id.master_switch);
+        //masterSwitch = (Switch) masterSwitchView;
+
+        boolean masterSwitchPref = pref.getBoolean(Common.MASTER_SWITCH, true);
+
+        //masterSwitch.setChecked(masterSwitchPref);
+        /*masterSwitchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean checked = masterSwitch.isChecked();
+                pref.edit().putBoolean(Common.MASTER_SWITCH, checked).commit();
+            }
+        });*/
     }
 
     private void askPassword() {

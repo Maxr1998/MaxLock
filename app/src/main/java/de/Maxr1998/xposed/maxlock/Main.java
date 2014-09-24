@@ -15,10 +15,11 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
-    private static XSharedPreferences packagePref;
+    private static XSharedPreferences pref, packagePref;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
+        pref = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREF);
         packagePref = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREF_PACKAGE);
     }
 
@@ -30,7 +31,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         final String packageName = lpparam.packageName;
 
-        if (!packagePref.getBoolean(packageName, false)) {
+        if (!packagePref.getBoolean(packageName, false) || !pref.getBoolean(Common.MASTER_SWITCH, true)) {
             return;
         }
 

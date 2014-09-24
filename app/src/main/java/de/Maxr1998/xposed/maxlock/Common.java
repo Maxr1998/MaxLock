@@ -8,6 +8,8 @@ public class Common {
 
 
     // Preferences
+    public static final String MASTER_SWITCH = "master_switch";
+
     public static final String LOCK_TYPE = "lock_type";
 
     public static final String LOCK_TYPE_PASSWORD = "lock_type_password";
