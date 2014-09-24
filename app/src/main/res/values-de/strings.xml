@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">MaxLock</string>
+
     <!-- Main Screen -->
     <string name="pref_category_password">Passwort</string>
     <string name="pref_lock_type">Sperrart</string>
 
-
+    <string name="lock_type_password">Passwort</string>
+    <string name="lock_type_pin">PIN</string>
+    <string name="lock_type_knockcode">Knock code</string>
+    
     <string name="pref_password_options">Optionen</string>
     <string name="pref_set_password">Passwort ändern</string>
 
@@ -15,7 +20,8 @@
     <string name="pref_show_system_app_summary_off">Verstecke startbare System-Anwendungen</string>
 
     <string name="choose_apps">Anwendungen wählen</string>
-    <string name="choose_apps_summary">Wähle gesperrte Anwendungen</string>
+    <string name="choose_apps_summary">Wähle zu sperrende Anwendungen</string>
+
 
     <string name="msg_password_inconsistent">Passwörter stimmen nicht überein!</string>
     <string name="msg_password_null">Das Passwort darf nicht leer sein!</string>
@@ -28,10 +34,16 @@
     <string name="txt_fake_die">Vorgetäuschter Absturz</string>
     <string name="txt_lock_on">An</string>
     <string name="txt_lock_off">Aus</string>
+    
+    <string name="continue_done">Drücken Sie weiter, wenn Sie fertig sind</string>
+    <string name="button_continue">Weiter</string>
 
+    <string name="choose_knock_code">Knock code einrichten</string>
+    <string name="knock_code_too_short">Knock code muss mindestens 4 Berührungen lang sein</string>
+    <string name="confirm_knock_code">Knock code bestätigen</string>
 
-    <string name="fake_die_message">\"%1$s\" wurde beendet.</string>
+    <string name="fake_die_message">%1$s wurde beendet.</string>
     <string name="report">Melden</string>
     <string name="report_problem">Problem melden:</string>
-
+    
 </resources>
