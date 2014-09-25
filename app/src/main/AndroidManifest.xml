@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="de.Maxr1998.xposed.maxlock"
-    android:versionCode="6"
-    android:versionName="2.0.1">
+    android:versionCode="7"
+    android:versionName="2.1">
 
     <uses-sdk tools:node="replace" />
 
@@ -14,9 +14,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="de.Maxr1998.xposed.maxlock.ui.AppsListActivity"
-            android:label="@string/choose_apps" />
 
         <activity
             android:name="de.Maxr1998.xposed.maxlock.ui.SettingsActivity"
@@ -29,6 +26,10 @@
         </activity>
 
         <activity
+            android:name="de.Maxr1998.xposed.maxlock.ui.AppsListActivity"
+            android:label="@string/choose_apps" />
+
+        <activity
             android:name="de.Maxr1998.xposed.maxlock.ui.LockActivity"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -36,6 +37,8 @@
 
         <activity
             android:name="de.Maxr1998.xposed.maxlock.ui.FakeDieDialog"
+            android:excludeFromRecents="true"
+            android:exported="true"
             android:theme="@style/FakeDieDialog" />
 
         <meta-data

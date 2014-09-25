@@ -16,7 +16,13 @@ public class Common {
     public static final String LOCK_TYPE_PIN = "lock_type_pin";
     public static final String LOCK_TYPE_KNOCK_CODE = "lock_type_knock_code";
 
+    public static final String KC_HIDE_DIVIDERS = "kc_hide_dividers";
+    public static final String KC_NO_HIGHLIGHT = "kc_no_highlight";
+
     public static final String CHOOSE_APPS = "choose_apps";
+
+    public static final String HIDE_APP_FROM_LAUNCHER = "hide_from_launcher";
+    public static final String USE_DARK_STYLE = "use_dark_style";
 
     // Preference values
     public static final String KEY_PASSWORD = "password";
@@ -29,7 +35,7 @@ public class Common {
     public static final String PREF_PACKAGE = "packages";
 
     // Fragment tags
-   public static final String TAG_KCF = "knock_code_fragment";
+    public static final String TAG_KCF = "knock_code_fragment";
 
     public static String REQUEST_PKG = "";
 

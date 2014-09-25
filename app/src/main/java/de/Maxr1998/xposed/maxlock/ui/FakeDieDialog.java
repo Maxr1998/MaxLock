@@ -52,6 +52,7 @@ public class FakeDieDialog extends Activity {
                                             it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             it.putExtra(Common.KEY_APP_ACCESS, requestPkg);
                                             startActivity(it);
+                                            finish();
                                         }
                                     }
                                 })

@@ -10,7 +10,7 @@
     <string name="lock_type_password">Passwort</string>
     <string name="lock_type_pin">PIN</string>
     <string name="lock_type_knockcode">Knock code</string>
-    
+
     <string name="pref_password_options">Optionen</string>
     <string name="pref_set_password">Passwort ändern</string>
 
@@ -34,7 +34,7 @@
     <string name="txt_fake_die">Vorgetäuschter Absturz</string>
     <string name="txt_lock_on">An</string>
     <string name="txt_lock_off">Aus</string>
-    
+
     <string name="continue_done">Drücken Sie weiter, wenn Sie fertig sind</string>
     <string name="button_continue">Weiter</string>
 
@@ -42,8 +42,8 @@
     <string name="knock_code_too_short">Knock code muss mindestens 4 Berührungen lang sein</string>
     <string name="confirm_knock_code">Knock code bestätigen</string>
 
-    <string name="fake_die_message">%1$s wurde beendet.</string>
+    <string name="fake_die_message">\"%1$s\" wurde beendet.</string>
     <string name="report">Melden</string>
-    <string name="report_problem">Problem melden:</string>
-    
+    <string name="report_problem">Problem melden</string>
+
 </resources>

@@ -3,10 +3,11 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
+    <style name="AppTheme.Dark" parent="Theme.AppCompat" />
+
     <style name="TranslucentStatusBar" parent="AppTheme" />
 
-    <style name="LockActivityStyle" parent="TranslucentStatusBar">
-    </style>
+    <style name="LockActivityStyle" parent="TranslucentStatusBar"></style>
 
     <style name="SecurityPreferenceButtonContainer" parent="@android:style/Holo.SegmentedButton">
         <item name="android:layout_width">match_parent</item>

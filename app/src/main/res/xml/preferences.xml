@@ -12,6 +12,18 @@
             <Preference
                 android:key="lock_type_knock_code"
                 android:title="@string/lock_type_knockcode" />
+            <PreferenceCategory android:title="@string/options">
+                <PreferenceScreen android:title="@string/pref_knockcode_ui_options">
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="kc_hide_dividers"
+                        android:title="@string/pref_kc_hide_dividers" />
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="kc_no_highlight"
+                        android:title="@string/pref_kc_no_highlight" />
+                </PreferenceScreen>
+            </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
 
@@ -26,6 +38,19 @@
             android:key="choose_apps"
             android:summary="@string/choose_apps_summary"
             android:title="@string/choose_apps" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_ui">
+        <!--<CheckBoxPreference
+            android:defaultValue="false"
+            android:key="hide_from_launcher"
+            android:title="@string/pref_hide_from_launcher" />-->
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="use_dark_style"
+            android:title="@string/pref_use_dark_style" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

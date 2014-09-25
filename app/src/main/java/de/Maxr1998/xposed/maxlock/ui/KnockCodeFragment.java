@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.WallpaperManager;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
     ApplicationInfo requestPkgInfo;
     private StringBuilder key;
     private TextView mInputText;
+    private SharedPreferences pref;
 
     @Override
     public void onAttach(Activity activity) {
@@ -43,6 +46,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         // Views
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_knock_code, container, false);
         kcMainLayout = rootView.findViewById(R.id.kc_main_layout);
@@ -62,6 +66,27 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
             kb[i].setOnClickListener(this);
         }
 
+        if (pref.getBoolean(Common.KC_HIDE_DIVIDERS, false)) {
+            View[] dividers = new View[]{
+                    rootView.findViewById(R.id.divider1),
+                    rootView.findViewById(R.id.divider2),
+                    rootView.findViewById(R.id.divider3),
+                    rootView.findViewById(R.id.divider4)
+            };
+            View[] d = new View[dividers.length];
+            for (int i = 0; i < dividers.length; i++) {
+                d[i] = dividers[i];
+                d[i].setBackground(getResources().getDrawable(R.drawable.knock_button_background_transparent));
+            }
+        }
+
+        if (pref.getBoolean(Common.KC_NO_HIGHLIGHT, false)) {
+            for (int i = 0; i < knockButtons.length; i++) {
+                kb[i] = (Button) knockButtons[i];
+                kb[i].setBackground(getResources().getDrawable(R.drawable.knock_button_background_transparent));
+            }
+        }
+
         // Strings
         key = new StringBuilder("");
 
@@ -69,6 +94,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         kcMainLayout.setBackground(WallpaperManager.getInstance(getActivity()).getDrawable());
         if (getActivity().getActionBar() != null)
             getActivity().getActionBar().hide();
+
         if (getActivity().getActionBar() == null) {
             LinearLayout.LayoutParams paramsTop = (LinearLayout.LayoutParams) kcAppName.getLayoutParams();
             paramsTop.setMargins(getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin),

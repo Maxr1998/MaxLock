@@ -19,19 +19,19 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        pref = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREF);
+        pref = new XSharedPreferences(MY_PACKAGE_NAME);
         packagePref = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREF_PACKAGE);
     }
 
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 
+        pref.reload();
         packagePref.reload();
-
 
         final String packageName = lpparam.packageName;
 
-        if (!packagePref.getBoolean(packageName, false) || !pref.getBoolean(Common.MASTER_SWITCH, true)) {
+        if (!packagePref.getBoolean(packageName, false) || !pref.getBoolean("master_switch", true)) {
             return;
         }
 
@@ -49,14 +49,12 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
                         final Activity app = (Activity) param.thisObject;
 
-                        if (!app.getClass().getName().equals("android.app.Activity")) {
+                        if (!app.getClass().getName().equals("android.app.Activity") && !packagePref.getBoolean(packageName + "_fake", false)) {
                             launchLockActivity(app, packageName);
-                        } else if (packagePref.getBoolean(packageName + "_fake", false)) {
-                            Intent dialog = new Intent();
-                            dialog.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + ".ui.FakeDieDialog"));
-                            dialog.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            dialog.putExtra(Common.KEY_APP_ACCESS, packageName);
-                            app.startActivity(dialog);
+                        }
+
+                        if (packagePref.getBoolean(packageName + "_fake", false)) {
+                            launchFakeDieDialog(app, packageName);
                         }
 
                         app.setResult(Activity.RESULT_CANCELED);
@@ -76,5 +74,13 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         it.putExtra(Common.KEY_APP_ACCESS, packageName);
         app.startActivity(it);
+    }
+
+    private void launchFakeDieDialog(final Activity app, String packageName) {
+        Intent dialog = new Intent();
+        dialog.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + ".ui.FakeDieDialog"));
+        dialog.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        dialog.putExtra(Common.KEY_APP_ACCESS, packageName);
+        app.startActivity(dialog);
     }
 }

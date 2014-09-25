@@ -34,14 +34,14 @@ public class CheckBoxAdapter extends BaseAdapter {
     private List<Map<String, Object>> mItemList, oriItemList;
     private Context mContext;
     private LayoutInflater mInflater;
-    private SharedPreferences pref;
+    private SharedPreferences packagePref;
     private Filter mFilter;
 
     public CheckBoxAdapter(Context context, List<Map<String, Object>> itemList) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         oriItemList = mItemList = itemList;
-        pref = mContext.getSharedPreferences(Common.PREF_PACKAGE, Activity.MODE_WORLD_READABLE);
+        packagePref = mContext.getSharedPreferences(Common.PREF_PACKAGE, Activity.MODE_WORLD_READABLE);
         mFilter = new MyFilter();
     }
 
@@ -82,7 +82,7 @@ public class CheckBoxAdapter extends BaseAdapter {
         summary.setText(sSummary);
         icon.setImageDrawable(dIcon);
 
-        if (pref.getBoolean(key, false)) {
+        if (packagePref.getBoolean(key, false)) {
             toggleLock.setChecked(true);
             imgEdit.setVisibility(View.VISIBLE);
         } else {
@@ -107,7 +107,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                 View checkBoxView = View.inflate(mContext, R.layout.per_app_settings, null);
                 CheckBox fakeDie = (CheckBox) checkBoxView.findViewById(R.id.cb_fake_die);
 
-                fakeDie.setChecked(pref.getBoolean(key + "_fake", false));
+                fakeDie.setChecked(packagePref.getBoolean(key + "_fake", false));
 
                 fakeDie.setOnClickListener(new View.OnClickListener() {
 
@@ -119,7 +119,7 @@ public class CheckBoxAdapter extends BaseAdapter {
 
                         CheckBox cb = (CheckBox) v;
                         boolean value = cb.isChecked();
-                        pref.edit()
+                        packagePref.edit()
                                 .putBoolean(key + "_fake", value)
                                 .commit();
                     }
@@ -151,7 +151,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                 ToggleButton tb = (ToggleButton) v;
 
                 boolean value = tb.isChecked();
-                pref.edit()
+                packagePref.edit()
                         .putBoolean(key, value)
                         .commit();
                 if (value) {

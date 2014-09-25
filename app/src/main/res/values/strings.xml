@@ -11,7 +11,11 @@
     <string name="lock_type_pin">PIN</string>
     <string name="lock_type_knockcode">Knock code</string>
 
-    <string name="pref_password_options">Password options</string>
+    <string name="options">Options</string>
+    <string name="pref_knockcode_ui_options">Knock code UI options</string>
+    <string name="pref_kc_hide_dividers">Hide dividers in knock code</string>
+    <string name="pref_kc_no_highlight">Don\'t highlight knock button on press</string>
+
     <string name="pref_set_password">Set password</string>
 
     <string name="pref_category_apps">Choose apps</string>
@@ -22,6 +26,9 @@
     <string name="choose_apps">Choose apps</string>
     <string name="choose_apps_summary">Select apps to be locked</string>
 
+    <string name="pref_category_ui">UI settings</string>
+    <string name="pref_hide_from_launcher">Show system apps</string>
+    <string name="pref_use_dark_style">Show system apps</string>
 
     <string name="msg_password_inconsistent">Password is inconsistent!</string>
     <string name="msg_password_null">Password can not be empty!</string>
@@ -44,6 +51,6 @@
 
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>
-    <string name="report_problem">Report problem:</string>
+    <string name="report_problem">Report problem</string>
 
 </resources>

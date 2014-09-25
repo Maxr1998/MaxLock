@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -13,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -25,7 +26,7 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 
 
-public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private SharedPreferences pref, keysPref;
     private AlertDialog dialog;
     private Switch masterSwitch;
@@ -37,6 +38,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             getActivity().getActionBar().show();
         setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.preferences);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
 
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         keysPref = getActivity().getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
@@ -48,8 +50,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                 askPassword();
             }
         }
-
-
 
         Preference ltpw = findPreference(Common.LOCK_TYPE_PASSWORD);
         ltpw.setOnPreferenceClickListener(this);
@@ -72,20 +72,18 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         super.onCreateOptionsMenu(menu, inflater);
         getActivity().getMenuInflater().inflate(R.menu.menu, menu);
 
-        //ViewGroup menuView = (ViewGroup) menu;
-        //View masterSwitchView = menuView.findViewById(R.id.master_switch);
-        //masterSwitch = (Switch) masterSwitchView;
-
+        View masterSwitchView = menu.findItem(R.id.myswitch).getActionView().findViewById(R.id.master_switch);
+        masterSwitch = (Switch) masterSwitchView;
         boolean masterSwitchPref = pref.getBoolean(Common.MASTER_SWITCH, true);
 
-        //masterSwitch.setChecked(masterSwitchPref);
-        /*masterSwitchView.setOnClickListener(new View.OnClickListener() {
+        masterSwitch.setChecked(masterSwitchPref);
+        masterSwitchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean checked = masterSwitch.isChecked();
                 pref.edit().putBoolean(Common.MASTER_SWITCH, checked).commit();
             }
-        });*/
+        });
     }
 
     private void askPassword() {
@@ -102,7 +100,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
 
         ((ViewGroup) input.getParent()).setPadding(10, 10, 10, 10);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -191,5 +188,21 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             startActivity(intent);
         }
         return false;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Preference pref = findPreference(key);
+
+        if (key.equals(Common.HIDE_APP_FROM_LAUNCHER)) {
+            CheckBoxPreference checkBoxPreference = (CheckBoxPreference) pref;
+            if (checkBoxPreference.isChecked()) {
+                PackageManager p = getActivity().getPackageManager();
+                p.setComponentEnabledSetting(getActivity().getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+            } else {
+                PackageManager p = getActivity().getPackageManager();
+                p.setComponentEnabledSetting(getActivity().getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            }
+        }
     }
 }
