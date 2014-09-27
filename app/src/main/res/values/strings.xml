@@ -8,7 +8,7 @@
     <string name="pref_lock_type">Locking type</string>
 
     <string name="lock_type_password">Password</string>
-    <string name="lock_type_pin">PIN</string>
+    <string name="lock_type_pin">PIN (not implemented yet)</string>
     <string name="lock_type_knockcode">Knock code</string>
 
     <string name="options">Options</string>
@@ -27,8 +27,9 @@
     <string name="choose_apps_summary">Select apps to be locked</string>
 
     <string name="pref_category_ui">UI settings</string>
-    <string name="pref_hide_from_launcher">Show system apps</string>
-    <string name="pref_use_dark_style">Show system apps</string>
+    <string name="pref_hide_from_launcher">Hide app from launcher</string>
+    <string name="pref_use_dark_style">Use dark style</string>
+    <string name="pref_fake_die_input">Fake die input</string>
 
     <string name="msg_password_inconsistent">Password is inconsistent!</string>
     <string name="msg_password_null">Password can not be empty!</string>

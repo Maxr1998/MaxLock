@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.widget.EditText;
 
@@ -20,10 +22,12 @@ public class FakeDieDialog extends Activity {
     private String requestPkg;
     private ApplicationInfo requestPkgInfo;
     private AlertDialog.Builder alertDialog, reportDialog;
+    private SharedPreferences pref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         requestPkg = getIntent().getStringExtra(Common.KEY_APP_ACCESS);
         PackageManager pm = getPackageManager();
         try {
@@ -47,7 +51,7 @@ public class FakeDieDialog extends Activity {
                                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        if (input.getText().toString().equals("start")) {
+                                        if (input.getText().toString().equals(pref.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                             Intent it = new Intent(FakeDieDialog.this, LockActivity.class);
                                             it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             it.putExtra(Common.KEY_APP_ACCESS, requestPkg);

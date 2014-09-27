@@ -25,13 +25,16 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-
         pref.reload();
         packagePref.reload();
-
         final String packageName = lpparam.packageName;
+        final boolean masterSwitchOn = pref.getBoolean("master_switch_on", true);
 
-        if (!packagePref.getBoolean(packageName, false) || !pref.getBoolean("master_switch", true)) {
+        if (!packagePref.getBoolean(packageName, false)) {
+            return;
+        }
+        if (!masterSwitchOn) {
+            XposedBridge.log("MasterSwitch off");
             return;
         }
 
@@ -52,16 +55,13 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         if (!app.getClass().getName().equals("android.app.Activity") && !packagePref.getBoolean(packageName + "_fake", false)) {
                             launchLockActivity(app, packageName);
                         }
-
                         if (packagePref.getBoolean(packageName + "_fake", false)) {
                             launchFakeDieDialog(app, packageName);
                         }
-
                         app.setResult(Activity.RESULT_CANCELED);
                         app.finish();
 
                         param.setResult(new Object());
-
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }

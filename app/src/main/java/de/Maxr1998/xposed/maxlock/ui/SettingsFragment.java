@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -72,15 +73,15 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         super.onCreateOptionsMenu(menu, inflater);
         getActivity().getMenuInflater().inflate(R.menu.menu, menu);
 
-        View masterSwitchView = menu.findItem(R.id.myswitch).getActionView().findViewById(R.id.master_switch);
+        View masterSwitchView = menu.findItem(R.id.master_switch_menu_item).getActionView().findViewById(R.id.master_switch);
         masterSwitch = (Switch) masterSwitchView;
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         boolean masterSwitchPref = pref.getBoolean(Common.MASTER_SWITCH, true);
 
         masterSwitch.setChecked(masterSwitchPref);
-        masterSwitchView.setOnClickListener(new View.OnClickListener() {
+        masterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                boolean checked = masterSwitch.isChecked();
+            public void onCheckedChanged(CompoundButton button, boolean checked) {
                 pref.edit().putBoolean(Common.MASTER_SWITCH, checked).commit();
             }
         });

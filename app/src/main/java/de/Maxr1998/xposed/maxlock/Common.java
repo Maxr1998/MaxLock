@@ -8,7 +8,7 @@ public class Common {
 
 
     // Preferences
-    public static final String MASTER_SWITCH = "master_switch";
+    public static final String MASTER_SWITCH = "master_switch_on";
 
     public static final String LOCK_TYPE = "lock_type";
 
@@ -23,6 +23,8 @@ public class Common {
 
     public static final String HIDE_APP_FROM_LAUNCHER = "hide_from_launcher";
     public static final String USE_DARK_STYLE = "use_dark_style";
+    public static final String FAKE_DIE_INPUT = "fake_die_input";
+
 
     // Preference values
     public static final String KEY_PASSWORD = "password";

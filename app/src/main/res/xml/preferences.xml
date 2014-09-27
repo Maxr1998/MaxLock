@@ -51,6 +51,10 @@
             android:key="use_dark_style"
             android:title="@string/pref_use_dark_style" />
 
+        <EditTextPreference
+            android:key="fake_die_input"
+            android:title="@string/pref_fake_die_input" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
