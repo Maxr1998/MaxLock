@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="de.Maxr1998.xposed.maxlock"
-    android:versionCode="7"
-    android:versionName="2.1">
+    android:versionCode="8"
+    android:versionName="2.1.1">
 
-    <uses-sdk tools:node="replace" />
+<uses-sdk tools:node="replace" />
 
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
