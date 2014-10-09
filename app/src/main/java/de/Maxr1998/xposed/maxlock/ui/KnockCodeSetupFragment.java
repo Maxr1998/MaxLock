@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
@@ -132,7 +131,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         } else if (mUiStage.equals("second")) {
             if (key.toString().equals(mFirstKey)) {
                 pref.edit()
-                        .putString(Common.LOCK_TYPE, Common.KEY_KNOCK_CODE)
+                        .putString(Common.LOCKING_TYPE, Common.KEY_KNOCK_CODE)
                         .commit();
                 keysPref.edit()
                         .putString(Common.KEY_KNOCK_CODE, Util.sha1Hash(key.toString()))

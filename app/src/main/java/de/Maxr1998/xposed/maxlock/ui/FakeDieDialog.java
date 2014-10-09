@@ -1,6 +1,7 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,7 +29,10 @@ public class FakeDieDialog extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        requestPkg = getIntent().getStringExtra(Common.KEY_APP_ACCESS);
+        requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS);
+
+        ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
+        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
         PackageManager pm = getPackageManager();
         try {
             requestPkgInfo = pm.getApplicationInfo(requestPkg, 0);
@@ -54,13 +58,24 @@ public class FakeDieDialog extends Activity {
                                         if (input.getText().toString().equals(pref.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                             Intent it = new Intent(FakeDieDialog.this, LockActivity.class);
                                             it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            it.putExtra(Common.KEY_APP_ACCESS, requestPkg);
+                                            it.putExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS, requestPkg);
                                             startActivity(it);
-                                            finish();
                                         }
+                                        finish();
                                     }
                                 })
-                                .setNegativeButton(android.R.string.cancel, null)
+                                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                })
+                                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialogInterface) {
+                                        finish();
+                                    }
+                                })
                                 .create().show();
                     }
                 })

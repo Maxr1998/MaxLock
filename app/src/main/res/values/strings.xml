@@ -4,19 +4,53 @@
     <string name="app_name">MaxLock</string>
 
     <!-- Main screen -->
-    <string name="pref_category_password">Password</string>
-    <string name="pref_lock_type">Locking type</string>
+    <string name="pref_category_locking">Locking options</string>
+    <string name="pref_locking_type">Locking type</string>
 
-    <string name="lock_type_password">Password</string>
-    <string name="lock_type_pin">PIN (not implemented yet)</string>
-    <string name="lock_type_knockcode">Knock code</string>
-
-    <string name="options">Options</string>
-    <string name="pref_knockcode_ui_options">Knock code UI options</string>
-    <string name="pref_kc_hide_dividers">Hide dividers in knock code</string>
-    <string name="pref_kc_no_highlight">Don\'t highlight knock button on press</string>
+    <string name="locking_type_password">Password</string>
+    <string name="locking_type_pin">PIN (not implemented yet)</string>
+    <string name="locking_type_knockcode">Knock code</string>
 
     <string name="pref_set_password">Set password</string>
+    <string name="msg_password_inconsistent">Password is inconsistent!</string>
+    <string name="msg_password_null">Password can not be empty!</string>
+    <string name="msg_password_changed">Password is changed!</string>
+    <string name="msg_password_incorrect">Password incorrect!</string>
+    <string name="txt_type_password">Password: </string>
+    <string name="txt_retype_password">Retype password: </string>
+
+    <string name="choose_knock_code">Choose your knock code</string>
+    <string name="knock_code_too_short">Knock code must be a least 4 touches</string>
+    <string name="continue_done">Touch continue when done</string>
+    <string name="confirm_knock_code">Confirm your knock code</string>
+    <string name="button_continue">Continue</string>
+
+    <string name="options">Options</string>
+    <string name="pref_ui_options">PIN &amp; knock code UI options</string>
+    <string name="pref_background">Background image</string>
+    <string-array name="background_types">
+        <item>Wallpaper</item>
+        <item>White screen</item>
+        <item>Custom image…</item>
+    </string-array>
+    <string-array name="background_type_values">
+        <item>wallpaper</item>
+        <item>white</item>
+        <item>custom</item>
+    </string-array>
+    <string name="pref_show_dividers">Show dividers</string>
+    <string name="pref_touch_visible">Make touches visible</string>
+
+    <string name="pref_locking_behaviour">Locking behaviour (reboot needed)</string>
+    <string name="lock">Lock</string>
+    <string-array name="locking_behaviour_names">
+        <item>On first app start in session</item>
+        <item>On each app launch or resume (laggy)</item>
+    </string-array>
+    <string-array name="locking_behaviour_values">
+        <item>onCreate</item>
+        <item>onStart</item>
+    </string-array>
 
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_show_system_app">Show system apps</string>
@@ -26,29 +60,16 @@
     <string name="choose_apps">Choose apps</string>
     <string name="choose_apps_summary">Select apps to be locked</string>
 
+    <string name="msg_search">Search</string>
+    <string name="txt_lock_on">On</string>
+    <string name="txt_lock_off">Off</string>
+    <string name="txt_settings">Settings</string>
+    <string name="txt_fake_die">Fake die</string>
+
     <string name="pref_category_ui">UI settings</string>
     <string name="pref_hide_from_launcher">Hide app from launcher</string>
     <string name="pref_use_dark_style">Use dark style</string>
     <string name="pref_fake_die_input">Fake die input</string>
-
-    <string name="msg_password_inconsistent">Password is inconsistent!</string>
-    <string name="msg_password_null">Password can not be empty!</string>
-    <string name="msg_password_changed">Password is changed!</string>
-    <string name="msg_password_incorrect">Password incorrect!</string>
-    <string name="msg_search">Search</string>
-    <string name="txt_settings">Settings</string>
-    <string name="txt_type_password">Password: </string>
-    <string name="txt_retype_password">Retype password: </string>
-    <string name="txt_fake_die">Fake die</string>
-    <string name="txt_lock_on">On</string>
-    <string name="txt_lock_off">Off</string>
-
-    <string name="continue_done">Touch continue when done</string>
-    <string name="button_continue">Continue</string>
-
-    <string name="choose_knock_code">Choose your knock code</string>
-    <string name="knock_code_too_short">Knock code must be a least 4 touches</string>
-    <string name="confirm_knock_code">Confirm your knock code</string>
 
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>

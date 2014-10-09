@@ -28,9 +28,9 @@ import de.Maxr1998.xposed.maxlock.Util;
 
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+    Switch masterSwitch;
     private SharedPreferences pref, keysPref;
     private AlertDialog dialog;
-    private Switch masterSwitch;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         keysPref = getActivity().getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
 
-        if (pref.getString(Common.LOCK_TYPE, "").equals(Common.KEY_PASSWORD)) {
+        if (pref.getString(Common.LOCKING_TYPE, "").equals(Common.KEY_PASSWORD)) {
             if (keysPref.getString(Common.KEY_PASSWORD, "").length() == 0) {
                 setPassword();
             } else {
@@ -52,9 +52,9 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             }
         }
 
-        Preference ltpw = findPreference(Common.LOCK_TYPE_PASSWORD);
+        Preference ltpw = findPreference(Common.LOCKING_TYPE_PASSWORD);
         ltpw.setOnPreferenceClickListener(this);
-        Preference ltkc = findPreference(Common.LOCK_TYPE_KNOCK_CODE);
+        Preference ltkc = findPreference(Common.LOCKING_TYPE_KNOCK_CODE);
         ltkc.setOnPreferenceClickListener(this);
         Preference ca = findPreference(Common.CHOOSE_APPS);
         ca.setOnPreferenceClickListener(this);
@@ -94,7 +94,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         dialog = new AlertDialog.Builder(getActivity())
                 .setCancelable(false)
-                .setTitle(R.string.lock_type_password)
+                .setTitle(R.string.locking_type_password)
                 .setView(input)
                 .setPositiveButton(android.R.string.ok, null)
                 .create();
@@ -155,7 +155,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                             .remove(Common.KEY_KNOCK_CODE)
                             .commit();
                     pref.edit()
-                            .putString(Common.LOCK_TYPE, Common.KEY_PASSWORD)
+                            .putString(Common.LOCKING_TYPE, Common.KEY_PASSWORD)
                             .commit();
                     Toast.makeText(getActivity(), R.string.msg_password_changed, Toast.LENGTH_SHORT)
                             .show();
@@ -165,7 +165,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(keysPref.getString(Common.LOCK_TYPE, "").equals("pw"))) {
+                if (!(keysPref.getString(Common.LOCKING_TYPE, "").equals("pw"))) {
                     dialog.dismiss();
                 } else {
                     Toast.makeText(getActivity(), R.string.msg_password_null, Toast.LENGTH_SHORT)
@@ -177,12 +177,12 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if (preference == findPreference(Common.LOCK_TYPE_PASSWORD)) {
+        if (preference == findPreference(Common.LOCKING_TYPE_PASSWORD)) {
             pref.edit()
-                    .putString(Common.LOCK_TYPE, Common.KEY_PASSWORD)
+                    .putString(Common.LOCKING_TYPE, Common.KEY_PASSWORD)
                     .commit();
             setPassword();
-        } else if (preference == findPreference(Common.LOCK_TYPE_KNOCK_CODE)) {
+        } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {
             getActivity().getFragmentManager().beginTransaction().replace(R.id.frame_container, new KnockCodeSetupFragment()).commit();
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
             Intent intent = new Intent(getActivity(), AppsListActivity.class);

@@ -3,11 +3,7 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.WallpaperManager;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -28,10 +24,10 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
     ViewGroup rootView;
     View kcMainLayout, mInputView;
     TextView kcAppName;
-    ApplicationInfo requestPkgInfo;
+    SharedPreferences pref;
+    String requestPkg;
     private StringBuilder key;
     private TextView mInputText;
-    private SharedPreferences pref;
 
     @Override
     public void onAttach(Activity activity) {
@@ -66,7 +62,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
             kb[i].setOnClickListener(this);
         }
 
-        if (pref.getBoolean(Common.KC_HIDE_DIVIDERS, false)) {
+        if (!pref.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
             View[] dividers = new View[]{
                     rootView.findViewById(R.id.divider1),
                     rootView.findViewById(R.id.divider2),
@@ -80,7 +76,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
             }
         }
 
-        if (pref.getBoolean(Common.KC_NO_HIGHLIGHT, false)) {
+        if (!pref.getBoolean(Common.KC_VISIBLE, true)) {
             for (int i = 0; i < knockButtons.length; i++) {
                 kb[i] = (Button) knockButtons[i];
                 kb[i].setBackground(getResources().getDrawable(R.drawable.knock_button_background_transparent));
@@ -88,10 +84,11 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         }
 
         // Strings
+        requestPkg = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
         key = new StringBuilder("");
 
         // Setup view
-        kcMainLayout.setBackground(WallpaperManager.getInstance(getActivity()).getDrawable());
+        kcMainLayout.setBackground(Util.getBackground(getActivity()));
         if (getActivity().getActionBar() != null)
             getActivity().getActionBar().hide();
 
@@ -109,18 +106,9 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
                     getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android")));
             bottomLayout.setLayoutParams(paramsBottom);
         }
-        PackageManager pm = getActivity().getApplicationContext().getPackageManager();
-        try {
-            requestPkgInfo = pm.getApplicationInfo(Common.REQUEST_PKG, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            requestPkgInfo = null;
-        }
-        String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
-        kcAppName.setText(requestPkgFullName);
-        if (requestPkgInfo != null) {
-            Drawable requestPkgAppIcon = pm.getApplicationIcon(requestPkgInfo);
-            kcAppName.setCompoundDrawablesWithIntrinsicBounds(requestPkgAppIcon, null, null, null);
-        }
+
+        kcAppName.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));
+        kcAppName.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
 
         return rootView;
     }
@@ -153,7 +141,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         if (knockButton) key.append(nr);
         mInputText.setText(genPass(key));
         if (Util.checkInput(key.toString(), Common.KEY_KNOCK_CODE, getActivity())) {
-            authenticationSucceededListener.onAuthenticationSucceeded(Common.TAG_KCF);
+            authenticationSucceededListener.onAuthenticationSucceeded();
         }
     }
 

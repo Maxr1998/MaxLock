@@ -4,15 +4,53 @@
     <string name="app_name">MaxLock</string>
 
     <!-- Main Screen -->
-    <string name="pref_category_password">Passwort</string>
-    <string name="pref_lock_type">Sperrart</string>
+    <string name="pref_category_locking">Sperre</string>
+    <string name="pref_locking_type">Sperrart</string>
 
-    <string name="lock_type_password">Passwort</string>
-    <string name="lock_type_pin">PIN (nicht implementiert)</string>
-    <string name="lock_type_knockcode">Knock code</string>
+    <string name="locking_type_password">Passwort</string>
+    <string name="locking_type_pin">PIN (noch nicht implementiert)</string>
+    <string name="locking_type_knockcode">Knock code</string>
 
-    <string name="pref_password_options">Optionen</string>
     <string name="pref_set_password">Passwort ändern</string>
+    <string name="msg_password_inconsistent">Passwörter stimmen nicht überein!</string>
+    <string name="msg_password_null">Das Passwort darf nicht leer sein!</string>
+    <string name="msg_password_changed">Passwort wurde geändert!</string>
+    <string name="msg_password_incorrect">Passwort inkorrekt!</string>
+    <string name="txt_type_password">Passwort: </string>
+    <string name="txt_retype_password">Passwort wiederholen: </string>
+
+    <string name="choose_knock_code">Knock code einrichten</string>
+    <string name="knock_code_too_short">Knock code muss mindestens 4 Berührungen lang sein</string>
+    <string name="continue_done">Drücken Sie weiter, wenn Sie fertig sind</string>
+    <string name="confirm_knock_code">Knock code bestätigen</string>
+    <string name="button_continue">Weiter</string>
+
+    <string name="options">Optionen</string>
+    <string name="pref_ui_options">PIN &amp; Knock code UI Optionen</string>
+    <string name="pref_background">Hintergrundbild</string>
+    <string-array name="background_types">
+        <item>Systemhintergrund</item>
+        <item>Weißer Bildschirm</item>
+        <item>Benutzerdefiniert…</item>
+    </string-array>
+    <string-array name="background_type_values">
+        <item>wallpaper</item>
+        <item>white</item>
+        <item>custom</item>
+    </string-array>
+    <string name="pref_show_dividers">Trennlinien anzeigen</string>
+    <string name="pref_touch_visible">Berührungen sichtbar machen</string>
+
+    <string name="pref_locking_behaviour">Sperrverhalten (Neustart erforderlich)</string>
+    <string name="lock">Sperren</string>
+    <string-array name="locking_behaviour_names">
+        <item>Bei erstem App-Start</item>
+        <item>Nach jedem App-Start oder Fortsetzung (laggy)</item>
+    </string-array>
+    <string-array name="locking_behaviour_values">
+        <item>onCreate</item>
+        <item>onStart</item>
+    </string-array>
 
     <string name="pref_category_apps">Anwendungen</string>
     <string name="pref_show_system_app">Zeige System-Anwendungen</string>
@@ -22,24 +60,16 @@
     <string name="choose_apps">Anwendungen wählen</string>
     <string name="choose_apps_summary">Wähle zu sperrende Anwendungen</string>
 
-    <string name="msg_password_inconsistent">Passwörter stimmen nicht überein!</string>
-    <string name="msg_password_null">Das Passwort darf nicht leer sein!</string>
-    <string name="msg_password_changed">Passwort wurde geändert!</string>
-    <string name="msg_password_incorrect">Passwort inkorrekt!</string>
     <string name="msg_search">Suche</string>
-    <string name="txt_settings">Optionen</string>
-    <string name="txt_type_password">Passwort: </string>
-    <string name="txt_retype_password">Passwort wiederholen: </string>
-    <string name="txt_fake_die">Vorgetäuschter Absturz</string>
     <string name="txt_lock_on">An</string>
     <string name="txt_lock_off">Aus</string>
+    <string name="txt_settings">Optionen</string>
+    <string name="txt_fake_die">Vorgetäuschter Absturz</string>
 
-    <string name="continue_done">Drücken Sie weiter, wenn Sie fertig sind</string>
-    <string name="button_continue">Weiter</string>
-
-    <string name="choose_knock_code">Knock code einrichten</string>
-    <string name="knock_code_too_short">Knock code muss mindestens 4 Berührungen lang sein</string>
-    <string name="confirm_knock_code">Knock code bestätigen</string>
+    <string name="pref_category_ui">Oberfläche</string>
+    <string name="pref_hide_from_launcher">Verstecke app im Launcher</string>
+    <string name="pref_use_dark_style">Dunkles Design benutzen</string>
+    <string name="pref_fake_die_input">\"Fake die\" Eingabe</string>
 
     <string name="fake_die_message">\"%1$s\" wurde beendet.</string>
     <string name="report">Bericht</string>

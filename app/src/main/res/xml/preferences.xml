@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="main">
-    <PreferenceCategory android:title="@string/pref_category_password">
-        <PreferenceScreen android:title="@string/pref_lock_type">
-            <Preference
-                android:key="lock_type_password"
-                android:title="@string/lock_type_password" />
-            <Preference
-                android:key="lock_type_pin"
-                android:title="@string/lock_type_pin" />
-            <Preference
-                android:key="lock_type_knock_code"
-                android:title="@string/lock_type_knockcode" />
+    <PreferenceCategory android:title="@string/pref_category_locking">
+        <PreferenceScreen android:title="@string/pref_locking_type">
+            <PreferenceCategory android:title="@string/pref_locking_type">
+                <Preference
+                    android:key="locking_type_password"
+                    android:title="@string/locking_type_password" />
+                <Preference
+                    android:key="locking_type_pin"
+                    android:title="@string/locking_type_pin" />
+                <Preference
+                    android:key="locking_type_knock_code"
+                    android:title="@string/locking_type_knockcode" />
+            </PreferenceCategory>
             <PreferenceCategory android:title="@string/options">
-                <PreferenceScreen android:title="@string/pref_knockcode_ui_options">
+                <PreferenceScreen android:title="@string/pref_ui_options">
+                    <ListPreference
+                        android:defaultValue="wallpaper"
+                        android:dialogTitle="@string/pref_background"
+                        android:entries="@array/background_types"
+                        android:entryValues="@array/background_type_values"
+                        android:key="kc_background"
+                        android:title="@string/pref_background" />
                     <CheckBoxPreference
-                        android:defaultValue="false"
-                        android:key="kc_hide_dividers"
-                        android:title="@string/pref_kc_hide_dividers" />
+                        android:defaultValue="true"
+                        android:key="kc_show_dividers"
+                        android:title="@string/pref_show_dividers" />
                     <CheckBoxPreference
-                        android:defaultValue="false"
-                        android:key="kc_no_highlight"
-                        android:title="@string/pref_kc_no_highlight" />
+                        android:defaultValue="true"
+                        android:key="kc_visible"
+                        android:title="@string/pref_touch_visible" />
                 </PreferenceScreen>
             </PreferenceCategory>
         </PreferenceScreen>
+        <ListPreference
+            android:defaultValue="onCreate"
+            android:dialogTitle="@string/lock"
+            android:entries="@array/locking_behaviour_names"
+            android:entryValues="@array/locking_behaviour_values"
+            android:key="locking_behaviour"
+            android:title="@string/pref_locking_behaviour" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_apps">

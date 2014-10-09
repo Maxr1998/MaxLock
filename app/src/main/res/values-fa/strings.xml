@@ -2,13 +2,13 @@
 <resources>
     <string name="app_name">MaxLock</string>
     <!-- Main screen -->
-    <string name="pref_category_password">کلمه عبور</string>
-    <string name="pref_lock_type">نوع قفل</string>
-    <string name="lock_type_password">کلمه عبور</string>
-    <string name="lock_type_pin">رمز عددی</string>
-    <string name="lock_type_knockcode">Knock code</string>
+    <string name="pref_category_locking">کلمه عبور</string>
+    <string name="pref_locking_type">نوع قفل</string>
+    <string name="locking_type_password">کلمه عبور</string>
+    <string name="locking_type_pin">رمز عددی</string>
+    <string name="locking_type_knockcode">Knock code</string>
     <string name="options">تنظیمات</string>
-    <string name="pref_knockcode_ui_options">تنظیمات Knock code</string>
+    <string name="pref_ui_options">تنظیمات Knock code</string>
     <string name="pref_kc_hide_dividers">خطوط بین Knock code را مخفی کن</string>
     <string name="pref_kc_no_highlight">هنگام لمس کردن محل کد Highligh نشود</string>
     <string name="pref_set_password">تنظیم پسورد</string>
