@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -63,7 +64,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_knock_code, container, false);
         kcMainLayout = rootView.findViewById(R.id.kc_main_layout);
         titleView = (TextView) rootView.findViewById(R.id.title_view);
-        titleView.setTextColor(Util.getTextColor(getActivity()));
+        //titleView.setTextColor(Util.getTextColor(getActivity()));
 
         // Views
         mInputView = rootView.findViewById(R.id.inputView);
@@ -124,11 +125,11 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         if (pref.getBoolean(Common.HIDE_INPUT_BAR, false))
             rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
 
-        /*if (pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) {
+        if (pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) {
             titleView.setTextColor(getResources().getColor(R.color.black));
             mInputText.setTextColor(getResources().getColor(R.color.black));
             mDeleteButton.setColorFilter(R.color.black, PorterDuff.Mode.SRC_OVER);
-        }*/
+        }
 
         if ((pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) && pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (int i = 0; i < dividers.length; i++) {
