@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.Maxr1998.xposed.maxlock"
-    android:versionCode="8"
-    android:versionName="2.1.1">
+    android:versionCode="9"
+    android:versionName="3.0">
 
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+<uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
