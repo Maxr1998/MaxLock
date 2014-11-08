@@ -1,5 +1,6 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -18,7 +19,7 @@ import android.view.View;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -97,6 +98,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
+    @SuppressLint("ValidFragment")
     public class LockingTypeSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
     }
 
+    @SuppressLint("ValidFragment")
     public class LockingUISettingsFragment extends PreferenceFragment {
 
         private static final int READ_REQUEST_CODE = 42;
@@ -145,8 +148,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (preference.getKey().equals(Common.KC_BACKGROUND) && newValue.toString().equals("custom")) {
-                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                         intent.setType("image/*");
                         startActivityForResult(intent, READ_REQUEST_CODE);
                         return true;
@@ -160,17 +162,22 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 Uri uri = null;
+                InputStream inputStream;
                 if (data != null) {
                     uri = data.getData();
                 }
                 if (uri == null) {
                     throw new NullPointerException();
                 }
-                File source = new File(uri.getPath());
-                File destination = new File(getActivity().getApplicationInfo().dataDir + "background" + File.separator);
                 try {
-                    FileUtils.copyFileToDirectory(source, destination);
-                } catch (IOException e) {
+                    inputStream = getActivity().getContentResolver().openInputStream(uri);
+                    File destination = new File(getActivity().getApplicationInfo().dataDir + File.separator + "background" + File.separator + "image");
+                    if (destination.exists()) {
+                        destination.delete();
+                    }
+                    FileUtils.copyInputStreamToFile(inputStream, destination);
+                    inputStream.close();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

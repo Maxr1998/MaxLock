@@ -48,7 +48,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
         MenuItem i = toolbar.getMenu().findItem(R.id.master_switch_menu_item);
         CharSequence d = i.getTitle();
-        Log.d("WICHTIG", d.toString());
+        Log.d("WICHTIG", d.toString()); // leaks logs from other apps??
         /*masterSwitch = (SwitchCompat) toolbar.getMenu().findItem(R.id.master_switch_menu_item).getActionView().findViewById(R.id.master_switch);
         masterSwitch.setChecked(Util.getMasterSwitch());
         masterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

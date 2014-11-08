@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -217,19 +220,25 @@ public class Util {
     }
 
     private static Bitmap getBackground(Context context) {
-        if (M_BITMAP == null) {
-            PREF = PreferenceManager.getDefaultSharedPreferences(context);
-            String backgroundType = PREF.getString(Common.KC_BACKGROUND, "wallpaper");
-            if (backgroundType.equals("white")) {
-                int[] colors = new int[9000001];
-                for (int i = 0; i <= 9000000; i++) {
-                    colors[i] = Color.WHITE;
-                }
-                M_BITMAP = Bitmap.createBitmap(colors, 3000, 3000, Bitmap.Config.ARGB_8888);
-            } else {
-                Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
-                M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
+        PREF = PreferenceManager.getDefaultSharedPreferences(context);
+        String backgroundType = PREF.getString(Common.KC_BACKGROUND, "wallpaper");
+        if (backgroundType.equals("custom")) {
+            InputStream inputStream;
+            try {
+                inputStream = new FileInputStream(new File(context.getApplicationInfo().dataDir + File.separator + "background" + File.separator + "image"));
+                M_BITMAP = BitmapFactory.decodeStream(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        } else if (backgroundType.equals("white")) {
+            int[] colors = new int[9000001];
+            for (int i = 0; i <= 9000000; i++) {
+                colors[i] = Color.WHITE;
+            }
+            M_BITMAP = Bitmap.createBitmap(colors, 3000, 3000, Bitmap.Config.ARGB_8888);
+        } else {
+            Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
+            M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
         }
         return M_BITMAP;
     }
