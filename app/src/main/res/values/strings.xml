@@ -55,6 +55,10 @@
         <item>onStart</item>
     </string-array>
 
+    <string name="pref_trusted_devices">Trusted devices</string>
+    <string name="no_trusted_devices">No trusted devices configured</string>
+    <string name="no_network_connected">You\'re currently not connected to any network</string>
+
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_show_system_app">Show system apps</string>
     <string name="pref_show_system_app_summary_on">Show launchable system apps</string>

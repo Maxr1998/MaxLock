@@ -45,7 +45,7 @@
             android:layout_toRightOf="@id/icon"
             android:maxLines="2"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/red" />
+            android:textColor="@color/accent" />
 
     </RelativeLayout>
 
@@ -60,15 +60,24 @@
             android:id="@+id/edit"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/ic_action_edit_black"
+            android:layout_marginEnd="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginRight="@dimen/abc_action_bar_default_padding_material"
+            android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:padding="5dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@drawable/ic_create"
+            android:tint="?attr/colorAccent"
+            android:tintMode="src_over"
             android:visibility="gone" />
 
         <ToggleButton
             android:id="@+id/toggleLock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginStart="@dimen/abc_action_bar_default_padding_material"
             android:textOff="@string/txt_lock_off"
             android:textOn="@string/txt_lock_on" />
     </LinearLayout>

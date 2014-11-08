@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/master_switch_menu_item"
-        android:actionLayout="@layout/menu_layout"
-        android:showAsAction="always"
-        android:title="" />
-</menu>

@@ -9,12 +9,6 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -47,7 +41,6 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         extras = getIntent().getBundleExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS);
 
         am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
-        //am.killBackgroundProcesses(requestPkg);
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
 
 
@@ -70,33 +63,8 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         String lockingType = pref.getString(Common.LOCKING_TYPE, "");
 
         if (lockingType.equals(Common.KEY_PASSWORD)) {
-            final EditText input = new EditText(LockActivity.this);
-            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-
-            dialog = new AlertDialog.Builder(LockActivity.this)
-                    .setCancelable(false)
-                    .setTitle(R.string.locking_type_password)
-                    .setView(input)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create();
-            dialog.show();
-
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
-            ((ViewGroup) input.getParent()).setPadding(10, 10, 10, 10);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String val = input.getText().toString();
-                    if (Util.checkInput(val, Common.KEY_PASSWORD, LockActivity.this)) {
-                        dialog.dismiss();
-                        onAuthenticationSucceeded();
-                    } else {
-                        input.setText("");
-                        Toast.makeText(LockActivity.this, getString(R.string.msg_password_incorrect), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            if (Util.askPassword(this))
+                onAuthenticationSucceeded();
         } else if (lockingType.equals(Common.KEY_PIN)) {
             int x = 1;
         } else if (lockingType.equals(Common.KEY_KNOCK_CODE)) {
@@ -116,11 +84,10 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
                 .putLong(requestPkg + "_tmp", System.currentTimeMillis())
                 .commit();
 
-        //am.killBackgroundProcesses(requestPkg);
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
         Intent it = LockActivity.this.getPackageManager().getLaunchIntentForPackage(requestPkg);
-        it.putExtras(extras);
-        it.setFlags(/*Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK*/flags);
+        //it.putExtras(extras);
+        //it.setFlags(/*Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY | */Intent.FLAG_ACTIVITY_NEW_TASK);
         LockActivity.this.startActivity(it);
         finish();
     }

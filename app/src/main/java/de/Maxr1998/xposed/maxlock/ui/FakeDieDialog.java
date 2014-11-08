@@ -24,12 +24,16 @@ public class FakeDieDialog extends Activity {
     private ApplicationInfo requestPkgInfo;
     private AlertDialog.Builder alertDialog, reportDialog;
     private SharedPreferences pref;
+    private int flags;
+    private Bundle extras;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS);
+        requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
+        flags = getIntent().getIntExtra(Common.INTENT_EXTRAS_FLAGS, 1);
+        extras = getIntent().getBundleExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS);
 
         ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
@@ -57,8 +61,10 @@ public class FakeDieDialog extends Activity {
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         if (input.getText().toString().equals(pref.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                             Intent it = new Intent(FakeDieDialog.this, LockActivity.class);
-                                            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            it.putExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS, requestPkg);
+                                            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
+                                            it.putExtra(Common.INTENT_EXTRAS_FLAGS, flags);
+                                            it.putExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS, extras);
                                             startActivity(it);
                                         }
                                         finish();

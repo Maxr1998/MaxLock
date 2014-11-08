@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="wallpaper"
+        android:dialogTitle="@string/pref_background"
+        android:entries="@array/background_types"
+        android:entryValues="@array/background_type_values"
+        android:key="kc_background"
+        android:title="@string/pref_background" />
+    <!--<de.Maxr1998.xposed.maxlock.ui.ColorPickerPreference
+        android:dependency="kc_background"
+        android:title="Color" />-->
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="invert_color"
+        android:title="Invert color of UI elements" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="hide_title_bar"
+        android:title="@string/pref_hide_title_bar" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="hide_input_bar"
+        android:summary="@string/pref_hide_input_bar_summary"
+        android:title="@string/pref_hide_input_bar" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="show_dividers"
+        android:title="@string/pref_show_dividers" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="touch_visible"
+        android:title="@string/pref_touch_visible" />
+</PreferenceScreen>

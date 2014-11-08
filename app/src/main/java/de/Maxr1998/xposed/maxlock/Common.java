@@ -7,19 +7,26 @@ public class Common {
     public static final String INTENT_EXTRAS_BUNDLE_EXTRAS = "intent_extras_bundle_extras";
 
     // Preferences
-    public static final String MASTER_SWITCH = "master_switch_on";
-
     public static final String LOCKING_TYPE = "locking_type";
 
+    public static final String TRUSTED_DEVICES = "trusted_devices";
+
+    public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";
+
     public static final String LOCKING_TYPE_PASSWORD = "locking_type_password";
-    public static final String LOCKING_TYPE_PIN = "locking_type_pin";
+    //public static final String LOCKING_TYPE_PIN = "locking_type_pin";
     public static final String LOCKING_TYPE_KNOCK_CODE = "locking_type_knock_code";
 
-    public static final String KC_BACKGROUND = "kc_background";
-    public static final String KC_SHOW_DIVIDERS = "kc_show_dividers";
-    public static final String KC_VISIBLE = "kc_visible";
+    public static final String LOCKING_UI_SETTINGS = "locking_ui_settings";
 
-    public static final String LOCKING_BEHAVIOUR = "locking_behaviour";
+    public static final String KC_BACKGROUND = "kc_background";
+    public static final String INVERT_COLOR = "invert_color";
+    public static final String HIDE_TITLE_BAR = "hide_title_bar";
+    public static final String HIDE_INPUT_BAR = "hide_input_bar";
+    public static final String SHOW_DIVIDERS = "show_dividers";
+    public static final String TOUCH_VISIBLE = "touch_visible";
+
+    //public static final String LOCKING_BEHAVIOUR = "locking_behaviour";
 
     public static final String CHOOSE_APPS = "choose_apps";
 
@@ -32,8 +39,6 @@ public class Common {
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_PIN = "pin";
     public static final String KEY_KNOCK_CODE = "knock_code";
-
-    public static final String WHITE_BG = "white";
 
     // Preference files
     public static final String PREF = "de.Maxr1998.xposed.maxlock_preferences";

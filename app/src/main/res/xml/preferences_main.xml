@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="main">
+    <PreferenceCategory android:title="@string/pref_category_locking">
+        <PreferenceScreen
+            android:fragment="de.Maxr1998.xposed.maxlock.ui.SettingsFragment$LockingTypeSettingsFragment"
+            android:key="locking_type_settings"
+            android:title="@string/pref_locking_type" />
+
+        <PreferenceScreen
+            android:fragment="de.Maxr1998.xposed.maxlock.ui.TrustedDevicesFragment"
+            android:key="trusted_devices"
+            android:title="@string/pref_trusted_devices" />
+
+        <!--<ListPreference
+            android:defaultValue="onCreate"
+            android:dialogTitle="@string/lock"
+            android:entries="@array/locking_behaviour_names"
+            android:entryValues="@array/locking_behaviour_values"
+            android:key="locking_behaviour"
+            android:title="@string/pref_locking_behaviour" />-->
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_apps">
+        <CheckBoxPreference
+            android:key="show_system_apps"
+            android:summaryOff="@string/pref_show_system_app_summary_off"
+            android:summaryOn="@string/pref_show_system_app_summary_on"
+            android:title="@string/pref_show_system_app" />
+
+        <Preference
+            android:key="choose_apps"
+            android:summary="@string/choose_apps_summary"
+            android:title="@string/choose_apps" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_ui">
+        <!--<CheckBoxPreference
+            android:defaultValue="false"
+            android:key="hide_from_launcher"
+            android:title="@string/pref_hide_from_launcher" />-->
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="use_dark_style"
+            android:title="@string/pref_use_dark_style" />
+
+        <EditTextPreference
+            android:key="fake_die_input"
+            android:title="@string/pref_fake_die_input" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

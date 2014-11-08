@@ -30,6 +30,19 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
     private Button mNextButton;
     private TextView mDescView, mInputText;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        // Prefs
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        keysPref = getActivity().getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
+
+        // Strings
+        key = new StringBuilder("");
+    }
+
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,13 +67,6 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         mCancelButton.setOnClickListener(this);
         mNextButton = (Button) rootView.findViewById(R.id.button_positive);
         mNextButton.setOnClickListener(this);
-
-        // Prefs
-        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        keysPref = getActivity().getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
-
-        // Strings
-        key = new StringBuilder("");
 
         updateUi();
 
@@ -134,14 +140,14 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
                         .putString(Common.LOCKING_TYPE, Common.KEY_KNOCK_CODE)
                         .commit();
                 keysPref.edit()
-                        .putString(Common.KEY_KNOCK_CODE, Util.sha1Hash(key.toString()))
+                        .putString(Common.KEY_KNOCK_CODE, Util.shaHash(key.toString()))
                         .remove(Common.KEY_PASSWORD)
                         .remove(Common.KEY_PIN)
                         .commit();
             } else {
                 Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.msg_password_inconsistent), Toast.LENGTH_SHORT).show();
             }
-            getActivity().getFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).commit();
+            getFragmentManager().popBackStack();
         }
     }
 

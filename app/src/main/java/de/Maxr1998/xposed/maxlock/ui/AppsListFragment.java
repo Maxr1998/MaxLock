@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -34,28 +35,33 @@ public class AppsListFragment extends Fragment {
     List<Map<String, Object>> itemList;
     private CheckBoxAdapter mAdapter;
     private EditText search;
-    private ViewGroup root;
+    private ViewGroup rootView;
     private SharedPreferences pref;
+    private SetupAppList task;
 
     @Override
-    public void onDestroyView() {
-        root.removeAllViews();
-        super.onDestroyView();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        root = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container);
-        listView = (ListView) root.findViewById(R.id.listview);
-        search = (EditText) root.findViewById(R.id.search);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
+        listView = (ListView) rootView.findViewById(R.id.listview);
+        search = (EditText) rootView.findViewById(R.id.search);
         search.setAlpha(0);
 
         pref = getActivity().getSharedPreferences(Common.PREF, Activity.MODE_WORLD_READABLE);
 
-        new SetupAppList().execute();
+        if (mAdapter == null || mAdapter.isEmpty()) {
+            if (task == null)
+                task = new SetupAppList();
+            if (!task.getStatus().equals(AsyncTask.Status.RUNNING))
+                task.execute();
+        }
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return rootView;
     }
 
     private void setupSearch() {
@@ -81,13 +87,22 @@ public class AppsListFragment extends Fragment {
     private class SetupAppList extends AsyncTask<Void, Integer, List> {
 
         ProgressDialog progressDialog;
+        AsyncTask task = this;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(true);
             progressDialog.show();
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    task.cancel(true);
+                }
+            });
         }
 
         @Override
@@ -102,6 +117,8 @@ public class AppsListFragment extends Fragment {
             itemList = new ArrayList<Map<String, Object>>();
             int i = 0;
             for (ApplicationInfo info : list) {
+                if (isCancelled())
+                    break;
                 if (pref.getBoolean("show_system_apps", false) ?
                         activity.getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
                         (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
@@ -142,6 +159,11 @@ public class AppsListFragment extends Fragment {
             listView.setAdapter(mAdapter);
             search.setAlpha(1);
             setupSearch();
+        }
+
+        @Override
+        protected void onCancelled() {
+            getFragmentManager().popBackStack();
         }
     }
 }

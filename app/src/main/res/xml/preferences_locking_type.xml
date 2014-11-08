@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_locking_type">
+        <Preference
+            android:key="locking_type_password"
+            android:title="@string/locking_type_password" />
+        <Preference
+            android:key="locking_type_pin"
+            android:title="@string/locking_type_pin" />
+        <Preference
+            android:key="locking_type_knock_code"
+            android:title="@string/locking_type_knockcode" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/options">
+        <PreferenceScreen
+            android:fragment="de.Maxr1998.xposed.maxlock.ui.SettingsFragment$LockingUISettingsFragment"
+            android:key="locking_ui_settings"
+            android:title="@string/pref_ui_options" />
+    </PreferenceCategory>
+</PreferenceScreen>

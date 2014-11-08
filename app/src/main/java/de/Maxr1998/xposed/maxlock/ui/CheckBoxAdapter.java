@@ -127,10 +127,10 @@ public class CheckBoxAdapter extends BaseAdapter {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle(mContext.getString(R.string.txt_settings))
-                        .setIcon(R.drawable.ic_launcher)
+                        .setIcon(dIcon)
                         .setView(checkBoxView)
                         .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dlg, int id) {
                                 dlg.dismiss();
@@ -155,6 +155,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                         .putBoolean(key, value)
                         .commit();
                 if (value) {
+                    // TO-DO: Custom reveal animations
                     imgEdit.setVisibility(View.VISIBLE);
                 } else {
                     imgEdit.setVisibility(View.GONE);

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="transparent">#0000</color>
+    <color name="text_color_white">#dd000000</color>
     <color name="black">#000</color>
     <color name="white">#fff</color>
     <color name="light_white">#55ffffff</color>
     <color name="divider">#e5e5e5</color>
-    <color name="red">#f00</color>
+
+
+    <!-- App colors -->
+    <color name="primary_red">#e51c23</color>
+    <color name="primary_red_dark">#d01716</color>
+    <color name="accent">#ff9100</color>
+    <color name="divider_white">#e0e0e0</color>
 </resources>
