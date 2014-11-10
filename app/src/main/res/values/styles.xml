@@ -10,13 +10,18 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
-    <style name="DarkAppTheme" parent="AppTheme.Base">
-        <item name="android:theme">@style/Theme.AppCompat</item>
+    <!-- Dark application theme. -->
+    <style name="AppTheme.Dark" parent="AppTheme.Base.Dark" />
+
+    <style name="AppTheme.Base.Dark" parent="Theme.AppCompat">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/primary_red</item>
+        <item name="colorPrimaryDark">@color/primary_red_dark</item>
+        <item name="colorAccent">@color/accent</item>
     </style>
 
     <style name="TranslucentStatusBar" parent="AppTheme" />
-
-    <style name="LockActivityStyle" parent="TranslucentStatusBar"></style>
 
     <style name="SecurityPreferenceButtonContainer" parent="@android:style/Holo.SegmentedButton">
         <item name="android:layout_width">match_parent</item>

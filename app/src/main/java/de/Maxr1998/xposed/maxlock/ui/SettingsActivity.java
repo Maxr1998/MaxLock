@@ -28,16 +28,18 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         // Preferences
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceManager.setDefaultValues(this, R.xml.preferences_main, false);
         PreferenceManager.setDefaultValues(this, R.xml.preferences_locking_type, false);
         PreferenceManager.setDefaultValues(this, R.xml.preferences_locking_ui, false);
-        // Set theme
         if (pref.getBoolean(Common.USE_DARK_STYLE, false)) {
-            setTheme(R.style.DarkAppTheme);
+            setTheme(R.style.AppTheme_Dark);
+        } else {
+            setTheme(R.style.AppTheme);
         }
+        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_settings);
         IS_DUAL_PANE = findViewById(R.id.frame_container_scd) != null;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
