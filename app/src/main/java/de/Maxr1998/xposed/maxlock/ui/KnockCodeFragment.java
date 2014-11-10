@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -93,7 +94,11 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         getActivity().getWindowManager().getDefaultDisplay().getSize(size);
         int screenWidth = size.x;
         int screenHeight = size.y;
-        kcMainLayout.setBackground(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            kcMainLayout.setBackground(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
+        } else {
+            kcMainLayout.setBackgroundDrawable(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
+        }
 
         if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity")) {
             View gapTop = rootView.findViewById(R.id.top_gap);
@@ -134,19 +139,31 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         if ((pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) && pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (int i = 0; i < dividers.length; i++) {
                 divider[i] = dividers[i];
-                divider[i].setBackground(getResources().getDrawable(R.color.black));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    divider[i].setBackground(getResources().getDrawable(R.color.black));
+                } else {
+                    divider[i].setBackgroundDrawable(getResources().getDrawable(R.color.black));
+                }
             }
         } else if (!pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (int i = 0; i < dividers.length; i++) {
                 divider[i] = dividers[i];
-                divider[i].setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    divider[i].setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                } else {
+                    divider[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                }
             }
         }
 
         if (!pref.getBoolean(Common.TOUCH_VISIBLE, true)) {
             for (int i = 0; i < knockButtons.length; i++) {
                 kb[i] = (Button) knockButtons[i];
-                kb[i].setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    kb[i].setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                } else {
+                    kb[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                }
             }
         }
 
