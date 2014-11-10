@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,7 +22,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
     public static boolean IS_DUAL_PANE;
     SharedPreferences pref;
-    SwitchCompat masterSwitch;
+    //SwitchCompat masterSwitch;
     private SettingsFragment mSettingsFragment;
 
     @Override

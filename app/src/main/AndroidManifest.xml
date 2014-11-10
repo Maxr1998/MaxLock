@@ -11,14 +11,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@android:drawable/ic_lock_lock"
         android:label="@string/app_name">
 
         <activity
             android:name="de.Maxr1998.xposed.maxlock.ui.SettingsActivity"
             android:label="@string/app_name">
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
