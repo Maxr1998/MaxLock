@@ -3,7 +3,6 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -20,7 +19,6 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
     public FragmentManager fm;
     private SharedPreferences pref, packagePref;
     private String requestPkg;
-    private AlertDialog dialog;
     private ActivityManager am;
     private int flags;
     private Bundle extras;
@@ -63,8 +61,7 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         String lockingType = pref.getString(Common.LOCKING_TYPE, "");
 
         if (lockingType.equals(Common.KEY_PASSWORD)) {
-            if (Util.askPassword(this))
-                onAuthenticationSucceeded();
+            Util.askPassword(this);
         } else if (lockingType.equals(Common.KEY_PIN)) {
             int x = 1;
         } else if (lockingType.equals(Common.KEY_KNOCK_CODE)) {

@@ -34,15 +34,19 @@ import java.security.NoSuchAlgorithmException;
 public class Util {
 
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-    static boolean succeded;
+    static AuthenticationSucceededListener authenticationSucceededListener;
     private static int M_COLOR;
     private static Bitmap M_BITMAP;
     private static SharedPreferences PREF, KEYS_PREF;
     private static ApplicationInfo REQUEST_PKG_INFO;
     private static PackageManager PM;
 
-    public static boolean askPassword(final Context context) {
-        succeded = false;
+    public static void askPassword(final Context context) {
+        try {
+            authenticationSucceededListener = (AuthenticationSucceededListener) context;
+        } catch (ClassCastException e) {
+            throw new RuntimeException(context.getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this fragment", e);
+        }
         final View dialogView = LayoutInflater.from(context).inflate(R.layout.ask_password, null);
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(false)
@@ -60,7 +64,7 @@ public class Util {
                 EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
                 String val = input.getText().toString();
                 if (Util.checkInput(val, Common.KEY_PASSWORD, context, context.getPackageName())) {
-                    succeded = true;
+                    authenticationSucceededListener.onAuthenticationSucceeded();
                     dialog.dismiss();
                 } else {
                     input.setText("");
@@ -68,7 +72,6 @@ public class Util {
                 }
             }
         });
-        return succeded;
     }
 
     public static void setPassword(final Context context) {

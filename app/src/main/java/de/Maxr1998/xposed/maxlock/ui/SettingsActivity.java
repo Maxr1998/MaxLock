@@ -66,7 +66,6 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
                 onAuthenticationSucceeded();
             } else if (lockingType.equals(Common.KEY_PASSWORD)) {
                 Util.askPassword(this);
-                onAuthenticationSucceeded();
             } else if (lockingType.equals(Common.KEY_PIN)) {
                 // Show string fragment
             } else if (lockingType.equals(Common.KEY_KNOCK_CODE)) {
