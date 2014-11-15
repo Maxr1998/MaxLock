@@ -28,7 +28,7 @@ import de.Maxr1998.xposed.maxlock.Util;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private SharedPreferences pref, keysPref;
+    SharedPreferences pref, keysPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,9 +151,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                         intent.setType("image/*");
                         startActivityForResult(intent, READ_REQUEST_CODE);
-                        return true;
                     }
-                    return false;
+                    return true;
                 }
             });
         }
