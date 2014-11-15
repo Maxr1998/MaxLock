@@ -8,12 +8,14 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -27,7 +29,6 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
     public static boolean IS_DUAL_PANE;
     SharedPreferences pref;
-    //SwitchCompat masterSwitch;
     private SettingsFragment mSettingsFragment;
 
     @Override
@@ -73,16 +74,19 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.master_switch_menu_item));
-        String s = "1";
-        File file = new File(getApplicationInfo().dataDir + File.separator + "master_switch");
+        String str = "1";
         try {
-            FileInputStream fis = new FileInputStream(file);
-            s = String.valueOf(fis.read());
-            fis.close();
+            File file = new File(getApplicationInfo().dataDir + File.separator + "master_switch");
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            str = bufferedReader.readLine();
         } catch (Exception e) {
-            //Log.e("Error reading file", e.getMessage());
+            e.printStackTrace();
         }
-        master_switch.setChecked(s.equals("1"));
+        if (str == null) {
+            Log.d("MasterSwitch", "File is empty!");
+            str = "1";
+        }
+        master_switch.setChecked(str.equals("1"));
         master_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton button, boolean b) {
