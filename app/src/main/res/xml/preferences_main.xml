@@ -46,6 +46,7 @@
             android:title="@string/pref_use_dark_style" />
 
         <EditTextPreference
+            android:defaultValue="start"
             android:key="fake_die_input"
             android:title="@string/pref_fake_die_input" />
 
