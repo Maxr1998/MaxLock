@@ -4,11 +4,16 @@ import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
+import android.view.Menu;
 import android.view.View;
+import android.widget.CompoundButton;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -42,22 +47,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
         setContentView(R.layout.activity_settings);
         IS_DUAL_PANE = findViewById(R.id.frame_container_scd) != null;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        toolbar.inflateMenu(R.menu.toolbar_menu);
-
         setSupportActionBar(toolbar);
-
-        MenuItem i = toolbar.getMenu().findItem(R.id.master_switch_menu_item);
-        CharSequence d = i.getTitle();
-        Log.d("WICHTIG", d.toString()); // leaks logs from other apps??
-        /*masterSwitch = (SwitchCompat) toolbar.getMenu().findItem(R.id.master_switch_menu_item).getActionView().findViewById(R.id.master_switch);
-        masterSwitch.setChecked(Util.getMasterSwitch());
-        masterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton button, boolean checked) {
-                Util.setMasterSwitch(checked);
-            }
-        });*/
 
         mSettingsFragment = (SettingsFragment) getFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
@@ -77,6 +67,29 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.master_switch_menu_item));
+        String s = "1";
+        File file = new File(getApplicationInfo().dataDir + File.separator + "master_switch");
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            s = String.valueOf(fis.read());
+            fis.close();
+        } catch (Exception e) {
+            //Log.e("Error reading file", e.getMessage());
+        }
+        master_switch.setChecked(s.equals("1"));
+        master_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton button, boolean b) {
+                Util.setMasterSwitch(b, SettingsActivity.this);
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

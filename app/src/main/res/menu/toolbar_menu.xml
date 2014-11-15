@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="de.Maxr1998.xposed.maxlock.ui.SettingsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/master_switch_menu_item"
-        android:actionLayout="@layout/toolbar_layout"
-        android:showAsAction="always"
-        android:title="" />
-
-    <item android:title="Bla" />
+        android:title=""
+        app:actionViewClass="android.support.v7.widget.SwitchCompat"
+        app:showAsAction="always" />
 </menu>

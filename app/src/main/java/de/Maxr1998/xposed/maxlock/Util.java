@@ -1,5 +1,6 @@
 package de.Maxr1998.xposed.maxlock;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.WallpaperManager;
@@ -12,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
@@ -23,10 +23,13 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -91,6 +94,7 @@ public class Util {
         ((ViewGroup) dialogView.getParent()).setPadding(10, 10, 10, 10);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 
+            @SuppressLint("CommitPrefEdits")
             @Override
             public void onClick(View v) {
                 EditText p1 = (EditText) dialogView.findViewById(R.id.edt_password);
@@ -187,31 +191,38 @@ public class Util {
         return PM.getApplicationIcon(REQUEST_PKG_INFO);
     }
 
-    public static boolean getMasterSwitch() {
-        String s;
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "master_switch");
-        byte[] data = new byte[(int) file.length()];
+    public static void getMasterSwitch(Context context) {
         try {
-            FileInputStream fis = new FileInputStream(file);
-            fis.read(data);
-            fis.close();
-            s = new String(data, "UTF-8");
-            return s.equals("1");
+            authenticationSucceededListener = (AuthenticationSucceededListener) context;
+        } catch (ClassCastException e) {
+            throw new RuntimeException(context.getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this method", e);
+        }
+        try {
+            File file = new File(context.getApplicationInfo().dataDir + File.separator + "master_switch");
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String str = bufferedReader.readLine();
+            if (str == null) {
+                Log.d("MasterSwitch", "File is empty!");
+                return;
+            }
+            System.out.println(str);
+            if (str.equals("0")) {
+                authenticationSucceededListener.onAuthenticationSucceeded();
+            }
         } catch (Exception e) {
-            Log.d("Error reading file", e.toString());
-            return true;
+            e.printStackTrace();
         }
     }
 
-    public static void setMasterSwitch(boolean checked) {
-        /*try {
-            PrintWriter writer = new PrintWriter(Environment.getExternalStorageDirectory() + File.separator + "master_switch", "UTF-8");
+    public static void setMasterSwitch(boolean checked, Context context) {
+        try {
+            PrintWriter writer = new PrintWriter(context.getApplicationInfo().dataDir + File.separator + "master_switch", "UTF-8");
             if (checked) writer.print("1");
             else writer.print("0");
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     public static int getTextColor(Context context) {
