@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.Maxr1998.xposed.maxlock"
-    android:versionCode="11"
-    android:versionName="3.1">
+    android:versionCode="12"
+    android:versionName="3.1.1">
 
 <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
