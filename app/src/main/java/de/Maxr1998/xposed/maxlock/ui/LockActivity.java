@@ -21,6 +21,7 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
     private String requestPkg;
     private ActivityManager am;
     private Intent app;
+    //ParcelActivity parcelActivity;
 
     @SuppressLint("WorldReadableFiles")
     @Override
@@ -34,6 +35,7 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
 
         app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
+        //parcelActivity = getIntent().getParcelableExtra("LOLZ");
 
         am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
@@ -84,7 +86,14 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
         Intent intent = new Intent(app);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
+
+        try {
+            startActivity(intent);
+        } catch (SecurityException e) {
+            Intent intent_option = getPackageManager().getLaunchIntentForPackage(requestPkg);
+            intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent_option);
+        }
         finish();
     }
 }

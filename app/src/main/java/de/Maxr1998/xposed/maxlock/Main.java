@@ -3,7 +3,6 @@ package de.Maxr1998.xposed.maxlock;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Parcel;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -59,12 +58,11 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     }
 
     private void launchLockView(final Activity app, String packageName, String launch) {
-        Parcel parcel = Parcel.obtain();
-        app.getIntent().writeToParcel(parcel, 0);
         Intent it = new Intent();
         it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
         it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Common.INTENT_EXTRAS_INTENT, app.getIntent());
+        //it.putExtra("LOLZ", (ParcelActivity) app);
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         app.startActivity(it);
     }
