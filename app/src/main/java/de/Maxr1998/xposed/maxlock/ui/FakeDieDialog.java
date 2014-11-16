@@ -20,20 +20,21 @@ import de.Maxr1998.xposed.maxlock.R;
 
 public class FakeDieDialog extends Activity {
 
+    ApplicationInfo requestPkgInfo;
     private String requestPkg;
-    private ApplicationInfo requestPkgInfo;
+    private Intent app;
     private AlertDialog.Builder alertDialog, reportDialog;
     private SharedPreferences pref;
-    private int flags;
-    private Bundle extras;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        getWindow().setBackgroundDrawable(new ColorDrawable(0));
+
+        // Intent Extras
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
-        flags = getIntent().getIntExtra(Common.INTENT_EXTRAS_FLAGS, 1);
-        extras = getIntent().getBundleExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS);
+        app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
         ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
@@ -44,13 +45,11 @@ public class FakeDieDialog extends Activity {
             requestPkgInfo = null;
         }
         String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
-        getWindow().setBackgroundDrawable(new ColorDrawable(0));
         alertDialog = new AlertDialog.Builder(this);
         alertDialog.setMessage(String.format(getResources().getString(R.string.fake_die_message), requestPkgFullName))
                 .setNeutralButton(R.string.report, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        alertDialog.create().dismiss();
                         final EditText input = new EditText(FakeDieDialog.this);
                         input.setInputType(InputType.TYPE_CLASS_TEXT);
                         reportDialog = new AlertDialog.Builder(FakeDieDialog.this);
@@ -61,10 +60,9 @@ public class FakeDieDialog extends Activity {
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         if (input.getText().toString().equals(pref.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                             Intent it = new Intent(FakeDieDialog.this, LockActivity.class);
-                                            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
                                             it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
-                                            it.putExtra(Common.INTENT_EXTRAS_FLAGS, flags);
-                                            it.putExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS, extras);
+                                            it.putExtra(Common.INTENT_EXTRAS_INTENT, app);
                                             startActivity(it);
                                         }
                                         finish();

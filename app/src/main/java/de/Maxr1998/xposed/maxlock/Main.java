@@ -3,7 +3,7 @@ package de.Maxr1998.xposed.maxlock;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Parcel;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -29,10 +29,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         packagePref.reload();
         final String packageName = lpparam.packageName;
 
-        if (!Util.getMasterSwitch()) {
-            return;
-        }
-
         if (!packagePref.getBoolean(packageName, false)) {
             return;
         }
@@ -43,8 +39,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             return;
         }
 
-        XposedBridge.log("Application locked");
-
         Class<?> activity = XposedHelpers.findClass("android.app.Activity", lpparam.classLoader);
         XposedBridge.hookAllMethods(activity, "onResume", new XC_MethodHook() {
                     @Override
@@ -52,45 +46,26 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         super.beforeHookedMethod(param);
 
                         final Activity app = (Activity) param.thisObject;
-
                         if (app.getClass().getName().equals("android.app.Activity")) {
                             return;
                         }
-                        int flags = app.getIntent().getFlags();
-                        Bundle extras = app.getIntent().getExtras();
+                        launchLockView(app, packageName, packagePref.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
 
-                        if (!packagePref.getBoolean(packageName + "_fake", false)) {
-                            launchLockActivity(app, packageName, flags, extras);
-                        } else if (packagePref.getBoolean(packageName + "_fake", false)) {
-                            launchFakeDieDialog(app, packageName, flags, extras);
-                        }
-                        //app.setResult(Activity.RESULT_CANCELED);
-                        //app.finish();
                         app.moveTaskToBack(true);
-                        //param.setResult(new Object());
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }
         );
     }
 
-    private void launchLockActivity(final Activity app, String packageName, int flags, Bundle extras) {
+    private void launchLockView(final Activity app, String packageName, String launch) {
+        Parcel parcel = Parcel.obtain();
+        app.getIntent().writeToParcel(parcel, 0);
         Intent it = new Intent();
-        it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + ".ui.LockActivity"));
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        it.putExtra(Common.INTENT_EXTRAS_INTENT, app.getIntent());
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        it.putExtra(Common.INTENT_EXTRAS_FLAGS, flags);
-        it.putExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS, extras);
         app.startActivity(it);
-    }
-
-    private void launchFakeDieDialog(final Activity app, String packageName, int flags, Bundle extras) {
-        Intent dialog = new Intent();
-        dialog.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + ".ui.FakeDieDialog"));
-        dialog.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        dialog.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        dialog.putExtra(Common.INTENT_EXTRAS_FLAGS, flags);
-        dialog.putExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS, extras);
-        app.startActivity(dialog);
     }
 }

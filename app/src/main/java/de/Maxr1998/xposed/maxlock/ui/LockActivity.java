@@ -20,39 +20,39 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
     private SharedPreferences pref, packagePref;
     private String requestPkg;
     private ActivityManager am;
-    private int flags;
-    private Bundle extras;
+    private Intent app;
 
     @SuppressLint("WorldReadableFiles")
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_lock);
 
         pref = getSharedPreferences(Common.PREF, MODE_WORLD_READABLE);
         packagePref = getSharedPreferences(Common.PREF_PACKAGE, MODE_WORLD_READABLE);
 
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
-        flags = getIntent().getIntExtra(Common.INTENT_EXTRAS_FLAGS, 1);
-        extras = getIntent().getBundleExtra(Common.INTENT_EXTRAS_BUNDLE_EXTRAS);
+
+        app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
         am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
 
+        Util.getMasterSwitch(this);
 
         Long timestamp = System.currentTimeMillis();
         Long permitTimestamp = packagePref.getLong(requestPkg + "_tmp", 0);
         if (permitTimestamp != 0 && timestamp - permitTimestamp <= 10000) {
-            Intent it = LockActivity.this.getPackageManager().getLaunchIntentForPackage(requestPkg);
-            //it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            LockActivity.this.startActivity(it);
-            finish();
+            onAuthenticationSucceeded();
         } else {
             authenticate();
         }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 
     private void authenticate() {
@@ -75,17 +75,16 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     public void onAuthenticationSucceeded() {
         packagePref.edit()
                 .putLong(requestPkg + "_tmp", System.currentTimeMillis())
                 .commit();
-
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
-        Intent it = LockActivity.this.getPackageManager().getLaunchIntentForPackage(requestPkg);
-        //it.putExtras(extras);
-        //it.setFlags(/*Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY | */Intent.FLAG_ACTIVITY_NEW_TASK);
-        LockActivity.this.startActivity(it);
+        Intent intent = new Intent(app);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
         finish();
     }
 }

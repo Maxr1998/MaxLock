@@ -3,8 +3,7 @@ package de.Maxr1998.xposed.maxlock;
 public class Common {
 
     public static final String INTENT_EXTRAS_PKG_NAME = "intent_extras_pkg_name";
-    public static final String INTENT_EXTRAS_FLAGS = "intent_extras_flags";
-    public static final String INTENT_EXTRAS_BUNDLE_EXTRAS = "intent_extras_bundle_extras";
+    public static final String INTENT_EXTRAS_INTENT = "intent_extras_intent";
 
     // Preferences
     public static final String LOCKING_TYPE = "locking_type";
