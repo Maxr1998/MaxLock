@@ -2,11 +2,12 @@
 <resources>
 
     <string name="app_name">MaxLock</string>
+    <string name="placeholder">Placeholder</string>
 
     <!-- Main Screen -->
     <string name="pref_category_locking">Sperre</string>
     <string name="pref_locking_type">Sperrart</string>
-
+    <!-- Locking type Settings -->
     <string name="locking_type_password">Passwort</string>
     <string name="locking_type_pin">PIN (noch nicht implementiert)</string>
     <string name="locking_type_knockcode">Knock code</string>
@@ -24,9 +25,8 @@
     <string name="continue_done">Drücken Sie weiter, wenn Sie fertig sind</string>
     <string name="confirm_knock_code">Knock code bestätigen</string>
     <string name="button_continue">Weiter</string>
-
-    <string name="options">Optionen</string>
-    <string name="pref_ui_options">PIN &amp; Knock code UI Optionen</string>
+    <!-- Locking UI settings -->
+    <string name="pref_locking_ui">Sperrbildschirm-Oberfläche</string>
     <string name="pref_background">Hintergrundbild</string>
     <string-array name="background_types">
         <item>Systemhintergrund</item>
@@ -40,9 +40,9 @@
     </string-array>
     <string name="pref_show_dividers">Trennlinien anzeigen</string>
     <string name="pref_touch_visible">Berührungen sichtbar machen</string>
-    <string name="pref_hide_title_bar">Versecke Titel</string>
+    <string name="pref_hide_title_bar">Verstecke Titelleiste</string>
     <string name="pref_hide_input_bar">Verstecke Eingabeleiste</string>
-    <string name="pref_hide_input_bar_summary">\"Löschen\" button wird auch versteckt!</string>
+    <string name="pref_hide_input_bar_summary">\"Löschen\" Knopf wird auch versteckt!</string>
 
     <string name="pref_locking_behaviour">Sperrverhalten (Neustart erforderlich)</string>
     <string name="lock">Sperren</string>
