@@ -2,21 +2,19 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <View
-        android:id="@+id/top_gap"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
-
     <TextView
         android:id="@+id/title_view"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:drawableLeft="@drawable/ic_launcher"
         android:drawablePadding="20dp"
+        android:drawableStart="@drawable/ic_launcher"
         android:maxLines="2"
+        android:text="@string/placeholder"
         android:textColor="@color/white"
         android:textSize="36sp" />
 </merge>

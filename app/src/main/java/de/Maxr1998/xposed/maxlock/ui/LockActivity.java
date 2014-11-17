@@ -8,6 +8,8 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -21,21 +23,21 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
     private String requestPkg;
     private ActivityManager am;
     private Intent app;
-    //ParcelActivity parcelActivity;
+    private boolean isInFocus = false;
 
     @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Preferences
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        packagePref = getSharedPreferences(Common.PREF_PACKAGE, MODE_WORLD_READABLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock);
 
-        pref = getSharedPreferences(Common.PREF, MODE_WORLD_READABLE);
-        packagePref = getSharedPreferences(Common.PREF_PACKAGE, MODE_WORLD_READABLE);
 
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
 
         app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
-        //parcelActivity = getIntent().getParcelableExtra("LOLZ");
 
         am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
@@ -49,12 +51,6 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         } else {
             authenticate();
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
     }
 
     private void authenticate() {
@@ -86,14 +82,29 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
         Intent intent = new Intent(app);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-
         try {
             startActivity(intent);
         } catch (SecurityException e) {
             Intent intent_option = getPackageManager().getLaunchIntentForPackage(requestPkg);
             intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent_option);
+        } finally {
+            finish();
         }
-        finish();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        isInFocus = hasFocus;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (!isInFocus) {
+            Log.d("MaxLock/LockActivity", "Lost focus, finishing.");
+            finish();
+        }
     }
 }

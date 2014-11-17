@@ -99,15 +99,17 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         } else {
             kcMainLayout.setBackgroundDrawable(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         }
-
         if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity")) {
             View gapTop = rootView.findViewById(R.id.top_gap);
-            gapTop.getLayoutParams().height = statusBarHeight;
             View gapBottom = rootView.findViewById(R.id.bottom_gap);
-            gapBottom.getLayoutParams().height = navBarHeight;
+            if (screenWidth < screenHeight) {
+                gapTop.getLayoutParams().height = statusBarHeight;
+                gapBottom.getLayoutParams().height = navBarHeight;
+            } else if (screenWidth > screenHeight) {
+                gapTop.getLayoutParams().width = statusBarHeight;
+                gapBottom.getLayoutParams().width = navBarHeight;
+            }
         }
-
-
         titleView.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));
         titleView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
 

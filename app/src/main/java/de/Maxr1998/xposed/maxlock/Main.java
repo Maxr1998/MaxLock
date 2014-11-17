@@ -62,7 +62,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
         it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Common.INTENT_EXTRAS_INTENT, app.getIntent());
-        //it.putExtra("LOLZ", (ParcelActivity) app);
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         app.startActivity(it);
     }
