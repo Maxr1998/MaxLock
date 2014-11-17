@@ -14,7 +14,7 @@
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="invert_color"
-        android:title="Invert color of UI elements" />
+        android:title="@string/pref_invert_color" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="hide_title_bar"

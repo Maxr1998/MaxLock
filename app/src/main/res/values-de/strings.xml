@@ -38,6 +38,8 @@
         <item>white</item>
         <item>custom</item>
     </string-array>
+    <string name="pref_invert_color">Invertiere Vordergrundfarbe</string>
+    <string name="pref_invert_color_summary">Farbe von Text oder Trennlinien wird auf schwarz gesetzt</string>
     <string name="pref_show_dividers">Trennlinien anzeigen</string>
     <string name="pref_touch_visible">Berührungen sichtbar machen</string>
     <string name="pref_hide_title_bar">Verstecke Titelleiste</string>
