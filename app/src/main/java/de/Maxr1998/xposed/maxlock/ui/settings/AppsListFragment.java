@@ -1,4 +1,4 @@
-package de.Maxr1998.xposed.maxlock.ui;
+package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -27,6 +27,7 @@ import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.ui.settings.util.CheckBoxAdapter;
 
 
 public class AppsListFragment extends Fragment {

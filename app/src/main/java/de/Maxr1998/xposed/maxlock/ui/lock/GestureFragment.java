@@ -1,4 +1,4 @@
-package de.Maxr1998.xposed.maxlock.ui;
+package de.Maxr1998.xposed.maxlock.ui.lock;
 
 import android.app.Activity;
 import android.app.Fragment;

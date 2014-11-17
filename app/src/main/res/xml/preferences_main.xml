@@ -3,17 +3,17 @@
     android:key="main">
     <PreferenceCategory android:title="@string/pref_category_locking">
         <PreferenceScreen
-            android:fragment="de.Maxr1998.xposed.maxlock.ui.SettingsFragment$LockingTypeSettingsFragment"
+            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingTypeSettingsFragment"
             android:key="locking_type_settings"
             android:title="@string/pref_locking_type" />
 
         <PreferenceScreen
-            android:fragment="de.Maxr1998.xposed.maxlock.ui.SettingsFragment$LockingUISettingsFragment"
+            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingUISettingsFragment"
             android:key="locking_ui_settings"
             android:title="@string/pref_locking_ui" />
 
         <!--<PreferenceScreen
-            android:fragment="de.Maxr1998.xposed.maxlock.ui.TrustedDevicesFragment"
+            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.TrustedDevicesFragment"
             android:key="trusted_devices"
             android:title="@string/pref_trusted_devices" />-->
 

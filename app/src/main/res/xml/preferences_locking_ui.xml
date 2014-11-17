@@ -8,7 +8,7 @@
         android:entryValues="@array/background_type_values"
         android:key="kc_background"
         android:title="@string/pref_background" />
-    <!--<de.Maxr1998.xposed.maxlock.ui.ColorPickerPreference
+    <!--<de.Maxr1998.xposed.maxlock.ui.settings.util.ColorPickerPreference
         android:dependency="kc_background"
         android:title="Color" />-->
     <CheckBoxPreference

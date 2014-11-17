@@ -1,4 +1,4 @@
-package de.Maxr1998.xposed.maxlock.ui;
+package de.Maxr1998.xposed.maxlock.ui.settings.util;
 
 import android.content.Context;
 import android.graphics.Rect;

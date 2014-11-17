@@ -1,4 +1,4 @@
-package de.Maxr1998.xposed.maxlock.ui;
+package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,6 +24,7 @@ import java.io.InputStream;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {

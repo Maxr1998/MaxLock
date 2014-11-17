@@ -9,7 +9,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context="de.Maxr1998.xposed.maxlock.ui.KnockCodeFragment">
+    tools:context="de.Maxr1998.xposed.maxlock.ui.lock.KnockCodeFragment">
 
     <View
         android:id="@+id/top_gap"

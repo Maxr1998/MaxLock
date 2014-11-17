@@ -15,6 +15,7 @@ import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.ui.lock.KnockCodeFragment;
 
 public class LockActivity extends Activity implements AuthenticationSucceededListener {
 

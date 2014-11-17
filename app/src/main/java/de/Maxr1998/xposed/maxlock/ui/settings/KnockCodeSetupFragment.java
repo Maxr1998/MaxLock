@@ -1,4 +1,4 @@
-package de.Maxr1998.xposed.maxlock.ui;
+package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
