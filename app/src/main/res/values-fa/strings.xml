@@ -7,7 +7,6 @@
     <string name="locking_type_password">کلمه عبور</string>
     <string name="locking_type_pin">رمز عددی</string>
     <string name="locking_type_knockcode">Knock code</string>
-    <string name="options">تنظیمات</string>
     <string name="pref_locking_ui">تنظیمات Knock code</string>
     <string name="pref_set_password">تنظیم پسورد</string>
     <string name="pref_category_apps">انتخاب برنامه</string>
