@@ -73,6 +73,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingTypeSettingsFragment()).addToBackStack(null).commit();
             }
             return true;
+        } else if (preference == findPreference(Common.LOCKING_UI_SETTINGS)) {
+            if (SettingsActivity.IS_DUAL_PANE) {
+                getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LockingUISettingsFragment()).addToBackStack(null).commit();
+            } else {
+                getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingUISettingsFragment()).addToBackStack(null).commit();
+            }
+            return true;
         } else if (preference == findPreference(Common.TRUSTED_DEVICES)) {
             if (SettingsActivity.IS_DUAL_PANE) {
                 cleanBackStack();
@@ -110,14 +117,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
-            if (preference == findPreference(Common.LOCKING_UI_SETTINGS)) {
-                if (SettingsActivity.IS_DUAL_PANE) {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LockingUISettingsFragment()).addToBackStack(null).commit();
-                } else {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingUISettingsFragment()).addToBackStack(null).commit();
-                }
-                return true;
-            } else if (preference == findPreference(Common.LOCKING_TYPE_PASSWORD)) {
+            if (preference == findPreference(Common.LOCKING_TYPE_PASSWORD)) {
                 Util.setPassword(getActivity());
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {

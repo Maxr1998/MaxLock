@@ -7,6 +7,11 @@
             android:key="locking_type_settings"
             android:title="@string/pref_locking_type" />
 
+        <PreferenceScreen
+            android:fragment="de.Maxr1998.xposed.maxlock.ui.SettingsFragment$LockingUISettingsFragment"
+            android:key="locking_ui_settings"
+            android:title="@string/pref_locking_ui" />
+
         <!--<PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.TrustedDevicesFragment"
             android:key="trusted_devices"
