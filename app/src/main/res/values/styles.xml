@@ -25,6 +25,8 @@
 
     <style name="TranslucentStatusBar" parent="AppTheme" />
 
+    <style name="FakeDieDialog" parent="android:Theme.Holo.Dialog.NoActionBar" />
+
     <style name="SecurityPreferenceButtonContainer" parent="@android:style/Holo.SegmentedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -41,5 +43,15 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="FakeDieDialog" parent="android:Theme.Holo.Dialog.NoActionBar" />
+    <style name="Widget.TextView.NumPadKey" parent="@android:style/Widget.TextView">
+        <item name="android:singleLine">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">36sp</item>
+        <!--<item name="android:fontFamily">sans-serif-light</item>-->
+        <item name="android:background">@drawable/img_button_background</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:paddingBottom">-16dp</item>
+    </style>
+
 </resources>

@@ -13,7 +13,7 @@ public class Common {
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";
 
     public static final String LOCKING_TYPE_PASSWORD = "locking_type_password";
-    //public static final String LOCKING_TYPE_PIN = "locking_type_pin";
+    public static final String LOCKING_TYPE_PIN = "locking_type_pin";
     public static final String LOCKING_TYPE_KNOCK_CODE = "locking_type_knock_code";
 
     public static final String LOCKING_UI_SETTINGS = "locking_ui_settings";

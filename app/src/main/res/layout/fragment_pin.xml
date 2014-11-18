@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pin_main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context="de.Maxr1998.xposed.maxlock.ui.lock.PinFragment">
+
+    <View
+        android:id="@+id/top_gap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <include layout="@layout/title_view" />
+
+    <include layout="@layout/input_view" />
+    <!-- Top row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <!-- 1 -->
+        <TextView
+            android:id="@+id/pin1"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="1" />
+        <!-- 2 -->
+        <TextView
+            android:id="@+id/pin2"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="2" />
+        <!-- 3 -->
+        <TextView
+            android:id="@+id/pin3"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="3" />
+    </LinearLayout>
+
+    <!-- Middle row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <!-- 4 -->
+        <TextView
+            android:id="@+id/pin4"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="4" />
+        <!-- 5 -->
+        <TextView
+            android:id="@+id/pin5"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="5" />
+        <!-- 6 -->
+        <TextView
+            android:id="@+id/pin6"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="6" />
+    </LinearLayout>
+
+    <!-- Bottom row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <!-- 7 -->
+        <TextView
+            android:id="@+id/pin7"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="7" />
+        <!-- 8 -->
+        <TextView
+            android:id="@+id/pin8"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="8" />
+        <!-- 9 -->
+        <TextView
+            android:id="@+id/pin9"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="9" />
+    </LinearLayout>
+    <!-- Null row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <!-- 0 -->
+        <TextView
+            android:id="@+id/pin0"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="0" />
+        <!-- Enter -->
+        <TextView
+            android:id="@+id/pin_ok"
+            style="@style/Widget.TextView.NumPadKey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@android:string/ok" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/bottom_gap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+</LinearLayout>

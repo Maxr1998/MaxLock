@@ -16,6 +16,7 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.lock.KnockCodeFragment;
+import de.Maxr1998.xposed.maxlock.ui.lock.PinFragment;
 
 public class LockActivity extends Activity implements AuthenticationSucceededListener {
 
@@ -62,7 +63,11 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
         if (lockingType.equals(Common.KEY_PASSWORD)) {
             Util.askPassword(this);
         } else if (lockingType.equals(Common.KEY_PIN)) {
-            int x = 1;
+            Fragment frag = new PinFragment();
+            Bundle b = new Bundle(1);
+            b.putString(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
+            frag.setArguments(b);
+            fm.beginTransaction().replace(R.id.frame_container, frag).commit();
         } else if (lockingType.equals(Common.KEY_KNOCK_CODE)) {
             Fragment frag = new KnockCodeFragment();
             Bundle b = new Bundle(1);

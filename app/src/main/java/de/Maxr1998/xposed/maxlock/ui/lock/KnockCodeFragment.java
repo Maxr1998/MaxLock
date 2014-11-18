@@ -200,10 +200,8 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-
     String genPass(StringBuilder str) {
         StringBuilder x = new StringBuilder("");
-
         for (int i = 0; i < str.length(); i++) {
             x.append("\u2022");
         }

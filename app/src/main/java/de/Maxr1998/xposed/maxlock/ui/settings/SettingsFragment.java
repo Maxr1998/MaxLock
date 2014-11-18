@@ -121,6 +121,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             if (preference == findPreference(Common.LOCKING_TYPE_PASSWORD)) {
                 Util.setPassword(getActivity());
                 return true;
+            } else if (preference == findPreference(Common.LOCKING_TYPE_PIN)) {
+                if (SettingsActivity.IS_DUAL_PANE) {
+                    getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new PinSetupFragment()).addToBackStack(null).commit();
+                } else {
+                    getFragmentManager().beginTransaction().replace(R.id.frame_container, new PinSetupFragment()).addToBackStack(null).commit();
+                }
+                return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {
                 if (SettingsActivity.IS_DUAL_PANE) {
                     getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new KnockCodeSetupFragment()).addToBackStack(null).commit();

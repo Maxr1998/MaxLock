@@ -23,6 +23,7 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.lock.KnockCodeFragment;
+import de.Maxr1998.xposed.maxlock.ui.lock.PinFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 
 
@@ -61,7 +62,11 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
             } else if (lockingType.equals(Common.KEY_PASSWORD)) {
                 Util.askPassword(this);
             } else if (lockingType.equals(Common.KEY_PIN)) {
-                // Show string fragment
+                Fragment frag = new PinFragment();
+                Bundle b = new Bundle(1);
+                b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
+                frag.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
             } else if (lockingType.equals(Common.KEY_KNOCK_CODE)) {
                 Fragment frag = new KnockCodeFragment();
                 Bundle b = new Bundle(1);
