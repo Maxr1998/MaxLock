@@ -31,7 +31,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
     SharedPreferences pref;
     String requestPkg;
     Button[] kb;
-    View[] divider, dividers, knockButtons;
+    View[] dividers, knockButtons;
 
     private StringBuilder key;
     private TextView mInputText;
@@ -124,7 +124,6 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
                 rootView.findViewById(R.id.divider3),
                 rootView.findViewById(R.id.divider4)
         };
-        divider = new View[dividers.length];
 
         if (pref.getBoolean(Common.HIDE_TITLE_BAR, false))
             titleView.setVisibility(View.GONE);
@@ -140,20 +139,18 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
 
         if ((pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) && pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (int i = 0; i < dividers.length; i++) {
-                divider[i] = dividers[i];
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    divider[i].setBackground(getResources().getDrawable(R.color.black));
+                    dividers[i].setBackground(getResources().getDrawable(R.color.black));
                 } else {
-                    divider[i].setBackgroundDrawable(getResources().getDrawable(R.color.black));
+                    dividers[i].setBackgroundDrawable(getResources().getDrawable(R.color.black));
                 }
             }
         } else if (!pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (int i = 0; i < dividers.length; i++) {
-                divider[i] = dividers[i];
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    divider[i].setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    dividers[i].setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
                 } else {
-                    divider[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    dividers[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
                 }
             }
         }
