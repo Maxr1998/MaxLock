@@ -20,8 +20,7 @@
         android:gravity="center"
         android:lines="2"
         android:text="@string/choose_knock_code"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_color_white" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/inputView"
@@ -30,8 +29,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_weight="1.5"
-        android:textColor="@color/text_color_white"
-        android:textSize="34dp" />
+        android:textSize="34sp" />
 
     <View
         android:layout_width="match_parent"
@@ -97,21 +95,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/knock_button_setup_background" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/SecurityPreferenceButtonContainer"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button_cancel"
-            style="@style/SecurityPreferenceButton"
-            android:text="@android:string/cancel" />
-
-        <Button
-            android:id="@+id/button_positive"
-            style="@style/SecurityPreferenceButton"
-            android:text="@string/button_continue" />
     </LinearLayout>
 
 </LinearLayout>

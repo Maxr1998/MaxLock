@@ -63,6 +63,11 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
             kb[i] = (Button) knockButtons[i];
             kb[i].setOnClickListener(this);
         }
+        if (pref.getBoolean(Common.USE_DARK_STYLE, false)) {
+            inflater.inflate(R.layout.split_button, rootView);
+        } else {
+            inflater.inflate(R.layout.split_button_light, rootView);
+        }
         mCancelButton = (Button) rootView.findViewById(R.id.button_cancel);
         mCancelButton.setOnClickListener(this);
         mNextButton = (Button) rootView.findViewById(R.id.button_positive);

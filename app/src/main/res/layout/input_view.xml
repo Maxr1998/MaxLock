@@ -10,13 +10,11 @@
 
         <TextView
             android:id="@+id/inputView"
+            style="@style/Widget.TextView.NumPadKey"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_margin="19dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textSize="34dp" />
+            android:inputType="textPassword" />
 
         <ImageButton
             android:id="@+id/delete_input"
@@ -26,7 +24,6 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/img_button_background"
             android:src="@drawable/ic_delete"
-            android:theme="@style/SecurityPreferenceButton"
             android:tint="@color/white"
             android:tintMode="src_over" />
     </RelativeLayout>

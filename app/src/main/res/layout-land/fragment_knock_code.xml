@@ -54,7 +54,6 @@
                     android:layout_alignParentRight="true"
                     android:background="@drawable/img_button_background"
                     android:src="@drawable/ic_delete"
-                    android:theme="@style/SecurityPreferenceButton"
                     android:tint="@color/white"
                     android:tintMode="src_over" />
             </RelativeLayout>

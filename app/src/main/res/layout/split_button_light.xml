@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    style="@style/SplitButtonContainer.Light"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/button_cancel"
+        style="@style/SplitButton"
+        android:text="@android:string/cancel"
+        android:textColor="@android:color/secondary_text_light" />
+
+    <Button
+        android:id="@+id/button_positive"
+        style="@style/SplitButton"
+        android:text="@string/button_continue"
+        android:textColor="@android:color/secondary_text_light" />
+</LinearLayout>

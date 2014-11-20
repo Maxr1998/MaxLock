@@ -55,7 +55,6 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
 
         // Strings
         requestPkg = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
-        key = new StringBuilder("");
     }
 
     @SuppressLint("NewApi")
@@ -70,9 +69,18 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         // Views
         mInputView = rootView.findViewById(R.id.inputView);
         mInputText = (TextView) mInputView;
-        mInputText.setText(genPass(key));
+        mInputText.setText("");
+        key = new StringBuilder("");
         mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
         mDeleteButton.setOnClickListener(this);
+        mDeleteButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                key.setLength(0);
+                mInputText.setText("");
+                return true;
+            }
+        });
         knockButtons = new View[]{
                 rootView.findViewById(R.id.knock_button_1),
                 rootView.findViewById(R.id.knock_button_2),
@@ -173,8 +181,10 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         boolean knockButton = false;
         switch (v.getId()) {
             case R.id.delete_input:
-                key.setLength(0);
-                mInputText.setText(genPass(key));
+                if (key.length() > 0) {
+                    key.deleteCharAt(key.length() - 1);
+                    mInputText.setText(key.toString());
+                }
                 break;
             case R.id.knock_button_1:
                 nr = 1;
@@ -193,18 +203,12 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
                 knockButton = true;
                 break;
         }
-        if (knockButton) key.append(nr);
-        mInputText.setText(genPass(key));
+        if (knockButton) {
+            key.append(nr);
+            mInputText.append("\u2022");
+        }
         if (Util.checkInput(key.toString(), Common.KEY_KNOCK_CODE, getActivity(), requestPkg)) {
             authenticationSucceededListener.onAuthenticationSucceeded();
         }
-    }
-
-    String genPass(StringBuilder str) {
-        StringBuilder x = new StringBuilder("");
-        for (int i = 0; i < str.length(); i++) {
-            x.append("\u2022");
-        }
-        return x.toString();
     }
 }

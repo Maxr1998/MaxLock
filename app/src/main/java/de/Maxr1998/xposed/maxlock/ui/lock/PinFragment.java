@@ -51,7 +51,6 @@ public class PinFragment extends Fragment implements View.OnClickListener {
 
         // Strings
         requestPkg = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
-        key = new StringBuilder("");
     }
 
     @Override
@@ -65,10 +64,18 @@ public class PinFragment extends Fragment implements View.OnClickListener {
         // Views
         mInputView = rootView.findViewById(R.id.inputView);
         mInputText = (TextView) mInputView;
-        mInputText.setText(genPass(key));
+        mInputText.setText("");
+        key = new StringBuilder("");
         mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
         mDeleteButton.setOnClickListener(this);
-
+        mDeleteButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                key.setLength(0);
+                mInputText.setText("");
+                return true;
+            }
+        });
         pinButtons = new View[]{
                 rootView.findViewById(R.id.pin1),
                 rootView.findViewById(R.id.pin2),
@@ -126,7 +133,7 @@ public class PinFragment extends Fragment implements View.OnClickListener {
                 String t = ((TextView) view).getText().toString();
                 if (!t.equals(getString(android.R.string.ok))) {
                     key.append(t);
-                    mInputText.setText(genPass(key));
+                    mInputText.append(t);
                     /*if (Util.checkInput(key.toString(), Common.KEY_PIN, getActivity(), requestPkg)) {
                         authenticationSucceededListener.onAuthenticationSucceeded();
                     }*/
@@ -138,16 +145,10 @@ public class PinFragment extends Fragment implements View.OnClickListener {
             }
         }
         if (view.getId() == mDeleteButton.getId()) {
-            key.setLength(0);
-            mInputText.setText(genPass(key));
+            if (key.length() > 0) {
+                key.deleteCharAt(key.length() - 1);
+                mInputText.setText(key.toString());
+            }
         }
-    }
-
-    String genPass(StringBuilder str) {
-        StringBuilder x = new StringBuilder("");
-        for (int i = 0; i < str.length(); i++) {
-            x.append("\u2022");
-        }
-        return x.toString();
     }
 }
