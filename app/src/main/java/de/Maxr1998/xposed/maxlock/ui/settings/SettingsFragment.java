@@ -151,11 +151,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
-            ListPreference lp = (ListPreference) findPreference(Common.KC_BACKGROUND);
+            ListPreference lp = (ListPreference) findPreference(Common.BACKGROUND);
             lp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (preference.getKey().equals(Common.KC_BACKGROUND) && newValue.toString().equals("custom")) {
+                    if (preference.getKey().equals(Common.BACKGROUND) && newValue.toString().equals("custom")) {
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                         intent.setType("image/*");
                         startActivityForResult(intent, READ_REQUEST_CODE);

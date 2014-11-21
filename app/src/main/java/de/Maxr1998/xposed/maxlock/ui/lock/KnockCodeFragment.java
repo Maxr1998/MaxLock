@@ -111,7 +111,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         } else {
             kcMainLayout.setBackgroundDrawable(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         }
-        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity")) {
+        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.MasterSwitchShortcutActivity")) {
             View gapTop = rootView.findViewById(R.id.top_gap);
             View gapBottom = rootView.findViewById(R.id.bottom_gap);
             if (screenWidth < screenHeight) {
@@ -143,13 +143,13 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         if (pref.getBoolean(Common.HIDE_INPUT_BAR, false))
             rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
 
-        if (pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) {
+        if (pref.getString(Common.BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) {
             titleView.setTextColor(getResources().getColor(R.color.black));
             mInputText.setTextColor(getResources().getColor(R.color.black));
             mDeleteButton.setColorFilter(R.color.black, PorterDuff.Mode.SRC_OVER);
         }
 
-        if ((pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) && pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
+        if ((pref.getString(Common.BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) && pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (View divider : dividers) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     divider.setBackground(getResources().getDrawable(R.color.black));

@@ -110,7 +110,7 @@ public class PinFragment extends Fragment implements View.OnClickListener {
         } else {
             pinMainLayout.setBackgroundDrawable(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         }
-        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity")) {
+        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.MasterSwitchShortcutActivity")) {
             View gapTop = rootView.findViewById(R.id.top_gap);
             View gapBottom = rootView.findViewById(R.id.bottom_gap);
             if (screenWidth < screenHeight) {
@@ -128,7 +128,7 @@ public class PinFragment extends Fragment implements View.OnClickListener {
     }
 
     private void personalizeUI() {
-        if (pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) {
+        if (pref.getString(Common.BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) {
             titleView.setTextColor(getResources().getColor(R.color.black));
             mInputText.setTextColor(getResources().getColor(R.color.black));
             mDeleteButton.setColorFilter(R.color.black, PorterDuff.Mode.SRC_OVER);

@@ -6,7 +6,7 @@
         android:dialogTitle="@string/pref_background"
         android:entries="@array/background_types"
         android:entryValues="@array/background_type_values"
-        android:key="kc_background"
+        android:key="background"
         android:title="@string/pref_background" />
     <!--<de.Maxr1998.xposed.maxlock.ui.settings.util.ColorPickerPreference
         android:dependency="kc_background"

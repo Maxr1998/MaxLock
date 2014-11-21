@@ -18,7 +18,7 @@ public class Common {
 
     public static final String LOCKING_UI_SETTINGS = "locking_ui_settings";
 
-    public static final String KC_BACKGROUND = "kc_background";
+    public static final String BACKGROUND = "background";
     public static final String INVERT_COLOR = "invert_color";
     public static final String HIDE_TITLE_BAR = "hide_title_bar";
     public static final String HIDE_INPUT_BAR = "hide_input_bar";
@@ -33,6 +33,7 @@ public class Common {
     public static final String USE_DARK_STYLE = "use_dark_style";
     public static final String FAKE_DIE_INPUT = "fake_die_input";
 
+    public static final String ABOUT = "about";
 
     // Preference values
     public static final String KEY_PASSWORD = "password";

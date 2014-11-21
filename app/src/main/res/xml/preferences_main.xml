@@ -58,7 +58,8 @@
     </PreferenceCategory>
 
     <Preference
+        android:key="about"
         android:summary="@string/copyright"
-        android:text="@string/about" />
+        android:title="@string/about" />
 
 </PreferenceScreen>

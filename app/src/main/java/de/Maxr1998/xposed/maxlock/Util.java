@@ -235,7 +235,7 @@ public class Util {
 
     private static Bitmap getBackground(Context context) {
         PREF = PreferenceManager.getDefaultSharedPreferences(context);
-        String backgroundType = PREF.getString(Common.KC_BACKGROUND, "wallpaper");
+        String backgroundType = PREF.getString(Common.BACKGROUND, "wallpaper");
         if (backgroundType.equals("custom")) {
             InputStream inputStream;
             try {
