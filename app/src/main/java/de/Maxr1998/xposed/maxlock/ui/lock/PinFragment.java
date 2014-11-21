@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -95,7 +96,7 @@ public class PinFragment extends Fragment implements View.OnClickListener {
             pb[i].setOnClickListener(this);
         }
 
-        //personalizeUI();
+        personalizeUI();
 
         // Dimens
         int statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
@@ -124,6 +125,14 @@ public class PinFragment extends Fragment implements View.OnClickListener {
         titleView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
 
         return rootView;
+    }
+
+    private void personalizeUI() {
+        if (pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) {
+            titleView.setTextColor(getResources().getColor(R.color.black));
+            mInputText.setTextColor(getResources().getColor(R.color.black));
+            mDeleteButton.setColorFilter(R.color.black, PorterDuff.Mode.SRC_OVER);
+        }
     }
 
     @Override

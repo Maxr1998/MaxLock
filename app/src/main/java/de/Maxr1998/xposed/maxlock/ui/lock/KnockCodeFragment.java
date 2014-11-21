@@ -12,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -30,7 +29,6 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
     ImageButton mDeleteButton;
     SharedPreferences pref;
     String requestPkg;
-    Button[] kb;
     View[] dividers, knockButtons;
 
     private StringBuilder key;
@@ -87,10 +85,16 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
                 rootView.findViewById(R.id.knock_button_3),
                 rootView.findViewById(R.id.knock_button_4)
         };
-        kb = new Button[knockButtons.length];
-        for (int i = 0; i < knockButtons.length; i++) {
-            kb[i] = (Button) knockButtons[i];
-            kb[i].setOnClickListener(this);
+        for (View kb : knockButtons) {
+            kb.setOnClickListener(this);
+            kb.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    key.setLength(0);
+                    mInputText.setText("");
+                    return true;
+                }
+            });
         }
 
         personalizeUI();
@@ -125,7 +129,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
     }
 
     @SuppressLint("NewApi")
-    public void personalizeUI() {
+    private void personalizeUI() {
         dividers = new View[]{
                 rootView.findViewById(R.id.divider1),
                 rootView.findViewById(R.id.divider2),
@@ -146,30 +150,29 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         }
 
         if ((pref.getString(Common.KC_BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) && pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
-            for (int i = 0; i < dividers.length; i++) {
+            for (View divider : dividers) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dividers[i].setBackground(getResources().getDrawable(R.color.black));
+                    divider.setBackground(getResources().getDrawable(R.color.black));
                 } else {
-                    dividers[i].setBackgroundDrawable(getResources().getDrawable(R.color.black));
+                    divider.setBackgroundDrawable(getResources().getDrawable(R.color.black));
                 }
             }
         } else if (!pref.getBoolean(Common.SHOW_DIVIDERS, true)) {
-            for (int i = 0; i < dividers.length; i++) {
+            for (View divider : dividers) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dividers[i].setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    divider.setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
                 } else {
-                    dividers[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    divider.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
                 }
             }
         }
 
         if (!pref.getBoolean(Common.TOUCH_VISIBLE, true)) {
-            for (int i = 0; i < knockButtons.length; i++) {
-                kb[i] = (Button) knockButtons[i];
+            for (View kb : knockButtons) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    kb[i].setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    kb.setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
                 } else {
-                    kb[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    kb.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
                 }
             }
         }

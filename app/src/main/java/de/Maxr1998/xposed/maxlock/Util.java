@@ -178,7 +178,7 @@ public class Util {
         } catch (PackageManager.NameNotFoundException e) {
             REQUEST_PKG_INFO = null;
         }
-        return (String) (REQUEST_PKG_INFO != null ? PM.getApplicationLabel(REQUEST_PKG_INFO) : "(unknown)");
+        return (String) (REQUEST_PKG_INFO != null ? PM.getApplicationLabel(REQUEST_PKG_INFO) : packageName);
     }
 
     public static Drawable getApplicationIconFromPackage(String packageName, Context context) {
@@ -188,7 +188,7 @@ public class Util {
         } catch (PackageManager.NameNotFoundException e) {
             REQUEST_PKG_INFO = null;
         }
-        return PM.getApplicationIcon(REQUEST_PKG_INFO);
+        return REQUEST_PKG_INFO != null ? PM.getApplicationIcon(REQUEST_PKG_INFO) : context.getResources().getDrawable(R.drawable.ic_launcher);
     }
 
     public static void getMasterSwitch(Context context) {

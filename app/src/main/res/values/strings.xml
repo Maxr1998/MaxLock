@@ -80,8 +80,16 @@
     <string name="pref_use_dark_style">Use dark style</string>
     <string name="pref_fake_die_input">Fake die input</string>
 
+    <string name="about">About</string>
+    <string name="copyright">&#169;2014 by Maxr1998</string>
+
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>
     <string name="report_problem">Report problem</string>
+
+    <string name="unlock_master_switch">Unlock MasterSwitch</string>
+    <string name="toast_master_switch_off">MasterSwitch disabled</string>
+    <string name="toast_master_switch_on">MasterSwitch re-enabled</string>
+    <string name="toast_no_locking_types">No locking type specified</string>
 
 </resources>
