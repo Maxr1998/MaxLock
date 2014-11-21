@@ -2,6 +2,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.view.View;
+import android.webkit.WebView;
 
 import org.apache.commons.io.FileUtils;
 
@@ -98,6 +100,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, new AppsListFragment()).addToBackStack(null).commit();
             }
             return true;
+        } else if (preference == findPreference(Common.ABOUT)) {
+            AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
+            WebView webView = new WebView(getActivity());
+            webView.loadUrl("file:///android_asset/about.html");
+            about.setView(webView).create().show();
         }
         return false;
     }
