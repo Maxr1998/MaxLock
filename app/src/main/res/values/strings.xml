@@ -25,8 +25,10 @@
     <string name="continue_done">Touch continue when done</string>
     <string name="confirm_knock_code">Confirm your knock code</string>
     <string name="button_continue">Continue</string>
-    <!-- Locking UI settings -->
+    <!-- Main screen -->
     <string name="pref_locking_ui">Locking screen UI</string>
+    <!-- Locking UI settings -->
+    <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
     <string name="pref_background">Background image</string>
     <string-array name="background_types">
         <item>Wallpaper</item>
@@ -40,11 +42,12 @@
     </string-array>
     <string name="pref_invert_color">Invert color of UI elements</string>
     <string name="pref_invert_color_summary">This sets the color of texts and dividers to black</string>
-    <string name="pref_show_dividers">Show dividers</string>
-    <string name="pref_touch_visible">Make touches visible</string>
     <string name="pref_hide_title_bar">Hide title bar</string>
     <string name="pref_hide_input_bar">Hide input bar</string>
     <string name="pref_hide_input_bar_summary">This hides clear button, too!</string>
+    <string name="pref_category_knock_code_only">Knock code only</string>
+    <string name="pref_show_dividers">Show dividers</string>
+    <string name="pref_touch_visible">Make touches visible</string>
 
     <string name="pref_locking_behaviour">Locking behaviour (reboot needed)</string>
     <string name="lock">Lock</string>

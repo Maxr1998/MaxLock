@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">MaxLock</string>
-    <string name="placeholder">Placeholder</string>
+    <string name="placeholder">Platzhalter</string>
 
     <!-- Main Screen -->
     <string name="pref_category_locking">Sperre</string>
@@ -25,8 +25,10 @@
     <string name="continue_done">Drücken Sie weiter, wenn Sie fertig sind</string>
     <string name="confirm_knock_code">Knock code bestätigen</string>
     <string name="button_continue">Weiter</string>
-    <!-- Locking UI settings -->
+    <!-- Main Screen -->
     <string name="pref_locking_ui">Sperrbildschirm-Oberfläche</string>
+    <!-- Locking UI settings -->
+    <string name="pref_category_pin_and_knock_code">PIN und Knock Code</string>
     <string name="pref_background">Hintergrundbild</string>
     <string-array name="background_types">
         <item>Systemhintergrund</item>
@@ -40,11 +42,12 @@
     </string-array>
     <string name="pref_invert_color">Invertiere Vordergrundfarbe</string>
     <string name="pref_invert_color_summary">Farbe von Text oder Trennlinien wird auf schwarz gesetzt</string>
-    <string name="pref_show_dividers">Trennlinien anzeigen</string>
-    <string name="pref_touch_visible">Berührungen sichtbar machen</string>
     <string name="pref_hide_title_bar">Verstecke Titelleiste</string>
     <string name="pref_hide_input_bar">Verstecke Eingabeleiste</string>
     <string name="pref_hide_input_bar_summary">\"Löschen\" Knopf wird auch versteckt!</string>
+    <string name="pref_category_knock_code_only">Nur Knock Code</string>
+    <string name="pref_show_dividers">Trennlinien anzeigen</string>
+    <string name="pref_touch_visible">Berührungen sichtbar machen</string>
 
     <string name="pref_locking_behaviour">Sperrverhalten (Neustart erforderlich)</string>
     <string name="lock">Sperren</string>
