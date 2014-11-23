@@ -94,6 +94,7 @@
     <string name="report">Report</string>
     <string name="report_problem">Report problem</string>
 
+    <string name="toggle_master_switch">Toggle Master Switch</string>
     <string name="unlock_master_switch">Unlock MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch disabled</string>
     <string name="toast_master_switch_on">MasterSwitch re-enabled</string>
