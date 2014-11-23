@@ -60,22 +60,29 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
 
         String lockingType = pref.getString(Common.LOCKING_TYPE, "");
 
-        if (lockingType.equals(Common.KEY_PASSWORD)) {
-            Util.askPassword(this);
-        } else if (lockingType.equals(Common.KEY_PIN)) {
-            Fragment frag = new PinFragment();
-            Bundle b = new Bundle(1);
-            b.putString(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
-            frag.setArguments(b);
-            fm.beginTransaction().replace(R.id.frame_container, frag).commit();
-        } else if (lockingType.equals(Common.KEY_KNOCK_CODE)) {
-            Fragment frag = new KnockCodeFragment();
-            Bundle b = new Bundle(1);
-            b.putString(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
-            frag.setArguments(b);
-            fm.beginTransaction().replace(R.id.frame_container, frag).commit();
-        } else {
-            onAuthenticationSucceeded();
+        switch (lockingType) {
+            case Common.KEY_PASSWORD:
+                Util.askPassword(this);
+                break;
+            case Common.KEY_PIN: {
+                Fragment frag = new PinFragment();
+                Bundle b = new Bundle(1);
+                b.putString(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
+                frag.setArguments(b);
+                fm.beginTransaction().replace(R.id.frame_container, frag).commit();
+                break;
+            }
+            case Common.KEY_KNOCK_CODE: {
+                Fragment frag = new KnockCodeFragment();
+                Bundle b = new Bundle(1);
+                b.putString(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
+                frag.setArguments(b);
+                fm.beginTransaction().replace(R.id.frame_container, frag).commit();
+                break;
+            }
+            default:
+                onAuthenticationSucceeded();
+                break;
         }
     }
 
