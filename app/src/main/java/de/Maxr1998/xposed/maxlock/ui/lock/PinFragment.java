@@ -29,7 +29,7 @@ public class PinFragment extends Fragment implements View.OnClickListener {
     ImageButton mDeleteButton;
     SharedPreferences pref;
     View[] pinButtons;
-    TextView[] pb;
+    TextView pb;
     private StringBuilder key;
     private TextView mInputText;
 
@@ -90,12 +90,18 @@ public class PinFragment extends Fragment implements View.OnClickListener {
                 rootView.findViewById(R.id.pin0),
                 rootView.findViewById(R.id.pin_ok)
         };
-        pb = new TextView[pinButtons.length];
-        for (int i = 0; i < pinButtons.length; i++) {
-            pb[i] = (TextView) pinButtons[i];
-            pb[i].setOnClickListener(this);
+        for (View v : pinButtons) {
+            pb = (TextView) v;
+            pb.setOnClickListener(this);
+            pb.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    key.setLength(0);
+                    mInputText.setText("");
+                    return true;
+                }
+            });
         }
-
         personalizeUI();
 
         // Dimens
