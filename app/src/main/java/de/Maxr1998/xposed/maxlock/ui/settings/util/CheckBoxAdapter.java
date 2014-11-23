@@ -188,8 +188,10 @@ public class CheckBoxAdapter extends BaseAdapter {
 
                 for (Map<String, Object> app : oriItemList) {
                     String title = ((String) app.get("title")).toLowerCase();
-                    if (title.indexOf((String) constraint) == 0) {
-                        filteredList.add(app);
+                    for (String part : title.split(" ")) {
+                        if (part.indexOf((String) constraint) == 0) {
+                            filteredList.add(app);
+                        }
                     }
                 }
 
