@@ -106,6 +106,10 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         getActivity().getWindowManager().getDefaultDisplay().getSize(size);
         int screenWidth = size.x;
         int screenHeight = size.y;
+        if (screenWidth <= 0)
+            screenWidth = 1080;
+        if (screenHeight <= 0)
+            screenHeight = 1920;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             kcMainLayout.setBackground(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         } else {
