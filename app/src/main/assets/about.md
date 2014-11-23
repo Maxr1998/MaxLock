@@ -3,6 +3,7 @@ About
 Help and tips:
 --------------
 - Long pressing a knock button also clears current input, useful if you hid the input bar
+- Same works for PIN keys
 
 Thanks to:
 ----------
