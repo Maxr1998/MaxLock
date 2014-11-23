@@ -17,13 +17,12 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 
-
 public class KnockCodeSetupFragment extends Fragment implements View.OnClickListener {
 
     ViewGroup rootView;
     View mInputView;
     Button mCancelButton;
-    private String mFirstKey = "";
+    private String mFirstKey;
     private SharedPreferences pref, keysPref;
     private StringBuilder key;
     private String mUiStage = "first";
@@ -102,7 +101,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
                 knockButton = true;
                 break;
             case R.id.button_cancel:
-                getActivity().getFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).commit();
+                getFragmentManager().popBackStack();
                 break;
             case R.id.button_positive:
                 handleStage();
