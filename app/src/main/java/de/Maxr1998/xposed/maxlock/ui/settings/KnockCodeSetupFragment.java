@@ -133,6 +133,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void handleStage() {
         if (mUiStage.equals("first")) {
             mFirstKey = key.toString();
