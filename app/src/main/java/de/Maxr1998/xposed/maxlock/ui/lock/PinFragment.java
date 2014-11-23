@@ -132,6 +132,12 @@ public class PinFragment extends Fragment implements View.OnClickListener {
     }
 
     private void personalizeUI() {
+        if (pref.getBoolean(Common.HIDE_TITLE_BAR, false))
+            titleView.setVisibility(View.GONE);
+
+        if (pref.getBoolean(Common.HIDE_INPUT_BAR, false))
+            rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
+
         if (pref.getString(Common.BACKGROUND, "").equals("white") || pref.getBoolean(Common.INVERT_COLOR, false)) {
             titleView.setTextColor(getResources().getColor(R.color.black));
             mInputText.setTextColor(getResources().getColor(R.color.black));
