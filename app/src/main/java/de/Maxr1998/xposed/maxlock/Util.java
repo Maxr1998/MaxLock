@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
@@ -236,30 +237,47 @@ public class Util {
     private static Bitmap getBackground(Context context) {
         PREF = PreferenceManager.getDefaultSharedPreferences(context);
         String backgroundType = PREF.getString(Common.BACKGROUND, "wallpaper");
-        if (backgroundType.equals("custom")) {
-            InputStream inputStream;
-            try {
-                inputStream = new FileInputStream(new File(context.getApplicationInfo().dataDir + File.separator + "background" + File.separator + "image"));
-                M_BITMAP = BitmapFactory.decodeStream(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (backgroundType.equals("white")) {
-            int[] colors = new int[9000001];
-            for (int i = 0; i <= 9000000; i++) {
-                colors[i] = Color.WHITE;
-            }
-            M_BITMAP = Bitmap.createBitmap(colors, 3000, 3000, Bitmap.Config.ARGB_8888);
-        } else {
-            Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
-            M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
+        switch (backgroundType) {
+            case "custom":
+                InputStream inputStream;
+                try {
+                    inputStream = new FileInputStream(new File(context.getApplicationInfo().dataDir + File.separator + "background" + File.separator + "image"));
+                    M_BITMAP = BitmapFactory.decodeStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "white":
+                int[] colors = new int[9000001];
+                for (int i = 0; i <= 9000000; i++) {
+                    colors[i] = Color.WHITE;
+                }
+                M_BITMAP = Bitmap.createBitmap(colors, 3000, 3000, Bitmap.Config.ARGB_8888);
+                break;
+            default:
+                Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
+                M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
+                break;
         }
         return M_BITMAP;
     }
 
     public static Drawable getResizedBackground(Context context, int viewWidth, int viewHeight) {
         Bitmap bmp = getBackground(context);
-        Bitmap resized = Bitmap.createBitmap(bmp, (bmp.getWidth() - viewWidth) / 2, (bmp.getHeight() - viewHeight) / 2, viewWidth, viewHeight);
+        Bitmap resized;
+        if (bmp.getWidth() < viewWidth || bmp.getHeight() < viewHeight) {
+            resized = bmp;
+        } else {
+            try {
+                resized = Bitmap.createBitmap(bmp, (bmp.getWidth() - viewWidth) / 2, (bmp.getHeight() - viewHeight) / 2, viewWidth, viewHeight);
+            } catch (IllegalArgumentException e) {
+                resized = Bitmap.createBitmap(bmp, 0, 0, 1080, 1920);
+            }
+        }
         return new BitmapDrawable(context.getResources(), resized);
+    }
+
+    public static boolean noGingerbread() {
+        return Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1;
     }
 }

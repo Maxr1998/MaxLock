@@ -12,9 +12,9 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.v4.preference.PreferenceFragment;
 import android.view.View;
 import android.webkit.WebView;
 
@@ -110,7 +110,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     }
 
     public void cleanBackStack() {
-        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if (Util.noGingerbread())
+            getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        else
+            getFragmentManager().popBackStack();
     }
 
     @SuppressLint("ValidFragment")

@@ -24,7 +24,6 @@ Libs and code:
 - [sha1/256Hash method by Adam on stackoverflow.com](http://stackoverflow.com/a/11978976)
 - [FabView by Sergej Shafarenka, halfbit.de](https://github.com/beworker/fabuless)
 - [StatusBarTintApi by Mohammad Abu-Garbeyyeh](https://github.com/MohammadAG/Xposed-Tinted-Status-Bar/blob/master/src/com/mohammadag/colouredstatusbar/StatusBarTintApi.java)
-- [Example of shortcut activity by Hoang Nguyen (nkahoang)](https://github.com/nkahoang/screenstandby/blob/master/src/com/nkahoang/screenstandby/ShortcutOnActivity.java)
 - A massive amount of other stackoverflow answers, thank you very much!
 
 _For a_

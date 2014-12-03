@@ -1,9 +1,9 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -53,7 +53,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mSettingsFragment = (SettingsFragment) getFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
+        mSettingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
             String lockingType = pref.getString(Common.LOCKING_TYPE, "");
             getSupportActionBar().hide();
@@ -66,13 +66,13 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
                 Bundle b = new Bundle(1);
                 b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
                 frag.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
             } else if (lockingType.equals(Common.KEY_KNOCK_CODE)) {
                 Fragment frag = new KnockCodeFragment();
                 Bundle b = new Bundle(1);
                 b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
                 frag.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
             }
         }
     }
@@ -105,9 +105,9 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-            if (findViewById(R.id.frame_container_scd) != null && getFragmentManager().getBackStackEntryCount() == 1)
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            if (findViewById(R.id.frame_container_scd) != null && getSupportFragmentManager().getBackStackEntryCount() == 1)
                 findViewById(R.id.frame_container_scd).setVisibility(View.GONE);
         } else {
             super.onBackPressed();
@@ -118,7 +118,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     public void onAuthenticationSucceeded() {
         if (mSettingsFragment == null) {
             mSettingsFragment = new SettingsFragment();
-            getFragmentManager().beginTransaction().replace(R.id.frame_container, mSettingsFragment, TAG_SETTINGS_FRAGMENT).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, mSettingsFragment, TAG_SETTINGS_FRAGMENT).commit();
             getSupportActionBar().show();
         }
     }

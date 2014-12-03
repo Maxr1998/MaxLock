@@ -1,11 +1,11 @@
 package de.Maxr1998.xposed.maxlock;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,8 +16,7 @@ import java.io.FileReader;
 import de.Maxr1998.xposed.maxlock.ui.lock.KnockCodeFragment;
 import de.Maxr1998.xposed.maxlock.ui.lock.PinFragment;
 
-public class MasterSwitchShortcutActivity extends Activity implements AuthenticationSucceededListener {
-    // Thanks https://github.com/nkahoang/screenstandby/blob/master/src/com/nkahoang/screenstandby/ShortcutOnActivity.java
+public class MasterSwitchShortcutActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     public FragmentManager fm;
     SharedPreferences pref;
@@ -41,7 +40,7 @@ public class MasterSwitchShortcutActivity extends Activity implements Authentica
         }
         if (str.equals("1")) {
             setContentView(R.layout.activity_lock);
-            fm = getFragmentManager();
+            fm = getSupportFragmentManager();
 
             String lockingType = pref.getString(Common.LOCKING_TYPE, "");
 

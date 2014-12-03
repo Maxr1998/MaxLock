@@ -2,13 +2,13 @@ package de.Maxr1998.xposed.maxlock.ui.lock;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,15 +101,20 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
 
         // Dimens
         int statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
-        int navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
-        Point size = new Point();
-        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
-        int screenWidth = size.x;
-        int screenHeight = size.y;
-        if (screenWidth <= 0)
-            screenWidth = 1080;
-        if (screenHeight <= 0)
-            screenHeight = 1920;
+        int navBarHeight = 0;
+        if (Util.noGingerbread())
+            navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
+        int screenWidth;
+        int screenHeight;
+        if (Util.noGingerbread()) {
+            Point size = new Point();
+            getActivity().getWindowManager().getDefaultDisplay().getSize(size);
+            screenWidth = size.x;
+            screenHeight = size.y;
+        } else {
+            screenWidth = 480;
+            screenHeight = 800;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             kcMainLayout.setBackground(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         } else {

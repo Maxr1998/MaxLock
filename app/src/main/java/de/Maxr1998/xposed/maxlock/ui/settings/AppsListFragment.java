@@ -1,7 +1,6 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -27,6 +27,7 @@ import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.settings.util.CheckBoxAdapter;
 
 
@@ -51,7 +52,8 @@ public class AppsListFragment extends Fragment {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         listView = (ListView) rootView.findViewById(R.id.listview);
         search = (EditText) rootView.findViewById(R.id.search);
-        search.setAlpha(0);
+        if (Util.noGingerbread())
+            search.setAlpha(0);
 
         pref = getActivity().getSharedPreferences(Common.PREF, Activity.MODE_WORLD_READABLE);
 
@@ -158,7 +160,8 @@ public class AppsListFragment extends Fragment {
             progressDialog.dismiss();
             mAdapter = new CheckBoxAdapter(getActivity(), list);
             listView.setAdapter(mAdapter);
-            search.setAlpha(1);
+            if (Util.noGingerbread())
+                search.setAlpha(1);
             setupSearch();
         }
 

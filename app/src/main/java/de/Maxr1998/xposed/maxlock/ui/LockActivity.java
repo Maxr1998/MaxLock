@@ -3,12 +3,13 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
@@ -18,7 +19,7 @@ import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.lock.KnockCodeFragment;
 import de.Maxr1998.xposed.maxlock.ui.lock.PinFragment;
 
-public class LockActivity extends Activity implements AuthenticationSucceededListener {
+public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     public FragmentManager fm;
     private SharedPreferences pref, packagePref;
@@ -56,7 +57,7 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
     }
 
     private void authenticate() {
-        fm = getFragmentManager();
+        fm = getSupportFragmentManager();
 
         String lockingType = pref.getString(Common.LOCKING_TYPE, "");
 
@@ -99,7 +100,7 @@ public class LockActivity extends Activity implements AuthenticationSucceededLis
             startActivity(intent);
         } catch (SecurityException e) {
             Intent intent_option = getPackageManager().getLaunchIntentForPackage(requestPkg);
-            intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent_option);
         } finally {
             finish();
