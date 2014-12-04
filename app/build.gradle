@@ -1,0 +1,37 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.1.0'
+
+    defaultConfig {
+        applicationId "de.Maxr1998.xposed.maxlock"
+        minSdkVersion 10
+        targetSdkVersion 21
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources true
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        // not included in app, download from https://github.com/kolavar/android-support-v4-preferencefragment
+        dirs '/home/max/Development/Ressourcen/android-support-v4-preferencefragment/maven-repository/com/android/support/support-v4-preferencefragment/1.0.0'
+    }
+}
+
+
+dependencies {
+    compile 'com.android.support:palette-v7:21.0.0'
+    compile 'com.android.support:appcompat-v7:21.0.2'
+    provided files('src/XposedBridgeApi-54.jar')
+    compile files('src/commons-io-2.4.jar')
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.android.support:support-v4:21.0.2'
+    // not included in app, download from https://github.com/kolavar/android-support-v4-preferencefragment
+    compile(name: 'support-v4-preferencefragment-1.0.0', ext: 'aar')
+}
