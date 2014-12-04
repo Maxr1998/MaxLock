@@ -18,10 +18,15 @@ import android.support.v4.preference.PreferenceFragment;
 import android.view.View;
 import android.webkit.WebView;
 
+import com.commonsware.cwac.anddown.AndDown;
+
 import org.apache.commons.io.FileUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -103,7 +108,19 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         } else if (preference == findPreference(Common.ABOUT)) {
             AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
             WebView webView = new WebView(getActivity());
-            webView.loadUrl("file:///android_asset/about.html");
+            String markdown = "";
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("about.md")));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    markdown = markdown + line + "\n";
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String html = new AndDown().markdownToHtml(markdown);
+            webView.loadData(html, "text/html; charset=UTF-8", null);
             about.setView(webView).create().show();
         }
         return false;
