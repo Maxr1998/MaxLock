@@ -125,6 +125,7 @@ public class PinFragment extends Fragment implements View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             pinMainLayout.setBackground(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         } else {
+            //noinspection deprecation
             pinMainLayout.setBackgroundDrawable(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         }
         if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.MasterSwitchShortcutActivity")) {
@@ -134,7 +135,9 @@ public class PinFragment extends Fragment implements View.OnClickListener {
                 gapTop.getLayoutParams().height = statusBarHeight;
                 gapBottom.getLayoutParams().height = navBarHeight;
             } else if (screenWidth > screenHeight) {
+                //noinspection SuspiciousNameCombination
                 gapTop.getLayoutParams().width = statusBarHeight;
+                //noinspection SuspiciousNameCombination
                 gapBottom.getLayoutParams().width = navBarHeight;
             }
         }

@@ -33,7 +33,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     protected void onCreate(Bundle savedInstanceState) {
         // Preferences
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        packagePref = getSharedPreferences(Common.PREF_PACKAGE, MODE_WORLD_READABLE);
+        packagePref = getSharedPreferences(Common.PREF_PACKAGE, MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock);
 

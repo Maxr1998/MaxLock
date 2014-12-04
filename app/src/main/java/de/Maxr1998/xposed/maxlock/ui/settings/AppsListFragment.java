@@ -1,5 +1,6 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,11 +34,11 @@ import de.Maxr1998.xposed.maxlock.ui.settings.util.CheckBoxAdapter;
 
 public class AppsListFragment extends Fragment {
 
-    public ListView listView;
     List<Map<String, Object>> itemList;
+    ViewGroup rootView;
+    private ListView listView;
     private CheckBoxAdapter mAdapter;
     private EditText search;
-    private ViewGroup rootView;
     private SharedPreferences pref;
     private SetupAppList task;
 
@@ -47,6 +48,7 @@ public class AppsListFragment extends Fragment {
         setRetainInstance(true);
     }
 
+    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
@@ -55,7 +57,7 @@ public class AppsListFragment extends Fragment {
         if (Util.noGingerbread())
             search.setAlpha(0);
 
-        pref = getActivity().getSharedPreferences(Common.PREF, Activity.MODE_WORLD_READABLE);
+        pref = getActivity().getSharedPreferences(Common.PREF, Activity.MODE_PRIVATE);
 
         if (mAdapter == null || mAdapter.isEmpty()) {
             if (task == null)
@@ -87,10 +89,10 @@ public class AppsListFragment extends Fragment {
         });
     }
 
-    private class SetupAppList extends AsyncTask<Void, Integer, List> {
+    private class SetupAppList extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
 
+        final AsyncTask task = this;
         ProgressDialog progressDialog;
-        AsyncTask task = this;
 
         @Override
         protected void onPreExecute() {
@@ -109,7 +111,7 @@ public class AppsListFragment extends Fragment {
         }
 
         @Override
-        protected List doInBackground(Void... voids) {
+        protected List<Map<String, Object>> doInBackground(Void... voids) {
             Context activity = getActivity();
 
             PackageManager pm = activity.getPackageManager();
@@ -117,7 +119,7 @@ public class AppsListFragment extends Fragment {
 
             progressDialog.setMax(list.size());
 
-            itemList = new ArrayList<Map<String, Object>>();
+            itemList = new ArrayList<>();
             int i = 0;
             for (ApplicationInfo info : list) {
                 if (isCancelled())
@@ -126,7 +128,7 @@ public class AppsListFragment extends Fragment {
                         activity.getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
                         (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
 
-                    Map<String, Object> map = new HashMap<String, Object>();
+                    Map<String, Object> map = new HashMap<>();
 
                     map.put("title", pm.getApplicationLabel(info));
                     map.put("key", info.packageName);
@@ -154,8 +156,9 @@ public class AppsListFragment extends Fragment {
             progressDialog.setProgress(progress[0]);
         }
 
+        @SuppressLint("NewApi")
         @Override
-        protected void onPostExecute(List list) {
+        protected void onPostExecute(List<Map<String, Object>> list) {
             super.onPostExecute(list);
             progressDialog.dismiss();
             mAdapter = new CheckBoxAdapter(getActivity(), list);

@@ -19,6 +19,7 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -32,6 +33,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,6 +45,7 @@ import android.widget.ImageView;
 
 import de.Maxr1998.xposed.maxlock.R;
 
+@SuppressLint("NewApi")
 public class FabView extends ImageView {
 
     private static final int TOP_LEFT = 1;
@@ -60,16 +63,16 @@ public class FabView extends ImageView {
     protected final int mFabSize;
     protected final int mFabAttachPadding;
     protected final int mFabRevealAfterMs;
+    protected final int mShadowOffset;
+    protected final int mFabRadius;
     private final FabRevealer mFabRevealer;
     private final TouchSpotAnimator mTouchSpotAnimator;
     protected int mBackgroundColor;
     protected int mBackgroundColorDarker;
-    protected int mShadowOffset;
-    protected int mFabRadius;
     protected View mAttachedToView;
 
     //-- constructors
-    private OnGlobalLayoutListener mLayoutListener = new OnGlobalLayoutListener() {
+    private final OnGlobalLayoutListener mLayoutListener = new OnGlobalLayoutListener() {
 
         @Override
         public void onGlobalLayout() {
@@ -184,7 +187,7 @@ public class FabView extends ImageView {
         return Color.argb(alpha, red, green, blue);
     }
 
-    protected static int transformAlpha(int color, int fromAlpha, int toAlpha, float factor) {
+    protected static int transformAlpha(int color, @SuppressWarnings("SameParameterValue") int fromAlpha, @SuppressWarnings("SameParameterValue") int toAlpha, float factor) {
         final float unfactor = 1f - factor;
         final int alpha = (int) (factor * fromAlpha + unfactor * toAlpha);
         return setAlpha(color, alpha);
@@ -238,14 +241,14 @@ public class FabView extends ImageView {
     //-- inner classes
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         mBackgroundDrawable.draw(canvas);
         mTouchSpotAnimator.draw(canvas);
         super.onDraw(canvas);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchSpotAnimator.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
@@ -263,7 +266,7 @@ public class FabView extends ImageView {
     }
 
     @Override
-    public void setBackgroundDrawable(Drawable background) {
+    public void setBackground(Drawable background) {
         if (background instanceof ColorDrawable) {
             ColorDrawable cd = (ColorDrawable) background;
             setBackgroundColor(cd.getColor());
@@ -274,7 +277,7 @@ public class FabView extends ImageView {
 
     protected class FabRevealer implements Runnable, OnPreDrawListener {
 
-        public void show(boolean animate) {
+        public void show(@SuppressWarnings("SameParameterValue") boolean animate) {
             if (getVisibility() == VISIBLE) return;
             if (animate) {
                 setScaleX(0);

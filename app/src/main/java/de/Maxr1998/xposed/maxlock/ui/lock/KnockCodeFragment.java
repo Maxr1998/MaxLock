@@ -55,6 +55,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         requestPkg = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,7 +128,9 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
                 gapTop.getLayoutParams().height = statusBarHeight;
                 gapBottom.getLayoutParams().height = navBarHeight;
             } else if (screenWidth > screenHeight) {
+                //noinspection SuspiciousNameCombination
                 gapTop.getLayoutParams().width = statusBarHeight;
+                //noinspection SuspiciousNameCombination
                 gapBottom.getLayoutParams().width = navBarHeight;
             }
         }
@@ -137,6 +140,7 @@ public class KnockCodeFragment extends Fragment implements View.OnClickListener 
         return rootView;
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     private void personalizeUI() {
         dividers = new View[]{

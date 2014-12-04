@@ -1,5 +1,6 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
@@ -26,13 +27,14 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.lib.FabView;
 
+@SuppressLint("CommitPrefEdits")
 public class TrustedDevicesFragment extends Fragment implements AdapterView.OnItemLongClickListener {
 
     private static final int ADD = 1;
     private static final int REMOVE = 2;
     SharedPreferences pref;
-    private ViewGroup rootView;
-    private FabView mFab;
+    ViewGroup rootView;
+    FabView mFab;
     private ListView list;
 
     @Override
@@ -71,15 +73,16 @@ public class TrustedDevicesFragment extends Fragment implements AdapterView.OnIt
     }
 
     public void reloadList(Set<String> set) {
-        List<String> devicesList = new LinkedList<String>(set);
-        ListAdapter listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, devicesList);
+        List<String> devicesList = new LinkedList<>(set);
+        ListAdapter listAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, devicesList);
         list.setAdapter(listAdapter);
     }
 
+    @SuppressLint("NewApi")
     public Set<String> trustedDevices(Integer addOrRemove, String s) {
         Set<String> local = pref.getStringSet(Common.TRUSTED_DEVICES, ImmutableSet.of(getString(R.string.no_trusted_devices)));
         if (!(addOrRemove == null) && !(s == null)) {
-            ImmutableSet.Builder<String> newTrustedDevices = new ImmutableSet.Builder<String>();
+            ImmutableSet.Builder<String> newTrustedDevices = new ImmutableSet.Builder<>();
             if (!local.contains(getString(R.string.no_trusted_devices))) {
                 newTrustedDevices.addAll(local);
             }

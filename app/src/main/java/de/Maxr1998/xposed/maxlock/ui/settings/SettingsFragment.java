@@ -126,6 +126,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         return false;
     }
 
+    @SuppressLint("InlinedApi")
     public void cleanBackStack() {
         if (Util.noGingerbread())
             getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -207,6 +208,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     inputStream = getActivity().getContentResolver().openInputStream(uri);
                     File destination = new File(getActivity().getApplicationInfo().dataDir + File.separator + "background" + File.separator + "image");
                     if (destination.exists()) {
+                        //noinspection ResultOfMethodCallIgnored
                         destination.delete();
                     }
                     FileUtils.copyInputStreamToFile(inputStream, destination);

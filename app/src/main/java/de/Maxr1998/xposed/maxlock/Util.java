@@ -15,7 +15,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +50,7 @@ public class Util {
         } catch (ClassCastException e) {
             throw new RuntimeException(context.getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this fragment", e);
         }
-        final View dialogView = LayoutInflater.from(context).inflate(R.layout.ask_password, null);
+        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.ask_password, null);
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(false)
                 .setTitle(R.string.locking_type_password)
@@ -82,7 +81,7 @@ public class Util {
         PREF = PreferenceManager.getDefaultSharedPreferences(context);
         KEYS_PREF = context.getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
 
-        final View dialogView = LayoutInflater.from(context).inflate(R.layout.set_password, null);
+        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.set_password, null);
 
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(false)
@@ -148,9 +147,7 @@ public class Util {
             bytes = digest.digest();
 
             hash = bytesToHex(bytes);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return hash;
@@ -167,6 +164,7 @@ public class Util {
     }
 
     public static boolean checkInput(String input, String key_type, Context context, String app) {
+        System.out.println(app);
         KEYS_PREF = context.getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
         String key = KEYS_PREF.getString(key_type, "");
         return key.equals("") || shaHash(input).equals(key);
@@ -226,13 +224,13 @@ public class Util {
         }
     }
 
-    public static int getTextColor(Context context) {
+    /*public static int getTextColor(Context context) {
         if (Integer.valueOf(M_COLOR) == null) {
             Palette p = Palette.generate(getBackground(context));
             M_COLOR = p.getVibrantSwatch().getTitleTextColor();
         }
         return M_COLOR;
-    }
+    }*/
 
     private static Bitmap getBackground(Context context) {
         PREF = PreferenceManager.getDefaultSharedPreferences(context);

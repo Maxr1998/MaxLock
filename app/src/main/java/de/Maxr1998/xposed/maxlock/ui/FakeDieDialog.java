@@ -21,9 +21,10 @@ import de.Maxr1998.xposed.maxlock.R;
 public class FakeDieDialog extends Activity {
 
     ApplicationInfo requestPkgInfo;
+    AlertDialog.Builder alertDialog;
     private String requestPkg;
     private Intent app;
-    private AlertDialog.Builder alertDialog, reportDialog;
+    private AlertDialog.Builder reportDialog;
     private SharedPreferences pref;
 
     @Override

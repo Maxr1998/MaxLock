@@ -2,6 +2,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings.util;
 
 import android.content.Context;
 import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -24,13 +25,13 @@ public class ColorPickerPreference extends Preference implements Preference.OnPr
         init(context);
     }
 
-    private void init(Context context) {
+    private void init(@SuppressWarnings("UnusedParameters") Context context) {
         setOnPreferenceClickListener(this);
     }
 
 
     @Override
-    protected void onBindView(View view) {
+    protected void onBindView(@NonNull View view) {
         super.onBindView(view);
         mView = view;
     }

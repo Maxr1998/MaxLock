@@ -57,22 +57,29 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
         if (mSettingsFragment == null) {
             String lockingType = pref.getString(Common.LOCKING_TYPE, "");
             getSupportActionBar().hide();
-            if (lockingType.equals("")) {
-                onAuthenticationSucceeded();
-            } else if (lockingType.equals(Common.KEY_PASSWORD)) {
-                Util.askPassword(this);
-            } else if (lockingType.equals(Common.KEY_PIN)) {
-                Fragment frag = new PinFragment();
-                Bundle b = new Bundle(1);
-                b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
-                frag.setArguments(b);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
-            } else if (lockingType.equals(Common.KEY_KNOCK_CODE)) {
-                Fragment frag = new KnockCodeFragment();
-                Bundle b = new Bundle(1);
-                b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
-                frag.setArguments(b);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+            switch (lockingType) {
+                case "":
+                    onAuthenticationSucceeded();
+                    break;
+                case Common.KEY_PASSWORD:
+                    Util.askPassword(this);
+                    break;
+                case Common.KEY_PIN: {
+                    Fragment frag = new PinFragment();
+                    Bundle b = new Bundle(1);
+                    b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
+                    frag.setArguments(b);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+                    break;
+                }
+                case Common.KEY_KNOCK_CODE: {
+                    Fragment frag = new KnockCodeFragment();
+                    Bundle b = new Bundle(1);
+                    b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
+                    frag.setArguments(b);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+                    break;
+                }
             }
         }
     }

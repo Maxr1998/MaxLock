@@ -3,6 +3,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings.util;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -11,8 +12,8 @@ import android.widget.EditText;
 
 public class SearchEditText extends EditText {
 
+    private final int fuzz = 10;
     private Drawable cancel;
-    private int fuzz = 10;
 
     public SearchEditText(Context context) {
         super(context);
@@ -30,7 +31,7 @@ public class SearchEditText extends EditText {
     }
 
     @Override
-    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+    public boolean onKeyPreIme(int keyCode, @NonNull KeyEvent event) {
 
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             this.clearFocus();

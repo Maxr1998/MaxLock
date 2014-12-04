@@ -31,17 +31,18 @@ import de.Maxr1998.xposed.maxlock.R;
 public class CheckBoxAdapter extends BaseAdapter {
 
 
-    private List<Map<String, Object>> mItemList, oriItemList;
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private SharedPreferences packagePref;
-    private Filter mFilter;
+    private final List<Map<String, Object>> oriItemList;
+    private final Context mContext;
+    private final LayoutInflater mInflater;
+    private final SharedPreferences packagePref;
+    private final Filter mFilter;
+    private List<Map<String, Object>> mItemList;
 
     public CheckBoxAdapter(Context context, List<Map<String, Object>> itemList) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         oriItemList = mItemList = itemList;
-        packagePref = mContext.getSharedPreferences(Common.PREF_PACKAGE, Activity.MODE_WORLD_READABLE);
+        packagePref = mContext.getSharedPreferences(Common.PREF_PACKAGE, Activity.MODE_PRIVATE);
         mFilter = new MyFilter();
     }
 
@@ -60,6 +61,7 @@ public class CheckBoxAdapter extends BaseAdapter {
         return mItemList.get(position).hashCode();
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -121,7 +123,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                         boolean value = cb.isChecked();
                         packagePref.edit()
                                 .putBoolean(key + "_fake", value)
-                                .commit();
+                                .apply();
                     }
                 });
 
@@ -153,7 +155,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                 boolean value = tb.isChecked();
                 packagePref.edit()
                         .putBoolean(key, value)
-                        .commit();
+                        .apply();
                 if (value) {
                     // TO-DO: Custom reveal animations
                     imgEdit.setVisibility(View.VISIBLE);
@@ -184,7 +186,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                 results.values = oriItemList;
                 results.count = oriItemList.size();
             } else {
-                List<Map<String, Object>> filteredList = new ArrayList<Map<String, Object>>();
+                List<Map<String, Object>> filteredList = new ArrayList<>();
 
                 for (Map<String, Object> app : oriItemList) {
                     String title = ((String) app.get("title")).toLowerCase();
