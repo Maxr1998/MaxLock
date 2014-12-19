@@ -31,21 +31,18 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Util.getMasterSwitch(this);
         // Preferences
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         packagePref = getSharedPreferences(Common.PREF_PACKAGE, MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock);
 
-
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
-
         app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
         am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
-
-        Util.getMasterSwitch(this);
 
         Long timestamp = System.currentTimeMillis();
         Long permitTimestamp = packagePref.getLong(requestPkg + "_tmp", 0);
