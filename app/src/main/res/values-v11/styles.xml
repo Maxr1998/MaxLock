@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="FakeDieDialog" parent="android:Theme.Black.NoTitleBar" />
+    <style name="FakeDieDialog" parent="android:Theme.Holo.Dialog.NoActionBar" />
 
-    <style name="SplitButtonContainer" parent="@android:style/Widget.Button">
+    <style name="SplitButtonContainer" parent="@android:style/Holo.SegmentedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:weightSum">2</item>
+        <item name="android:dividerPadding">8dip</item>
     </style>
 
-    <style name="SplitButtonContainer.Light" parent="@android:style/Widget.Button">
+    <style name="SplitButtonContainer.Light" parent="@android:style/Holo.Light.SegmentedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:weightSum">2</item>
+        <item name="android:dividerPadding">8dip</item>
     </style>
 
-    <style name="SplitButton" parent="@android:style/Widget.Button">
-        <item name="android:layout_width">0dip</item>
+    <style name="SplitButton" parent="@android:style/Widget.Holo.Button.Borderless">
+    <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">marquee</item>

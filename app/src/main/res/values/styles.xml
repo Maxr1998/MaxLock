@@ -25,24 +25,22 @@
 
     <style name="TranslucentStatusBar" parent="AppTheme" />
 
-    <style name="FakeDieDialog" parent="android:Theme.Holo.Dialog.NoActionBar" />
+    <style name="FakeDieDialog" parent="android:Theme.Black.NoTitleBar" />
 
-    <style name="SplitButtonContainer" parent="@android:style/Holo.SegmentedButton">
-        <item name="android:layout_width">match_parent</item>
+    <style name="SplitButtonContainer" parent="@android:style/Widget.Button">
+    <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:weightSum">2</item>
-        <item name="android:dividerPadding">8dip</item>
     </style>
 
-    <style name="SplitButtonContainer.Light" parent="@android:style/Holo.Light.SegmentedButton">
-        <item name="android:layout_width">match_parent</item>
+    <style name="SplitButtonContainer.Light" parent="@android:style/Widget.Button">
+    <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:weightSum">2</item>
-        <item name="android:dividerPadding">8dip</item>
     </style>
 
-    <style name="SplitButton" parent="@android:style/Widget.Holo.Button.Borderless">
-        <item name="android:layout_width">0dip</item>
+    <style name="SplitButton" parent="@android:style/Widget.Button">
+    <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">marquee</item>
@@ -54,7 +52,6 @@
         <item name="android:clickable">true</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <item name="android:textSize">36sp</item>
-        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:background">@drawable/img_button_background</item>
         <item name="android:textColor">#ffffffff</item>
         <item name="android:paddingBottom">-16dp</item>
