@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.1.0'
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
@@ -13,7 +13,13 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
+            debuggable true
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
     }
 }
 
@@ -23,14 +29,12 @@ repositories {
     }
     flatDir {
         // not included in app, download from https://github.com/kolavar/android-support-v4-preferencefragment
-        dirs '/home/max/Development/Ressourcen/android-support-v4-preferencefragment/maven-repository/com/android/support/support-v4-preferencefragment/1.0.0'
+        dirs '../../../Ressourcen/android-support-v4-preferencefragment/maven-repository/com/android/support/support-v4-preferencefragment/1.0.0'
     }
 }
-
-
 dependencies {
-    compile 'com.android.support:support-v4:21.0.2'
-    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:palette-v7:21.0.0'
     compile 'com.google.guava:guava:18.0'
     compile 'com.commonsware.cwac:anddown:0.2.0'
