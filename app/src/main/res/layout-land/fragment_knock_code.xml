@@ -31,32 +31,7 @@
                 android:id="@+id/kc_title_view"
                 layout="@layout/title_view" />
 
-            <RelativeLayout
-                android:id="@+id/input_bar"
-                android:layout_width="match_parent"
-                android:layout_height="72dp">
-
-                <TextView
-                    android:id="@+id/inputView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="19dp"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textSize="34dp" />
-
-                <ImageButton
-                    android:id="@+id/delete_input"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/img_button_background"
-                    android:src="@drawable/ic_delete"
-                    android:tint="@color/white"
-                    android:tintMode="src_over" />
-            </RelativeLayout>
+            <include layout="@layout/input_view" />
         </LinearLayout>
 
         <View
