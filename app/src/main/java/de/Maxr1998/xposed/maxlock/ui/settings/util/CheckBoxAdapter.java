@@ -113,6 +113,7 @@ public class CheckBoxAdapter extends BaseAdapter {
 
                 fakeDie.setOnClickListener(new View.OnClickListener() {
 
+                    @SuppressLint("CommitPrefEdits")
                     @Override
                     public void onClick(View v) {
 
@@ -123,7 +124,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                         boolean value = cb.isChecked();
                         packagePref.edit()
                                 .putBoolean(key + "_fake", value)
-                                .apply();
+                                .commit();
                     }
                 });
 
@@ -144,6 +145,7 @@ public class CheckBoxAdapter extends BaseAdapter {
 
         toggleLock.setOnClickListener(new View.OnClickListener() {
 
+            @SuppressLint("CommitPrefEdits")
             @Override
             public void onClick(View v) {
 
@@ -153,13 +155,14 @@ public class CheckBoxAdapter extends BaseAdapter {
                 ToggleButton tb = (ToggleButton) v;
 
                 boolean value = tb.isChecked();
-                packagePref.edit()
-                        .putBoolean(key, value)
-                        .apply();
                 if (value) {
+                    packagePref.edit()
+                            .putBoolean(key, true)
+                            .commit();
                     // TO-DO: Custom reveal animations
                     imgEdit.setVisibility(View.VISIBLE);
                 } else {
+                    packagePref.edit().remove(key).commit();
                     imgEdit.setVisibility(View.GONE);
                 }
             }
