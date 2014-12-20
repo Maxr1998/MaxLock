@@ -20,18 +20,20 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         packagePref = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREF_PACKAGE);
+        packagePref.makeWorldReadable();
         packagePref.reload();
     }
 
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
+        packagePref.makeWorldReadable();
         packagePref.reload();
         final String packageName = lpparam.packageName;
 
         if (!packagePref.getBoolean(packageName, false)) {
             return;
         }
-
+        XposedBridge.log("package done");
         Long timestamp = System.currentTimeMillis();
         Long permitTimestamp = packagePref.getLong(packageName + "_tmp", 0);
         if (permitTimestamp != 0 && timestamp - permitTimestamp <= 4000) {
