@@ -44,13 +44,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setRetainInstance(true);
         addPreferencesFromResource(R.xml.preferences_main);
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        keysPref = getActivity().getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
-
-        if (pref.getString(Common.LOCKING_TYPE, "").equals(Common.KEY_PASSWORD)) {
-            if (keysPref.getString(Common.KEY_PASSWORD, "").length() == 0) {
-                Util.setPassword(getActivity());
-            }
-        }
+        keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
     }
 
     @Override

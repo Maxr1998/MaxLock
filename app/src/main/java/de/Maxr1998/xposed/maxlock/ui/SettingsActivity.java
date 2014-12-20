@@ -1,5 +1,6 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,22 +9,15 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CompoundButton;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
-import de.Maxr1998.xposed.maxlock.ui.lock.KnockCodeFragment;
-import de.Maxr1998.xposed.maxlock.ui.lock.PinFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 
 
@@ -31,17 +25,19 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
     private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
     public static boolean IS_DUAL_PANE;
-    SharedPreferences pref;
+    SharedPreferences prefs;
     private SettingsFragment mSettingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Util.cleanUp(this);
+
         // Preferences
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceManager.setDefaultValues(this, R.xml.preferences_main, false);
         PreferenceManager.setDefaultValues(this, R.xml.preferences_locking_type, false);
         PreferenceManager.setDefaultValues(this, R.xml.preferences_locking_ui, false);
-        if (pref.getBoolean(Common.USE_DARK_STYLE, false)) {
+        if (prefs.getBoolean(Common.USE_DARK_STYLE, false)) {
             setTheme(R.style.AppTheme_Dark);
         } else {
             setTheme(R.style.AppTheme);
@@ -55,32 +51,12 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
         mSettingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
-            String lockingType = pref.getString(Common.LOCKING_TYPE, "");
             getSupportActionBar().hide();
-            switch (lockingType) {
-                case "":
-                    onAuthenticationSucceeded();
-                    break;
-                case Common.KEY_PASSWORD:
-                    Util.askPassword(this);
-                    break;
-                case Common.KEY_PIN: {
-                    Fragment frag = new PinFragment();
-                    Bundle b = new Bundle(1);
-                    b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
-                    frag.setArguments(b);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
-                    break;
-                }
-                case Common.KEY_KNOCK_CODE: {
-                    Fragment frag = new KnockCodeFragment();
-                    Bundle b = new Bundle(1);
-                    b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
-                    frag.setArguments(b);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
-                    break;
-                }
-            }
+            Fragment frag = new LockFragment();
+            Bundle b = new Bundle(1);
+            b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
+            frag.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
         }
     }
 
@@ -88,23 +64,12 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.master_switch_menu_item));
-        String str = "1";
-        try {
-            File file = new File(getApplicationInfo().dataDir + File.separator + "master_switch");
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            str = bufferedReader.readLine();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (str == null) {
-            Log.d("MasterSwitch", "File is empty!");
-            str = "1";
-        }
-        master_switch.setChecked(str.equals("1"));
+        master_switch.setChecked(prefs.getBoolean(Common.MASTER_SWITCH_ON, true));
         master_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("CommitPrefEdits")
             @Override
             public void onCheckedChanged(CompoundButton button, boolean b) {
-                Util.setMasterSwitch(b, SettingsActivity.this);
+                prefs.edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
             }
         });
         return super.onCreateOptionsMenu(menu);

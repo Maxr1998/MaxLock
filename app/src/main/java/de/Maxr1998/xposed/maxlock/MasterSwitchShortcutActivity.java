@@ -1,84 +1,44 @@
 package de.Maxr1998.xposed.maxlock;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-
-import de.Maxr1998.xposed.maxlock.ui.lock.KnockCodeFragment;
-import de.Maxr1998.xposed.maxlock.ui.lock.PinFragment;
+import de.Maxr1998.xposed.maxlock.ui.LockFragment;
 
 public class MasterSwitchShortcutActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
-    public FragmentManager fm;
-    SharedPreferences pref;
+    SharedPreferences prefs;
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String str = "1";
-        try {
-            File file = new File(getApplicationInfo().dataDir + File.separator + "master_switch");
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            str = bufferedReader.readLine();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (str == null) {
-            Log.d("MasterSwitch", "File is empty!");
-            str = "1";
-        }
-        if (str.equals("1")) {
+        if (prefs.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             setContentView(R.layout.activity_lock);
-            fm = getSupportFragmentManager();
+            Fragment frag = new LockFragment();
+            Bundle b = new Bundle(1);
+            b.putString(Common.INTENT_EXTRAS_PKG_NAME, getString(R.string.unlock_master_switch));
+            frag.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
 
-            String lockingType = pref.getString(Common.LOCKING_TYPE, "");
-
-            switch (lockingType) {
-                case Common.KEY_PASSWORD:
-                    Util.askPassword(this);
-                    break;
-                case Common.KEY_PIN: {
-                    Fragment frag = new PinFragment();
-                    Bundle b = new Bundle(1);
-                    b.putString(Common.INTENT_EXTRAS_PKG_NAME, getString(R.string.unlock_master_switch));
-                    frag.setArguments(b);
-                    fm.beginTransaction().replace(R.id.frame_container, frag).commit();
-                    break;
-                }
-                case Common.KEY_KNOCK_CODE: {
-                    Fragment frag = new KnockCodeFragment();
-                    Bundle b = new Bundle(1);
-                    b.putString(Common.INTENT_EXTRAS_PKG_NAME, getString(R.string.unlock_master_switch));
-                    frag.setArguments(b);
-                    fm.beginTransaction().replace(R.id.frame_container, frag).commit();
-                    break;
-                }
-                default:
-                    Toast.makeText(this, getString(R.string.toast_no_locking_types), Toast.LENGTH_SHORT).show();
-                    finish();
-                    break;
-            }
         } else {
-            Util.setMasterSwitch(true, this);
+            prefs.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
             Toast.makeText(this, getString(R.string.toast_master_switch_on), Toast.LENGTH_LONG).show();
             finish();
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     public void onAuthenticationSucceeded() {
-        Util.setMasterSwitch(false, this);
+        prefs.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
         Toast.makeText(this, getString(R.string.toast_master_switch_off), Toast.LENGTH_LONG).show();
         finish();
     }
