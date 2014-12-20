@@ -267,7 +267,8 @@ public class Util {
                     key = "";
                     break;
             }
-            PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, key).commit();
+            if (!key.equals(""))
+                PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, key).commit();
             PREFS_KEY.edit().remove(Common.PREF_VALUE_PASSWORD).commit();
             PREFS_KEY.edit().remove(Common.PREF_VALUE_PIN).commit();
             PREFS_KEY.edit().remove(Common.PREF_VALUE_KNOCK_CODE).commit();
