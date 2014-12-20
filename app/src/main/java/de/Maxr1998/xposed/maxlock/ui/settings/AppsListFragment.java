@@ -57,7 +57,7 @@ public class AppsListFragment extends Fragment {
         if (Util.noGingerbread())
             search.setAlpha(0);
 
-        pref = getActivity().getSharedPreferences(Common.PREF, Activity.MODE_PRIVATE);
+        pref = getActivity().getSharedPreferences(Common.PREFS, Activity.MODE_PRIVATE);
 
         if (mAdapter == null || mAdapter.isEmpty()) {
             if (task == null)

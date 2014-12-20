@@ -15,27 +15,37 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
-    private static XSharedPreferences packagePref;
+    private static XSharedPreferences PREFS, PREFS_PACKAGES;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        packagePref = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREF_PACKAGE);
-        packagePref.makeWorldReadable();
-        packagePref.reload();
+        PREFS = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS);
+        PREFS.makeWorldReadable();
+        PREFS.reload();
+        PREFS_PACKAGES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_PACKAGES);
+        PREFS_PACKAGES.makeWorldReadable();
+        PREFS_PACKAGES.reload();
     }
 
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-        packagePref.makeWorldReadable();
-        packagePref.reload();
+        PREFS.makeWorldReadable();
+        PREFS.reload();
+        PREFS_PACKAGES.makeWorldReadable();
+        PREFS_PACKAGES.reload();
+
+        if (!PREFS.getBoolean(Common.MASTER_SWITCH_ON, true)) {
+            return;
+        }
+
         final String packageName = lpparam.packageName;
 
-        if (!packagePref.getBoolean(packageName, false)) {
+        if (!PREFS_PACKAGES.getBoolean(packageName, false)) {
             return;
         }
         XposedBridge.log("package done");
         Long timestamp = System.currentTimeMillis();
-        Long permitTimestamp = packagePref.getLong(packageName + "_tmp", 0);
+        Long permitTimestamp = PREFS_PACKAGES.getLong(packageName + "_tmp", 0);
         if (permitTimestamp != 0 && timestamp - permitTimestamp <= 4000) {
             return;
         }
@@ -50,7 +60,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         if (app.getClass().getName().equals("android.app.Activity")) {
                             return;
                         }
-                        launchLockView(app, packageName, packagePref.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
+                        launchLockView(app, packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
 
                         app.moveTaskToBack(true);
                         android.os.Process.killProcess(android.os.Process.myPid());

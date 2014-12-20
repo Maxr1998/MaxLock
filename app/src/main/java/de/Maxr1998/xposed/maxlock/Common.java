@@ -5,7 +5,7 @@ public class Common {
     public static final String INTENT_EXTRAS_PKG_NAME = "intent_extras_pkg_name";
     public static final String INTENT_EXTRAS_INTENT = "intent_extras_intent";
 
-    // Preferences
+    // Preference keys/ids
     public static final String LOCKING_TYPE = "locking_type";
 
     public static final String TRUSTED_DEVICES = "trusted_devices";
@@ -35,13 +35,18 @@ public class Common {
 
     public static final String ABOUT = "about";
 
+    public static final String MASTER_SWITCH_ON = "master_switch_on";
+    public static final String KEY_PREFERENCE = "key";
+    public static final String APP_KEY_PREFERENCE = "_key";
+
     // Preference values
-    public static final String KEY_PASSWORD = "password";
-    public static final String KEY_PIN = "pin";
-    public static final String KEY_KNOCK_CODE = "knock_code";
+    public static final String PREF_VALUE_PASSWORD = "password";
+    public static final String PREF_VALUE_PIN = "pin";
+    public static final String PREF_VALUE_KNOCK_CODE = "knock_code";
 
     // Preference files
-    public static final String PREF = "de.Maxr1998.xposed.maxlock_preferences";
-    public static final String PREF_KEYS = "keys";
-    public static final String PREF_PACKAGE = "packages";
+    public static final String PREFS = "de.Maxr1998.xposed.maxlock_preferences";
+    public static final String PREFS_KEY = "keys";
+    public static final String PREFS_PACKAGES = "packages";
+    public static final String PREFS_PER_APP = "per_app_settings";
 }

@@ -41,7 +41,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
         setRetainInstance(true);
         // Prefs
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        keysPref = getActivity().getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
+        keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
     }
 
     @Override
@@ -139,12 +139,10 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
         } else if (mUiStage.equals("second")) {
             if (mSetupPinInput.getText().toString().equals(mFirstKey)) {
                 pref.edit()
-                        .putString(Common.LOCKING_TYPE, Common.KEY_PIN)
+                        .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PIN)
                         .commit();
                 keysPref.edit()
-                        .putString(Common.KEY_PIN, Util.shaHash(mSetupPinInput.getText().toString()))
-                        .remove(Common.KEY_PASSWORD)
-                        .remove(Common.KEY_KNOCK_CODE)
+                        .putString(Common.KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString()))
                         .commit();
                 getFragmentManager().popBackStack();
             } else {

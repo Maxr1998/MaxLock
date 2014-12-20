@@ -23,7 +23,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
     View mInputView;
     Button mCancelButton;
     private String mFirstKey;
-    private SharedPreferences pref, keysPref;
+    private SharedPreferences pref, prefsKey;
     private StringBuilder key;
     private String mUiStage = "first";
     private Button mNextButton;
@@ -36,7 +36,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
 
         // Prefs
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        keysPref = getActivity().getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
+        prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
 
         // Strings
         key = new StringBuilder("");
@@ -142,12 +142,10 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         } else if (mUiStage.equals("second")) {
             if (key.toString().equals(mFirstKey)) {
                 pref.edit()
-                        .putString(Common.LOCKING_TYPE, Common.KEY_KNOCK_CODE)
+                        .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_KNOCK_CODE)
                         .commit();
-                keysPref.edit()
-                        .putString(Common.KEY_KNOCK_CODE, Util.shaHash(key.toString()))
-                        .remove(Common.KEY_PASSWORD)
-                        .remove(Common.KEY_PIN)
+                prefsKey.edit()
+                        .putString(Common.KEY_PREFERENCE, Util.shaHash(key.toString()))
                         .commit();
             } else {
                 Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.msg_password_inconsistent), Toast.LENGTH_SHORT).show();

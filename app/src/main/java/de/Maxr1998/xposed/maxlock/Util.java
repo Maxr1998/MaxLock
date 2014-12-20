@@ -29,7 +29,6 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -40,7 +39,7 @@ public class Util {
     static AuthenticationSucceededListener authenticationSucceededListener;
     private static int M_COLOR;
     private static Bitmap M_BITMAP;
-    private static SharedPreferences PREF, KEYS_PREF;
+    private static SharedPreferences PREFS, PREFS_KEY;
     private static ApplicationInfo REQUEST_PKG_INFO;
     private static PackageManager PM;
 
@@ -66,7 +65,7 @@ public class Util {
             public void onClick(View v) {
                 EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
                 String val = input.getText().toString();
-                if (Util.checkInput(val, Common.KEY_PASSWORD, context, context.getPackageName())) {
+                if (Util.checkInput(val, Common.PREF_VALUE_PASSWORD, context, context.getPackageName())) {
                     authenticationSucceededListener.onAuthenticationSucceeded();
                     dialog.dismiss();
                 } else {
@@ -78,8 +77,8 @@ public class Util {
     }
 
     public static void setPassword(final Context context) {
-        PREF = PreferenceManager.getDefaultSharedPreferences(context);
-        KEYS_PREF = context.getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
+        PREFS = PreferenceManager.getDefaultSharedPreferences(context);
+        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
 
         @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.set_password, null);
 
@@ -112,13 +111,11 @@ public class Util {
                             .show();
                 } else {
                     dialog.dismiss();
-                    KEYS_PREF.edit()
-                            .putString(Common.KEY_PASSWORD, Util.shaHash(v1))
-                            .remove(Common.KEY_PIN)
-                            .remove(Common.KEY_KNOCK_CODE)
+                    PREFS_KEY.edit()
+                            .putString(Common.KEY_PREFERENCE, Util.shaHash(v1))
                             .commit();
-                    PREF.edit()
-                            .putString(Common.LOCKING_TYPE, Common.KEY_PASSWORD)
+                    PREFS.edit()
+                            .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PASSWORD)
                             .commit();
                     Toast.makeText(context, R.string.msg_password_changed, Toast.LENGTH_SHORT)
                             .show();
@@ -128,7 +125,7 @@ public class Util {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(KEYS_PREF.getString(Common.LOCKING_TYPE, "").equals("pw"))) {
+                if (!(PREFS_KEY.getString(Common.LOCKING_TYPE, "").equals(Common.PREF_VALUE_PASSWORD))) {
                     dialog.dismiss();
                 } else {
                     Toast.makeText(context, R.string.msg_password_null, Toast.LENGTH_SHORT)
@@ -165,8 +162,8 @@ public class Util {
 
     public static boolean checkInput(String input, String key_type, Context context, String app) {
         System.out.println(app);
-        KEYS_PREF = context.getSharedPreferences(Common.PREF_KEYS, Activity.MODE_PRIVATE);
-        String key = KEYS_PREF.getString(key_type, "");
+        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
+        String key = PREFS_KEY.getString(key_type, "");
         return key.equals("") || shaHash(input).equals(key);
     }
 
@@ -190,40 +187,6 @@ public class Util {
         return REQUEST_PKG_INFO != null ? PM.getApplicationIcon(REQUEST_PKG_INFO) : context.getResources().getDrawable(R.drawable.ic_launcher);
     }
 
-    public static void getMasterSwitch(Context context) {
-        try {
-            authenticationSucceededListener = (AuthenticationSucceededListener) context;
-        } catch (ClassCastException e) {
-            throw new RuntimeException(context.getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this method", e);
-        }
-        try {
-            File file = new File(context.getApplicationInfo().dataDir + File.separator + "master_switch");
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            String str = bufferedReader.readLine();
-            if (str == null) {
-                Log.d("MasterSwitch", "File is empty!");
-                return;
-            }
-            System.out.println(str);
-            if (str.equals("0")) {
-                authenticationSucceededListener.onAuthenticationSucceeded();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void setMasterSwitch(boolean checked, Context context) {
-        try {
-            PrintWriter writer = new PrintWriter(context.getApplicationInfo().dataDir + File.separator + "master_switch", "UTF-8");
-            if (checked) writer.print("1");
-            else writer.print("0");
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     /*public static int getTextColor(Context context) {
         if (Integer.valueOf(M_COLOR) == null) {
             Palette p = Palette.generate(getBackground(context));
@@ -233,8 +196,8 @@ public class Util {
     }*/
 
     private static Bitmap getBackground(Context context) {
-        PREF = PreferenceManager.getDefaultSharedPreferences(context);
-        String backgroundType = PREF.getString(Common.BACKGROUND, "wallpaper");
+        PREFS = PreferenceManager.getDefaultSharedPreferences(context);
+        String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
         switch (backgroundType) {
             case "custom":
                 InputStream inputStream;
@@ -277,5 +240,51 @@ public class Util {
 
     public static boolean noGingerbread() {
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1;
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    public static void cleanUp(Context context) {
+        PREFS = context.getSharedPreferences(Common.PREFS, Activity.MODE_PRIVATE);
+        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
+
+        String lockingType = PREFS.getString(Common.LOCKING_TYPE, "");
+        String key;
+        switch (lockingType) {
+            case Common.PREF_VALUE_PASSWORD:
+                key = PREFS_KEY.getString(Common.PREF_VALUE_PASSWORD, "");
+                PREFS_KEY.edit().remove(Common.PREF_VALUE_PASSWORD).commit();
+                break;
+            case Common.PREF_VALUE_PIN: {
+                key = PREFS_KEY.getString(Common.PREF_VALUE_PIN, "");
+                PREFS_KEY.edit().remove(Common.PREF_VALUE_PIN).commit();
+                break;
+            }
+            case Common.PREF_VALUE_KNOCK_CODE: {
+                key = PREFS_KEY.getString(Common.PREF_VALUE_KNOCK_CODE, "");
+                PREFS_KEY.edit().remove(Common.PREF_VALUE_KNOCK_CODE).commit();
+                break;
+            }
+            default:
+                key = "";
+                break;
+        }
+        PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, key).commit();
+
+        String str;
+        File file;
+        try {
+            file = new File(context.getApplicationInfo().dataDir + File.separator + "master_switch");
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            str = bufferedReader.readLine();
+        } catch (Exception e) {
+            Log.d("MasterSwitch", "File not found!");
+            return;
+        }
+        if (str == null) {
+            Log.d("MasterSwitch", "File is empty!");
+            str = "1";
+        }
+        PREFS.edit().putBoolean(Common.MASTER_SWITCH_ON, str.equals("1"));
+        file.delete();
     }
 }

@@ -42,7 +42,7 @@ public class CheckBoxAdapter extends BaseAdapter {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         oriItemList = mItemList = itemList;
-        packagePref = mContext.getSharedPreferences(Common.PREF_PACKAGE, Activity.MODE_PRIVATE);
+        packagePref = mContext.getSharedPreferences(Common.PREFS_PACKAGES, Activity.MODE_PRIVATE);
         mFilter = new MyFilter();
     }
 
