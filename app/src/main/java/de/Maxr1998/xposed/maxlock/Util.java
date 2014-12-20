@@ -247,44 +247,48 @@ public class Util {
         PREFS = context.getSharedPreferences(Common.PREFS, Activity.MODE_PRIVATE);
         PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
 
-        String lockingType = PREFS.getString(Common.LOCKING_TYPE, "");
-        String key;
-        switch (lockingType) {
-            case Common.PREF_VALUE_PASSWORD:
-                key = PREFS_KEY.getString(Common.PREF_VALUE_PASSWORD, "");
-                PREFS_KEY.edit().remove(Common.PREF_VALUE_PASSWORD).commit();
-                break;
-            case Common.PREF_VALUE_PIN: {
-                key = PREFS_KEY.getString(Common.PREF_VALUE_PIN, "");
-                PREFS_KEY.edit().remove(Common.PREF_VALUE_PIN).commit();
-                break;
-            }
-            case Common.PREF_VALUE_KNOCK_CODE: {
-                key = PREFS_KEY.getString(Common.PREF_VALUE_KNOCK_CODE, "");
-                PREFS_KEY.edit().remove(Common.PREF_VALUE_KNOCK_CODE).commit();
-                break;
-            }
-            default:
-                key = "";
-                break;
-        }
-        PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, key).commit();
+        if (!PREFS.getString("migrated", "").equals("3.3")) {
 
-        String str;
-        File file;
-        try {
-            file = new File(context.getApplicationInfo().dataDir + File.separator + "master_switch");
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            str = bufferedReader.readLine();
-        } catch (Exception e) {
-            Log.d("MasterSwitch", "File not found!");
-            return;
+            String lockingType = PREFS.getString(Common.LOCKING_TYPE, "");
+            String key;
+            switch (lockingType) {
+                case Common.PREF_VALUE_PASSWORD:
+                    key = PREFS_KEY.getString(Common.PREF_VALUE_PASSWORD, "");
+                    break;
+                case Common.PREF_VALUE_PIN: {
+                    key = PREFS_KEY.getString(Common.PREF_VALUE_PIN, "");
+                    break;
+                }
+                case Common.PREF_VALUE_KNOCK_CODE: {
+                    key = PREFS_KEY.getString(Common.PREF_VALUE_KNOCK_CODE, "");
+                    break;
+                }
+                default:
+                    key = "";
+                    break;
+            }
+            PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, key).commit();
+            PREFS_KEY.edit().remove(Common.PREF_VALUE_PASSWORD).commit();
+            PREFS_KEY.edit().remove(Common.PREF_VALUE_PIN).commit();
+            PREFS_KEY.edit().remove(Common.PREF_VALUE_KNOCK_CODE).commit();
+
+            String str;
+            File file;
+            try {
+                file = new File(context.getApplicationInfo().dataDir + File.separator + "master_switch");
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+                str = bufferedReader.readLine();
+            } catch (Exception e) {
+                Log.d("MasterSwitch", "File not found!");
+                return;
+            }
+            if (str == null) {
+                Log.d("MasterSwitch", "File is empty!");
+                str = "1";
+            }
+            PREFS.edit().putBoolean(Common.MASTER_SWITCH_ON, str.equals("1"));
+            file.delete();
+            PREFS.edit().putString("migrated", "3.3");
         }
-        if (str == null) {
-            Log.d("MasterSwitch", "File is empty!");
-            str = "1";
-        }
-        PREFS.edit().putBoolean(Common.MASTER_SWITCH_ON, str.equals("1"));
-        file.delete();
     }
 }
