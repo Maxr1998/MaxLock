@@ -20,30 +20,21 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         PREFS = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS);
-        PREFS.makeWorldReadable();
-        PREFS.reload();
         PREFS_PACKAGES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_PACKAGES);
-        PREFS_PACKAGES.makeWorldReadable();
-        PREFS_PACKAGES.reload();
+        makeReadable();
     }
 
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-        PREFS.makeWorldReadable();
-        PREFS.reload();
-        PREFS_PACKAGES.makeWorldReadable();
-        PREFS_PACKAGES.reload();
-
-        if (!PREFS.getBoolean(Common.MASTER_SWITCH_ON, true)) {
-            return;
-        }
+        makeReadable();
 
         final String packageName = lpparam.packageName;
-
         if (!PREFS_PACKAGES.getBoolean(packageName, false)) {
             return;
         }
-        XposedBridge.log("package done");
+        if (!PREFS.getBoolean(Common.MASTER_SWITCH_ON, true)) {
+            return;
+        }
         Long timestamp = System.currentTimeMillis();
         Long permitTimestamp = PREFS_PACKAGES.getLong(packageName + "_tmp", 0);
         if (permitTimestamp != 0 && timestamp - permitTimestamp <= 4000) {
@@ -76,5 +67,12 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         it.putExtra(Common.INTENT_EXTRAS_INTENT, app.getIntent());
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         app.startActivity(it);
+    }
+
+    private void makeReadable() {
+        PREFS.makeWorldReadable();
+        PREFS.reload();
+        PREFS_PACKAGES.makeWorldReadable();
+        PREFS_PACKAGES.reload();
     }
 }
