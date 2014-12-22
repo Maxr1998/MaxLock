@@ -3,8 +3,9 @@
     <style name="AppTheme" parent="AppTheme.Base" />
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
-        <item name="android:windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/primary_red</item>
         <item name="colorPrimaryDark">@color/primary_red_dark</item>
@@ -17,6 +18,7 @@
     <style name="AppTheme.Base.Dark" parent="Theme.AppCompat">
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/primary_red</item>
         <item name="colorPrimaryDark">@color/primary_red_dark</item>
@@ -28,19 +30,19 @@
     <style name="FakeDieDialog" parent="android:Theme.Black.NoTitleBar" />
 
     <style name="SplitButtonContainer" parent="@android:style/Widget.Button">
-    <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:weightSum">2</item>
     </style>
 
     <style name="SplitButtonContainer.Light" parent="@android:style/Widget.Button">
-    <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:weightSum">2</item>
     </style>
 
     <style name="SplitButton" parent="@android:style/Widget.Button">
-    <item name="android:layout_width">0dip</item>
+        <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">marquee</item>
