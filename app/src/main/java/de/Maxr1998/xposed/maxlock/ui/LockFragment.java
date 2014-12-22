@@ -285,14 +285,12 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     private void personalizeUI() {
         if (prefs.getBoolean(Common.HIDE_TITLE_BAR, false))
             titleView.setVisibility(View.GONE);
-
         if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false))
             rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-
         if (prefs.getString(Common.BACKGROUND, "").equals("white") || prefs.getBoolean(Common.INVERT_COLOR, false)) {
             titleView.setTextColor(getResources().getColor(R.color.black));
             mInputText.setTextColor(getResources().getColor(R.color.black));
-            mDeleteButton.setColorFilter(R.color.black, PorterDuff.Mode.SRC_OVER);
+            mDeleteButton.setColorFilter(R.color.black, PorterDuff.Mode.SRC_ATOP);
         }
     }
 
