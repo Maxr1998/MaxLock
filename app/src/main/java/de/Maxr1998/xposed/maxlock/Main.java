@@ -15,11 +15,10 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
-    private static XSharedPreferences PREFS, PREFS_PACKAGES;
+    private static XSharedPreferences PREFS_PACKAGES;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        PREFS = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS);
         PREFS_PACKAGES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_PACKAGES);
         makeReadable();
     }
@@ -32,7 +31,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (!PREFS_PACKAGES.getBoolean(packageName, false)) {
             return;
         }
-        if (!PREFS.getBoolean(Common.MASTER_SWITCH_ON, true)) {
+        if (!PREFS_PACKAGES.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             return;
         }
         Long timestamp = System.currentTimeMillis();
@@ -70,8 +69,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     }
 
     private void makeReadable() {
-        PREFS.makeWorldReadable();
-        PREFS.reload();
         PREFS_PACKAGES.makeWorldReadable();
         PREFS_PACKAGES.reload();
     }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -42,9 +43,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        //noinspection deprecation
+        getPreferenceManager().setSharedPreferencesMode(Activity.MODE_WORLD_READABLE);
         addPreferencesFromResource(R.xml.preferences_main);
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
+        keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -77,6 +80,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             return true;
         } else if (preference == findPreference(Common.LOCKING_UI_SETTINGS)) {
             if (SettingsActivity.IS_DUAL_PANE) {
+                cleanBackStack();
+                getActivity().findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
                 getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LockingUISettingsFragment()).addToBackStack(null).commit();
             } else {
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingUISettingsFragment()).addToBackStack(null).commit();
@@ -141,7 +146,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
             if (preference == findPreference(Common.LOCKING_TYPE_PASSWORD)) {
-                Util.setPassword(getActivity());
+                Util.setPassword(getActivity(), null);
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_PIN)) {
                 if (SettingsActivity.IS_DUAL_PANE) {

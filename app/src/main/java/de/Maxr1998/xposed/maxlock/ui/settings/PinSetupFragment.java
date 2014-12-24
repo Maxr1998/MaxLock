@@ -1,7 +1,6 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,21 +26,27 @@ import de.Maxr1998.xposed.maxlock.Util;
 public class PinSetupFragment extends Fragment implements View.OnClickListener {
 
     ViewGroup rootView;
+    String customApp;
     EditText mSetupPinInput;
     Button mCancelButton;
     private String mFirstKey;
     private String mUiStage = "first";
     private Button mNextButton;
     private TextView mDescView;
-    private SharedPreferences pref, keysPref;
+    private SharedPreferences prefs, prefsKey, prefsPerApp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         // Prefs
-        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
+
+        // Strings
+        if (getArguments() != null)
+            customApp = getArguments().getString(Common.INTENT_EXTRAS_CUSTOM_APP);
     }
 
     @Override
@@ -80,7 +85,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
             }
         });
         View mSetupButtons;
-        if (pref.getBoolean(Common.USE_DARK_STYLE, false)) {
+        if (prefs.getBoolean(Common.USE_DARK_STYLE, false)) {
             mSetupButtons = inflater.inflate(R.layout.split_button, rootView, false);
         } else {
             mSetupButtons = inflater.inflate(R.layout.split_button_light, rootView, false);
@@ -138,13 +143,16 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
             updateUi(0);
         } else if (mUiStage.equals("second")) {
             if (mSetupPinInput.getText().toString().equals(mFirstKey)) {
-                pref.edit()
-                        .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PIN)
-                        .commit();
-                keysPref.edit()
-                        .putString(Common.KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString()))
-                        .commit();
-                getFragmentManager().popBackStack();
+                if (customApp == null) {
+                    prefs.edit()
+                            .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PIN)
+                            .commit();
+                    prefsKey.edit()
+                            .putString(Common.KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString()))
+                            .commit();
+                } else {
+                    prefsPerApp.edit().putString(customApp, Common.PREF_VALUE_PIN).putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString())).commit();
+                }
             } else {
                 Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.msg_password_inconsistent), Toast.LENGTH_SHORT).show();
             }

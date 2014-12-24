@@ -1,7 +1,7 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,9 +21,10 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
 
     ViewGroup rootView;
     View mInputView;
+    String customApp;
     Button mCancelButton;
     private String mFirstKey;
-    private SharedPreferences pref, prefsKey;
+    private SharedPreferences prefs, prefsKey, prefsPerApp;
     private StringBuilder key;
     private String mUiStage = "first";
     private Button mNextButton;
@@ -35,11 +36,14 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         setRetainInstance(true);
 
         // Prefs
-        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
 
         // Strings
         key = new StringBuilder("");
+        if (getArguments() != null)
+            customApp = getArguments().getString(Common.INTENT_EXTRAS_CUSTOM_APP);
     }
 
     @SuppressLint("NewApi")
@@ -62,7 +66,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
             kb[i] = (Button) knockButtons[i];
             kb[i].setOnClickListener(this);
         }
-        if (pref.getBoolean(Common.USE_DARK_STYLE, false)) {
+        if (prefs.getBoolean(Common.USE_DARK_STYLE, false)) {
             inflater.inflate(R.layout.split_button, rootView);
         } else {
             inflater.inflate(R.layout.split_button_light, rootView);
@@ -141,16 +145,21 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
             updateUi();
         } else if (mUiStage.equals("second")) {
             if (key.toString().equals(mFirstKey)) {
-                pref.edit()
-                        .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_KNOCK_CODE)
-                        .commit();
-                prefsKey.edit()
-                        .putString(Common.KEY_PREFERENCE, Util.shaHash(key.toString()))
-                        .commit();
+                if (customApp == null) {
+                    prefs.edit()
+                            .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_KNOCK_CODE)
+                            .commit();
+                    prefsKey.edit()
+                            .putString(Common.KEY_PREFERENCE, Util.shaHash(key.toString()))
+                            .commit();
+                } else {
+                    prefsPerApp.edit().putString(customApp, Common.PREF_VALUE_PIN).putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(key.toString())).commit();
+                }
             } else {
                 Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.msg_password_inconsistent), Toast.LENGTH_SHORT).show();
             }
             getFragmentManager().popBackStack();
+            getActivity().onBackPressed();
         }
     }
 

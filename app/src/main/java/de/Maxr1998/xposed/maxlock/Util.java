@@ -1,7 +1,6 @@
 package de.Maxr1998.xposed.maxlock;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -39,7 +38,7 @@ public class Util {
     static AuthenticationSucceededListener authenticationSucceededListener;
     private static int M_COLOR;
     private static Bitmap M_BITMAP;
-    private static SharedPreferences PREFS, PREFS_KEY;
+    private static SharedPreferences PREFS, PREFS_KEY, PREFS_PER_APP;
     private static ApplicationInfo REQUEST_PKG_INFO;
     private static PackageManager PM;
 
@@ -76,9 +75,10 @@ public class Util {
         });
     }
 
-    public static void setPassword(final Context context) {
+    public static void setPassword(final Context context, final String app) {
         PREFS = PreferenceManager.getDefaultSharedPreferences(context);
-        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
+        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
 
         @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.set_password, null);
 
@@ -111,12 +111,16 @@ public class Util {
                             .show();
                 } else {
                     dialog.dismiss();
-                    PREFS_KEY.edit()
-                            .putString(Common.KEY_PREFERENCE, Util.shaHash(v1))
-                            .commit();
-                    PREFS.edit()
-                            .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PASSWORD)
-                            .commit();
+                    if (app == null) {
+                        PREFS_KEY.edit()
+                                .putString(Common.KEY_PREFERENCE, shaHash(v1))
+                                .commit();
+                        PREFS.edit()
+                                .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PASSWORD)
+                                .commit();
+                    } else {
+                        PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).commit();
+                    }
                     Toast.makeText(context, R.string.msg_password_changed, Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -125,12 +129,7 @@ public class Util {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(PREFS_KEY.getString(Common.LOCKING_TYPE, "").equals(Common.PREF_VALUE_PASSWORD))) {
-                    dialog.dismiss();
-                } else {
-                    Toast.makeText(context, R.string.msg_password_null, Toast.LENGTH_SHORT)
-                            .show();
-                }
+                dialog.dismiss();
             }
         });
     }
@@ -162,7 +161,7 @@ public class Util {
 
     public static boolean checkInput(String input, String key_type, Context context, String app) {
         System.out.println(app);
-        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
+        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         String key = PREFS_KEY.getString(key_type, "");
         return key.equals("") || shaHash(input).equals(key);
     }
@@ -242,10 +241,10 @@ public class Util {
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1;
     }
 
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint({"CommitPrefEdits", "WorldReadableFiles"})
     public static void cleanUp(Context context) {
-        PREFS = context.getSharedPreferences(Common.PREFS, Activity.MODE_PRIVATE);
-        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Activity.MODE_PRIVATE);
+        PREFS = context.getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
+        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
 
         if (!PREFS.getString("migrated", "").equals("3.3")) {
 
@@ -269,6 +268,7 @@ public class Util {
             }
             if (!key.equals(""))
                 PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, key).commit();
+
             PREFS_KEY.edit().remove(Common.PREF_VALUE_PASSWORD).commit();
             PREFS_KEY.edit().remove(Common.PREF_VALUE_PIN).commit();
             PREFS_KEY.edit().remove(Common.PREF_VALUE_KNOCK_CODE).commit();
@@ -287,7 +287,9 @@ public class Util {
                 Log.d("MasterSwitch", "File is empty!");
                 str = "1";
             }
-            PREFS.edit().putBoolean(Common.MASTER_SWITCH_ON, str.equals("1"));
+            //noinspection deprecation
+            context.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().putBoolean(Common.MASTER_SWITCH_ON, str.equals("1"));
+            //noinspection ResultOfMethodCallIgnored
             file.delete();
             PREFS.edit().putString("migrated", "3.3");
         }

@@ -18,7 +18,7 @@
     </style>
 
     <style name="SplitButton" parent="@android:style/Widget.Holo.Button.Borderless">
-    <item name="android:layout_width">0dip</item>
+        <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">marquee</item>

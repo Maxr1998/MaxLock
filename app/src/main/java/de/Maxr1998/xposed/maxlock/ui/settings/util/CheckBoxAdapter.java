@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,10 @@ import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
+import de.Maxr1998.xposed.maxlock.ui.settings.KnockCodeSetupFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.PinSetupFragment;
 
 
 public class CheckBoxAdapter extends BaseAdapter {
@@ -34,15 +40,18 @@ public class CheckBoxAdapter extends BaseAdapter {
     private final List<Map<String, Object>> oriItemList;
     private final Context mContext;
     private final LayoutInflater mInflater;
-    private final SharedPreferences packagePref;
+    private final SharedPreferences prefsPackages, prefsPerApp;
     private final Filter mFilter;
     private List<Map<String, Object>> mItemList;
 
+    @SuppressLint("WorldReadableFiles")
     public CheckBoxAdapter(Context context, List<Map<String, Object>> itemList) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         oriItemList = mItemList = itemList;
-        packagePref = mContext.getSharedPreferences(Common.PREFS_PACKAGES, Activity.MODE_PRIVATE);
+        //noinspection deprecation
+        prefsPackages = mContext.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
+        prefsPerApp = mContext.getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
         mFilter = new MyFilter();
     }
 
@@ -63,7 +72,7 @@ public class CheckBoxAdapter extends BaseAdapter {
 
     @SuppressLint("InflateParams")
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.listview_item, null);
@@ -84,7 +93,7 @@ public class CheckBoxAdapter extends BaseAdapter {
         summary.setText(sSummary);
         icon.setImageDrawable(dIcon);
 
-        if (packagePref.getBoolean(key, false)) {
+        if (prefsPackages.getBoolean(key, false)) {
             toggleLock.setChecked(true);
             imgEdit.setVisibility(View.VISIBLE);
         } else {
@@ -106,29 +115,77 @@ public class CheckBoxAdapter extends BaseAdapter {
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // AlertDialog
+                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+                // Fake die checkbox
                 View checkBoxView = View.inflate(mContext, R.layout.per_app_settings, null);
                 CheckBox fakeDie = (CheckBox) checkBoxView.findViewById(R.id.cb_fake_die);
-
-                fakeDie.setChecked(packagePref.getBoolean(key + "_fake", false));
-
+                fakeDie.setChecked(prefsPackages.getBoolean(key + "_fake", false));
                 fakeDie.setOnClickListener(new View.OnClickListener() {
-
                     @SuppressLint("CommitPrefEdits")
                     @Override
                     public void onClick(View v) {
-
                         ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
                         am.killBackgroundProcesses(key);
-
                         CheckBox cb = (CheckBox) v;
                         boolean value = cb.isChecked();
-                        packagePref.edit()
+                        prefsPackages.edit()
                                 .putBoolean(key + "_fake", value)
                                 .commit();
                     }
                 });
+                // Custom password checkbox
+                CheckBox customPassword = (CheckBox) checkBoxView.findViewById(R.id.cb_custom_pw);
+                customPassword.setChecked(prefsPerApp.contains(key));
+                customPassword.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("CommitPrefEdits")
+                    @Override
+                    public void onClick(View v) {
+                        CheckBox cb = (CheckBox) v;
+                        boolean checked = cb.isChecked();
+                        if (checked) {
+                            final AlertDialog.Builder choose_lock = new AlertDialog.Builder(mContext);
+                            CharSequence[] cs = new CharSequence[]{
+                                    mContext.getString(R.string.locking_type_password),
+                                    mContext.getString(R.string.locking_type_pin),
+                                    mContext.getString(R.string.locking_type_knockcode)
+                            };
+                            choose_lock.setItems(cs, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    choose_lock.create().dismiss();
+                                    Fragment frag = new Fragment();
+                                    switch (i) {
+                                        case 0:
+                                            Util.setPassword(mContext, key);
+                                            break;
+                                        case 1:
+                                            frag = new PinSetupFragment();
+                                            break;
+                                        case 2:
+                                            frag = new KnockCodeSetupFragment();
+                                            break;
+                                    }
+                                    if (i == 1 || i == 2) {
+                                        Bundle b = new Bundle(1);
+                                        b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
+                                        frag.setArguments(b);
+                                        if (SettingsActivity.IS_DUAL_PANE) {
+                                            ((SettingsActivity) mContext).findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
+                                            ((SettingsActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container_scd, frag).addToBackStack(null).commit();
+                                        } else {
+                                            ((SettingsActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).addToBackStack(null).commit();
+                                        }
+                                    }
+                                }
+                            }).create().show();
+                        } else
+                            prefsPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).commit();
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    }
+                });
+                // Finish dialog
                 builder.setTitle(mContext.getString(R.string.txt_settings))
                         .setIcon(dIcon)
                         .setView(checkBoxView)
@@ -144,7 +201,6 @@ public class CheckBoxAdapter extends BaseAdapter {
         });
 
         toggleLock.setOnClickListener(new View.OnClickListener() {
-
             @SuppressLint("CommitPrefEdits")
             @Override
             public void onClick(View v) {
@@ -156,13 +212,13 @@ public class CheckBoxAdapter extends BaseAdapter {
 
                 boolean value = tb.isChecked();
                 if (value) {
-                    packagePref.edit()
+                    prefsPackages.edit()
                             .putBoolean(key, true)
                             .commit();
                     // TO-DO: Custom reveal animations
                     imgEdit.setVisibility(View.VISIBLE);
                 } else {
-                    packagePref.edit().remove(key).commit();
+                    prefsPackages.edit().remove(key).commit();
                     imgEdit.setVisibility(View.GONE);
                 }
             }

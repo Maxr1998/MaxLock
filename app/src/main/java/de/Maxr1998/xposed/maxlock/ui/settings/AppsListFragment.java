@@ -1,7 +1,6 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,9 +33,10 @@ import de.Maxr1998.xposed.maxlock.ui.settings.util.CheckBoxAdapter;
 
 public class AppsListFragment extends Fragment {
 
-    List<Map<String, Object>> itemList;
+    List<Map<String, Object>> itemList, finalList;
     ViewGroup rootView;
-    private ListView listView;
+    ListView listView;
+    ProgressDialog progressDialog;
     private CheckBoxAdapter mAdapter;
     private EditText search;
     private SharedPreferences pref;
@@ -46,6 +46,7 @@ public class AppsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        pref = getActivity().getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
     }
 
     @SuppressLint("NewApi")
@@ -54,19 +55,39 @@ public class AppsListFragment extends Fragment {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         listView = (ListView) rootView.findViewById(R.id.listview);
         search = (EditText) rootView.findViewById(R.id.search);
-        if (Util.noGingerbread())
-            search.setAlpha(0);
-
-        pref = getActivity().getSharedPreferences(Common.PREFS, Activity.MODE_PRIVATE);
-
-        if (mAdapter == null || mAdapter.isEmpty()) {
+        if (finalList == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(true);
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    task.cancel(true);
+                }
+            });
+            progressDialog.show();
+            if (Util.noGingerbread())
+                search.setAlpha(0);
             if (task == null)
                 task = new SetupAppList();
             if (!task.getStatus().equals(AsyncTask.Status.RUNNING))
                 task.execute();
+        } else {
+            setup();
         }
-
         return rootView;
+    }
+
+    @SuppressLint("NewApi")
+    private void setup() {
+        mAdapter = new CheckBoxAdapter(getActivity(), finalList);
+        listView.setAdapter(mAdapter);
+        setupSearch();
+        if (Util.noGingerbread())
+            search.setAlpha(1);
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 
     private void setupSearch() {
@@ -91,25 +112,6 @@ public class AppsListFragment extends Fragment {
 
     private class SetupAppList extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
 
-        final AsyncTask task = this;
-        ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setCancelable(true);
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    task.cancel(true);
-                }
-            });
-        }
-
         @Override
         protected List<Map<String, Object>> doInBackground(Void... voids) {
             Context activity = getActivity();
@@ -117,13 +119,12 @@ public class AppsListFragment extends Fragment {
             PackageManager pm = activity.getPackageManager();
             List<ApplicationInfo> list = pm.getInstalledApplications(0);
 
-            progressDialog.setMax(list.size());
-
             itemList = new ArrayList<>();
             int i = 0;
             for (ApplicationInfo info : list) {
                 if (isCancelled())
                     break;
+                progressDialog.setMax(list.size());
                 if (pref.getBoolean("show_system_apps", false) ?
                         activity.getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
                         (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
@@ -160,12 +161,8 @@ public class AppsListFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Map<String, Object>> list) {
             super.onPostExecute(list);
-            progressDialog.dismiss();
-            mAdapter = new CheckBoxAdapter(getActivity(), list);
-            listView.setAdapter(mAdapter);
-            if (Util.noGingerbread())
-                search.setAlpha(1);
-            setupSearch();
+            finalList = list;
+            setup();
         }
 
         @Override

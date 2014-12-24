@@ -12,4 +12,12 @@
         android:layout_margin="5dp"
         android:text="@string/txt_fake_die" />
 
+    <CheckBox
+        android:id="@+id/cb_custom_pw"
+        style="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/txt_custom_password" />
+
 </LinearLayout>

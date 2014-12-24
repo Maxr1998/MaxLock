@@ -1,6 +1,7 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,8 +26,8 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
     private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
     public static boolean IS_DUAL_PANE;
+    public SettingsFragment mSettingsFragment;
     SharedPreferences prefs;
-    private SettingsFragment mSettingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +61,18 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
         }
     }
 
+    @SuppressLint("WorldReadableFiles")
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.master_switch_menu_item));
-        master_switch.setChecked(prefs.getBoolean(Common.MASTER_SWITCH_ON, true));
+        master_switch.setChecked(getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).getBoolean(Common.MASTER_SWITCH_ON, true));
         master_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @SuppressLint("CommitPrefEdits")
+            @SuppressLint({"CommitPrefEdits"})
             @Override
             public void onCheckedChanged(CompoundButton button, boolean b) {
-                prefs.edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
+                getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
             }
         });
         return super.onCreateOptionsMenu(menu);

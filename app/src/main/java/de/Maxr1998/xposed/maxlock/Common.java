@@ -4,6 +4,7 @@ public class Common {
 
     public static final String INTENT_EXTRAS_PKG_NAME = "intent_extras_pkg_name";
     public static final String INTENT_EXTRAS_INTENT = "intent_extras_intent";
+    public static final String INTENT_EXTRAS_CUSTOM_APP = "custom_app";
 
     // Preference keys/ids
     public static final String LOCKING_TYPE = "locking_type";
