@@ -176,7 +176,8 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                             if (!t.equals(getString(android.R.string.ok))) {
                                 key.append(t);
                                 mInputText.append(t);
-                                //checkInput();
+                                if (prefs.getBoolean(Common.QUICK_UNLOCK, false))
+                                    checkInput();
                             } else {
                                 checkInput();
                             }

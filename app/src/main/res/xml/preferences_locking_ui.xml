@@ -27,6 +27,12 @@
             android:summary="@string/pref_hide_input_bar_summary"
             android:title="@string/pref_hide_input_bar" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_pin_only">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="quick_unlock"
+            android:title="@string/pref_quick_unlock" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_category_knock_code_only">
         <CheckBoxPreference
             android:defaultValue="true"

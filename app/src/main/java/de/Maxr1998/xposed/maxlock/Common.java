@@ -23,6 +23,7 @@ public class Common {
     public static final String INVERT_COLOR = "invert_color";
     public static final String HIDE_TITLE_BAR = "hide_title_bar";
     public static final String HIDE_INPUT_BAR = "hide_input_bar";
+    public static final String QUICK_UNLOCK = "quick_unlock";
     public static final String SHOW_DIVIDERS = "show_dividers";
     public static final String TOUCH_VISIBLE = "touch_visible";
 

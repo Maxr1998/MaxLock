@@ -49,6 +49,8 @@
     <string name="pref_hide_title_bar">Hide title bar</string>
     <string name="pref_hide_input_bar">Hide input bar</string>
     <string name="pref_hide_input_bar_summary">This hides clear button, too!</string>
+    <string name="pref_category_pin_only">PIN only</string>
+    <string name="pref_quick_unlock">Quick unlock</string>
     <string name="pref_category_knock_code_only">Knock code only</string>
     <string name="pref_show_dividers">Show dividers</string>
     <string name="pref_touch_visible">Make touches visible</string>
