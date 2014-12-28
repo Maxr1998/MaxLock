@@ -14,8 +14,10 @@
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_search_tinted"
-            android:drawableRight="@drawable/ic_clear_tinted"
+            android:drawableEnd="@drawable/ic_clear"
+            android:drawableLeft="@drawable/ic_search"
+            android:drawableRight="@drawable/ic_clear"
+            android:drawableStart="@drawable/ic_search"
             android:hint="@string/msg_search"
             android:inputType="text"
             android:padding="5dp" />

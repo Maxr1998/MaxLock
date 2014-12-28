@@ -23,3 +23,5 @@ gradlew*
 
 # Gedit save files
 *.*~
+
+app/src/main/res/values/private.xml
