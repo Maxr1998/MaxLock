@@ -4,7 +4,8 @@
     android:versionCode="16"
     android:versionName="3.3">
 
-<uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -38,7 +39,7 @@
             android:theme="@style/FakeDieDialog" />
 
         <activity
-            android:name=".MasterSwitchShortcutActivity"
+            android:name=".ui.MasterSwitchShortcutActivity"
             android:excludeFromRecents="true"
             android:label="@string/toggle_master_switch"
             android:theme="@style/TranslucentStatusBar">

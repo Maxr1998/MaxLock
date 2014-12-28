@@ -110,7 +110,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             //noinspection deprecation
             mainLayout.setBackgroundDrawable(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         }
-        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.MasterSwitchShortcutActivity")) {
+        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity")) {
             View gapTop = rootView.findViewById(R.id.top_gap);
             View gapBottom = rootView.findViewById(R.id.bottom_gap);
             if (screenWidth < screenHeight) {
