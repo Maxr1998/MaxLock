@@ -16,6 +16,12 @@ android {
         targetSdkVersion 21
     }
     buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
+            signingConfig signingConfigs.main
+        }
         debug {
             debuggable true
             signingConfig signingConfigs.main
