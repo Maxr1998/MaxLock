@@ -1,33 +1,37 @@
 apply plugin: 'com.android.application'
 android {
+    signingConfigs {
+        main {
+            storeFile file("../../../app_maxlock_key")
+            keyAlias 'MaxLock'
+            storePassword System.getenv("KSTOREPWD")
+            keyPassword System.getenv("KEYPWD")
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
-
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 10
         targetSdkVersion 21
     }
-
     buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
+        debug {
             debuggable true
+            signingConfig signingConfigs.main
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-
     lintOptions {
         abortOnError false
     }
 }
 
 repositories {
+    mavenCentral()
     maven {
         url "https://repo.commonsware.com.s3.amazonaws.com"
     }
@@ -41,10 +45,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:palette-v7:21.0.0'
     compile 'com.google.guava:guava:18.0'
+    compile 'com.anjlab.android.iab.v3:library:1.0.+@aar'
     compile 'com.commonsware.cwac:anddown:0.2.0'
     provided files('src/XposedBridgeApi-54.jar')
     compile files('src/commons-io-2.4.jar')
-
     // not included in app, download from https://github.com/kolavar/android-support-v4-preferencefragment
     compile(name: 'support-v4-preferencefragment-1.0.0', ext: 'aar')
 }
