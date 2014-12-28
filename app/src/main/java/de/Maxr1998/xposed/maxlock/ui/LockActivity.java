@@ -6,6 +6,7 @@ import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -20,6 +21,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     private String requestPkg;
     private ActivityManager am;
     private Intent app;
+    private boolean unlocked = false;
     private SharedPreferences prefsPackages;
     private boolean isInFocus = false;
 
@@ -59,6 +61,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onAuthenticationSucceeded() {
+        unlocked = true;
         prefsPackages.edit()
                 .putLong(requestPkg + "_tmp", System.currentTimeMillis())
                 .commit();
@@ -85,6 +88,10 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @Override
     public void onStop() {
         super.onStop();
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_PRO, false) &&
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
+            Util.logFailedAuthentication(this, requestPkg);
+        }
         if (!isInFocus) {
             Log.d("MaxLock/LockActivity", "Lost focus, finishing.");
             finish();

@@ -23,14 +23,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Util {
 
@@ -51,7 +56,7 @@ public class Util {
         @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.ask_password, null);
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(false)
-                .setTitle(R.string.locking_type_password)
+                .setTitle(R.string.pref_locking_type_password)
                 .setView(dialogView)
                 .setPositiveButton(android.R.string.ok, null)
                 .create();
@@ -132,6 +137,20 @@ public class Util {
                 dialog.dismiss();
             }
         });
+    }
+
+    public static void logFailedAuthentication(Context context, String pkg) {
+        String toLog = "[" + new SimpleDateFormat("dd/MM/yy, HH:mm:ss").format(new Date(System.currentTimeMillis())) + "] " + getApplicationNameFromPackage(pkg, context);
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new BufferedWriter(new FileWriter(context.getApplicationInfo().dataDir + File.separator + Common.LOG_FILE, true)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (writer != null) {
+            writer.printf("%s" + "%n", toLog);
+            writer.close();
+        }
     }
 
     public static String shaHash(String toHash) { // from: [ http://stackoverflow.com/a/11978976 ]. Thanks very much!
