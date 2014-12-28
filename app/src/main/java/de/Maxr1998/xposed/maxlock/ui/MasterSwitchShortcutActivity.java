@@ -1,4 +1,4 @@
-package de.Maxr1998.xposed.maxlock;
+package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
-import de.Maxr1998.xposed.maxlock.ui.LockFragment;
+import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
+import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.R;
 
 public class MasterSwitchShortcutActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
