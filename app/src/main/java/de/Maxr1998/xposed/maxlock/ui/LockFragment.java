@@ -32,6 +32,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     SharedPreferences prefs, prefsKey, prefsPerApp;
     View[] pinButtons, knockButtons, dividers;
     TextView pb;
+    private int screenHeight, screenWidth;
     private String password;
     private StringBuilder key;
     private TextView mInputText;
@@ -89,12 +90,6 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         });
 
         // Dimens
-        int statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
-        int navBarHeight = 0;
-        if (Util.noGingerbread())
-            navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
-        int screenWidth;
-        int screenHeight;
         if (Util.noGingerbread()) {
             Point size = new Point();
             getActivity().getWindowManager().getDefaultDisplay().getSize(size);
@@ -104,25 +99,38 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             screenWidth = 480;
             screenHeight = 800;
         }
+        int statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
+        int navBarHeight = 0;
+
+        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity")) {
+            View gapTop = rootView.findViewById(R.id.top_gap);
+            View gapBottom = rootView.findViewById(R.id.bottom_gap);
+            if (screenHeight > screenWidth) {
+                // Portrait
+                if (Util.noGingerbread())
+                    navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
+                gapBottom.getLayoutParams().height = navBarHeight;
+                screenHeight = screenHeight + navBarHeight;
+            } else {
+                // Landscape
+                if (Util.noGingerbread())
+                    navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height_landscape", "dimen", "android"));
+                //noinspection SuspiciousNameCombination
+                gapBottom.getLayoutParams().width = navBarHeight;
+            }
+            gapTop.getLayoutParams().height = statusBarHeight;
+            System.out.println(screenHeight + "*" + screenWidth);
+            System.out.println("StatBar:" + statusBarHeight);
+            System.out.println("NavBar:" + navBarHeight);
+        }
+        // Background
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mainLayout.setBackground(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         } else {
             //noinspection deprecation
             mainLayout.setBackgroundDrawable(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
         }
-        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity")) {
-            View gapTop = rootView.findViewById(R.id.top_gap);
-            View gapBottom = rootView.findViewById(R.id.bottom_gap);
-            if (screenWidth < screenHeight) {
-                gapTop.getLayoutParams().height = statusBarHeight;
-                gapBottom.getLayoutParams().height = navBarHeight;
-            } else if (screenWidth > screenHeight) {
-                //noinspection SuspiciousNameCombination
-                gapTop.getLayoutParams().width = statusBarHeight;
-                //noinspection SuspiciousNameCombination
-                gapBottom.getLayoutParams().width = navBarHeight;
-            }
-        }
+        // Title
         titleView.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));
         titleView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
 
@@ -281,6 +289,8 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                     divider.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
             }
         }
+        if (screenWidth > screenHeight)
+            dividers[0].setVisibility(View.GONE);
     }
 
     private void personalizeUI() {
