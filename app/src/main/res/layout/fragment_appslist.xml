@@ -15,9 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_clear"
-            android:drawableLeft="@drawable/ic_search"
+            android:drawableLeft="@drawable/ic_search_black_24dp"
             android:drawableRight="@drawable/ic_clear"
-            android:drawableStart="@drawable/ic_search"
+            android:drawableStart="@drawable/ic_search_black_24dp"
             android:hint="@string/msg_search"
             android:inputType="text"
             android:padding="5dp" />
