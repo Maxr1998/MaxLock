@@ -7,12 +7,9 @@ public class Common {
     public static final String INTENT_EXTRAS_CUSTOM_APP = "custom_app";
 
     // Preference keys/ids
-    public static final String LOCKING_TYPE = "locking_type";
-
-    public static final String TRUSTED_DEVICES = "trusted_devices";
-
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";
 
+    public static final String LOCKING_TYPE = "locking_type";
     public static final String LOCKING_TYPE_PASSWORD = "locking_type_password";
     public static final String LOCKING_TYPE_PIN = "locking_type_pin";
     public static final String LOCKING_TYPE_KNOCK_CODE = "locking_type_knock_code";
@@ -27,7 +24,14 @@ public class Common {
     public static final String SHOW_DIVIDERS = "show_dividers";
     public static final String TOUCH_VISIBLE = "touch_visible";
 
-    //public static final String LOCKING_BEHAVIOUR = "locking_behaviour";
+    public static final String LOCKING_OPTIONS = "locking_options";
+
+    public static final String ENABLE_LOGGING = "enable_logging";
+    public static final String VIEW_LOGS = "view_logs";
+    public static final String LOG_FILE = "log.txt";
+
+    public static final String TRUSTED_DEVICES = "trusted_devices";
+
 
     public static final String CHOOSE_APPS = "choose_apps";
 
@@ -36,6 +40,8 @@ public class Common {
     public static final String FAKE_DIE_INPUT = "fake_die_input";
 
     public static final String ABOUT = "about";
+    public static final String DONATE = "donate_upgrade_pro";
+    public static final String ENABLE_PRO = "enable_pro";
 
     public static final String MASTER_SWITCH_ON = "master_switch_on";
     public static final String KEY_PREFERENCE = "key";

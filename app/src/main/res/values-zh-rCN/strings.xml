@@ -8,9 +8,9 @@
     <string name="pref_category_locking">锁定设置</string>
     <string name="pref_locking_type">锁定类型</string>
     <!-- Locking type Settings -->
-    <string name="locking_type_password">密码</string>
-    <string name="locking_type_pin">PIN</string>
-    <string name="locking_type_knockcode">轻敲代码</string>
+    <string name="pref_locking_type_password">密码</string>
+    <string name="pref_locking_type_pin">PIN</string>
+    <string name="pref_locking_type_knockcode">轻敲代码</string>
 
     <string name="pref_set_password">设置密码</string>
     <string name="msg_password_inconsistent">密码不一致！</string>
@@ -73,8 +73,8 @@
     <string name="pref_show_system_app_summary_on">显示系统应用程序</string>
     <string name="pref_show_system_app_summary_off">隐藏系统应用程序</string>
 
-    <string name="choose_apps">选择应用</string>
-    <string name="choose_apps_summary">选择需要锁定的应用程序</string>
+    <string name="pref_choose_apps">选择应用</string>
+    <string name="pref_choose_apps_summary">选择需要锁定的应用程序</string>
 
     <string name="msg_search">搜索</string>
     <string name="txt_lock_on">开</string>
@@ -87,8 +87,7 @@
     <string name="pref_use_dark_style">使用黑色风格</string>
     <string name="pref_fake_die_input">假死输入字符</string>
 
-    <string name="about">关于</string>
-    <string name="copyright">&#169;2014 by Maxr1998</string>
+    <string name="pref_category_about">关于</string>
 
     <string name="fake_die_message">非常抱歉,%1$s已停止.</string>
     <string name="report">报告问题</string>

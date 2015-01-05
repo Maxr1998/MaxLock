@@ -147,9 +147,9 @@ public class CheckBoxAdapter extends BaseAdapter {
                         if (checked) {
                             final AlertDialog.Builder choose_lock = new AlertDialog.Builder(mContext);
                             CharSequence[] cs = new CharSequence[]{
-                                    mContext.getString(R.string.locking_type_password),
-                                    mContext.getString(R.string.locking_type_pin),
-                                    mContext.getString(R.string.locking_type_knockcode)
+                                    mContext.getString(R.string.pref_locking_type_password),
+                                    mContext.getString(R.string.pref_locking_type_pin),
+                                    mContext.getString(R.string.pref_locking_type_knockcode)
                             };
                             choose_lock.setItems(cs, new DialogInterface.OnClickListener() {
                                 @Override

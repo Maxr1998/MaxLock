@@ -15,9 +15,18 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.preference.PreferenceFragment;
+import android.text.method.ScrollingMovementMethod;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.commonsware.cwac.anddown.AndDown;
 
@@ -25,19 +34,23 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import de.Maxr1998.xposed.maxlock.BillingHelper;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragment {
 
     SharedPreferences pref, keysPref;
+    BillingHelper billingHelper;
+    boolean proVersion;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,22 +61,38 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         addPreferencesFromResource(R.xml.preferences_main);
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        billingHelper = new BillingHelper(getActivity());
+
+        boolean donated = !billingHelper.getBp().listOwnedProducts().isEmpty();
+        proVersion = pref.getBoolean(Common.ENABLE_PRO, false);
+        String version = null;
+        try {
+            version = " v" + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        Preference about = findPreference(Common.ABOUT);
+        CheckBoxPreference ep = (CheckBoxPreference) findPreference(Common.ENABLE_PRO);
+        String appName;
+        if (donated) {
+            appName = getString(R.string.app_name_pro);
+            pref.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+            proVersion = true;
+            ep.setEnabled(false);
+            ep.setChecked(true);
+        } else {
+            if (proVersion)
+                appName = getString(R.string.app_name_pseudo_pro);
+            else appName = getString(R.string.app_name);
+        }
+        about.setTitle(appName + version);
+        getActivity().setTitle(appName);
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Preference pref = findPreference(key);
-
-        if (key.equals(Common.HIDE_APP_FROM_LAUNCHER)) {
-            CheckBoxPreference checkBoxPreference = (CheckBoxPreference) pref;
-            if (checkBoxPreference.isChecked()) {
-                PackageManager p = getActivity().getPackageManager();
-                p.setComponentEnabledSetting(getActivity().getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-            } else {
-                PackageManager p = getActivity().getPackageManager();
-                p.setComponentEnabledSetting(getActivity().getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-            }
-        }
+    public void onDestroy() {
+        billingHelper.finish();
+        super.onDestroy();
     }
 
     @Override
@@ -87,6 +116,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingUISettingsFragment()).addToBackStack(null).commit();
             }
             return true;
+        } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
+            pref.edit().putBoolean(Common.ENABLE_LOGGING, proVersion);
+            if (SettingsActivity.IS_DUAL_PANE) {
+                cleanBackStack();
+                getActivity().findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
+                getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LockingOptionsFragment()).addToBackStack(null).commit();
+            } else {
+                getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingOptionsFragment()).addToBackStack(null).commit();
+            }
+            return true;
         } else if (preference == findPreference(Common.TRUSTED_DEVICES)) {
             if (SettingsActivity.IS_DUAL_PANE) {
                 cleanBackStack();
@@ -95,6 +134,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             } else {
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, new TrustedDevicesFragment()).addToBackStack(null).commit();
             }
+            return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
             if (SettingsActivity.IS_DUAL_PANE) {
                 cleanBackStack();
@@ -103,6 +143,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             } else {
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, new AppsListFragment()).addToBackStack(null).commit();
             }
+            return true;
+        } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.ENABLE_PRO)) {
+            ((SettingsActivity) getActivity()).restart(false);
             return true;
         } else if (preference == findPreference(Common.ABOUT)) {
             AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
@@ -121,6 +164,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             String html = new AndDown().markdownToHtml(markdown);
             webView.loadData(html, "text/html; charset=UTF-8", null);
             about.setView(webView).create().show();
+            return true;
+        } else if (preference == findPreference(Common.DONATE)) {
+            billingHelper.showDialog();
+            return true;
         }
         return false;
     }
@@ -217,12 +264,88 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 }
             }
         }
+    }
+
+    @SuppressLint("ValidFragment")
+    public class LockingOptionsFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+            addPreferencesFromResource(R.xml.preferences_locking_options);
+            Preference el = findPreference(Common.ENABLE_LOGGING);
+            el.setEnabled(proVersion);
+            if (!proVersion) {
+                el.setSummary(R.string.toast_pro_required);
+            }
+        }
 
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
-
+            if (preference == findPreference(Common.VIEW_LOGS)) {
+                if (SettingsActivity.IS_DUAL_PANE) {
+                    getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LogViewerFragment()).addToBackStack(null).commit();
+                } else {
+                    getFragmentManager().beginTransaction().replace(R.id.frame_container, new LogViewerFragment()).addToBackStack(null).commit();
+                }
+                return true;
+            }
             return false;
+        }
+    }
+
+    @SuppressLint("ValidFragment")
+    public class LogViewerFragment extends Fragment {
+
+        private TextView textView;
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+            setHasOptionsMenu(true);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            textView = new TextView(getActivity()) {
+                {
+                    setVerticalScrollBarEnabled(true);
+                    setMovementMethod(ScrollingMovementMethod.getInstance());
+                    setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
+                }
+            };
+
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(getActivity().getApplicationInfo().dataDir + File.separator + Common.LOG_FILE));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    textView.append(line);
+                    textView.append("\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return textView;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            super.onCreateOptionsMenu(menu, inflater);
+            inflater.inflate(R.menu.logviewer_menu, menu);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            if (item.getItemId() == R.id.delete_log) {
+                File file = new File(getActivity().getApplicationInfo().dataDir + File.separator + Common.LOG_FILE);
+                //noinspection ResultOfMethodCallIgnored
+                file.delete();
+                textView.setText("");
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
         }
     }
 }

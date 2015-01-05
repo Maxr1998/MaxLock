@@ -4,12 +4,12 @@
     <PreferenceCategory android:title="@string/pref_locking_type">
         <Preference
             android:key="locking_type_password"
-            android:title="@string/locking_type_password" />
+            android:title="@string/pref_locking_type_password" />
         <Preference
             android:key="locking_type_pin"
-            android:title="@string/locking_type_pin" />
+            android:title="@string/pref_locking_type_pin" />
         <Preference
             android:key="locking_type_knock_code"
-            android:title="@string/locking_type_knockcode" />
+            android:title="@string/pref_locking_type_knockcode" />
     </PreferenceCategory>
 </PreferenceScreen>

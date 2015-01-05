@@ -3,14 +3,17 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">Placeholder</string>
+    <string name="restart_required">MaxLock requires a restart for changes to take effect</string>
+    <string name="restart_hard">MaxLock will close now. Please restart on your own!</string>
+    <string name="toast_pro_required">Pro-version is required to use this feature!</string>
 
     <!-- Main screen -->
-    <string name="pref_category_locking">Locking options</string>
+    <string name="pref_category_locking">Lock</string>
     <string name="pref_locking_type">Locking type</string>
     <!-- Locking type Settings -->
-    <string name="locking_type_password">Password</string>
-    <string name="locking_type_pin">PIN</string>
-    <string name="locking_type_knockcode">Knock code</string>
+    <string name="pref_locking_type_password">Password</string>
+    <string name="pref_locking_type_pin">PIN</string>
+    <string name="pref_locking_type_knockcode">Knock code</string>
 
     <string name="pref_set_password">Set password</string>
     <string name="msg_password_inconsistent">Password is inconsistent!</string>
@@ -55,16 +58,14 @@
     <string name="pref_show_dividers">Show dividers</string>
     <string name="pref_touch_visible">Make touches visible</string>
 
-    <string name="pref_locking_behaviour">Locking behaviour (reboot needed)</string>
-    <string name="lock">Lock</string>
-    <string-array name="locking_behaviour_names">
-        <item>On first app start in session</item>
-        <item>On each app launch or resume (laggy)</item>
-    </string-array>
-    <string-array name="locking_behaviour_values">
-        <item>onCreate</item>
-        <item>onStart</item>
-    </string-array>
+    <string name="pref_locking_options">Locking-options</string>
+    <string name="pref_category_logging">Logging</string>
+    <string name="pref_enable_logging">Enable logging</string>
+    <string name="pref_enable_logging_summary">Log failed/unfinished unlock attempts</string>
+    <string name="pref_view_logs">View logs</string>
+    <string name="menu_delete_log">Delete logs</string>
+    <string name="pref_category_other">Other</string>
+    <string name="pref_fake_die_input">Fake die input</string>
 
     <string name="pref_trusted_devices">Trusted devices</string>
     <string name="no_trusted_devices">No trusted devices configured</string>
@@ -74,10 +75,17 @@
     <string name="pref_show_system_app">Show system apps</string>
     <string name="pref_show_system_app_summary_on">Show launchable system apps</string>
     <string name="pref_show_system_app_summary_off">Hide launchable system apps</string>
+    <string name="pref_choose_apps">Choose apps</string>
+    <string name="pref_choose_apps_summary">Select apps to be locked</string>
 
-    <string name="choose_apps">Choose apps</string>
-    <string name="choose_apps_summary">Select apps to be locked</string>
-
+    <string name="backup_list">Backup list</string>
+    <string name="restore_list">Restore list</string>
+    <string name="clear_list">Clear list</string>
+    <string name="toast_no_files_to_backup">No files found to backup</string>
+    <string name="toast_backup_restore_exception">There was an error.\nPlease contact developer!</string>
+    <string name="toast_backup_success">Backup successfully completed</string>
+    <string name="dialog_restore_list_message">This will replace the current settings with the one from the backup!</string>
+    <string name="toast_restore_success">Backup successfully restored!</string>
     <string name="msg_search">Search</string>
     <string name="txt_lock_on">On</string>
     <string name="txt_lock_off">Off</string>
@@ -88,10 +96,14 @@
     <string name="pref_category_ui">UI settings</string>
     <string name="pref_hide_from_launcher">Hide app from launcher</string>
     <string name="pref_use_dark_style">Use dark style</string>
-    <string name="pref_fake_die_input">Fake die input</string>
 
-    <string name="about">About</string>
-    <string name="copyright">&#169;2014 by Maxr1998</string>
+    <string name="pref_category_about">About</string>
+    <string name="app_name_pro">MaxLock Pro</string>
+    <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
+    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\nClick to see more information</string>
+    <string name="pref_donate_upgrade_pro">Donate to upgrade to pro-version</string>
+    <string name="pref_enable_pro">Enable Pro</string>
+    <string name="pref_enable_pro_summary">This will enable pro-features even if you haven\'t bought MaxLock Pro</string>
 
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>

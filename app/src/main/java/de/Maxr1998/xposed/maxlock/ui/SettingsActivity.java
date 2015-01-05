@@ -107,16 +107,25 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
         StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(R.color.black), -3, this);
     }
 
-    public void restart() {
+    public void restart(final boolean hard) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (hard)
+            builder.setMessage(R.string.restart_hard)
+                    .setCancelable(false);
+        else builder.setMessage(R.string.restart_required);
         builder.setTitle(R.string.app_name)
-                .setMessage(R.string.restart_required)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = getIntent();
-                        finish();
-                        startActivity(intent);
+                        if (hard) {
+                            onDestroy();
+                            finish();
+                        } else {
+                            Intent intent = getIntent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            finish();
+                            startActivity(intent);
+                        }
                     }
                 }).create().show();
     }
