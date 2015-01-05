@@ -14,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +21,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -264,53 +261,9 @@ public class Util {
     public static void cleanUp(Context context) {
         PREFS = context.getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
         PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        if (!PREFS.getString("migrated", "").equals("4.0")) {
 
-        if (!PREFS.getString("migrated", "").equals("3.3")) {
-
-            String lockingType = PREFS.getString(Common.LOCKING_TYPE, "");
-            String key;
-            switch (lockingType) {
-                case Common.PREF_VALUE_PASSWORD:
-                    key = PREFS_KEY.getString(Common.PREF_VALUE_PASSWORD, "");
-                    break;
-                case Common.PREF_VALUE_PIN: {
-                    key = PREFS_KEY.getString(Common.PREF_VALUE_PIN, "");
-                    break;
-                }
-                case Common.PREF_VALUE_KNOCK_CODE: {
-                    key = PREFS_KEY.getString(Common.PREF_VALUE_KNOCK_CODE, "");
-                    break;
-                }
-                default:
-                    key = "";
-                    break;
-            }
-            if (!key.equals(""))
-                PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, key).commit();
-
-            PREFS_KEY.edit().remove(Common.PREF_VALUE_PASSWORD).commit();
-            PREFS_KEY.edit().remove(Common.PREF_VALUE_PIN).commit();
-            PREFS_KEY.edit().remove(Common.PREF_VALUE_KNOCK_CODE).commit();
-
-            String str;
-            File file;
-            try {
-                file = new File(context.getApplicationInfo().dataDir + File.separator + "master_switch");
-                BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-                str = bufferedReader.readLine();
-            } catch (Exception e) {
-                Log.d("MasterSwitch", "File not found!");
-                return;
-            }
-            if (str == null) {
-                Log.d("MasterSwitch", "File is empty!");
-                str = "1";
-            }
-            //noinspection deprecation
-            context.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().putBoolean(Common.MASTER_SWITCH_ON, str.equals("1"));
-            //noinspection ResultOfMethodCallIgnored
-            file.delete();
-            PREFS.edit().putString("migrated", "3.3");
+            PREFS.edit().putString("migrated", "4.0");
         }
     }
 }
