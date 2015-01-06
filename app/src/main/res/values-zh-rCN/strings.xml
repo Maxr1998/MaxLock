@@ -2,7 +2,10 @@
 <resources>
 
     <string name="app_name">MaxLock</string>
-    <string name="placeholder">Placeholder</string>
+    <string name="placeholder">占位符</string>
+	<string name="restart_required">MaxLock需要重新启动以让更改生效</string>
+    <string name="restart_hard">Maxlock现在将关闭,请您重新启动！</string>
+    <string name="toast_pro_required">使用此功能需要专业版本！</string>
 
     <!-- Main screen -->
     <string name="pref_category_locking">锁定设置</string>
@@ -49,22 +52,22 @@
     <string name="pref_hide_title_bar">隐藏标题栏</string>
     <string name="pref_hide_input_bar">隐藏输入栏</string>
     <string name="pref_hide_input_bar_summary">隐藏清除按钮!</string>
+	<string name="pref_category_pin_only">仅PIN</string>
+	<string name="pref_quick_unlock">快速解锁</string>
     <string name="pref_category_knock_code_only">仅轻敲代码</string>
     <string name="pref_show_dividers">显示分隔</string>
     <string name="pref_touch_visible">让触摸可见</string>
-
-    <string name="pref_locking_behaviour">锁定行为（需要重新启动）</string>
-    <string name="lock">锁定</string>
-    <string-array name="locking_behaviour_names">
-        <item>应用开始在第一次会话</item>
-        <item>在每一个应用程序或重新启动（延迟）</item>
-    </string-array>
-    <string-array name="locking_behaviour_values">
-        <item>在创建时</item>
-        <item>在开始时</item>
-    </string-array>
-
-    <string name="pref_trusted_devices">信任的设备</string>
+	
+	<string name="pref_locking_options">锁定设置</string>
+    <string name="pref_category_logging">日志记录</string>
+    <string name="pref_enable_logging">开启日志记录</string>
+    <string name="pref_enable_logging_summary">登录失败/未解锁的尝试</string>
+    <string name="pref_view_logs">查看日志</string>
+    <string name="menu_delete_log">删除日志</string>
+    <string name="pref_category_other">其它</string>
+    <string name="pref_fake_die_input">假死输入</string>
+	
+	<string name="pref_trusted_devices">信任的设备</string>
     <string name="no_trusted_devices">没有信任的设备配置</string>
     <string name="no_network_connected">您目前没有连接到任何网络</string>
 
@@ -72,22 +75,35 @@
     <string name="pref_show_system_app">显示系统应用</string>
     <string name="pref_show_system_app_summary_on">显示系统应用程序</string>
     <string name="pref_show_system_app_summary_off">隐藏系统应用程序</string>
-
     <string name="pref_choose_apps">选择应用</string>
     <string name="pref_choose_apps_summary">选择需要锁定的应用程序</string>
-
+	
+	<string name="backup_list">备份列表</string>
+    <string name="restore_list">恢复列表</string>
+    <string name="clear_list">清除列表</string>
+    <string name="toast_no_files_to_backup">没有备份文件</string>
+    <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者！</string>
+    <string name="toast_backup_success">备份成功</string>
+    <string name="dialog_restore_list_message">这将从备份替换当前设置！</string>
+    <string name="toast_restore_success">恢复成功</string>
     <string name="msg_search">搜索</string>
     <string name="txt_lock_on">开</string>
     <string name="txt_lock_off">关</string>
     <string name="txt_settings">设置</string>
     <string name="txt_fake_die">显示假死窗口</string>
+	<string name="txt_custom_password">自定义密码</string>
 
     <string name="pref_category_ui">界面设置</string>
-    <string name="pref_hide_from_launcher">在桌面隐藏应用</string>
+    <string name="pref_hide_from_launcher">在桌面隐藏应用图标</string>
     <string name="pref_use_dark_style">使用黑色风格</string>
-    <string name="pref_fake_die_input">假死输入字符</string>
 
     <string name="pref_category_about">关于</string>
+    <string name="app_name_pro">MaxLock专业版</string>
+    <string name="app_name_pseudo_pro">MaxLock假冒专业版</string>
+    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\n点击这里查看更多信息</string>
+    <string name="pref_donate_upgrade_pro">捐助后将升级为专业版</string>
+    <string name="pref_enable_pro">开启专业版</string>
+    <string name="pref_enable_pro_summary">这将开启专业版功能,即使您没有购买</string>
 
     <string name="fake_die_message">非常抱歉,%1$s已停止.</string>
     <string name="report">报告问题</string>
