@@ -1,9 +1,9 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
@@ -14,15 +14,16 @@ import de.Maxr1998.xposed.maxlock.R;
 
 public class MasterSwitchShortcutActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
-    SharedPreferences prefs;
+    SharedPreferences prefsPackages;
 
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint({"CommitPrefEdits", "WorldReadableFiles"})
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //noinspection deprecation
+        prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
 
-        if (prefs.getBoolean(Common.MASTER_SWITCH_ON, true)) {
+        if (prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             setContentView(R.layout.activity_lock);
             Fragment frag = new LockFragment();
             Bundle b = new Bundle(1);
@@ -31,7 +32,7 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
 
         } else {
-            prefs.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
+            prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
             Toast.makeText(this, getString(R.string.toast_master_switch_on), Toast.LENGTH_LONG).show();
             finish();
         }
@@ -40,7 +41,7 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onAuthenticationSucceeded() {
-        prefs.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
+        prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
         Toast.makeText(this, getString(R.string.toast_master_switch_off), Toast.LENGTH_LONG).show();
         finish();
     }
