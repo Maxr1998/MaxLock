@@ -23,8 +23,8 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
             "donate_beer"
     };
     private final int[] productIcons = {
-            R.drawable.ic_launcher,
-            R.drawable.ic_search_black_24dp
+            R.drawable.ic_coke_48dp,
+            R.drawable.ic_beer_48dp
     };
     private BillingProcessor bp;
     private Context mContext;
