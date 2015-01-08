@@ -38,7 +38,6 @@ public class Util {
 
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
     static AuthenticationSucceededListener authenticationSucceededListener;
-    private static int M_COLOR;
     private static Bitmap M_BITMAP;
     private static SharedPreferences PREFS, PREFS_KEY, PREFS_PER_APP;
     private static ApplicationInfo REQUEST_PKG_INFO;
@@ -224,11 +223,8 @@ public class Util {
                 }
                 break;
             case "white":
-                int[] colors = new int[9000001];
-                for (int i = 0; i <= 9000000; i++) {
-                    colors[i] = Color.WHITE;
-                }
-                M_BITMAP = Bitmap.createBitmap(colors, 3000, 3000, Bitmap.Config.ARGB_8888);
+                M_BITMAP = Bitmap.createBitmap(3000, 3000, Bitmap.Config.ARGB_8888);
+                M_BITMAP.eraseColor(Color.WHITE);
                 break;
             default:
                 Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
