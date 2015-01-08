@@ -65,9 +65,7 @@
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:padding="5dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:src="@drawable/ic_create"
+            android:src="@drawable/ic_create_black_48dp"
             android:tint="?attr/colorAccent"
             android:tintMode="src_over"
             android:visibility="gone" />
