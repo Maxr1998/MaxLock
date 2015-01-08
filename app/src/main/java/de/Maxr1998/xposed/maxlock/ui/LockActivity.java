@@ -21,9 +21,8 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     private String requestPkg;
     private ActivityManager am;
     private Intent app;
-    private boolean unlocked = false;
     private SharedPreferences prefsPackages;
-    private boolean isInFocus = false;
+    private boolean isInFocus = false, unlocked = false;
 
     @SuppressLint("WorldReadableFiles")
     @Override

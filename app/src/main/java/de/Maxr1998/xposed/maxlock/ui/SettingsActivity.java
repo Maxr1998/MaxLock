@@ -31,6 +31,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     public static boolean IS_DUAL_PANE;
     public SettingsFragment mSettingsFragment;
     SharedPreferences prefs;
+    private boolean unlocked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +95,20 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
     @Override
     public void onAuthenticationSucceeded() {
+        unlocked = true;
         if (mSettingsFragment == null) {
             mSettingsFragment = new SettingsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, mSettingsFragment, TAG_SETTINGS_FRAGMENT).commit();
             getSupportActionBar().show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_PRO, false) &&
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
+            Util.logFailedAuthentication(this, "Main App");
         }
     }
 
