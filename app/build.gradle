@@ -19,7 +19,7 @@ android {
         release {
             proguardFile file('proguard-conf.txt')
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             debuggable false
             signingConfig signingConfigs.main
         }
