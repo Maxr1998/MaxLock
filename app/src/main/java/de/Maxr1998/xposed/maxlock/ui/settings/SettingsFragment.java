@@ -145,7 +145,7 @@ public class SettingsFragment extends PreferenceFragment {
             }
             return true;
         } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.ENABLE_PRO)) {
-            ((SettingsActivity) getActivity()).restart(false);
+            ((SettingsActivity) getActivity()).restart();
             return true;
         } else if (preference == findPreference(Common.ABOUT)) {
             AlertDialog.Builder about = new AlertDialog.Builder(getActivity());

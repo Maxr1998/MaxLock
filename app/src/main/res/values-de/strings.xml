@@ -4,7 +4,6 @@
     <string name="app_name">MaxLock</string>
     <string name="placeholder">Platzhalter</string>
     <string name="restart_required">MaxLock muss für die Übernahme der Änderungen neu gestartet werden</string>
-    <string name="restart_hard">MaxLock schließt sich jetzt. Bitte starte die App selbst neu!</string>
     <string name="toast_pro_required">Die Pro-Version wird für diese Funktion benötigt</string>
 
     <!-- Main Screen -->

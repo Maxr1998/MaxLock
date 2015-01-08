@@ -4,7 +4,6 @@
     <string name="app_name">MaxLock</string>
     <string name="placeholder">Placeholder</string>
     <string name="restart_required">MaxLock requires a restart for changes to take effect</string>
-    <string name="restart_hard">MaxLock will close now. Please restart on your own!</string>
     <string name="toast_pro_required">Pro-version is required to use this feature!</string>
 
     <!-- Main screen -->

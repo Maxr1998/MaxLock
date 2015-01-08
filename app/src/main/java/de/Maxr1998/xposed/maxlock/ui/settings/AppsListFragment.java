@@ -182,7 +182,9 @@ public class AppsListFragment extends Fragment {
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
-                                        ((SettingsActivity) getActivity()).restart(true);
+                                        getActivity().getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_MULTI_PROCESS);
+                                        getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_MULTI_PROCESS);
+                                        ((SettingsActivity) getActivity()).restart();
                                     } else
                                         Toast.makeText(getActivity(), R.string.toast_no_files_to_backup, Toast.LENGTH_SHORT).show();
                                 }
@@ -195,7 +197,7 @@ public class AppsListFragment extends Fragment {
                     getActivity().getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().clear().commit();
                     //noinspection deprecation
                     getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_WORLD_READABLE).edit().clear().commit();
-                    ((SettingsActivity) getActivity()).restart(false);
+                    ((SettingsActivity) getActivity()).restart();
             }
         } else
             Toast.makeText(getActivity(), R.string.toast_pro_required, Toast.LENGTH_SHORT).show();

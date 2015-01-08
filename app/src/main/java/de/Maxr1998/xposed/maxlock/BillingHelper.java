@@ -83,7 +83,7 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
 
     @Override
     public void onProductPurchased(String s, TransactionDetails transactionDetails) {
-        ((SettingsActivity) mContext).restart(false);
+        ((SettingsActivity) mContext).restart();
     }
 
     @Override
