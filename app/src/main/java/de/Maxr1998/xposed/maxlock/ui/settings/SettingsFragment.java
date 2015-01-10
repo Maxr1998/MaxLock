@@ -62,7 +62,10 @@ public class SettingsFragment extends PreferenceFragment {
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         billingHelper = new BillingHelper(getActivity());
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
         boolean donated = !billingHelper.getBp().listOwnedProducts().isEmpty();
         proVersion = pref.getBoolean(Common.ENABLE_PRO, false);
         String version = null;
@@ -85,8 +88,9 @@ public class SettingsFragment extends PreferenceFragment {
                 appName = getString(R.string.app_name_pseudo_pro);
             else appName = getString(R.string.app_name);
         }
-        about.setTitle(appName + version);
         getActivity().setTitle(appName);
+        about.setTitle(appName + version);
+        return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
     }
 
     @Override
