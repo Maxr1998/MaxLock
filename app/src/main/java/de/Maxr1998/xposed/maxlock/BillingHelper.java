@@ -3,8 +3,10 @@ package de.Maxr1998.xposed.maxlock;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,35 +38,7 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
     }
 
     public void showDialog() {
-        ListAdapter listAdapter = new ArrayAdapter<String>(mContext, android.R.layout.select_dialog_item, android.R.id.text1, productIds) {
-            @SuppressLint("NewApi")
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                TextView tv = (TextView) v.findViewById(android.R.id.text1);
-                tv.setText(bp.getPurchaseListingDetails(productIds[position]).title);
-                if (Util.noGingerbread())
-                    tv.setCompoundDrawablesRelativeWithIntrinsicBounds(productIcons[position], 0, 0, 0);
-                else
-                    tv.setCompoundDrawablesWithIntrinsicBounds(productIcons[position], 0, 0, 0);
-                int dp5 = (int) (5 * mContext.getResources().getDisplayMetrics().density + 0.5f);
-                tv.setCompoundDrawablePadding(dp5);
-                return v;
-            }
-        };
-
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-        dialog.setAdapter(listAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                bp.purchase((Activity) mContext, productIds[i]);
-            }
-        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialog.create().dismiss();
-            }
-        }).create().show();
+        new ShowDialog().execute();
     }
 
     public BillingProcessor getBp() {
@@ -94,4 +68,56 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
     public void finish() {
         bp.release();
     }
+
+    private class ShowDialog extends AsyncTask<Void, Void, ListAdapter> {
+
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(mContext);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected ListAdapter doInBackground(Void... voids) {
+            return new ArrayAdapter<String>(mContext, android.R.layout.select_dialog_item, android.R.id.text1, productIds) {
+                @SuppressLint("NewApi")
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View v = super.getView(position, convertView, parent);
+                    TextView tv = (TextView) v.findViewById(android.R.id.text1);
+
+                    tv.setText(bp.getPurchaseListingDetails(productIds[position]).title);
+                    if (Util.noGingerbread())
+                        tv.setCompoundDrawablesRelativeWithIntrinsicBounds(productIcons[position], 0, 0, 0);
+                    else
+                        tv.setCompoundDrawablesWithIntrinsicBounds(productIcons[position], 0, 0, 0);
+                    int dp5 = (int) (5 * mContext.getResources().getDisplayMetrics().density + 0.5f);
+                    tv.setCompoundDrawablePadding(dp5);
+                    return v;
+                }
+            };
+        }
+
+        @Override
+        protected void onPostExecute(ListAdapter la) {
+            progressDialog.dismiss();
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+            dialog.setAdapter(la, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    bp.purchase((Activity) mContext, productIds[i]);
+                }
+            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialog.create().dismiss();
+                }
+            }).create().show();
+        }
+    }
+
 }
