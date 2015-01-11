@@ -42,6 +42,7 @@ public class Common {
     public static final String ABOUT = "about";
     public static final String DONATE = "donate_upgrade_pro";
     public static final String ENABLE_PRO = "enable_pro";
+    public static final String UNINSTALL = "uninstall";
 
     public static final String MASTER_SWITCH_ON = "master_switch_on";
     public static final String KEY_PREFERENCE = "key";

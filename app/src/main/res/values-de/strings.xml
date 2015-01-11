@@ -103,6 +103,12 @@
     <string name="pref_donate_upgrade_pro">Spenden, um auf Pro-Version upzugraden</string>
     <string name="pref_enable_pro">Pro aktivieren</string>
     <string name="pref_enable_pro_summary">Alle weiteren Funktionen aktivieren, selbst wenn MaxLock Pro nicht gekauft wurde</string>
+    <string name="prevent_uninstall">Schütze App vor Deinstallation</string>
+    <string name="prevent_uninstall_summary">Erlange Geräteadministratorenrechte, um die Deinstallation der App zu verhindern.
+        Die App muss dann entweder von hier deinstalliert oder über \"Einstellungen → Sicherheit → Geräteadministratoren\" erst deaktiviert und dann deinstalliert werden</string>
+    <string name="uninstall">Deinstallieren</string>
+
+    <string name="device_admin_description">Schütze MaxLock vor Deinstallation und Deaktivierung</string>
 
     <string name="fake_die_message">\"%1$s\" wurde beendet.</string>
     <string name="report">Bericht</string>

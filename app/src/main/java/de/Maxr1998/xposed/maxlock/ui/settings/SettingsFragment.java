@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.app.admin.DeviceAdminReceiver;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,9 +51,12 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
 public class SettingsFragment extends PreferenceFragment {
 
+    static Preference uninstall;
     SharedPreferences pref, keysPref;
     BillingHelper billingHelper;
     boolean proVersion;
+    DevicePolicyManager devicePolicyManager;
+    ComponentName deviceAdmin;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,9 @@ public class SettingsFragment extends PreferenceFragment {
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         billingHelper = new BillingHelper(getActivity());
+
+        devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
+        deviceAdmin = new ComponentName(getActivity(), UninstallProtectionReceiver.class);
     }
 
     @Override
@@ -90,6 +99,11 @@ public class SettingsFragment extends PreferenceFragment {
         }
         getActivity().setTitle(appName);
         about.setTitle(appName + version);
+        uninstall = findPreference(Common.UNINSTALL);
+        if (isDeviceAdminActive()) {
+            uninstall.setTitle(R.string.uninstall);
+            uninstall.setSummary("");
+        }
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
     }
 
@@ -172,6 +186,15 @@ public class SettingsFragment extends PreferenceFragment {
         } else if (preference == findPreference(Common.DONATE)) {
             billingHelper.showDialog();
             return true;
+        } else if (preference == findPreference(Common.UNINSTALL)) {
+            if (!isDeviceAdminActive()) {
+                Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, deviceAdmin);
+                startActivity(intent);
+            } else {
+                devicePolicyManager.removeActiveAdmin(deviceAdmin);
+            }
+            return true;
         }
         return false;
     }
@@ -182,6 +205,31 @@ public class SettingsFragment extends PreferenceFragment {
             getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         else
             getFragmentManager().popBackStack();
+    }
+
+    private boolean isDeviceAdminActive() {
+        return devicePolicyManager.isAdminActive(deviceAdmin);
+    }
+
+    public static class UninstallProtectionReceiver extends DeviceAdminReceiver {
+
+        @Override
+        public void onEnabled(Context context, Intent intent) {
+            super.onEnabled(context, intent);
+            uninstall.setTitle(R.string.uninstall);
+            uninstall.setSummary("");
+        }
+
+        @Override
+        public void onDisabled(Context context, Intent intent) {
+            super.onDisabled(context, intent);
+            uninstall.setTitle(R.string.prevent_uninstall);
+            uninstall.setSummary(R.string.prevent_uninstall_summary);
+            Intent uninstall = new Intent(Intent.ACTION_DELETE);
+            uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
+            context.startActivity(uninstall);
+        }
     }
 
     @SuppressLint("ValidFragment")
@@ -352,4 +400,5 @@ public class SettingsFragment extends PreferenceFragment {
             return super.onOptionsItemSelected(item);
         }
     }
+
 }

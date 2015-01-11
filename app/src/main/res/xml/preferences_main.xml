@@ -63,6 +63,11 @@
             android:key="enable_pro"
             android:summary="@string/pref_enable_pro_summary"
             android:title="@string/pref_enable_pro" />
+
+        <Preference
+            android:key="uninstall"
+            android:summary="@string/prevent_uninstall_summary"
+            android:title="@string/prevent_uninstall" />
     </PreferenceCategory>
 
 </PreferenceScreen>

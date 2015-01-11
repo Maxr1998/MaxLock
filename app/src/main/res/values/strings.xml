@@ -103,6 +103,12 @@
     <string name="pref_donate_upgrade_pro">Donate to upgrade to pro-version</string>
     <string name="pref_enable_pro">Enable Pro</string>
     <string name="pref_enable_pro_summary">This will enable pro-features even if you haven\'t bought MaxLock Pro</string>
+    <string name="prevent_uninstall">Protect app from being uninstalled</string>
+    <string name="prevent_uninstall_summary">Acquire device administrator permissions for MaxLock, resulting the app cannot be uninstalled anymore.
+        You then have to uninstall this app either from here or deactivate admin from \"Settings → Security → Device administrators\" and then uninstall</string>
+    <string name="uninstall">Uninstall</string>
+
+    <string name="device_admin_description">Protect MaxLock from being uninstalled and disabled</string>
 
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>
