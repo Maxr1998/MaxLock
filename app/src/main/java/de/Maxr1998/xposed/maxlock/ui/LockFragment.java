@@ -32,8 +32,9 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     SharedPreferences prefs, prefsKey, prefsPerApp;
     View[] pinButtons, knockButtons, dividers;
     TextView pb;
+    boolean customTheme = true;
     private int screenHeight, screenWidth;
-    private String password;
+    private String password, lockingType;
     private StringBuilder key;
     private TextView mInputText;
 
@@ -62,13 +63,15 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         if (prefsPerApp.contains(requestPkg))
             password = prefsPerApp.getString(requestPkg + Common.APP_KEY_PREFERENCE, null);
         else password = prefsKey.getString(Common.KEY_PREFERENCE, "");
+
+        lockingType = prefsPerApp.getString(requestPkg, prefs.getString(Common.LOCKING_TYPE, ""));
     }
 
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Main Views
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, container, false);
+        rootView = lockingType.equals(Common.PREF_VALUE_PIN) && customTheme ? (ViewGroup) inflater.inflate(R.layout.pin_custom, container, false) : (ViewGroup) inflater.inflate(R.layout.fragment_lock, container, false);
         mainLayout = rootView.findViewById(R.id.lock_main_layout);
         titleView = (TextView) rootView.findViewById(R.id.title_view);
         //titleView.setTextColor(Util.getTextColor(getActivity()));
@@ -135,8 +138,6 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         titleView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
 
         personalizeUI();
-
-        String lockingType = prefsPerApp.getString(requestPkg, prefs.getString(Common.LOCKING_TYPE, ""));
 
         switch (lockingType) {
             case Common.PREF_VALUE_PASSWORD:
@@ -210,6 +211,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
         // knock buttons
         knockButtons = new View[]{
