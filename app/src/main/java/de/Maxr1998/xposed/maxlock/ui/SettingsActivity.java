@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -63,6 +65,19 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
             frag.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
         }
+        ((ThisApplication) getApplication()).getTracker(ThisApplication.TrackerName.APP_TRACKER);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 
     @SuppressLint("WorldReadableFiles")

@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -47,6 +49,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         } else {
             authenticate();
         }
+        ((ThisApplication) getApplication()).getTracker(ThisApplication.TrackerName.APP_TRACKER);
     }
 
     private void authenticate() {
@@ -85,8 +88,15 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_PRO, false) &&
                 PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
             Util.logFailedAuthentication(this, requestPkg);

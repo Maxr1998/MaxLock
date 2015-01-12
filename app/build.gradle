@@ -52,6 +52,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:palette-v7:21.0.0'
     compile 'com.google.guava:guava:18.0'
+    compile 'com.google.android.gms:play-services-base:6.5.87'
     compile 'com.anjlab.android.iab.v3:library:1.0.+@aar'
     compile 'com.commonsware.cwac:anddown:0.2.0'
     provided files('src/XposedBridgeApi-54.jar')
