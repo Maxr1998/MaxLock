@@ -229,6 +229,10 @@ public class Util {
             default:
                 Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
                 M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
+                if (M_BITMAP == null) {
+                    M_BITMAP = Bitmap.createBitmap(3000, 3000, Bitmap.Config.ARGB_8888);
+                    M_BITMAP.eraseColor(context.getResources().getColor(R.color.accent));
+                }
                 break;
         }
         return M_BITMAP;
