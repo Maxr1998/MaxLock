@@ -209,7 +209,8 @@ public class Util {
         return M_COLOR;
     }*/
 
-    private static Bitmap getBackground(Context context) {
+    public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
+        boolean resize = false;
         PREFS = PreferenceManager.getDefaultSharedPreferences(context);
         String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
         switch (backgroundType) {
@@ -221,36 +222,37 @@ public class Util {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                resize = true;
                 break;
             case "white":
-                M_BITMAP = Bitmap.createBitmap(3000, 3000, Bitmap.Config.ARGB_8888);
+                M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
                 M_BITMAP.eraseColor(Color.WHITE);
                 break;
             default:
                 Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
                 M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
                 if (M_BITMAP == null) {
-                    M_BITMAP = Bitmap.createBitmap(3000, 3000, Bitmap.Config.ARGB_8888);
+                    M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
                     M_BITMAP.eraseColor(context.getResources().getColor(R.color.accent));
+                } else {
+                    resize = true;
                 }
                 break;
         }
-        return M_BITMAP;
-    }
-
-    public static Drawable getResizedBackground(Context context, int viewWidth, int viewHeight) {
-        Bitmap bmp = getBackground(context);
-        Bitmap resized;
-        if (bmp.getWidth() < viewWidth || bmp.getHeight() < viewHeight) {
-            resized = bmp;
-        } else {
-            try {
-                resized = Bitmap.createBitmap(bmp, (bmp.getWidth() - viewWidth) / 2, (bmp.getHeight() - viewHeight) / 2, viewWidth, viewHeight);
-            } catch (IllegalArgumentException e) {
-                resized = Bitmap.createBitmap(bmp, 0, 0, 1080, 1920);
+        if (resize) {
+            Bitmap resized;
+            if (M_BITMAP.getWidth() < viewWidth || M_BITMAP.getHeight() < viewHeight) {
+                resized = M_BITMAP;
+            } else {
+                try {
+                    resized = Bitmap.createBitmap(M_BITMAP, (M_BITMAP.getWidth() - viewWidth) / 2, (M_BITMAP.getHeight() - viewHeight) / 2, viewWidth, viewHeight);
+                } catch (IllegalArgumentException e) {
+                    resized = Bitmap.createBitmap(M_BITMAP, 0, 0, 1080, 1920);
+                }
             }
+            return new BitmapDrawable(context.getResources(), resized);
         }
-        return new BitmapDrawable(context.getResources(), resized);
+        return new BitmapDrawable(context.getResources(), M_BITMAP);
     }
 
     public static boolean noGingerbread() {

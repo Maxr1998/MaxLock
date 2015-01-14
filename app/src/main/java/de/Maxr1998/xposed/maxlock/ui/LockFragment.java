@@ -32,7 +32,6 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     SharedPreferences prefs, prefsKey, prefsPerApp;
     View[] pinButtons, knockButtons, dividers;
     TextView pb;
-    boolean customTheme = true;
     private int screenHeight, screenWidth;
     private String password, lockingType;
     private StringBuilder key;
@@ -71,7 +70,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Main Views
-        rootView = lockingType.equals(Common.PREF_VALUE_PIN) && customTheme ? (ViewGroup) inflater.inflate(R.layout.pin_custom, container, false) : (ViewGroup) inflater.inflate(R.layout.fragment_lock, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, container, false);
         mainLayout = rootView.findViewById(R.id.lock_main_layout);
         titleView = (TextView) rootView.findViewById(R.id.title_view);
         //titleView.setTextColor(Util.getTextColor(getActivity()));
@@ -128,10 +127,10 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         }
         // Background
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mainLayout.setBackground(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
+            mainLayout.setBackground(Util.getBackground(getActivity(), screenWidth, screenHeight));
         } else {
             //noinspection deprecation
-            mainLayout.setBackgroundDrawable(Util.getResizedBackground(getActivity(), screenWidth, screenHeight));
+            mainLayout.setBackgroundDrawable(Util.getBackground(getActivity(), screenWidth, screenHeight));
         }
         // Title
         titleView.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));

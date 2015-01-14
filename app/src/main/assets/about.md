@@ -13,6 +13,7 @@ Thanks to:
 - @TechnoSparks for general support and new ideas
 - @badkill for Spanish translation
 - @liveasx for Chinese translation
+- @t61p for Japanese translation
 - @mihahn for parts of the German translation
 - ? for persian translation (please send me a message, I forgot your name :/)
 
