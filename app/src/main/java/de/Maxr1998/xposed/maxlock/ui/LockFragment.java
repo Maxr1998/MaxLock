@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -101,7 +102,13 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             screenWidth = 480;
             screenHeight = 800;
         }
-        int statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
+        int statusBarHeight;
+        try {
+            statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+            statusBarHeight = 0;
+        }
         int navBarHeight = 0;
 
         if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity")) {
@@ -109,21 +116,28 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             View gapBottom = rootView.findViewById(R.id.bottom_gap);
             if (screenHeight > screenWidth) {
                 // Portrait
-                if (Util.noGingerbread())
-                    navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
+                if (Util.noGingerbread()) {
+                    try {
+                        navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
+                    } catch (Resources.NotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
                 gapBottom.getLayoutParams().height = navBarHeight;
                 screenHeight = screenHeight + navBarHeight;
             } else {
                 // Landscape
-                if (Util.noGingerbread())
-                    navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height_landscape", "dimen", "android"));
+                if (Util.noGingerbread()) {
+                    try {
+                        navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height_landscape", "dimen", "android"));
+                    } catch (Resources.NotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
                 //noinspection SuspiciousNameCombination
                 gapBottom.getLayoutParams().width = navBarHeight;
             }
             gapTop.getLayoutParams().height = statusBarHeight;
-            System.out.println(screenHeight + "*" + screenWidth);
-            System.out.println("StatBar:" + statusBarHeight);
-            System.out.println("NavBar:" + navBarHeight);
         }
         // Background
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -142,7 +156,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             case Common.PREF_VALUE_PASSWORD:
                 titleView.setVisibility(View.GONE);
                 rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-                Util.askPassword(getActivity());
+                Util.askPassword(getActivity(), password);
                 break;
             case Common.PREF_VALUE_PIN:
                 inflater.inflate(R.layout.pin_field, (ViewGroup) rootView.findViewById(R.id.container));

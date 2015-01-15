@@ -43,7 +43,7 @@ public class Util {
     private static ApplicationInfo REQUEST_PKG_INFO;
     private static PackageManager PM;
 
-    public static void askPassword(final Context context) {
+    public static void askPassword(final Context context, final String password) {
         try {
             authenticationSucceededListener = (AuthenticationSucceededListener) context;
         } catch (ClassCastException e) {
@@ -65,7 +65,7 @@ public class Util {
             public void onClick(View v) {
                 EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
                 String val = input.getText().toString();
-                if (Util.checkInput(val, Common.PREF_VALUE_PASSWORD, context, context.getPackageName())) {
+                if (Util.shaHash(val).equals(password) || password.equals("")) {
                     authenticationSucceededListener.onAuthenticationSucceeded();
                     dialog.dismiss();
                 } else {
@@ -174,13 +174,6 @@ public class Util {
         return new String(hexChars);
     }
 
-    public static boolean checkInput(String input, String key_type, Context context, String app) {
-        System.out.println(app);
-        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        String key = PREFS_KEY.getString(key_type, "");
-        return key.equals("") || shaHash(input).equals(key);
-    }
-
     public static String getApplicationNameFromPackage(String packageName, Context context) {
         PM = context.getApplicationContext().getPackageManager();
         try {
@@ -230,12 +223,12 @@ public class Util {
                 break;
             default:
                 Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
-                M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
-                if (M_BITMAP == null) {
+                if (wallpaper == null) {
                     M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
                     M_BITMAP.eraseColor(context.getResources().getColor(R.color.accent));
                 } else {
                     resize = true;
+                    M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
                 }
                 break;
         }

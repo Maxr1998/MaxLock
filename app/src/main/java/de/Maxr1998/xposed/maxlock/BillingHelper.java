@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
@@ -22,11 +23,15 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
 
     private final String[] productIds = {
             "donate_coke",
-            "donate_beer"
+            "donate_beer",
+            "donate_5",
+            "donate_10"
     };
     private final int[] productIcons = {
             R.drawable.ic_coke_48dp,
-            R.drawable.ic_beer_48dp
+            R.drawable.ic_beer_48dp,
+            R.drawable.ic_favorite_red_small_48dp,
+            R.drawable.ic_favorite_red_48dp
     };
     private BillingProcessor bp;
     private Context mContext;
@@ -89,8 +94,12 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View v = super.getView(position, convertView, parent);
                     TextView tv = (TextView) v.findViewById(android.R.id.text1);
-
-                    tv.setText(bp.getPurchaseListingDetails(productIds[position]).title);
+                    String title = bp.getPurchaseListingDetails(productIds[position]).title;
+                    if (title == null) {
+                        title = productIds[position];
+                        Toast.makeText(mContext, R.string.no_network_connected, Toast.LENGTH_SHORT).show();
+                    }
+                    tv.setText(title);
                     if (Util.noGingerbread())
                         tv.setCompoundDrawablesRelativeWithIntrinsicBounds(productIcons[position], 0, 0, 0);
                     else
