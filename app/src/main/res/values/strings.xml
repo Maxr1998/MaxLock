@@ -110,6 +110,12 @@
 
     <string name="device_admin_description">Protect MaxLock from being uninstalled and disabled</string>
 
+    <string name="dialog_like_app">Do you love the app?</string>
+    <string name="dialog_like_app_text">If you do, please leave a review in Play Store and also consider donating :)</string>
+    <string name="dialog_cb_never_again">Never show this again</string>
+    <string name="dialog_button_donate">Donate</string>
+    <string name="dialog_button_rate">Rate</string>
+
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>
     <string name="report_problem">Report problem</string>

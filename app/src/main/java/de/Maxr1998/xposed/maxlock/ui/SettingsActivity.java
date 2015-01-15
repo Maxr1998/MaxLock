@@ -59,11 +59,11 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
         mSettingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
             getSupportActionBar().hide();
-            Fragment frag = new LockFragment();
+            Fragment lockFragment = new LockFragment();
             Bundle b = new Bundle(1);
             b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
-            frag.setArguments(b);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+            lockFragment.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment).commit();
         }
         ((ThisApplication) getApplication()).getTracker(ThisApplication.TrackerName.APP_TRACKER);
     }

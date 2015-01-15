@@ -8,6 +8,7 @@ import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -29,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.commonsware.cwac.anddown.AndDown;
@@ -52,7 +54,7 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 public class SettingsFragment extends PreferenceFragment {
 
     static Preference uninstall;
-    SharedPreferences pref, keysPref;
+    SharedPreferences prefs, prefsKeys;
     BillingHelper billingHelper;
     boolean proVersion;
     DevicePolicyManager devicePolicyManager;
@@ -65,8 +67,8 @@ public class SettingsFragment extends PreferenceFragment {
         //noinspection deprecation
         getPreferenceManager().setSharedPreferencesMode(Activity.MODE_WORLD_READABLE);
         addPreferencesFromResource(R.xml.preferences_main);
-        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        keysPref = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefsKeys = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         billingHelper = new BillingHelper(getActivity());
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -76,7 +78,7 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
         boolean donated = !billingHelper.getBp().listOwnedProducts().isEmpty();
-        proVersion = pref.getBoolean(Common.ENABLE_PRO, false);
+        proVersion = prefs.getBoolean(Common.ENABLE_PRO, false);
         String version = null;
         try {
             version = " v" + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
@@ -88,7 +90,7 @@ public class SettingsFragment extends PreferenceFragment {
         String appName;
         if (donated) {
             appName = getString(R.string.app_name_pro);
-            pref.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+            prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
             proVersion = true;
             ep.setEnabled(false);
             ep.setChecked(true);
@@ -104,6 +106,7 @@ public class SettingsFragment extends PreferenceFragment {
             uninstall.setTitle(R.string.uninstall);
             uninstall.setSummary("");
         }
+        rateDialog();
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
     }
 
@@ -111,6 +114,45 @@ public class SettingsFragment extends PreferenceFragment {
     public void onDestroy() {
         billingHelper.finish();
         super.onDestroy();
+    }
+
+    public void rateDialog() {
+
+        if (!prefs.contains(Common.FIRST_START_TIME))
+            prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
+
+        if (!prefs.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - prefs.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
+            final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
+            DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (checkBox.isChecked())
+                        prefs.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
+                    switch (i) {
+                        case -3:
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + Common.PKG_NAME)));
+                            } catch (android.content.ActivityNotFoundException e) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + Common.PKG_NAME)));
+                            }
+                            break;
+                        case -1:
+                            billingHelper.showDialog();
+                            break;
+                    }
+                    prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
+                }
+            };
+            builder.setTitle(R.string.dialog_like_app)
+                    .setView(dialogView)
+                    .setPositiveButton(R.string.dialog_button_donate, onClickListener)
+                    .setNeutralButton(R.string.dialog_button_rate, onClickListener)
+                    .setNegativeButton(android.R.string.cancel, onClickListener)
+                    .create().show();
+        }
+
     }
 
     @Override
@@ -135,7 +177,7 @@ public class SettingsFragment extends PreferenceFragment {
             }
             return true;
         } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
-            pref.edit().putBoolean(Common.ENABLE_LOGGING, proVersion);
+            prefs.edit().putBoolean(Common.ENABLE_LOGGING, proVersion);
             if (SettingsActivity.IS_DUAL_PANE) {
                 cleanBackStack();
                 getActivity().findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);

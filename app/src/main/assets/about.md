@@ -17,12 +17,6 @@ Thanks to:
 - @mihahn for parts of the German translation
 - ? for persian translation (please send me a message, I forgot your name :/)
 
-Donators:
----------
-None yet.
-
-If you like my work, buy me a cup of coffee ;)
-
 Libs and code:
 --------------
 - [AndDown Markdown reader by Commonsware](https://github.com/commonsguy/cwac-anddown)
