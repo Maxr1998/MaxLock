@@ -75,7 +75,6 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
     }
 
     private class ShowDialog extends AsyncTask<Void, Void, ListAdapter> {
-
         private ProgressDialog progressDialog;
 
         @Override
@@ -94,8 +93,10 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View v = super.getView(position, convertView, parent);
                     TextView tv = (TextView) v.findViewById(android.R.id.text1);
-                    String title = bp.getPurchaseListingDetails(productIds[position]).title;
-                    if (title == null) {
+                    String title;
+                    try {
+                        title = bp.getPurchaseListingDetails(productIds[position]).title;
+                    } catch (NullPointerException e) {
                         title = productIds[position];
                         Toast.makeText(mContext, R.string.no_network_connected, Toast.LENGTH_SHORT).show();
                     }
@@ -128,5 +129,4 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
             }).create().show();
         }
     }
-
 }

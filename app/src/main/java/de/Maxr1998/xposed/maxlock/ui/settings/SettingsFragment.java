@@ -52,7 +52,6 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
 
 public class SettingsFragment extends PreferenceFragment {
-
     static Preference uninstall;
     SharedPreferences prefs, prefsKeys;
     BillingHelper billingHelper;
@@ -117,7 +116,6 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     public void rateDialog() {
-
         if (!prefs.contains(Common.FIRST_START_TIME))
             prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
 
@@ -152,7 +150,6 @@ public class SettingsFragment extends PreferenceFragment {
                     .setNegativeButton(android.R.string.cancel, onClickListener)
                     .create().show();
         }
-
     }
 
     @Override
@@ -254,7 +251,6 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     public static class UninstallProtectionReceiver extends DeviceAdminReceiver {
-
         @Override
         public void onEnabled(Context context, Intent intent) {
             super.onEnabled(context, intent);
@@ -310,7 +306,6 @@ public class SettingsFragment extends PreferenceFragment {
 
     @SuppressLint("ValidFragment")
     public class LockingUISettingsFragment extends PreferenceFragment {
-
         private static final int READ_REQUEST_CODE = 42;
 
         @Override
@@ -391,7 +386,6 @@ public class SettingsFragment extends PreferenceFragment {
 
     @SuppressLint("ValidFragment")
     public class LogViewerFragment extends Fragment {
-
         private TextView textView;
 
         @Override
@@ -410,7 +404,6 @@ public class SettingsFragment extends PreferenceFragment {
                     setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
                 }
             };
-
             try {
                 BufferedReader br = new BufferedReader(new FileReader(getActivity().getApplicationInfo().dataDir + File.separator + Common.LOG_FILE));
                 String line;
@@ -442,5 +435,4 @@ public class SettingsFragment extends PreferenceFragment {
             return super.onOptionsItemSelected(item);
         }
     }
-
 }
