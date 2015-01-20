@@ -165,6 +165,7 @@ public class AppsListFragment extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle(R.string.dialog_restore_list_message)
                             .setAdapter(la, new DialogInterface.OnClickListener() {
+                                @SuppressLint("InlinedApi")
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     File restorePackagesFile = new File(backupDir + File.separator + la.getItem(i) + File.separator + prefsPackagesFileShort);
@@ -219,9 +220,9 @@ public class AppsListFragment extends Fragment {
                 if (isCancelled())
                     break;
                 progressDialog.setMax(list.size());
-                if (pref.getBoolean("show_system_apps", false) ?
+                if ((pref.getBoolean("show_system_apps", false) ?
                         activity.getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
-                        (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                        (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) && !info.packageName.equals(Common.PKG_NAME)) {
 
                     Map<String, Object> map = new HashMap<>();
 
