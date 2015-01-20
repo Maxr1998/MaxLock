@@ -153,7 +153,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
                             .putString(Common.KEY_PREFERENCE, Util.shaHash(key.toString()))
                             .commit();
                 } else {
-                    prefsPerApp.edit().putString(customApp, Common.PREF_VALUE_PIN).putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(key.toString())).commit();
+                    prefsPerApp.edit().putString(customApp, Common.PREF_VALUE_KNOCK_CODE).putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(key.toString())).commit();
                 }
             } else {
                 Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.msg_password_inconsistent), Toast.LENGTH_SHORT).show();
