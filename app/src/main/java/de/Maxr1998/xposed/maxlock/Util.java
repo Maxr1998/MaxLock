@@ -191,7 +191,7 @@ public class Util {
         } catch (PackageManager.NameNotFoundException e) {
             REQUEST_PKG_INFO = null;
         }
-        return REQUEST_PKG_INFO != null ? PM.getApplicationIcon(REQUEST_PKG_INFO) : context.getResources().getDrawable(R.drawable.ic_launcher);
+        return REQUEST_PKG_INFO != null ? PM.getApplicationIcon(REQUEST_PKG_INFO) : context.getResources().getDrawable(R.mipmap.ic_launcher);
     }
 
     /*public static int getTextColor(Context context) {
