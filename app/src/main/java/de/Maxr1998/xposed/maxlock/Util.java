@@ -215,7 +215,6 @@ public class Util {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                resize = true;
                 break;
             case "white":
                 M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
@@ -227,23 +226,9 @@ public class Util {
                     M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
                     M_BITMAP.eraseColor(context.getResources().getColor(R.color.accent));
                 } else {
-                    resize = true;
                     M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
                 }
                 break;
-        }
-        if (resize) {
-            Bitmap resized;
-            if (M_BITMAP.getWidth() < viewWidth || M_BITMAP.getHeight() < viewHeight) {
-                resized = M_BITMAP;
-            } else {
-                try {
-                    resized = Bitmap.createBitmap(M_BITMAP, (M_BITMAP.getWidth() - viewWidth) / 2, (M_BITMAP.getHeight() - viewHeight) / 2, viewWidth, viewHeight);
-                } catch (IllegalArgumentException e) {
-                    resized = Bitmap.createBitmap(M_BITMAP, 0, 0, 1080, 1920);
-                }
-            }
-            return new BitmapDrawable(context.getResources(), resized);
         }
         return new BitmapDrawable(context.getResources(), M_BITMAP);
     }

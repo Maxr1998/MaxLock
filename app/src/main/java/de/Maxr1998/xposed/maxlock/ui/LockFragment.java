@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
@@ -27,7 +28,8 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     public AuthenticationSucceededListener authenticationSucceededListener;
     ViewGroup rootView;
     String requestPkg;
-    View mainLayout, mInputView;
+    ImageView background;
+    View mInputView;
     TextView titleView;
     ImageButton mDeleteButton;
     SharedPreferences prefs, prefsKey, prefsPerApp;
@@ -72,7 +74,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Main Views
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, container, false);
-        mainLayout = rootView.findViewById(R.id.lock_main_layout);
+        background = (ImageView) rootView.findViewById(R.id.background);
         titleView = (TextView) rootView.findViewById(R.id.title_view);
         //titleView.setTextColor(Util.getTextColor(getActivity()));
 
@@ -140,12 +142,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             gapTop.getLayoutParams().height = statusBarHeight;
         }
         // Background
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mainLayout.setBackground(Util.getBackground(getActivity(), screenWidth, screenHeight));
-        } else {
-            //noinspection deprecation
-            mainLayout.setBackgroundDrawable(Util.getBackground(getActivity(), screenWidth, screenHeight));
-        }
+        background.setImageDrawable(Util.getBackground(getActivity(), screenWidth, screenHeight));
         // Title
         titleView.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));
         titleView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
