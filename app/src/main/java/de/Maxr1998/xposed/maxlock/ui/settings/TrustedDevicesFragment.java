@@ -27,7 +27,6 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.lib.FabView;
 
-@SuppressLint("CommitPrefEdits")
 public class TrustedDevicesFragment extends Fragment implements AdapterView.OnItemLongClickListener {
 
     private static final int ADD = 1;
@@ -95,7 +94,7 @@ public class TrustedDevicesFragment extends Fragment implements AdapterView.OnIt
                     local = ImmutableSet.of(getString(R.string.no_trusted_devices));
                 }
             }
-            pref.edit().putStringSet(Common.TRUSTED_DEVICES, local).commit();
+            pref.edit().putStringSet(Common.TRUSTED_DEVICES, local).apply();
         }
         return local;
     }

@@ -12,11 +12,12 @@ import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 
+@SuppressLint("CommitPrefEdits")
 public class MasterSwitchShortcutActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     SharedPreferences prefsPackages;
 
-    @SuppressLint({"CommitPrefEdits", "WorldReadableFiles"})
+    @SuppressLint("WorldReadableFiles")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,6 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
     @Override
     public void onAuthenticationSucceeded() {
         prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();

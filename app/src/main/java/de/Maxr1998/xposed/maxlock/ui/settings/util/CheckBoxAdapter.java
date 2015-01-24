@@ -33,7 +33,7 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.KnockCodeSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.PinSetupFragment;
 
-
+@SuppressLint("CommitPrefEdits")
 public class CheckBoxAdapter extends BaseAdapter {
 
 
@@ -123,7 +123,6 @@ public class CheckBoxAdapter extends BaseAdapter {
                 CheckBox fakeDie = (CheckBox) checkBoxView.findViewById(R.id.cb_fake_die);
                 fakeDie.setChecked(prefsPackages.getBoolean(key + "_fake", false));
                 fakeDie.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("CommitPrefEdits")
                     @Override
                     public void onClick(View v) {
                         ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
@@ -139,7 +138,6 @@ public class CheckBoxAdapter extends BaseAdapter {
                 CheckBox customPassword = (CheckBox) checkBoxView.findViewById(R.id.cb_custom_pw);
                 customPassword.setChecked(prefsPerApp.contains(key));
                 customPassword.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("CommitPrefEdits")
                     @Override
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v;
@@ -181,7 +179,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                                 }
                             }).create().show();
                         } else
-                            prefsPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).commit();
+                            prefsPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();
 
                     }
                 });
@@ -201,7 +199,6 @@ public class CheckBoxAdapter extends BaseAdapter {
         });
 
         toggleLock.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("CommitPrefEdits")
             @Override
             public void onClick(View v) {
 

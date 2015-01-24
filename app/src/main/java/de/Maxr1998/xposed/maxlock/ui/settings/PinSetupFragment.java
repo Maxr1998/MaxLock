@@ -1,6 +1,5 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -102,7 +101,6 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    @SuppressLint("CommitPrefEdits")
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_positive) {
@@ -134,7 +132,6 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
     public void handleStage() {
         if (mUiStage.equals("first")) {
             mFirstKey = mSetupPinInput.getText().toString();
@@ -144,14 +141,10 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
         } else if (mUiStage.equals("second")) {
             if (mSetupPinInput.getText().toString().equals(mFirstKey)) {
                 if (customApp == null) {
-                    prefs.edit()
-                            .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PIN)
-                            .commit();
-                    prefsKey.edit()
-                            .putString(Common.KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString()))
-                            .commit();
+                    prefs.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PIN).apply();
+                    prefsKey.edit().putString(Common.KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString())).apply();
                 } else {
-                    prefsPerApp.edit().putString(customApp, Common.PREF_VALUE_PIN).putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString())).commit();
+                    prefsPerApp.edit().putString(customApp, Common.PREF_VALUE_PIN).putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString())).apply();
                 }
             } else {
                 Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.msg_password_inconsistent), Toast.LENGTH_SHORT).show();

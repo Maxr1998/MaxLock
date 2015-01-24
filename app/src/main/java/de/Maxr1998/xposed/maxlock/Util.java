@@ -93,8 +93,6 @@ public class Util {
         dialog.show();
         ((ViewGroup) dialogView.getParent()).setPadding(10, 10, 10, 10);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-
-            @SuppressLint("CommitPrefEdits")
             @Override
             public void onClick(View v) {
                 EditText p1 = (EditText) dialogView.findViewById(R.id.edt_password);
@@ -113,17 +111,12 @@ public class Util {
                 } else {
                     dialog.dismiss();
                     if (app == null) {
-                        PREFS_KEY.edit()
-                                .putString(Common.KEY_PREFERENCE, shaHash(v1))
-                                .commit();
-                        PREFS.edit()
-                                .putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PASSWORD)
-                                .commit();
+                        PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, shaHash(v1)).apply();
+                        PREFS.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PASSWORD).apply();
                     } else {
-                        PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).commit();
+                        PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
                     }
-                    Toast.makeText(context, R.string.msg_password_changed, Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(context, R.string.msg_password_changed, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -237,13 +230,13 @@ public class Util {
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1;
     }
 
-    @SuppressLint({"CommitPrefEdits", "WorldReadableFiles"})
+    @SuppressLint({"WorldReadableFiles"})
     public static void cleanUp(Context context) {
         PREFS = context.getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
         PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         if (!PREFS.getString("migrated", "").equals("4.0")) {
 
-            PREFS.edit().putString("migrated", "4.0");
+            PREFS.edit().putString("migrated", "4.0").apply();
         }
     }
 }
