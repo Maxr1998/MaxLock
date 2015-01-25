@@ -2,11 +2,8 @@
 <resources>
     <color name="transparent">#0000</color>
     <color name="text_color_white">#dd000000</color>
-    <color name="black">#000</color>
-    <color name="white">#fff</color>
     <color name="light_white">#55ffffff</color>
     <color name="divider">#e5e5e5</color>
-
 
     <!-- App colors -->
     <color name="primary_red">#e51c23</color>
