@@ -72,14 +72,11 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Main Views
+        // Views
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, container, false);
         background = (ImageView) rootView.findViewById(R.id.background);
         titleView = (TextView) rootView.findViewById(R.id.title_view);
-        //titleView.setTextColor(Util.getTextColor(getActivity()));
-
-        // Views
-        mInputView = rootView.findViewById(R.id.inputView);
+        mInputView = rootView.findViewById(R.id.input_view);
         mInputText = (TextView) mInputView;
         mInputText.setText("");
         key = new StringBuilder("");
@@ -216,7 +213,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         if (prefs.getString(Common.BACKGROUND, "").equals("white") || prefs.getBoolean(Common.INVERT_COLOR, false)) {
             for (View v : pinButtons) {
                 pb = (TextView) v;
-                ((TextView) v).setTextColor(getResources().getColor(R.color.black));
+                ((TextView) v).setTextColor(getResources().getColor(android.R.color.black));
             }
         }
     }
@@ -289,9 +286,9 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         if ((prefs.getString(Common.BACKGROUND, "").equals("white") || prefs.getBoolean(Common.INVERT_COLOR, false)) && prefs.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (View divider : dividers) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    divider.setBackground(getResources().getDrawable(R.color.black));
+                    divider.setBackground(getResources().getDrawable(android.R.color.black));
                 else
-                    divider.setBackgroundDrawable(getResources().getDrawable(R.color.black));
+                    divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
             }
         } else if (!prefs.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (View divider : dividers) {
@@ -311,9 +308,9 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false))
             rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
         if (prefs.getString(Common.BACKGROUND, "").equals("white") || prefs.getBoolean(Common.INVERT_COLOR, false)) {
-            titleView.setTextColor(getResources().getColor(R.color.black));
-            mInputText.setTextColor(getResources().getColor(R.color.black));
-            mDeleteButton.setColorFilter(R.color.black, PorterDuff.Mode.SRC_ATOP);
+            titleView.setTextColor(getResources().getColor(android.R.color.black));
+            mInputText.setTextColor(getResources().getColor(android.R.color.black));
+            mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
         }
     }
 

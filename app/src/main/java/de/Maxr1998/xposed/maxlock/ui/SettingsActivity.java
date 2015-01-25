@@ -130,7 +130,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     @Override
     protected void onResume() {
         super.onResume();
-        StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(R.color.black), -3, this);
+        StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(android.R.color.black), -3, this);
     }
 
     public void restart() {
