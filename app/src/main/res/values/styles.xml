@@ -49,14 +49,4 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="Widget.TextView.NumPadKey" parent="@android:style/Widget.TextView">
-        <item name="android:singleLine">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center_horizontal|center_vertical</item>
-        <item name="android:textSize">36sp</item>
-        <item name="android:background">@drawable/img_button_background</item>
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:paddingBottom">-16dp</item>
-    </style>
-
 </resources>
