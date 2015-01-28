@@ -40,11 +40,14 @@
         <item>Systemhintergrund</item>
         <item>Weißer Bildschirm</item>
         <item>Benutzerdefiniert…</item>
+        <item>Thema</item>
     </string-array>
-    <string-array name="background_type_values">
+    <string-array name="background_type_values" translateable="false">
+        <!-- Do not translate -->
         <item>wallpaper</item>
         <item>white</item>
         <item>custom</item>
+        <item>theme</item>
     </string-array>
     <string name="pref_invert_color">Invertiere Vordergrundfarbe</string>
     <string name="pref_invert_color_summary">Farbe von Text oder Trennlinien wird auf schwarz gesetzt</string>

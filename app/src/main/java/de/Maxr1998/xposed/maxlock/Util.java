@@ -196,14 +196,25 @@ public class Util {
     }*/
 
     public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
-        boolean resize = false;
         PREFS = PreferenceManager.getDefaultSharedPreferences(context);
         String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
         switch (backgroundType) {
+            case "theme":
+                InputStream backgroundStream;
+                try {
+                    File backgroundFile = new File(dataDir(context) + File.separator + "theme" + File.separator + "background.png");
+                    if (backgroundFile.exists()) {
+                        backgroundStream = new FileInputStream(backgroundFile);
+                        M_BITMAP = BitmapFactory.decodeStream(backgroundStream);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
             case "custom":
                 InputStream inputStream;
                 try {
-                    inputStream = new FileInputStream(new File(context.getApplicationInfo().dataDir + File.separator + "background" + File.separator + "image"));
+                    inputStream = new FileInputStream(new File(dataDir(context) + File.separator + "background" + File.separator + "image"));
                     M_BITMAP = BitmapFactory.decodeStream(inputStream);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -226,8 +237,16 @@ public class Util {
         return new BitmapDrawable(context.getResources(), M_BITMAP);
     }
 
+    public static String dataDir(Context context) {
+        return context.getApplicationInfo().dataDir;
+    }
+
     public static boolean noGingerbread() {
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1;
+    }
+
+    public static boolean startEndSupported() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 
     @SuppressLint({"WorldReadableFiles"})

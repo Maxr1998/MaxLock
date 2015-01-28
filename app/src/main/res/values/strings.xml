@@ -40,11 +40,14 @@
         <item>Wallpaper</item>
         <item>White screen</item>
         <item>Custom image…</item>
+        <item>Theme background</item>
     </string-array>
-    <string-array name="background_type_values">
+    <string-array name="background_type_values" translateable="false">
+        <!-- Do not translate -->
         <item>wallpaper</item>
         <item>white</item>
         <item>custom</item>
+        <item>theme</item>
     </string-array>
     <string name="pref_invert_color">Invert color of UI elements</string>
     <string name="pref_invert_color_summary">This sets the color of texts and dividers to black</string>

@@ -11,6 +11,7 @@ public class Common {
     // Preference keys/ids
     public static final String FIRST_START_TIME = "first_start_time";
     public static final String DIALOG_SHOW_NEVER = "dialog_show_never";
+    public static final String APPLIED_THEME = "applied_theme";
 
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";
 
