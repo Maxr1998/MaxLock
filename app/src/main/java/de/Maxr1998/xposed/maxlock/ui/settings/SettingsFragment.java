@@ -122,6 +122,10 @@ public class SettingsFragment extends PreferenceFragment {
             uninstall.setTitle(R.string.uninstall);
             uninstall.setSummary("");
         }
+        if (prefs.getBoolean(Common.FIRST_START, true)) {
+            showAbout();
+            prefs.edit().putBoolean(Common.FIRST_START, false).apply();
+        }
         rateDialog();
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
     }
@@ -192,22 +196,7 @@ public class SettingsFragment extends PreferenceFragment {
             ((SettingsActivity) getActivity()).restart();
             return true;
         } else if (preference == findPreference(Common.ABOUT)) {
-            AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
-            WebView webView = new WebView(getActivity());
-            String markdown = "";
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("about.md")));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    markdown = markdown + line + "\n";
-                }
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String html = new AndDown().markdownToHtml(markdown);
-            webView.loadData(html, "text/html; charset=UTF-8", null);
-            about.setView(webView).create().show();
+            showAbout();
             return true;
         } else if (preference == findPreference(Common.DONATE)) {
             billingHelper.showDialog();
@@ -223,6 +212,25 @@ public class SettingsFragment extends PreferenceFragment {
             return true;
         }
         return false;
+    }
+
+    public void showAbout() {
+        AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
+        WebView webView = new WebView(getActivity());
+        String markdown = "";
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("about.md")));
+            String line;
+            while ((line = br.readLine()) != null) {
+                markdown = markdown + line + "\n";
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String html = new AndDown().markdownToHtml(markdown);
+        webView.loadData(html, "text/html; charset=UTF-8", null);
+        about.setView(webView).create().show();
     }
 
     public void launchFragment(Fragment fragment, boolean fromRoot) {

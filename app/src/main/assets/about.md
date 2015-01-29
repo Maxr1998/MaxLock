@@ -1,5 +1,17 @@
 About
 =====
+How to use this module:
+-----------------------
+1. Enable in Xposed Installer and reboot if you haven't done already
+2. Choose global locking method and password in *Locking type → ...*
+3. Choose the apps you want to have locked in *Choose apps*
+
+Optional tips:
+
+- After enabling an app, a orange pencil appears next to toggle button, click it for further options
+- Fake die is a feature which spoofs the user that an app died. To launch it, you have to click *Report* in the dialog and enter the phrase specified in *Locking options → Fake die input*, the default one is *start*
+- You can also set a custom locking type and password on app basis
+
 Help and tips:
 --------------
 - Long pressing a knock button also clears current input, useful if you hid the input bar
@@ -25,5 +37,3 @@ Libs and code:
 - [StatusBarTintApi by Mohammad Abu-Garbeyyeh](https://github.com/MohammadAG/Xposed-Tinted-Status-Bar/blob/master/src/com/mohammadag/colouredstatusbar/StatusBarTintApi.java)
 - [sha1/256Hash method by Adam on stackoverflow.com](http://stackoverflow.com/a/11978976)
 - A massive amount of other stackoverflow answers, thank you very much!
-
-_For a_

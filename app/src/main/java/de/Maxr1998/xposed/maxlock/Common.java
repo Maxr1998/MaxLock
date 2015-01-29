@@ -26,6 +26,7 @@ public class Common {
     public static final String INTENT_EXTRAS_CUSTOM_APP = "custom_app";
 
     // Preference keys/ids
+    public static final String FIRST_START = "first_start";
     public static final String FIRST_START_TIME = "first_start_time";
     public static final String DIALOG_SHOW_NEVER = "dialog_show_never";
     public static final String APPLIED_THEME = "applied_theme";

@@ -32,7 +32,7 @@
     <string name="knock_code_too_short">Knock code must be a least 4 touches</string>
     <string name="confirm_knock_code">Confirm your knock code</string>
     <!-- Main screen -->
-    <string name="pref_locking_ui">Locking screen UI</string>
+    <string name="pref_locking_ui">Lockscreen UI</string>
     <!-- Locking UI settings -->
     <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
     <string name="pref_background">Background image</string>
@@ -60,7 +60,7 @@
     <string name="pref_show_dividers">Show dividers</string>
     <string name="pref_touch_visible">Make touches visible</string>
 
-    <string name="pref_locking_options">Locking-options</string>
+    <string name="pref_locking_options">Locking options</string>
     <string name="pref_category_logging">Logging</string>
     <string name="pref_enable_logging">Enable logging</string>
     <string name="pref_enable_logging_summary">Log failed/unfinished unlock attempts</string>
