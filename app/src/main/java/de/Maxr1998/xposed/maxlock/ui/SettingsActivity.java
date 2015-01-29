@@ -31,7 +31,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.View;
 import android.widget.CompoundButton;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -69,13 +68,14 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
-        IS_DUAL_PANE = findViewById(R.id.frame_container_scd) != null;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mSettingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
             getSupportActionBar().hide();
+            if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null)
+                getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
             Fragment lockFragment = new LockFragment();
             Bundle b = new Bundle(1);
             b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
@@ -118,8 +118,8 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-            if (findViewById(R.id.frame_container_scd) != null && getSupportFragmentManager().getBackStackEntryCount() == 1)
-                findViewById(R.id.frame_container_scd).setVisibility(View.GONE);
+            if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null && getSupportFragmentManager().getBackStackEntryCount() == 1)
+                getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
         } else {
             super.onBackPressed();
         }

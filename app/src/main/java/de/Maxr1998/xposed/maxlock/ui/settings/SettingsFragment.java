@@ -20,7 +20,6 @@ package de.Maxr1998.xposed.maxlock.ui.settings;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
@@ -38,6 +37,7 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -85,7 +85,6 @@ public class SettingsFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences_main);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefsKeys = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        billingHelper = new BillingHelper(getActivity());
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), UninstallProtectionReceiver.class);
@@ -93,6 +92,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
+        billingHelper = new BillingHelper(getActivity());
         boolean donated = !billingHelper.getBp().listOwnedProducts().isEmpty();
         proVersion = prefs.getBoolean(Common.ENABLE_PRO, false);
         String version = null;
@@ -173,50 +173,20 @@ public class SettingsFragment extends PreferenceFragment {
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         super.onPreferenceTreeClick(preferenceScreen, preference);
         if (preference == findPreference(Common.LOCKING_TYPE_SETTINGS)) {
-            if (SettingsActivity.IS_DUAL_PANE) {
-                cleanBackStack();
-                getActivity().findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
-                getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LockingTypeSettingsFragment()).addToBackStack(null).commit();
-            } else {
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingTypeSettingsFragment()).addToBackStack(null).commit();
-            }
+            launchFragment(new LockingTypeSettingsFragment(), true);
             return true;
         } else if (preference == findPreference(Common.LOCKING_UI_SETTINGS)) {
-            if (SettingsActivity.IS_DUAL_PANE) {
-                cleanBackStack();
-                getActivity().findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
-                getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LockingUISettingsFragment()).addToBackStack(null).commit();
-            } else {
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingUISettingsFragment()).addToBackStack(null).commit();
-            }
+            launchFragment(new LockingUISettingsFragment(), true);
             return true;
         } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
-            prefs.edit().putBoolean(Common.ENABLE_LOGGING, proVersion);
-            if (SettingsActivity.IS_DUAL_PANE) {
-                cleanBackStack();
-                getActivity().findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
-                getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LockingOptionsFragment()).addToBackStack(null).commit();
-            } else {
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, new LockingOptionsFragment()).addToBackStack(null).commit();
-            }
+            prefs.edit().putBoolean(Common.ENABLE_LOGGING, proVersion).apply();
+            launchFragment(new LockingOptionsFragment(), true);
             return true;
         } else if (preference == findPreference(Common.TRUSTED_DEVICES)) {
-            if (SettingsActivity.IS_DUAL_PANE) {
-                cleanBackStack();
-                getActivity().findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
-                getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new TrustedDevicesFragment()).addToBackStack(null).commit();
-            } else {
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, new TrustedDevicesFragment()).addToBackStack(null).commit();
-            }
+            launchFragment(new TrustedDevicesFragment(), true);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
-            if (SettingsActivity.IS_DUAL_PANE) {
-                cleanBackStack();
-                getActivity().findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
-                getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new AppsListFragment()).addToBackStack(null).commit();
-            } else {
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, new AppsListFragment()).addToBackStack(null).commit();
-            }
+            launchFragment(new AppsListFragment(), true);
             return true;
         } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.ENABLE_PRO)) {
             ((SettingsActivity) getActivity()).restart();
@@ -255,12 +225,16 @@ public class SettingsFragment extends PreferenceFragment {
         return false;
     }
 
-    @SuppressLint("InlinedApi")
-    public void cleanBackStack() {
-        if (Util.noGingerbread())
-            getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        else
-            getFragmentManager().popBackStack();
+    public void launchFragment(Fragment fragment, boolean fromRoot) {
+        if (fromRoot) {
+            if (Util.noGingerbread())
+                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            else
+                getFragmentManager().popBackStack();
+        }
+        getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null).commit();
+        if (getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
+            getFragmentManager().beginTransaction().show(getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
     }
 
     private boolean isDeviceAdminActive() {
@@ -303,18 +277,10 @@ public class SettingsFragment extends PreferenceFragment {
                 Util.setPassword(getActivity(), null);
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_PIN)) {
-                if (SettingsActivity.IS_DUAL_PANE) {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new PinSetupFragment()).addToBackStack(null).commit();
-                } else {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_container, new PinSetupFragment()).addToBackStack(null).commit();
-                }
+                launchFragment(new PinSetupFragment(), false);
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {
-                if (SettingsActivity.IS_DUAL_PANE) {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new KnockCodeSetupFragment()).addToBackStack(null).commit();
-                } else {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_container, new KnockCodeSetupFragment()).addToBackStack(null).commit();
-                }
+                launchFragment(new KnockCodeSetupFragment(), false);
                 return true;
             }
             return false;
@@ -390,11 +356,7 @@ public class SettingsFragment extends PreferenceFragment {
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
             if (preference == findPreference(Common.VIEW_LOGS)) {
-                if (SettingsActivity.IS_DUAL_PANE) {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_container_scd, new LogViewerFragment()).addToBackStack(null).commit();
-                } else {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_container, new LogViewerFragment()).addToBackStack(null).commit();
-                }
+                launchFragment(new LogViewerFragment(), false);
                 return true;
             }
             return false;
