@@ -93,6 +93,7 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
 
     private class ShowDialog extends AsyncTask<Void, Void, ListAdapter> {
         private ProgressDialog progressDialog;
+        private Toast toast;
 
         @Override
         protected void onPreExecute() {
@@ -115,7 +116,10 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
                         title = bp.getPurchaseListingDetails(productIds[position]).title;
                     } catch (NullPointerException e) {
                         title = productIds[position];
-                        Toast.makeText(mContext, R.string.no_network_connected, Toast.LENGTH_SHORT).show();
+                        if (toast != null)
+                            toast.cancel();
+                        toast = Toast.makeText(mContext, R.string.no_network_connected, Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                     tv.setText(title);
                     if (Util.noGingerbread())
