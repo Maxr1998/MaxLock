@@ -60,6 +60,7 @@ public class CheckBoxAdapter extends BaseAdapter {
     private final SharedPreferences prefsPackages, prefsPerApp;
     private final Filter mFilter;
     private List<Map<String, Object>> mItemList;
+    private AlertDialog dialog;
 
     @SuppressLint("WorldReadableFiles")
     public CheckBoxAdapter(Context context, List<Map<String, Object>> itemList) {
@@ -132,9 +133,7 @@ public class CheckBoxAdapter extends BaseAdapter {
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // AlertDialog
-                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-
+                // AlertDialog View
                 // Fake die checkbox
                 View checkBoxView = View.inflate(mContext, R.layout.per_app_settings, null);
                 CheckBox fakeDie = (CheckBox) checkBoxView.findViewById(R.id.cb_fake_die);
@@ -160,6 +159,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                         CheckBox cb = (CheckBox) v;
                         boolean checked = cb.isChecked();
                         if (checked) {
+                            dialog.dismiss();
                             final AlertDialog.Builder choose_lock = new AlertDialog.Builder(mContext);
                             CharSequence[] cs = new CharSequence[]{
                                     mContext.getString(R.string.pref_locking_type_password),
@@ -169,7 +169,7 @@ public class CheckBoxAdapter extends BaseAdapter {
                             choose_lock.setItems(cs, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    choose_lock.create().dismiss();
+                                    dialogInterface.dismiss();
                                     Fragment frag = new Fragment();
                                     switch (i) {
                                         case 0:
@@ -186,32 +186,26 @@ public class CheckBoxAdapter extends BaseAdapter {
                                         Bundle b = new Bundle(1);
                                         b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
                                         frag.setArguments(b);
-                                        if (SettingsActivity.IS_DUAL_PANE) {
-                                            ((SettingsActivity) mContext).findViewById(R.id.frame_container_scd).setVisibility(View.VISIBLE);
-                                            ((SettingsActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container_scd, frag).addToBackStack(null).commit();
-                                        } else {
-                                            ((SettingsActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).addToBackStack(null).commit();
-                                        }
+                                        ((SettingsActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).addToBackStack(null).commit();
                                     }
                                 }
-                            }).create().show();
+                            }).show();
                         } else
                             prefsPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();
 
                     }
                 });
                 // Finish dialog
-                builder.setTitle(mContext.getString(R.string.txt_settings))
+                dialog = new AlertDialog.Builder(mContext)
+                        .setTitle(mContext.getString(R.string.txt_settings))
                         .setIcon(dIcon)
                         .setView(checkBoxView)
-                        .setCancelable(false)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dlg, int id) {
                                 dlg.dismiss();
                             }
-                        })
-                        .show();
+                        }).show();
             }
         });
 
