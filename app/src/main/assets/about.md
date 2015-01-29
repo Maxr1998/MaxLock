@@ -18,6 +18,7 @@ Help and tips:
 - Same works for PIN keys
 - On Gingerbread, you need a Task Manager (ES Taskmanager if you don't have one) to relock the apps
 - Sometimes, MasterSwitch doesn't want to relock. In this case, just force close the apps not relocking in App info and everything is fine again
+- [PREMIUM] Long pressing a backup item in the restore list dialog from app list deletes it
 
 Thanks to:
 ----------
@@ -37,3 +38,20 @@ Libs and code:
 - [StatusBarTintApi by Mohammad Abu-Garbeyyeh](https://github.com/MohammadAG/Xposed-Tinted-Status-Bar/blob/master/src/com/mohammadag/colouredstatusbar/StatusBarTintApi.java)
 - [sha1/256Hash method by Adam on stackoverflow.com](http://stackoverflow.com/a/11978976)
 - A massive amount of other stackoverflow answers, thank you very much!
+
+License:
+--------
+Copyright (C) 2014-2015  Maxr1998
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.  If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/gpl-3.0.html).
+
+Links:
+------
+[Google Play Store page](https://play.google.com/store/apps/details?id=de.Maxr1998.xposed.maxlock)
+[Xposed-Repo](http://repo.xposed.info/module/de.maxr1998.xposed.maxlock)
+[XDA-Thread](http://forum.xda-developers.com/xposed/modules/app-maxlock-applock-alternative-t2883624)
+[GitHub repository](https://github.com/Maxr1998/MaxLock)
