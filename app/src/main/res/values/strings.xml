@@ -87,6 +87,7 @@
     <string name="toast_backup_restore_exception">There was an error.\nPlease contact developer!</string>
     <string name="toast_backup_success">Backup successfully completed</string>
     <string name="dialog_restore_list_message">This will replace the current settings with the one from the backup!</string>
+    <string name="toast_no_files_to_restore">No files found to restore</string>
     <string name="toast_restore_success">Backup successfully restored!</string>
     <string name="msg_search">Search</string>
     <string name="txt_lock_on">On</string>

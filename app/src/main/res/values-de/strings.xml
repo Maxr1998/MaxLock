@@ -87,6 +87,7 @@
     <string name="toast_backup_restore_exception">Ein Fehler ist aufgetreten.\nBitte Entwickler melden!</string>
     <string name="toast_backup_success">Sicherung war erfolgreich</string>
     <string name="dialog_restore_list_message">Dies wird die jetzigen Einstellungen mit denen vom Backup ersetzen!</string>
+    <string name="toast_no_files_to_restore">Keine Dateien zum Wiederherstellen gefunden</string>
     <string name="toast_restore_success">Backup erfolgreich wiederhergestellt</string>
     <string name="msg_search">Suche</string>
     <string name="txt_lock_on">An</string>

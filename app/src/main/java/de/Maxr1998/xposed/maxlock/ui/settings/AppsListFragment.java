@@ -37,9 +37,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -49,6 +49,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -69,10 +70,12 @@ public class AppsListFragment extends Fragment {
     ViewGroup rootView;
     ListView listView;
     ProgressDialog progressDialog;
+    AlertDialog restoreDialog;
     private CheckBoxAdapter mAdapter;
     private EditText search;
     private SharedPreferences pref;
     private SetupAppList task;
+    private ArrayAdapter<String> restoreAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -178,15 +181,16 @@ public class AppsListFragment extends Fragment {
                     return true;
 
                 case R.id.restore_list:
-                    final ListAdapter la = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, backupDir.list());
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.dialog_restore_list_message)
-                            .setAdapter(la, new DialogInterface.OnClickListener() {
+                    List<String> list = new ArrayList<>(Arrays.asList(backupDir.list()));
+                    restoreAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
+                    restoreDialog = new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.dialog_restore_list_message)
+                            .setAdapter(restoreAdapter, new DialogInterface.OnClickListener() {
                                 @SuppressLint("InlinedApi")
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    File restorePackagesFile = new File(backupDir + File.separator + la.getItem(i) + File.separator + prefsPackagesFileShort);
-                                    File restorePerAppFile = new File(backupDir + File.separator + la.getItem(i) + File.separator + prefsPerAppFileShort);
+                                    File restorePackagesFile = new File(backupDir + File.separator + restoreAdapter.getItem(i) + File.separator + prefsPackagesFileShort);
+                                    File restorePerAppFile = new File(backupDir + File.separator + restoreAdapter.getItem(i) + File.separator + prefsPerAppFileShort);
                                     if (restorePackagesFile.exists()) {
                                         try {
                                             //noinspection ResultOfMethodCallIgnored
@@ -202,13 +206,27 @@ public class AppsListFragment extends Fragment {
                                         }
                                         getActivity().getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_MULTI_PROCESS);
                                         getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_MULTI_PROCESS);
+                                        Toast.makeText(getActivity(), R.string.toast_restore_success, Toast.LENGTH_SHORT).show();
                                         ((SettingsActivity) getActivity()).restart();
                                     } else
-                                        Toast.makeText(getActivity(), R.string.toast_no_files_to_backup, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), R.string.toast_no_files_to_restore, Toast.LENGTH_SHORT).show();
                                 }
                             })
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create().show();
+                            .setNegativeButton(android.R.string.cancel, null).show();
+                    restoreDialog.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            try {
+                                FileUtils.deleteDirectory(new File(backupDir + File.separator + restoreAdapter.getItem(i)));
+                                restoreAdapter.remove(restoreAdapter.getItem(i));
+                                restoreAdapter.notifyDataSetChanged();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                return false;
+                            }
+                            return true;
+                        }
+                    });
                     return true;
                 case R.id.clear_list:
                     //noinspection deprecation
