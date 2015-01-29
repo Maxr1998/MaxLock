@@ -46,7 +46,6 @@ import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 public class SettingsActivity extends ActionBarActivity implements AuthenticationSucceededListener {
 
     private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
-    public static boolean IS_DUAL_PANE;
     private static boolean UNLOCKED = false;
     public SettingsFragment mSettingsFragment;
     SharedPreferences prefs;
