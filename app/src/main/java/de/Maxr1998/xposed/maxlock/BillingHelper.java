@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.view.View;
@@ -51,9 +50,9 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
             R.drawable.ic_favorite_red_48dp
     };
     private BillingProcessor bp;
-    private Context mContext;
+    private Activity mContext;
 
-    public BillingHelper(Context context) {
+    public BillingHelper(Activity context) {
         mContext = context;
         bp = new BillingProcessor(context, mContext.getString(R.string.license_key), this);
         bp.loadOwnedPurchasesFromGoogle();
@@ -140,7 +139,7 @@ public class BillingHelper implements BillingProcessor.IBillingHandler {
             dialog.setAdapter(la, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    bp.purchase((Activity) mContext, productIds[i]);
+                    bp.purchase(productIds[i]);
                 }
             }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
