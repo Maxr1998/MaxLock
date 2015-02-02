@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
@@ -28,12 +29,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.haibison.android.lockpattern.widget.LockPatternView;
+
+import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -42,6 +48,13 @@ import de.Maxr1998.xposed.maxlock.Util;
 
 public class LockFragment extends Fragment implements View.OnClickListener {
 
+    private final Runnable mLockPatternViewReloader = new Runnable() {
+        @Override
+        public void run() {
+            lockPatternView.clearPattern();
+            patternListener.onPatternCleared();
+        }
+    };
     public AuthenticationSucceededListener authenticationSucceededListener;
     ViewGroup rootView;
     String requestPkg;
@@ -52,6 +65,8 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     SharedPreferences prefs, prefsKey, prefsPerApp;
     View[] pinButtons, knockButtons, dividers;
     TextView pb;
+    LockPatternView lockPatternView;
+    LockPatternView.OnPatternListener patternListener;
     private int screenHeight, screenWidth;
     private String password, lockingType;
     private StringBuilder key;
@@ -176,6 +191,11 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             case Common.PREF_VALUE_KNOCK_CODE:
                 inflater.inflate(R.layout.knock_code_field, (ViewGroup) rootView.findViewById(R.id.container));
                 setupKnockCodeLayout();
+                break;
+            case Common.PREF_VALUE_PATTERN:
+                rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
+                inflater.inflate(R.layout.pattern_field, (ViewGroup) rootView.findViewById(R.id.container));
+                setupPatternLayout();
                 break;
             default:
                 authenticationSucceededListener.onAuthenticationSucceeded();
@@ -319,6 +339,55 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             dividers[0].setVisibility(View.GONE);
     }
 
+    private void setupPatternLayout() {
+        // Pattern View
+        lockPatternView = (LockPatternView) rootView.findViewById(R.id.pattern_view);
+        // Pattern Listener
+        patternListener = new LockPatternView.OnPatternListener() {
+            @Override
+            public void onPatternStart() {
+                lockPatternView.removeCallbacks(mLockPatternViewReloader);
+            }
+
+            @Override
+            public void onPatternCleared() {
+                lockPatternView.removeCallbacks(mLockPatternViewReloader);
+                lockPatternView.setDisplayMode(LockPatternView.DisplayMode.Correct);
+            }
+
+            @Override
+            public void onPatternCellAdded(List<LockPatternView.Cell> pattern) {
+
+            }
+
+            @Override
+            public void onPatternDetected(List<LockPatternView.Cell> pattern) {
+                key.setLength(0);
+                key.append(pattern);
+                if (!checkInput()) {
+                    lockPatternView.setDisplayMode(LockPatternView.DisplayMode.Wrong);
+                    lockPatternView.postDelayed(mLockPatternViewReloader, DateUtils.SECOND_IN_MILLIS);
+                }
+            }
+        };
+        // Layout
+        switch (getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) {
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE: {
+                final int size = getResources().getDimensionPixelSize(com.haibison.android.lockpattern.R.dimen.alp_42447968_lockpatternview_size);
+                ViewGroup.LayoutParams lp = lockPatternView.getLayoutParams();
+                lp.width = size;
+                lp.height = size;
+                lockPatternView.setLayoutParams(lp);
+
+                break;
+            }
+        }
+
+        lockPatternView.setOnPatternListener(patternListener);
+    }
+
     private void personalizeUI() {
         if (prefs.getBoolean(Common.HIDE_TITLE_BAR, false))
             titleView.setVisibility(View.GONE);
@@ -341,8 +410,11 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void checkInput() {
-        if (Util.shaHash(key.toString()).equals(password) || password.equals(""))
+    public boolean checkInput() {
+        if (Util.shaHash(key.toString()).equals(password) || password.equals("")) {
             authenticationSucceededListener.onAuthenticationSucceeded();
+            return true;
+        }
+        return false;
     }
 }

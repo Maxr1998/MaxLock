@@ -53,12 +53,20 @@ import java.util.Date;
 
 public class Util {
 
+    public static final int PATTERN_CODE = 48;
+    public static final int PATTERN_CODE_APP = 5;
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
     static AuthenticationSucceededListener authenticationSucceededListener;
     private static Bitmap M_BITMAP;
     private static SharedPreferences PREFS, PREFS_KEY, PREFS_PER_APP;
     private static ApplicationInfo REQUEST_PKG_INFO;
     private static PackageManager PM;
+
+    private static void loadPrefs(Context context) {
+        PREFS = PreferenceManager.getDefaultSharedPreferences(context);
+        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
+    }
 
     public static void askPassword(final Context context, final String password) {
         try {
@@ -94,10 +102,7 @@ public class Util {
     }
 
     public static void setPassword(final Context context, final String app) {
-        PREFS = PreferenceManager.getDefaultSharedPreferences(context);
-        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
-
+        loadPrefs(context);
         @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.set_password, null);
 
         final AlertDialog dialog = new AlertDialog.Builder(context)
@@ -213,7 +218,7 @@ public class Util {
     }*/
 
     public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
-        PREFS = PreferenceManager.getDefaultSharedPreferences(context);
+        loadPrefs(context);
         String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
         switch (backgroundType) {
             case "theme":
@@ -268,11 +273,35 @@ public class Util {
 
     @SuppressLint({"WorldReadableFiles"})
     public static void cleanUp(Context context) {
-        PREFS = context.getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
-        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        loadPrefs(context);
         if (!PREFS.getString("migrated", "").equals("4.0")) {
 
             PREFS.edit().putString("migrated", "4.0").apply();
         }
+    }
+
+    public static int getPatternCode(int app) {
+        if (app == -1) {
+            return PATTERN_CODE;
+        } else {
+            int code = Integer.valueOf(String.valueOf(PATTERN_CODE_APP) + String.valueOf(app));
+            System.out.println(code);
+            return code;
+        }
+    }
+
+    public static void receiveAndSetPattern(Context context, char[] pattern, String app) {
+        loadPrefs(context);
+        StringBuilder patternKey = new StringBuilder();
+        for (char x : pattern) {
+            patternKey.append(x);
+        }
+        if (app == null) {
+            PREFS.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PATTERN).apply();
+            PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
+        } else {
+            PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PATTERN).putString(app + Common.APP_KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
+        }
+
     }
 }

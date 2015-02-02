@@ -13,6 +13,7 @@
     <string name="pref_locking_type_password">Passwort</string>
     <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">Knock code</string>
+    <string name="pref_locking_type_pattern">Muster</string>
 
     <string name="pref_set_password">Passwort ändern</string>
     <string name="msg_password_inconsistent">Passwörter stimmen nicht überein!</string>
@@ -67,7 +68,7 @@
     <string name="pref_view_logs">Logs ansehen</string>
     <string name="menu_delete_log">Logs löschen</string>
     <string name="pref_category_other">Andere</string>
-    <string name="pref_fake_die_input">Falscher Absturz-Eingabe</string>
+    <string name="pref_fake_die_input">Vorgetäuschter Absturz-Eingabe</string>
 
     <string name="pref_trusted_devices">Vertraute Geräte</string>
     <string name="no_trusted_devices">Keine vertrauten Geräte konfiguriert</string>

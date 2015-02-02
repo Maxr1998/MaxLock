@@ -39,6 +39,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.haibison.android.lockpattern.LockPatternActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +57,7 @@ public class CheckBoxAdapter extends BaseAdapter {
 
 
     private final List<Map<String, Object>> oriItemList;
+    private final Fragment mFragment;
     private final Context mContext;
     private final LayoutInflater mInflater;
     private final SharedPreferences prefsPackages, prefsPerApp;
@@ -63,7 +66,8 @@ public class CheckBoxAdapter extends BaseAdapter {
     private AlertDialog dialog;
 
     @SuppressLint("WorldReadableFiles")
-    public CheckBoxAdapter(Context context, List<Map<String, Object>> itemList) {
+    public CheckBoxAdapter(Fragment fragment, Context context, List<Map<String, Object>> itemList) {
+        mFragment = fragment;
         mContext = context;
         mInflater = LayoutInflater.from(context);
         oriItemList = mItemList = itemList;
@@ -90,7 +94,7 @@ public class CheckBoxAdapter extends BaseAdapter {
 
     @SuppressLint("InflateParams")
     @Override
-    public View getView(int position, View convertView, final ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.listview_item, null);
@@ -164,7 +168,8 @@ public class CheckBoxAdapter extends BaseAdapter {
                             CharSequence[] cs = new CharSequence[]{
                                     mContext.getString(R.string.pref_locking_type_password),
                                     mContext.getString(R.string.pref_locking_type_pin),
-                                    mContext.getString(R.string.pref_locking_type_knockcode)
+                                    mContext.getString(R.string.pref_locking_type_knockcode),
+                                    mContext.getString(R.string.pref_locking_type_pattern)
                             };
                             choose_lock.setItems(cs, new DialogInterface.OnClickListener() {
                                 @Override
@@ -180,6 +185,10 @@ public class CheckBoxAdapter extends BaseAdapter {
                                             break;
                                         case 2:
                                             frag = new KnockCodeSetupFragment();
+                                            break;
+                                        case 3:
+                                            Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, mContext, LockPatternActivity.class);
+                                            mFragment.startActivityForResult(intent, Util.getPatternCode(position));
                                             break;
                                     }
                                     if (i == 1 || i == 2) {
@@ -263,7 +272,6 @@ public class CheckBoxAdapter extends BaseAdapter {
                         }
                     }
                 }
-
                 results.values = filteredList;
                 results.count = filteredList.size();
             }

@@ -37,6 +37,7 @@ public class Common {
     public static final String LOCKING_TYPE_PASSWORD = "locking_type_password";
     public static final String LOCKING_TYPE_PIN = "locking_type_pin";
     public static final String LOCKING_TYPE_KNOCK_CODE = "locking_type_knock_code";
+    public static final String LOCKING_TYPE_PATTERN = "locking_type_pattern";
 
     public static final String LOCKING_UI_SETTINGS = "locking_ui_settings";
 
@@ -76,6 +77,7 @@ public class Common {
     public static final String PREF_VALUE_PASSWORD = "password";
     public static final String PREF_VALUE_PIN = "pin";
     public static final String PREF_VALUE_KNOCK_CODE = "knock_code";
+    public static final String PREF_VALUE_PATTERN = "pattern";
 
     // Preference files
     public static final String PREFS = "de.Maxr1998.xposed.maxlock_preferences";

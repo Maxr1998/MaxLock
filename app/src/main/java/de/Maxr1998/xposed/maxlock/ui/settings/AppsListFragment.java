@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -42,6 +43,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.haibison.android.lockpattern.LockPatternActivity;
 
 import org.apache.commons.io.FileUtils;
 
@@ -117,7 +120,7 @@ public class AppsListFragment extends Fragment {
 
     @SuppressLint("NewApi")
     private void setup() {
-        mAdapter = new CheckBoxAdapter(getActivity(), finalList);
+        mAdapter = new CheckBoxAdapter(AppsListFragment.this, getActivity(), finalList);
         listView.setAdapter(mAdapter);
         setupSearch();
         if (Util.noGingerbread())
@@ -238,6 +241,16 @@ public class AppsListFragment extends Fragment {
         } else
             Toast.makeText(getActivity(), R.string.toast_pro_required, Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (String.valueOf(requestCode).startsWith(String.valueOf(Util.PATTERN_CODE_APP))) {
+            if (resultCode == LockPatternActivity.RESULT_OK) {
+                String app = (String) finalList.get(Integer.parseInt(String.valueOf(requestCode).substring(1))).get("key");
+                Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), app);
+            }
+        } else super.onActivityResult(requestCode, resultCode, data);
     }
 
     private class SetupAppList extends AsyncTask<Void, Integer, List<Map<String, Object>>> {

@@ -11,5 +11,8 @@
         <Preference
             android:key="locking_type_knock_code"
             android:title="@string/pref_locking_type_knockcode" />
+        <Preference
+            android:key="locking_type_pattern"
+            android:title="@string/pref_locking_type_pattern" />
     </PreferenceCategory>
 </PreferenceScreen>

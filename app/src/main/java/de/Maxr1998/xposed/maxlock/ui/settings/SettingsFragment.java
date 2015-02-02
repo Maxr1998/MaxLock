@@ -51,6 +51,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.commonsware.cwac.anddown.AndDown;
+import com.haibison.android.lockpattern.LockPatternActivity;
 
 import org.apache.commons.io.FileUtils;
 
@@ -290,8 +291,25 @@ public class SettingsFragment extends PreferenceFragment {
             } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {
                 launchFragment(new KnockCodeSetupFragment(), false);
                 return true;
+            } else if (preference == findPreference(Common.LOCKING_TYPE_PATTERN)) {
+                Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, getActivity(), LockPatternActivity.class);
+                startActivityForResult(intent, Util.getPatternCode(-1));
+                return true;
             }
             return false;
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode) {
+                case Util.PATTERN_CODE: {
+                    if (resultCode == LockPatternActivity.RESULT_OK) {
+                        Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), null);
+                    }
+                    break;
+                }
+            }
         }
     }
 
