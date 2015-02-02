@@ -43,26 +43,21 @@ repositories {
         url "https://repo.commonsware.com.s3.amazonaws.com"
     }
     flatDir {
-        // not included in app, download from https://github.com/kolavar/android-support-v4-preferencefragment
-        dirs '../../../Ressourcen/android-support-v4-preferencefragment/maven-repository/com/android/support/support-v4-preferencefragment/1.0.0'
-    }
-    flatDir {
         dirs 'libs'
     }
 }
 dependencies {
     // From Maven or other repos
+    compile 'com.anjlab.android.iab.v3:library:1.0.14@aar'
+    compile 'com.commonsware.cwac:anddown:0.2.0'
+    compile 'com.google.guava:guava:18.0'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:palette-v7:21.0.0'
-    compile 'com.google.guava:guava:18.0'
     compile 'com.google.android.gms:play-services-base:6.5.87'
-    compile 'com.anjlab.android.iab.v3:library:1.0.14@aar'
-    compile 'com.commonsware.cwac:anddown:0.2.0'
     // Local files
-    provided files('lib/XposedBridgeApi-54.jar')
-    compile files('lib/commons-io-2.4.jar')
     compile(name: 'PatternLock', ext: 'aar')
-    // not included in app, download from https://github.com/kolavar/android-support-v4-preferencefragment
-    compile(name: 'support-v4-preferencefragment-1.0.0', ext: 'aar')
+    compile(name: 'android-support-v4-preferencefragment', ext: 'aar')
+    compile files('lib/commons-io-2.4.jar')
+    provided files('lib/XposedBridgeApi-54.jar')
 }
