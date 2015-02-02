@@ -270,7 +270,7 @@ public class AppsListFragment extends Fragment {
                 progressDialog.setMax(list.size());
                 if ((pref.getBoolean("show_system_apps", false) ?
                         activity.getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
-                        (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) && !info.packageName.equals(Common.PKG_NAME)) {
+                        (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) && !info.packageName.equals(Common.PKG_NAME) || info.packageName.equals("com.android.packageinstaller")) {
 
                     Map<String, Object> map = new HashMap<>();
 

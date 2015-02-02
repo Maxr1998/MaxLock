@@ -126,6 +126,8 @@ public class CheckBoxAdapter extends BaseAdapter {
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (key.equals("com.android.packageinstaller"))
+                    return;
                 ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
                 am.killBackgroundProcesses(key);
                 Intent it = mContext.getPackageManager().getLaunchIntentForPackage(key);
