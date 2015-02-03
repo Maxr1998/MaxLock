@@ -11,6 +11,7 @@ Help and tips:
 - Apps get relocked by being cleared from recents, I can't and won't add another method to relock apps
 - You can also relock apps with [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) and [Recent App Cleaner](https://play.google.com/store/apps/details?id=com.droidmate.rcleaner), thanks to Krisztian for pointing that out.
 - On Gingerbread, you need a Task Manager (ES Taskmanager if you don't have one) to relock the apps
+- Alternatively, most custom roms allow to set special actions to long clicking navigation keys, one preconfigured is "close app". Now, when long clicking e.g. back button, the apps gets fully closed and has to be unlocked on next start
 - After enabling an app, a orange pencil appears next to toggle button, click it for a dialog with further options
 - Fake die is a feature which spoofs the user that an app died. To launch it, you have to click *Report* in the dialog and enter the phrase specified in *Locking options → Fake die input*, the default one is *start*
 - You can also set a custom locking type and password on app basis
