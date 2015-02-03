@@ -85,4 +85,5 @@ public class Common {
     public static final String PREFS_KEY = "keys";
     public static final String PREFS_PACKAGES = "packages";
     public static final String PREFS_PER_APP = "per_app_settings";
+    public static final String PREFS_THEME = "theme";
 }

@@ -323,6 +323,13 @@ public class SettingsFragment extends PreferenceFragment {
             setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
+            Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_DIVIDERS), findPreference(Common.TOUCH_VISIBLE)};
+            if (prefs.contains(Common.APPLIED_THEME)) {
+                for (Preference preference : overriddenByTheme) {
+                    preference.setEnabled(false);
+                    preference.setSummary(preference.getSummary() != null ? preference.getSummary() : "" + " (Overridden by theme)");
+                }
+            }
             ListPreference lp = (ListPreference) findPreference(Common.BACKGROUND);
             findPreference(Common.BACKGROUND_COLOR).setEnabled(lp.getValue().equals("color"));
             lp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

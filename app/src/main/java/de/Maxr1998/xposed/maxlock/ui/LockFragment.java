@@ -59,10 +59,10 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     ViewGroup rootView;
     String requestPkg;
     ImageView background;
-    View mInputView;
+    View mInputView, container;
     TextView titleView;
     ImageButton mDeleteButton;
-    SharedPreferences prefs, prefsKey, prefsPerApp;
+    SharedPreferences prefs, prefsKey, prefsPerApp, prefsTheme;
     View[] pinButtons, knockButtons, dividers;
     TextView pb;
     LockPatternView lockPatternView;
@@ -90,6 +90,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
+        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_PRIVATE);
 
         // Strings
         requestPkg = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
@@ -103,14 +104,15 @@ public class LockFragment extends Fragment implements View.OnClickListener {
 
     @SuppressLint("NewApi")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup mainContainer, Bundle savedInstanceState) {
         // Views
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, mainContainer, false);
         background = (ImageView) rootView.findViewById(R.id.background);
         titleView = (TextView) rootView.findViewById(R.id.title_view);
         mInputView = rootView.findViewById(R.id.input_view);
         mInputText = (TextView) mInputView;
         mInputText.setText("");
+        container = rootView.findViewById(R.id.container);
         key = new StringBuilder("");
         mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
         mDeleteButton.setOnClickListener(this);
@@ -187,22 +189,24 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 Util.askPassword(getActivity(), password);
                 break;
             case Common.PREF_VALUE_PIN:
-                inflater.inflate(R.layout.pin_field, (ViewGroup) rootView.findViewById(R.id.container));
+                inflater.inflate(R.layout.pin_field, (ViewGroup) container);
                 setupPINLayout();
                 break;
             case Common.PREF_VALUE_KNOCK_CODE:
-                inflater.inflate(R.layout.knock_code_field, (ViewGroup) rootView.findViewById(R.id.container));
+                inflater.inflate(R.layout.knock_code_field, (ViewGroup) container);
                 setupKnockCodeLayout();
                 break;
             case Common.PREF_VALUE_PATTERN:
                 rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-                inflater.inflate(R.layout.pattern_field, (ViewGroup) rootView.findViewById(R.id.container));
+                inflater.inflate(R.layout.pattern_field, (ViewGroup) container);
                 setupPatternLayout();
                 break;
             default:
                 authenticationSucceededListener.onAuthenticationSucceeded();
                 break;
         }
+        themeSetup();
+
         return rootView;
     }
 
@@ -391,15 +395,22 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     }
 
     private void personalizeUI() {
-        if (prefs.getBoolean(Common.HIDE_TITLE_BAR, false))
+        if (prefsTheme.getBoolean(Common.HIDE_TITLE_BAR, prefs.getBoolean(Common.HIDE_TITLE_BAR, false)))
             titleView.setVisibility(View.GONE);
-        if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false))
+        if (prefsTheme.getBoolean(Common.HIDE_INPUT_BAR, prefs.getBoolean(Common.HIDE_INPUT_BAR, false)))
             rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-        if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
+        if (prefsTheme.getBoolean(Common.INVERT_COLOR, prefs.getBoolean(Common.INVERT_COLOR, false))) {
             titleView.setTextColor(getResources().getColor(android.R.color.black));
             mInputText.setTextColor(getResources().getColor(android.R.color.black));
             mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
         }
+    }
+
+    public void themeSetup() {
+        if (!prefs.contains(Common.APPLIED_THEME))
+            return;
+        container.setLayoutParams(ThemeService.container(container, getActivity(), lockingType));
+
     }
 
     @Override

@@ -19,10 +19,14 @@ package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
@@ -36,7 +40,8 @@ import de.Maxr1998.xposed.maxlock.Util;
 
 public class ThemeService extends IntentService {
 
-    public final String themeOrigFile = "theme.xml";
+    private static final String themeOrigFile = "theme.xml";
+    private static SharedPreferences PREFS_THEME;
     public final String backgroundOrigFile = "background.png";
     File themeFile;
     SharedPreferences prefs;
@@ -44,6 +49,31 @@ public class ThemeService extends IntentService {
 
     public ThemeService() {
         super("ThemeService");
+    }
+
+    public static void loadPrefs(Context context) {
+        if (PREFS_THEME == null)
+            PREFS_THEME = context.getSharedPreferences(Common.PREFS_THEME, MODE_PRIVATE);
+    }
+
+    @SuppressLint("NewApi")
+    public static ViewGroup.LayoutParams container(final View container, Context context, String lockingType) {
+        loadPrefs(context);
+        String containerMargin = "container_margin_";
+        int density = (int) context.getResources().getDisplayMetrics().density;
+        int left = PREFS_THEME.getInt(containerMargin + "left" + "_" + lockingType, 0) * density;
+        int right = PREFS_THEME.getInt(containerMargin + "right" + "_" + lockingType, 0) * density;
+        int top = PREFS_THEME.getInt(containerMargin + "top" + "_" + lockingType, 0) * density;
+        int bottom = PREFS_THEME.getInt(containerMargin + "bottom" + "_" + lockingType, 0) * density;
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(container.getLayoutParams());
+        layoutParams.setMargins(left, top, right, bottom);
+        layoutParams.weight = 1;
+        if (Util.startEndSupported()) {
+            layoutParams.setMarginStart(left);
+            layoutParams.setMarginEnd(right);
+        }
+        return layoutParams;
     }
 
     @Override
@@ -65,10 +95,21 @@ public class ThemeService extends IntentService {
 
     @SuppressLint("InlinedApi")
     public void importTheme(String packageName) {
+        /**
+         * Preferences
+         */
         prefs = getSharedPreferences(Common.PREFS, MODE_PRIVATE);
+        prefs.edit()
+                .putString(Common.APPLIED_THEME, packageName)
+                .apply();
+
+        /**
+         * Files
+         */
         AssetManager assets;
         try {
             assets = getPackageManager().getResourcesForApplication(packageName).getAssets();
+
             // theme.xml file
             InputStream themeStream = assets.open(themeOrigFile);
             FileUtils.copyInputStreamToFile(themeStream, themeFile);
@@ -80,6 +121,7 @@ public class ThemeService extends IntentService {
             }
             if (Util.noGingerbread())
                 getSharedPreferences("theme", MODE_MULTI_PROCESS);
+
             // background.png
             InputStream backgroundStream = assets.open(backgroundOrigFile);
             File backgroundFile = new File(Util.dataDir(this) + File.separator + "theme" + File.separator + backgroundOrigFile);
@@ -97,6 +139,18 @@ public class ThemeService extends IntentService {
 
     @SuppressLint("InlinedApi")
     public void clearUp() {
+        /**
+         * Preferences
+         */
+        prefs = getSharedPreferences(Common.PREFS, MODE_PRIVATE);
+        prefs.edit()
+                .remove(Common.APPLIED_THEME)
+                .putString(Common.BACKGROUND, "wallpaper")
+                .apply();
+
+        /**
+         * Files
+         */
         //noinspection ResultOfMethodCallIgnored
         themeFile.delete();
         if (Util.noGingerbread())
@@ -107,6 +161,5 @@ public class ThemeService extends IntentService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
