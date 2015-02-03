@@ -42,6 +42,7 @@ public class Common {
     public static final String LOCKING_UI_SETTINGS = "locking_ui_settings";
 
     public static final String BACKGROUND = "background";
+    public static final String BACKGROUND_COLOR = "background_color";
     public static final String INVERT_COLOR = "invert_color";
     public static final String HIDE_TITLE_BAR = "hide_title_bar";
     public static final String HIDE_INPUT_BAR = "hide_input_bar";

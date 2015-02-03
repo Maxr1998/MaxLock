@@ -39,17 +39,18 @@
     <string name="pref_background">Hintergrundbild</string>
     <string-array name="background_types">
         <item>Systemhintergrund</item>
-        <item>Weißer Bildschirm</item>
+        <item>@string/custom_color</item>
         <item>Benutzerdefiniert…</item>
         <item>Thema</item>
     </string-array>
     <string-array name="background_type_values" translateable="false">
         <!-- Do not translate -->
         <item>wallpaper</item>
-        <item>white</item>
+        <item>color</item>
         <item>custom</item>
         <item>theme</item>
     </string-array>
+    <string name="custom_color">Farbe</string>
     <string name="pref_invert_color">Invertiere Vordergrundfarbe</string>
     <string name="pref_invert_color_summary">Farbe von Text oder Trennlinien wird auf schwarz gesetzt</string>
     <string name="pref_hide_title_bar">Verstecke Titelleiste</string>

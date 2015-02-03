@@ -38,14 +38,14 @@
     <string name="pref_background">背景画像</string>
     <string-array name="background_types">
         <item>壁紙</item>
-        <item>白画面</item>
+        <item>@string/custom_color</item>
         <item>カスタム…</item>
         <item>Theme</item>
     </string-array>
     <string-array name="background_type_values" translateable="false">
         <!-- Do not translate -->
         <item>wallpaper</item>
-        <item>white</item>
+        <item>color</item>
         <item>custom</item>
         <item>theme</item>
     </string-array>

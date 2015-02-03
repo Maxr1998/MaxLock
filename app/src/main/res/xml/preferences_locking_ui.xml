@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/pref_category_pin_and_knock_code">
+    <PreferenceCategory android:title="@string/pref_locking_ui">
         <ListPreference
             android:defaultValue="wallpaper"
             android:dialogTitle="@string/pref_background"
@@ -9,10 +8,15 @@
             android:entryValues="@array/background_type_values"
             android:key="background"
             android:title="@string/pref_background" />
-        <!--<de.Maxr1998.xposed.maxlock.ui.settings.util.ColorPickerPreference
-            android:dependency="kc_background"
-            android:title="Color" />-->
-        <CheckBoxPreference
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            alphaSlider="false"
+            android:defaultValue="@color/accent"
+            android:enabled="false"
+            android:key="background_color"
+            android:title="@string/custom_color" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_pin_and_knock_code">
+    <CheckBoxPreference
             android:defaultValue="false"
             android:key="invert_color"
             android:summary="@string/pref_invert_color_summary"

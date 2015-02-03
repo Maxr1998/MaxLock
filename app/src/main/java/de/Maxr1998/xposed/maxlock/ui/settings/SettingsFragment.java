@@ -324,13 +324,21 @@ public class SettingsFragment extends PreferenceFragment {
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
             ListPreference lp = (ListPreference) findPreference(Common.BACKGROUND);
+            findPreference(Common.BACKGROUND_COLOR).setEnabled(lp.getValue().equals("color"));
             lp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (preference.getKey().equals(Common.BACKGROUND) && newValue.toString().equals("custom")) {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, READ_REQUEST_CODE);
+                    if (preference.getKey().equals(Common.BACKGROUND)) {
+                        if (newValue.toString().equals("custom")) {
+                            findPreference(Common.BACKGROUND_COLOR).setEnabled(false);
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, READ_REQUEST_CODE);
+                        } else if (newValue.toString().equals("color")) {
+                            findPreference(Common.BACKGROUND_COLOR).setEnabled(true);
+                        } else {
+                            findPreference(Common.BACKGROUND_COLOR).setEnabled(false);
+                        }
                     }
                     return true;
                 }

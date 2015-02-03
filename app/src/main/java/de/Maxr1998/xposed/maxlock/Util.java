@@ -26,7 +26,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -242,9 +241,9 @@ public class Util {
                     e.printStackTrace();
                 }
                 break;
-            case "white":
+            case "color":
                 M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                M_BITMAP.eraseColor(Color.WHITE);
+                M_BITMAP.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
                 break;
             default:
                 Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();

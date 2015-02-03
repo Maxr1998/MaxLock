@@ -39,17 +39,18 @@
     <string name="pref_background">Background image</string>
     <string-array name="background_types">
         <item>Wallpaper</item>
-        <item>White screen</item>
+        <item>@string/custom_color</item>
         <item>Custom image…</item>
         <item>Theme background</item>
     </string-array>
     <string-array name="background_type_values" translateable="false">
         <!-- Do not translate -->
         <item>wallpaper</item>
-        <item>white</item>
+        <item>color</item>
         <item>custom</item>
         <item>theme</item>
     </string-array>
+    <string name="custom_color">Custom color</string>
     <string name="pref_invert_color">Invert color of UI elements</string>
     <string name="pref_invert_color_summary">This sets the color of texts and dividers to black</string>
     <string name="pref_hide_title_bar">Hide title bar</string>
