@@ -8,16 +8,22 @@ How to use this module:
 
 Help and tips:
 --------------
-- Apps get relocked by being cleared from recents, I can't and won't include another possibility to relock apps
-- You can relock apps with [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) and [Recent App Cleaner](https://play.google.com/store/apps/details?id=com.droidmate.rcleaner), thanks to Krisztian for pointing that out.
+- Apps get relocked by being cleared from recents, I can't and won't add another method to relock apps
+- You can also relock apps with [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) and [Recent App Cleaner](https://play.google.com/store/apps/details?id=com.droidmate.rcleaner), thanks to Krisztian for pointing that out.
 - On Gingerbread, you need a Task Manager (ES Taskmanager if you don't have one) to relock the apps
-- Sometimes, MasterSwitch doesn't want to relock. In this case, just force close the apps not relocking in App info and everything is fine again
 - After enabling an app, a orange pencil appears next to toggle button, click it for a dialog with further options
 - Fake die is a feature which spoofs the user that an app died. To launch it, you have to click *Report* in the dialog and enter the phrase specified in *Locking options → Fake die input*, the default one is *start*
 - You can also set a custom locking type and password on app basis
 - Long pressing a knock button also clears current input, useful if you hid the input bar
 - Same works for PIN keys
+- Lock Package-Installer and Google Play Store to forbid uninstalling of apps
 - [PREMIUM] Long pressing a backup item in the restore list dialog from app list deletes it
+
+Known Issues:
+-------------
+- Apps do not relock automatically: refer to first tip, this is not an issue!
+- MasterSwitch doesn't want to relock: In this case, just force close the apps not relocking in App info and everything is fine again
+- Package-Installer sometimes doesn't ask for password on uninstallation: I found out that when you unlocked Package-Installer but then clicked cancel in uninstall dialog, the Package-Installer doesn't ask for password anymore. You can fix this by rebooting or uninstalling an app via Package-Installer
 
 Thanks to:
 ----------
