@@ -124,14 +124,16 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         });
 
         // Dimens
-        if (Util.noGingerbread()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             Point size = new Point();
             getActivity().getWindowManager().getDefaultDisplay().getSize(size);
             screenWidth = size.x;
             screenHeight = size.y;
         } else {
-            screenWidth = 480;
-            screenHeight = 800;
+            //noinspection deprecation
+            screenWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
+            //noinspection deprecation
+            screenHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
         }
         int statusBarHeight;
         try {
