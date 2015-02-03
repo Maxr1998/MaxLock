@@ -249,7 +249,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 }
             });
         }
-        if (prefs.getString(Common.BACKGROUND, "").equals("white") || prefs.getBoolean(Common.INVERT_COLOR, false)) {
+        if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
             for (View v : pinButtons) {
                 pb = (TextView) v;
                 ((TextView) v).setTextColor(getResources().getColor(android.R.color.black));
@@ -322,7 +322,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 rootView.findViewById(R.id.divider3),
                 rootView.findViewById(R.id.divider4)
         };
-        if ((prefs.getString(Common.BACKGROUND, "").equals("white") || prefs.getBoolean(Common.INVERT_COLOR, false)) && prefs.getBoolean(Common.SHOW_DIVIDERS, true)) {
+        if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (View divider : dividers) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                     divider.setBackground(getResources().getDrawable(android.R.color.black));
@@ -395,7 +395,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             titleView.setVisibility(View.GONE);
         if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false))
             rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-        if (prefs.getString(Common.BACKGROUND, "").equals("white") || prefs.getBoolean(Common.INVERT_COLOR, false)) {
+        if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
             titleView.setTextColor(getResources().getColor(android.R.color.black));
             mInputText.setTextColor(getResources().getColor(android.R.color.black));
             mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
