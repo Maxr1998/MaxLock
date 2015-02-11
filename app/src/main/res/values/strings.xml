@@ -35,7 +35,10 @@
     <!-- Main screen -->
     <string name="pref_locking_ui">Lockscreen UI</string>
     <!-- Locking UI settings -->
-    <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
+    <string name="open_theme_manager">Open Theme Manager</string>
+    <string name="open_theme_manager_summary_none">No theme applied</string>
+    <string name="open_theme_manager_summary_applied">Applied: </string>
+    <string name="overridden_by_theme">(Overridden by theme)</string>
     <string name="pref_background">Background image</string>
     <string-array name="background_types">
         <item>Wallpaper</item>
@@ -51,6 +54,7 @@
         <item>theme</item>
     </string-array>
     <string name="custom_color">Custom color</string>
+    <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
     <string name="pref_invert_color">Invert color of UI elements</string>
     <string name="pref_invert_color_summary">This sets the color of texts and dividers to black</string>
     <string name="pref_hide_title_bar">Hide title bar</string>
@@ -121,6 +125,9 @@
     <string name="dialog_cb_never_again">Never show this again</string>
     <string name="dialog_button_donate">Donate</string>
     <string name="dialog_button_rate">Rate</string>
+
+    <string name="no_locking_type">No locking type specified</string>
+    <string name="no_locked_apps">No apps chosen to lock</string>
 
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>

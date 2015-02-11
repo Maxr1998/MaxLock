@@ -52,6 +52,7 @@ dependencies {
     compile 'com.anjlab.android.iab.v3:library:1.0.14@aar'
     compile 'com.commonsware.cwac:anddown:0.2.0'
     compile 'com.google.guava:guava:18.0'
+    compile 'com.nispok:snackbar:2.8.0'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:palette-v7:21.0.0'

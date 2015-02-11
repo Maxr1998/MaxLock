@@ -29,7 +29,7 @@ public class Common {
     public static final String FIRST_START = "first_start";
     public static final String FIRST_START_TIME = "first_start_time";
     public static final String DIALOG_SHOW_NEVER = "dialog_show_never";
-    public static final String APPLIED_THEME = "applied_theme";
+    public static final String THEME_PKG = "theme_pkg";
 
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";
 
@@ -41,6 +41,7 @@ public class Common {
 
     public static final String LOCKING_UI_SETTINGS = "locking_ui_settings";
 
+    public static final String OPEN_THEME_MANAGER = "open_theme_manager";
     public static final String BACKGROUND = "background";
     public static final String BACKGROUND_COLOR = "background_color";
     public static final String INVERT_COLOR = "invert_color";

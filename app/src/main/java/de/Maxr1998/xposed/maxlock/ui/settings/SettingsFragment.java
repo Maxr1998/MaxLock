@@ -52,6 +52,9 @@ import android.widget.TextView;
 
 import com.commonsware.cwac.anddown.AndDown;
 import com.haibison.android.lockpattern.LockPatternActivity;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.enums.SnackbarType;
 
 import org.apache.commons.io.FileUtils;
 
@@ -71,12 +74,13 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
 public class SettingsFragment extends PreferenceFragment {
     static Preference uninstall;
-    SharedPreferences prefs, prefsKeys;
+    SharedPreferences prefs, prefsKeys, prefsTheme;
     BillingHelper billingHelper;
     boolean proVersion;
     DevicePolicyManager devicePolicyManager;
     ComponentName deviceAdmin;
 
+    @SuppressLint("WorldReadableFiles")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +90,8 @@ public class SettingsFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences_main);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefsKeys = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        //noinspection deprecation
+        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), UninstallProtectionReceiver.class);
@@ -123,12 +129,23 @@ public class SettingsFragment extends PreferenceFragment {
             uninstall.setTitle(R.string.uninstall);
             uninstall.setSummary("");
         }
+        startup();
+        return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
+    }
+
+    public void startup() {
         if (prefs.getBoolean(Common.FIRST_START, true)) {
             showAbout();
             prefs.edit().putBoolean(Common.FIRST_START, false).apply();
         }
         rateDialog();
-        return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
+        if (prefs.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
+            SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + getString(R.string.no_locked_apps)));
+        } else if (prefs.getString(Common.LOCKING_TYPE, "").equals("")) {
+            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locking_type));
+        } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
+            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locked_apps));
+        }
     }
 
     @Override
@@ -324,10 +341,12 @@ public class SettingsFragment extends PreferenceFragment {
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
             Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_DIVIDERS), findPreference(Common.TOUCH_VISIBLE)};
-            if (prefs.contains(Common.APPLIED_THEME)) {
+            if (prefsTheme.contains(Common.THEME_PKG)) {
+                Preference themeManager = findPreference(Common.OPEN_THEME_MANAGER);
+                themeManager.setSummary(getString(R.string.open_theme_manager_summary_applied) + prefsTheme.getString(Common.THEME_PKG, ""));
                 for (Preference preference : overriddenByTheme) {
                     preference.setEnabled(false);
-                    preference.setSummary(preference.getSummary() != null ? preference.getSummary() : "" + " (Overridden by theme)");
+                    preference.setSummary(preference.getSummary() != null ? preference.getSummary() : " " + getString(R.string.overridden_by_theme));
                 }
             }
             ListPreference lp = (ListPreference) findPreference(Common.BACKGROUND);
@@ -350,6 +369,19 @@ public class SettingsFragment extends PreferenceFragment {
                     return true;
                 }
             });
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+            super.onPreferenceTreeClick(preferenceScreen, preference);
+            if (preference == findPreference(Common.OPEN_THEME_MANAGER)) {
+                Intent themeManager = new Intent();
+                themeManager.setComponent(new ComponentName("de.Maxr1998.maxlock.thememanager", "de.Maxr1998.maxlock.thememanager" + ".MainActivity"));
+                themeManager.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(themeManager);
+                return true;
+            }
+            return false;
         }
 
         @Override
