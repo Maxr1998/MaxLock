@@ -45,10 +45,10 @@
     </string-array>
     <string-array name="background_type_values" translateable="false">
         <!-- Do not translate -->
-        <item>墙纸</item>
-        <item>颜色</item>
-        <item>自定义</item>
-        <item>主题</item>
+        <item>wallpaper</item>
+        <item>color</item>
+        <item>custom</item>
+        <item>theme</item>
     </string-array>
 	<string name="custom_color">自定义颜色</string>
     <string name="pref_invert_color">转换用户界面颜色</string>
