@@ -82,6 +82,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @SuppressLint("WorldReadableFiles")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +91,8 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
-        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_PRIVATE);
+        //noinspection deprecation
+        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
         // Strings
         requestPkg = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
@@ -407,7 +409,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     }
 
     public void themeSetup() {
-        if (!prefs.contains(Common.APPLIED_THEME))
+        if (!prefsTheme.contains(Common.THEME_PKG))
             return;
         container.setLayoutParams(ThemeService.container(container, getActivity(), lockingType));
 

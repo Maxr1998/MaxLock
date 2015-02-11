@@ -51,9 +51,11 @@ public class ThemeService extends IntentService {
         super("ThemeService");
     }
 
+    @SuppressWarnings("deprecation")
+    @SuppressLint("WorldReadableFiles")
     public static void loadPrefs(Context context) {
         if (PREFS_THEME == null)
-            PREFS_THEME = context.getSharedPreferences(Common.PREFS_THEME, MODE_PRIVATE);
+            PREFS_THEME = context.getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
     }
 
     @SuppressLint("NewApi")
@@ -90,7 +92,6 @@ public class ThemeService extends IntentService {
                 clearUp();
                 break;
         }
-        stopSelf();
     }
 
     @SuppressLint("InlinedApi")
@@ -99,10 +100,6 @@ public class ThemeService extends IntentService {
          * Preferences
          */
         prefs = getSharedPreferences(Common.PREFS, MODE_PRIVATE);
-        prefs.edit()
-                .putString(Common.APPLIED_THEME, packageName)
-                .apply();
-
         /**
          * Files
          */
@@ -120,7 +117,9 @@ public class ThemeService extends IntentService {
                 return;
             }
             if (Util.noGingerbread())
-                getSharedPreferences("theme", MODE_MULTI_PROCESS);
+                getSharedPreferences(Common.PREFS_THEME, MODE_MULTI_PROCESS);
+            //noinspection deprecation
+            getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
 
             // background.png
             InputStream backgroundStream = assets.open(backgroundOrigFile);
@@ -134,6 +133,7 @@ public class ThemeService extends IntentService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            clearUp();
         }
     }
 
@@ -144,7 +144,6 @@ public class ThemeService extends IntentService {
          */
         prefs = getSharedPreferences(Common.PREFS, MODE_PRIVATE);
         prefs.edit()
-                .remove(Common.APPLIED_THEME)
                 .putString(Common.BACKGROUND, "wallpaper")
                 .apply();
 
