@@ -133,21 +133,6 @@ public class SettingsFragment extends PreferenceFragment {
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
     }
 
-    public void startup() {
-        if (prefs.getBoolean(Common.FIRST_START, true)) {
-            showAbout();
-            prefs.edit().putBoolean(Common.FIRST_START, false).apply();
-        }
-        rateDialog();
-        if (prefs.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
-            SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + getString(R.string.no_locked_apps)));
-        } else if (prefs.getString(Common.LOCKING_TYPE, "").equals("")) {
-            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locking_type));
-        } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
-            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locked_apps));
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         if (billingHelper != null) billingHelper.finish();
@@ -160,43 +145,6 @@ public class SettingsFragment extends PreferenceFragment {
     public void onDestroy() {
         billingHelper.finish();
         super.onDestroy();
-    }
-
-    public void rateDialog() {
-        if (!prefs.contains(Common.FIRST_START_TIME))
-            prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
-
-        if (!prefs.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - prefs.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
-            final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
-            DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (checkBox.isChecked())
-                        prefs.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
-                    switch (i) {
-                        case -3:
-                            try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + Common.PKG_NAME)));
-                            } catch (android.content.ActivityNotFoundException e) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + Common.PKG_NAME)));
-                            }
-                            break;
-                        case -1:
-                            billingHelper.showDialog();
-                            break;
-                    }
-                    prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
-                }
-            };
-            builder.setTitle(R.string.dialog_like_app)
-                    .setView(dialogView)
-                    .setPositiveButton(R.string.dialog_button_donate, onClickListener)
-                    .setNeutralButton(R.string.dialog_button_rate, onClickListener)
-                    .setNegativeButton(android.R.string.cancel, onClickListener)
-                    .create().show();
-        }
     }
 
     @Override
@@ -241,6 +189,21 @@ public class SettingsFragment extends PreferenceFragment {
         return false;
     }
 
+    public void startup() {
+        if (prefs.getBoolean(Common.FIRST_START, true)) {
+            showAbout();
+            prefs.edit().putBoolean(Common.FIRST_START, false).apply();
+        }
+        rateDialog();
+        if (prefs.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
+            SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + getString(R.string.no_locked_apps)));
+        } else if (prefs.getString(Common.LOCKING_TYPE, "").equals("")) {
+            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locking_type));
+        } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
+            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locked_apps));
+        }
+    }
+
     public void showAbout() {
         AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
         WebView webView = new WebView(getActivity());
@@ -258,6 +221,43 @@ public class SettingsFragment extends PreferenceFragment {
         String html = new AndDown().markdownToHtml(markdown);
         webView.loadData(html, "text/html; charset=UTF-8", null);
         about.setView(webView).create().show();
+    }
+
+    public void rateDialog() {
+        if (!prefs.contains(Common.FIRST_START_TIME))
+            prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
+
+        if (!prefs.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - prefs.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
+            final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
+            DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (checkBox.isChecked())
+                        prefs.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
+                    switch (i) {
+                        case -3:
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + Common.PKG_NAME)));
+                            } catch (android.content.ActivityNotFoundException e) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + Common.PKG_NAME)));
+                            }
+                            break;
+                        case -1:
+                            billingHelper.showDialog();
+                            break;
+                    }
+                    prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
+                }
+            };
+            builder.setTitle(R.string.dialog_like_app)
+                    .setView(dialogView)
+                    .setPositiveButton(R.string.dialog_button_donate, onClickListener)
+                    .setNeutralButton(R.string.dialog_button_rate, onClickListener)
+                    .setNegativeButton(android.R.string.cancel, onClickListener)
+                    .create().show();
+        }
     }
 
     public static void launchFragment(Fragment fragment, boolean fromRoot, Fragment from) {
