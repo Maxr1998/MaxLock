@@ -37,10 +37,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_ui">
-        <!--<CheckBoxPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="hide_from_launcher"
-            android:title="@string/pref_hide_from_launcher" />-->
+            android:title="@string/pref_hide_from_launcher" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="hide_master_switch"
+            android:title="@string/pref_hide_master_switch_shortcut" />
 
         <CheckBoxPreference
             android:defaultValue="false"

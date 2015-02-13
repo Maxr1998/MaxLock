@@ -21,12 +21,32 @@
 
         <activity
             android:name=".ui.SettingsActivity"
+            android:enabled="true"
             android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:name=".Main"
+            android:enabled="true"
+            android:targetActivity=".ui.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".XposedMain"
+            android:enabled="true"
+            android:targetActivity=".ui.SettingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
+            </intent-filter>
+        </activity-alias>
 
         <activity
             android:name=".ui.LockActivity"
@@ -42,14 +62,24 @@
 
         <activity
             android:name=".ui.MasterSwitchShortcutActivity"
+            android:enabled="true"
             android:excludeFromRecents="true"
             android:label="@string/toggle_master_switch"
             android:theme="@style/TranslucentStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity-alias
+            android:name=".MasterSwitch"
+            android:enabled="true"
+            android:targetActivity=".ui.MasterSwitchShortcutActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
         <receiver
             android:name=".ui.settings.SettingsFragment$UninstallProtectionReceiver"

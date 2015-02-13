@@ -63,6 +63,7 @@ public class Common {
     public static final String CHOOSE_APPS = "choose_apps";
 
     public static final String HIDE_APP_FROM_LAUNCHER = "hide_from_launcher";
+    public static final String HIDE_MASTER_SWITCH_SHORTCUT = "hide_master_switch";
     public static final String USE_DARK_STYLE = "use_dark_style";
     public static final String FAKE_DIE_INPUT = "fake_die_input";
 
