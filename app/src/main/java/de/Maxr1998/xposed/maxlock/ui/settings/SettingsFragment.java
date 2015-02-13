@@ -73,11 +73,11 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
 
 public class SettingsFragment extends PreferenceFragment {
-    static Preference uninstall;
-    static SharedPreferences prefs, prefsKeys, prefsTheme;
+    static Preference UNINSTALL;
+    static SharedPreferences PREFS, PREFS_KEYS, PREFS_THEME;
     Activity mActivity;
     BillingHelper billingHelper;
-    static boolean proVersion;
+    static boolean PRO_VERSION;
     DevicePolicyManager devicePolicyManager;
     ComponentName deviceAdmin;
 
@@ -89,10 +89,10 @@ public class SettingsFragment extends PreferenceFragment {
         //noinspection deprecation
         getPreferenceManager().setSharedPreferencesMode(Activity.MODE_WORLD_READABLE);
         addPreferencesFromResource(R.xml.preferences_main);
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        prefsKeys = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        PREFS = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        PREFS_KEYS = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         //noinspection deprecation
-        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
+        PREFS_THEME = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), UninstallProtectionReceiver.class);
@@ -101,7 +101,7 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
         boolean donated = !billingHelper.getBp().listOwnedProducts().isEmpty();
-        proVersion = prefs.getBoolean(Common.ENABLE_PRO, false);
+        PRO_VERSION = PREFS.getBoolean(Common.ENABLE_PRO, false);
         String version = null;
         try {
             version = " v" + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
@@ -113,21 +113,21 @@ public class SettingsFragment extends PreferenceFragment {
         String appName;
         if (donated) {
             appName = getString(R.string.app_name_pro);
-            prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
-            proVersion = true;
+            PREFS.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+            PRO_VERSION = true;
             ep.setEnabled(false);
             ep.setChecked(true);
         } else {
-            if (proVersion)
+            if (PRO_VERSION)
                 appName = getString(R.string.app_name_pseudo_pro);
             else appName = getString(R.string.app_name);
         }
         getActivity().setTitle(appName);
         about.setTitle(appName + version);
-        uninstall = findPreference(Common.UNINSTALL);
+        UNINSTALL = findPreference(Common.UNINSTALL);
         if (isDeviceAdminActive()) {
-            uninstall.setTitle(R.string.uninstall);
-            uninstall.setSummary("");
+            UNINSTALL.setTitle(R.string.uninstall);
+            UNINSTALL.setSummary("");
         }
         startup();
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
@@ -157,7 +157,7 @@ public class SettingsFragment extends PreferenceFragment {
             launchFragment(new LockingUISettingsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
-            prefs.edit().putBoolean(Common.ENABLE_LOGGING, proVersion).apply();
+            PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PRO_VERSION).apply();
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.TRUSTED_DEVICES)) {
@@ -190,14 +190,14 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     public void startup() {
-        if (prefs.getBoolean(Common.FIRST_START, true)) {
+        if (PREFS.getBoolean(Common.FIRST_START, true)) {
             showAbout();
-            prefs.edit().putBoolean(Common.FIRST_START, false).apply();
+            PREFS.edit().putBoolean(Common.FIRST_START, false).apply();
         }
         rateDialog();
-        if (prefs.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
+        if (PREFS.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
             SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + getString(R.string.no_locked_apps)));
-        } else if (prefs.getString(Common.LOCKING_TYPE, "").equals("")) {
+        } else if (PREFS.getString(Common.LOCKING_TYPE, "").equals("")) {
             SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locking_type));
         } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
             SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locked_apps));
@@ -224,10 +224,10 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     public void rateDialog() {
-        if (!prefs.contains(Common.FIRST_START_TIME))
-            prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
+        if (!PREFS.contains(Common.FIRST_START_TIME))
+            PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
 
-        if (!prefs.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - prefs.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
+        if (!PREFS.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - PREFS.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
             final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
@@ -235,7 +235,7 @@ public class SettingsFragment extends PreferenceFragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     if (checkBox.isChecked())
-                        prefs.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
+                        PREFS.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
                     switch (i) {
                         case -3:
                             try {
@@ -248,7 +248,7 @@ public class SettingsFragment extends PreferenceFragment {
                             billingHelper.showDialog();
                             break;
                     }
-                    prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
+                    PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
                 }
             };
             builder.setTitle(R.string.dialog_like_app)
@@ -280,15 +280,15 @@ public class SettingsFragment extends PreferenceFragment {
         @Override
         public void onEnabled(Context context, Intent intent) {
             super.onEnabled(context, intent);
-            uninstall.setTitle(R.string.uninstall);
-            uninstall.setSummary("");
+            UNINSTALL.setTitle(R.string.uninstall);
+            UNINSTALL.setSummary("");
         }
 
         @Override
         public void onDisabled(Context context, Intent intent) {
             super.onDisabled(context, intent);
-            uninstall.setTitle(R.string.prevent_uninstall);
-            uninstall.setSummary(R.string.prevent_uninstall_summary);
+            UNINSTALL.setTitle(R.string.prevent_uninstall);
+            UNINSTALL.setSummary(R.string.prevent_uninstall_summary);
             Intent uninstall = new Intent(Intent.ACTION_DELETE);
             uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
@@ -348,9 +348,9 @@ public class SettingsFragment extends PreferenceFragment {
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
             Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_DIVIDERS), findPreference(Common.TOUCH_VISIBLE)};
-            if (prefsTheme.contains(Common.THEME_PKG)) {
+            if (PREFS_THEME.contains(Common.THEME_PKG)) {
                 Preference themeManager = findPreference(Common.OPEN_THEME_MANAGER);
-                themeManager.setSummary(getString(R.string.open_theme_manager_summary_applied) + prefsTheme.getString(Common.THEME_PKG, ""));
+                themeManager.setSummary(getString(R.string.open_theme_manager_summary_applied) + PREFS_THEME.getString(Common.THEME_PKG, ""));
                 for (Preference preference : overriddenByTheme) {
                     preference.setEnabled(false);
                     preference.setSummary(preference.getSummary() != null ? preference.getSummary() : " " + getString(R.string.overridden_by_theme));
@@ -425,8 +425,8 @@ public class SettingsFragment extends PreferenceFragment {
             setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_options);
             Preference el = findPreference(Common.ENABLE_LOGGING);
-            el.setEnabled(proVersion);
-            if (!proVersion) {
+            el.setEnabled(PRO_VERSION);
+            if (!PRO_VERSION) {
                 el.setSummary(R.string.toast_pro_required);
             }
         }
