@@ -74,9 +74,10 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
 public class SettingsFragment extends PreferenceFragment {
     static Preference uninstall;
-    SharedPreferences prefs, prefsKeys, prefsTheme;
+    static SharedPreferences prefs, prefsKeys, prefsTheme;
+    Activity mActivity;
     BillingHelper billingHelper;
-    boolean proVersion;
+    static boolean proVersion;
     DevicePolicyManager devicePolicyManager;
     ComponentName deviceAdmin;
 
@@ -99,7 +100,6 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
-        billingHelper = new BillingHelper(getActivity());
         boolean donated = !billingHelper.getBp().listOwnedProducts().isEmpty();
         proVersion = prefs.getBoolean(Common.ENABLE_PRO, false);
         String version = null;
@@ -149,6 +149,14 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        if (billingHelper != null) billingHelper.finish();
+        mActivity = activity;
+        billingHelper = new BillingHelper(mActivity);
+        super.onAttach(activity);
+    }
+
+    @Override
     public void onDestroy() {
         billingHelper.finish();
         super.onDestroy();
@@ -195,20 +203,21 @@ public class SettingsFragment extends PreferenceFragment {
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         super.onPreferenceTreeClick(preferenceScreen, preference);
         if (preference == findPreference(Common.LOCKING_TYPE_SETTINGS)) {
-            launchFragment(new LockingTypeSettingsFragment(), true);
+            launchFragment(new LockingTypeSettingsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.LOCKING_UI_SETTINGS)) {
-            launchFragment(new LockingUISettingsFragment(), true);
+            launchFragment(new LockingUISettingsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
             prefs.edit().putBoolean(Common.ENABLE_LOGGING, proVersion).apply();
-            launchFragment(new LockingOptionsFragment(), true);
+            launchFragment(new LockingOptionsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.TRUSTED_DEVICES)) {
-            launchFragment(new TrustedDevicesFragment(), true);
+            launchFragment(new TrustedDevicesFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
-            launchFragment(new AppsListFragment(), true);
+            billingHelper.finish();
+            launchFragment(new AppsListFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.ENABLE_PRO)) {
             ((SettingsActivity) getActivity()).restart();
@@ -251,16 +260,16 @@ public class SettingsFragment extends PreferenceFragment {
         about.setView(webView).create().show();
     }
 
-    public void launchFragment(Fragment fragment, boolean fromRoot) {
+    public static void launchFragment(Fragment fragment, boolean fromRoot, Fragment from) {
         if (fromRoot) {
             if (Util.noGingerbread())
-                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                from.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             else
-                getFragmentManager().popBackStack();
+                from.getFragmentManager().popBackStack();
         }
-        getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null).commit();
-        if (getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
-            getFragmentManager().beginTransaction().show(getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null).commit();
+        if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
+            from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
     }
 
     private boolean isDeviceAdminActive() {
@@ -287,8 +296,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
     }
 
-    @SuppressLint("ValidFragment")
-    public class LockingTypeSettingsFragment extends PreferenceFragment {
+    public static class LockingTypeSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -303,10 +311,10 @@ public class SettingsFragment extends PreferenceFragment {
                 Util.setPassword(getActivity(), null);
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_PIN)) {
-                launchFragment(new PinSetupFragment(), false);
+                launchFragment(new PinSetupFragment(), false, this);
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {
-                launchFragment(new KnockCodeSetupFragment(), false);
+                launchFragment(new KnockCodeSetupFragment(), false, this);
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_PATTERN)) {
                 Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, getActivity(), LockPatternActivity.class);
@@ -330,8 +338,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
     }
 
-    @SuppressLint("ValidFragment")
-    public class LockingUISettingsFragment extends PreferenceFragment {
+    public static class LockingUISettingsFragment extends PreferenceFragment {
         private static final int READ_REQUEST_CODE = 42;
 
         @Override
@@ -411,8 +418,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
     }
 
-    @SuppressLint("ValidFragment")
-    public class LockingOptionsFragment extends PreferenceFragment {
+    public static class LockingOptionsFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -429,21 +435,19 @@ public class SettingsFragment extends PreferenceFragment {
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
             if (preference == findPreference(Common.VIEW_LOGS)) {
-                launchFragment(new LogViewerFragment(), false);
+                launchFragment(new LogViewerFragment(), false, this);
                 return true;
             }
             return false;
         }
     }
 
-    @SuppressLint("ValidFragment")
-    public class LogViewerFragment extends Fragment {
+    public static class LogViewerFragment extends Fragment {
         private TextView textView;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setRetainInstance(true);
             setHasOptionsMenu(true);
         }
 
