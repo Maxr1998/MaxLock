@@ -32,8 +32,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import de.Maxr1998.maxlock.thememanager.R;
 import de.Maxr1998.maxlock.thememanager.Common;
+import de.Maxr1998.maxlock.thememanager.R;
 import de.Maxr1998.maxlock.thememanager.ThemeListFragment;
 import de.Maxr1998.maxlock.thememanager.WikiFragment;
 
@@ -94,7 +94,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         });
 
         if (!PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Common.USER_LEARNED_DRAWER, false) && !mFromSavedInstanceState)
-            mDrawerLayout.openDrawer(getActivity().findViewById(R.id.navigation_drawer));
+            mDrawerLayout.openDrawer(getActivity().findViewById(R.id.scrimInsetsFrameLayout));
 
         final View[] drawerItems = {
                 drawerView.findViewById(R.id.installed_themes),
@@ -106,7 +106,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                 @Override
                 public void onClick(View view) {
                     for (View v : drawerItems) {
-                        v.setBackground(getResources().getDrawable(R.drawable.selectable_item_background));
+                        v.setBackgroundDrawable(getResources().getDrawable(R.drawable.selectable_item_background));
                         ((TextView) v).setTextColor(getResources().getColor(R.color.drawer_text_color));
                     }
                     displayView(view);
