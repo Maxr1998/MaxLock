@@ -44,14 +44,14 @@
         <item>Systemhintergrund</item>
         <item>@string/custom_color</item>
         <item>Benutzerdefiniert…</item>
-        <item>Thema</item>
+        <!--<item>Thema</item>-->
     </string-array>
     <string-array name="background_type_values" translateable="false">
         <!-- Do not translate -->
         <item>wallpaper</item>
         <item>color</item>
         <item>custom</item>
-        <item>theme</item>
+        <!--<item>theme</item>-->
     </string-array>
     <string name="custom_color">Farbe</string>
     <string name="pref_category_pin_and_knock_code">PIN und Knock Code</string>

@@ -41,14 +41,14 @@
         <item>墙纸</item>
         <item>@string/custom_color</item>
         <item>自定义图片…</item>
-        <item>主题背景</item>
+        <!--<item>主题背景</item>-->
     </string-array>
     <string-array name="background_type_values" translateable="false">
         <!-- Do not translate -->
         <item>wallpaper</item>
         <item>color</item>
         <item>custom</item>
-        <item>theme</item>
+        <!--<item>theme</item>-->
     </string-array>
     <string name="custom_color">自定义颜色</string>
     <string name="pref_invert_color">转换用户界面颜色</string>

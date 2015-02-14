@@ -103,8 +103,9 @@
             android:theme="@style/Alp.42447968.Theme.Dialog.Dark" />
 
         <service
+            android:enabled="false"
             android:name=".ui.ThemeService"
-            android:exported="true" />
+            android:exported="false" />
 
         <meta-data
             android:name="xposedmodule"

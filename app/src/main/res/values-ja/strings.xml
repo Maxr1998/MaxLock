@@ -40,14 +40,14 @@
         <item>壁紙</item>
         <item>@string/custom_color</item>
         <item>カスタム…</item>
-        <item>Theme</item>
+        <!--<item>Theme</item>-->
     </string-array>
     <string-array name="background_type_values" translateable="false">
         <!-- Do not translate -->
         <item>wallpaper</item>
         <item>color</item>
         <item>custom</item>
-        <item>theme</item>
+        <!--<item>theme</item>-->
     </string-array>
     <string name="pref_invert_color">表示色の反転</string>
     <string name="pref_invert_color_summary">テキストと線の色を黒にします</string>
