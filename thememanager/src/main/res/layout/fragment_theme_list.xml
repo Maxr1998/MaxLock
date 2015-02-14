@@ -17,6 +17,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <TextView
+        android:id="@+id/no_themes_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/no_themes_installed"
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"

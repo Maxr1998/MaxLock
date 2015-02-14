@@ -9,6 +9,7 @@
     <string name="nav_drawer_return_maxlock">Return to MaxLock</string>
     <string name="nav_drawer_themes_by_me">Themes by Maxr1998</string>
     <string name="nav_drawer_wiki">Wiki</string>
+    <string name="no_themes_installed">No Themes installed</string>
     <string name="theme_installed">Theme successfully installed</string>
     <string name="theme_uninstalled">Theme uninstalled</string>
     <string name="undo">Undo</string>

@@ -168,6 +168,7 @@ public class ThemeListFragment extends Fragment implements View.OnClickListener 
             rootView.findViewById(R.id.spinner).setVisibility(View.GONE);
             mAdapter = new ThemeAdapter(ThemeListFragment.this, getActivity(), result);
             mRecyclerView.setAdapter(mAdapter);
+            if (mAdapter.getItemCount() == 0) rootView.findViewById(R.id.no_themes_text).setVisibility(View.VISIBLE);
         }
     }
 }
