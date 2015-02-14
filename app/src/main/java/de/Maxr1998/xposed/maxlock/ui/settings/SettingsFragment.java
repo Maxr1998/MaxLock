@@ -76,11 +76,23 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 public class SettingsFragment extends PreferenceFragment {
     static Preference UNINSTALL;
     static SharedPreferences PREFS, PREFS_KEYS, PREFS_THEME;
+    static boolean PRO_VERSION;
     Activity mActivity;
     BillingHelper billingHelper;
-    static boolean PRO_VERSION;
     DevicePolicyManager devicePolicyManager;
     ComponentName deviceAdmin;
+
+    public static void launchFragment(Fragment fragment, boolean fromRoot, Fragment from) {
+        if (fromRoot) {
+            if (Util.noGingerbread())
+                from.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            else
+                from.getFragmentManager().popBackStack();
+        }
+        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null).commit();
+        if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
+            from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+    }
 
     @SuppressLint("WorldReadableFiles")
     @Override
@@ -279,18 +291,6 @@ public class SettingsFragment extends PreferenceFragment {
                     .setNegativeButton(android.R.string.cancel, onClickListener)
                     .create().show();
         }
-    }
-
-    public static void launchFragment(Fragment fragment, boolean fromRoot, Fragment from) {
-        if (fromRoot) {
-            if (Util.noGingerbread())
-                from.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            else
-                from.getFragmentManager().popBackStack();
-        }
-        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null).commit();
-        if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
-            from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
     }
 
     private boolean isDeviceAdminActive() {

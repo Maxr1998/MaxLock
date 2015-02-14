@@ -13,7 +13,7 @@
     <string name="pref_locking_type_password">密码</string>
     <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">轻敲代码</string>
-	<string name="pref_locking_type_pattern">图案</string>
+    <string name="pref_locking_type_pattern">图案</string>
 
     <string name="pref_set_password">设置密码</string>
     <string name="msg_password_inconsistent">密码不一致！</string>
@@ -50,7 +50,7 @@
         <item>custom</item>
         <item>theme</item>
     </string-array>
-	<string name="custom_color">自定义颜色</string>
+    <string name="custom_color">自定义颜色</string>
     <string name="pref_invert_color">转换用户界面颜色</string>
     <string name="pref_invert_color_summary">设置这个文本和分隔器的颜色为黑色</string>
     <string name="pref_hide_title_bar">隐藏标题栏</string>
@@ -89,7 +89,7 @@
     <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者！</string>
     <string name="toast_backup_success">备份成功</string>
     <string name="dialog_restore_list_message">这将从备份替换当前设置！</string>
-	<string name="toast_no_files_to_restore">没有找到恢复文件</string>
+    <string name="toast_no_files_to_restore">没有找到恢复文件</string>
     <string name="toast_restore_success">恢复成功</string>
     <string name="msg_search">搜索</string>
     <string name="txt_lock_on">开</string>
@@ -109,12 +109,12 @@
     <string name="pref_donate_upgrade_pro">捐助后将升级为专业版</string>
     <string name="pref_enable_pro">开启专业版</string>
     <string name="pref_enable_pro_summary">这将开启专业版功能,即使您没有购买</string>
-	<string name="prevent_uninstall">保护应用程序被卸载</string>
+    <string name="prevent_uninstall">保护应用程序被卸载</string>
     <string name="prevent_uninstall_summary">MaxLock在设备管理器权限打勾应用程序将无法卸载
 		卸载这个程序您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
     <string name="uninstall">卸载</string>
-	
-	<string name="device_admin_description">保护MaxLock被卸载和禁用</string>
+
+    <string name="device_admin_description">保护MaxLock被卸载和禁用</string>
 
     <string name="dialog_like_app">你喜欢这个应用吗?</string>
     <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠 :)</string>
