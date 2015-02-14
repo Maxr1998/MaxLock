@@ -1,6 +1,8 @@
 -dontwarn javax.annotation.**
 -dontwarn javax.inject.**
 -dontwarn sun.misc.Unsafe
+-dontwarn android.support.v7.widget.RecyclerView
+-dontwarn android.support.v7.widget.RecyclerView$OnScrollListener
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
 -dontobfuscate
 -dontoptimize
