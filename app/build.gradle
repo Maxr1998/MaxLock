@@ -61,5 +61,5 @@ dependencies {
     compile(name: 'PatternLock', ext: 'aar')
     compile(name: 'android-support-v4-preferencefragment', ext: 'aar')
     compile files('lib/commons-io-2.4.jar')
-    provided files('lib/XposedBridgeApi-54.jar')
+    provided files('lib/XposedBridgeApi-20150213.jar')
 }
