@@ -316,9 +316,9 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         if (!prefs.getBoolean(Common.TOUCH_VISIBLE, true)) {
             for (View kb : knockButtons) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    kb.setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    kb.setBackground(getResources().getDrawable(R.drawable.transparent_background));
                 else
-                    kb.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    kb.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_background));
             }
         }
         // dividers
@@ -338,9 +338,9 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         } else if (!prefs.getBoolean(Common.SHOW_DIVIDERS, true)) {
             for (View divider : dividers) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    divider.setBackground(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    divider.setBackground(getResources().getDrawable(R.drawable.transparent_background));
                 else
-                    divider.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_img_button_background));
+                    divider.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_background));
             }
         }
         if (screenWidth > screenHeight)

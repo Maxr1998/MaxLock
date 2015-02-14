@@ -22,7 +22,7 @@
             android:layout_height="72dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/img_button_background"
+            android:background="@drawable/selectable_background"
             android:contentDescription="delete"
             android:src="@drawable/ic_delete_white_36dp" />
     </RelativeLayout>

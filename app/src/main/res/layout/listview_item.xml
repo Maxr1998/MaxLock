@@ -67,7 +67,7 @@
             android:padding="5dp"
             android:src="@drawable/ic_create_black_48dp"
             android:tint="?attr/colorAccent"
-            android:tintMode="src_over"
+            android:tintMode="src_atop"
             android:visibility="gone" />
 
         <ToggleButton
