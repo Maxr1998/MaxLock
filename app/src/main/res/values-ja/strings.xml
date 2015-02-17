@@ -13,6 +13,7 @@
     <string name="pref_locking_type_password">パスワード</string>
     <string name="pref_locking_type_pin">暗証番号</string>
     <string name="pref_locking_type_knockcode">ノックコード</string>
+    <string name="pref_locking_type_pattern">パターン</string>
 
     <string name="pref_set_password">パスワードの設定</string>
     <string name="msg_password_inconsistent">パスワードが一致しません!</string>
@@ -34,13 +35,16 @@
     <!-- Main screen -->
     <string name="pref_locking_ui">ロック画面</string>
     <!-- Locking UI settings -->
-    <string name="pref_category_pin_and_knock_code">暗証番号とノックコード</string>
+    <string name="open_theme_manager">Open Theme Manager</string>
+    <string name="open_theme_manager_summary_none">No theme applied</string>
+    <string name="open_theme_manager_summary_applied">Applied: </string>
+    <string name="overridden_by_theme">(Overridden by theme)</string>
     <string name="pref_background">背景画像</string>
     <string-array name="background_types">
         <item>壁紙</item>
         <item>@string/custom_color</item>
         <item>カスタム…</item>
-        <!--<item>Theme</item>-->
+        <!--<item>Theme background</item>-->
     </string-array>
     <string-array name="background_type_values" translateable="false">
         <!-- Do not translate -->
@@ -49,6 +53,8 @@
         <item>custom</item>
         <!--<item>theme</item>-->
     </string-array>
+    <string name="custom_color">背景色</string>
+    <string name="pref_category_pin_and_knock_code">暗証番号とノックコード</string>
     <string name="pref_invert_color">表示色の反転</string>
     <string name="pref_invert_color_summary">テキストと線の色を黒にします</string>
     <string name="pref_hide_title_bar">タイトルバーの消去</string>
@@ -83,10 +89,11 @@
     <string name="backup_list">バックアップ</string>
     <string name="restore_list">リストア</string>
     <string name="clear_list">すべて消去</string>
-    <string name="toast_no_files_to_backup">バックアップファイルが見つかりません</string>
+    <string name="toast_no_files_to_backup">バックアップするファイルが見つかりません</string>
     <string name="toast_backup_restore_exception">問題が発生しました\n開発者へ報告をお願いします!</string>
     <string name="toast_backup_success">バックアップに成功しました</string>
     <string name="dialog_restore_list_message">バックアップをリストアして現在の設定を置き換えます!</string>
+    <string name="toast_no_files_to_restore">リストアするファイルが見つかりません</string>
     <string name="toast_restore_success">リストアに成功しました</string>
     <string name="msg_search">検索</string>
     <string name="txt_lock_on">On</string>
@@ -97,11 +104,13 @@
 
     <string name="pref_category_ui">UI 設定</string>
     <string name="pref_hide_from_launcher">アプリアイコンを非表示にする</string>
+    <string name="pref_hide_master_switch_shortcut">マスタースイッチアイコンを非表示にする</string>
+    <string name="reboot_required">変更を有効にするには端末の再起動が必要かもしれません</string>
     <string name="pref_use_dark_style">暗色スタイル</string>
 
     <string name="pref_category_about">このアプリについて</string>
-    <string name="app_name_pro">MaxLock Pro</string>
-    <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
+    <string name="app_name_pro">MaxLock プロ</string>
+    <string name="app_name_pseudo_pro">MaxLock 準プロ</string>
     <string name="pref_about_summary">コピーライト &#169; 2014&#8211;2015 by Maxr1998\nタップすると詳細情報を表示します</string>
     <string name="pref_donate_upgrade_pro">寄付をしてプロ版にアップグレード</string>
     <string name="pref_enable_pro">プロ版の機能の有効化</string>
@@ -112,6 +121,15 @@
     <string name="uninstall">アンインストール</string>
 
     <string name="device_admin_description">MaxLock のアンインストールや無効化を防止します</string>
+
+    <string name="dialog_like_app">このアプリはいかがですか?</string>
+    <string name="dialog_like_app_text">もし気に入っていただけたら Play ストアでの評価をお願いします。また、寄付も受け付けています :)</string>
+    <string name="dialog_cb_never_again">再び表示しない</string>
+    <string name="dialog_button_donate">寄付</string>
+    <string name="dialog_button_rate">評価</string>
+
+    <string name="no_locking_type">ロック方法が設定されていません</string>
+    <string name="no_locked_apps">ロックするアプリが選択されていません</string>
 
     <string name="fake_die_message">問題が発生したため %1$s を終了します</string>
     <string name="report">レポート</string>
