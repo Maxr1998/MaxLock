@@ -85,11 +85,11 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 .putLong(requestPkg + "_tmp", System.currentTimeMillis())
                 .commit();
         am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
-        Intent intent = new Intent(app);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         try {
+            Intent intent = new Intent(app);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
-        } catch (SecurityException e) {
+        } catch (Exception e) {
             Intent intent_option = getPackageManager().getLaunchIntentForPackage(requestPkg);
             intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent_option);
