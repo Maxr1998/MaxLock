@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
-    tools:context="de.Maxr1998.xposed.maxlock.ui.settings.PinSetupFragment">
+    tools:context="de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment">
 
     <TextView
         android:id="@+id/description"

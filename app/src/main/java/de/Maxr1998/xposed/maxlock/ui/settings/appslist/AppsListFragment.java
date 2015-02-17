@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui.settings;
+package de.Maxr1998.xposed.maxlock.ui.settings.appslist;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -64,7 +64,6 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
-import de.Maxr1998.xposed.maxlock.ui.settings.util.CheckBoxAdapter;
 
 
 public class AppsListFragment extends Fragment {
@@ -166,7 +165,7 @@ public class AppsListFragment extends Fragment {
             final File backupDir = new File(Environment.getExternalStorageDirectory() + File.separator + "MaxLock_Backup");
 
             switch (item.getItemId()) {
-                case R.id.backup_list:
+                case R.id.toolbar_backup_list:
                     File curTimeDir = new File(backupDir + File.separator + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss").format(new Date(System.currentTimeMillis())) + File.separator);
                     try {
                         if (prefsPackagesFile.exists()) {
@@ -183,7 +182,7 @@ public class AppsListFragment extends Fragment {
                         Toast.makeText(getActivity(), R.string.toast_backup_success, Toast.LENGTH_SHORT).show();
                     return true;
 
-                case R.id.restore_list:
+                case R.id.toolbar_restore_list:
                     List<String> list = new ArrayList<>(Arrays.asList(backupDir.list()));
                     restoreAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
                     restoreDialog = new AlertDialog.Builder(getActivity())
@@ -231,7 +230,7 @@ public class AppsListFragment extends Fragment {
                         }
                     });
                     return true;
-                case R.id.clear_list:
+                case R.id.toolbar_clear_list:
                     //noinspection deprecation
                     getActivity().getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().clear().commit();
                     //noinspection deprecation

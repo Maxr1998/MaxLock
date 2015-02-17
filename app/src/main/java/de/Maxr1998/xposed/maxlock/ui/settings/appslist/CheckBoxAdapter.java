@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui.settings.util;
+package de.Maxr1998.xposed.maxlock.ui.settings.appslist;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -49,8 +49,8 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
-import de.Maxr1998.xposed.maxlock.ui.settings.KnockCodeSetupFragment;
-import de.Maxr1998.xposed.maxlock.ui.settings.PinSetupFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 
 @SuppressLint("CommitPrefEdits")
 public class CheckBoxAdapter extends BaseAdapter {
