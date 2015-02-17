@@ -12,7 +12,7 @@
     <!-- Locking type Settings -->
     <string name="pref_locking_type_password">Passwort</string>
     <string name="pref_locking_type_pin">PIN</string>
-    <string name="pref_locking_type_knockcode">Knock code</string>
+    <string name="pref_locking_type_knockcode">Knock Code</string>
     <string name="pref_locking_type_pattern">Muster</string>
 
     <string name="pref_set_password">Passwort ändern</string>
@@ -23,15 +23,15 @@
     <string name="txt_type_password">Passwort: </string>
     <string name="txt_retype_password">Passwort wiederholen: </string>
 
-    <string name="choose_pin">PIN setzen</string>
-    <string name="pin_too_short">PIN muss mindestens 4 Ziffern lang sein</string>
-    <string name="continue_done">Drücken Sie weiter, wenn Sie fertig sind</string>
+    <string name="choose_pin">PIN festlegen</string>
+    <string name="pin_too_short">Die PIN muss mindestens 4 Ziffern enthalten.</string>
+    <string name="continue_done">Wählen Sie "Weiter", sobald Sie fertig sind.</string>
     <string name="confirm_pin">PIN bestätigen</string>
     <string name="button_continue">Weiter</string>
 
-    <string name="choose_knock_code">Knock code einrichten</string>
-    <string name="knock_code_too_short">Knock code muss mindestens 4 Berührungen lang sein</string>
-    <string name="confirm_knock_code">Knock code bestätigen</string>
+    <string name="choose_knock_code">Knock Code einrichten</string>
+    <string name="knock_code_too_short">Der Knock Code muss mindestens 4 Berührungen enthalten.</string>
+    <string name="confirm_knock_code">Knock Code bestätigen</string>
     <!-- Main Screen -->
     <string name="pref_locking_ui">Sperrbildschirm-Oberfläche</string>
     <!-- Locking UI settings -->
@@ -45,13 +45,6 @@
         <item>@string/custom_color</item>
         <item>Benutzerdefiniert…</item>
         <!--<item>Thema</item>-->
-    </string-array>
-    <string-array name="background_type_values" translateable="false">
-        <!-- Do not translate -->
-        <item>wallpaper</item>
-        <item>color</item>
-        <item>custom</item>
-        <!--<item>theme</item>-->
     </string-array>
     <string name="custom_color">Farbe</string>
     <string name="pref_category_pin_and_knock_code">PIN und Knock Code</string>

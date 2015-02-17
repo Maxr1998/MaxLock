@@ -46,13 +46,6 @@
         <item>Custom image…</item>
         <!--<item>Theme background</item>-->
     </string-array>
-    <string-array name="background_type_values" translateable="false">
-        <!-- Do not translate -->
-        <item>wallpaper</item>
-        <item>color</item>
-        <item>custom</item>
-        <!--<item>theme</item>-->
-    </string-array>
     <string name="custom_color">Custom color</string>
     <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
     <string name="pref_invert_color">Invert color of UI elements</string>
