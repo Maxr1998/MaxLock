@@ -313,7 +313,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             });
         }
 
-        if (!prefs.getBoolean(Common.TOUCH_VISIBLE, true)) {
+        if (!prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true)) {
             for (View kb : knockButtons) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                     kb.setBackground(getResources().getDrawable(R.drawable.transparent_background));
@@ -328,14 +328,14 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 rootView.findViewById(R.id.divider3),
                 rootView.findViewById(R.id.divider4)
         };
-        if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.SHOW_DIVIDERS, true)) {
+        if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
             for (View divider : dividers) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                     divider.setBackground(getResources().getDrawable(android.R.color.black));
                 else
                     divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
             }
-        } else if (!prefs.getBoolean(Common.SHOW_DIVIDERS, true)) {
+        } else if (!prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
             for (View divider : dividers) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                     divider.setBackground(getResources().getDrawable(R.drawable.transparent_background));
@@ -392,8 +392,9 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 break;
             }
         }
-
         lockPatternView.setOnPatternListener(patternListener);
+        lockPatternView.setInStealthMode(!prefs.getBoolean(Common.PATTERN_SHOW_PATH, true));
+        lockPatternView.setTactileFeedbackEnabled(prefs.getBoolean(Common.PATTERN_FEEDBACK, true));
     }
 
     private void personalizeUI() {

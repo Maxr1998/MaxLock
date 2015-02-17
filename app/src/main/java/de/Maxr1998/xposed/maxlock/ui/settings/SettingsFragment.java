@@ -46,12 +46,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.commonsware.cwac.anddown.AndDown;
 import com.haibison.android.lockpattern.LockPatternActivity;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
@@ -64,7 +62,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import de.Maxr1998.xposed.maxlock.BillingHelper;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -352,7 +349,7 @@ public class SettingsFragment extends PreferenceFragment {
             setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
-            Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_DIVIDERS), findPreference(Common.TOUCH_VISIBLE)};
+            Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.KC_SHOW_DIVIDERS), findPreference(Common.KC_TOUCH_VISIBLE)};
             if (PREFS_THEME.contains(Common.THEME_PKG)) {
                 Preference themeManager = findPreference(Common.OPEN_THEME_MANAGER);
                 themeManager.setSummary(getString(R.string.open_theme_manager_summary_applied) + PREFS_THEME.getString(Common.THEME_PKG, ""));

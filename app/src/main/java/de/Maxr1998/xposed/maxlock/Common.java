@@ -48,8 +48,11 @@ public class Common {
     public static final String HIDE_TITLE_BAR = "hide_title_bar";
     public static final String HIDE_INPUT_BAR = "hide_input_bar";
     public static final String QUICK_UNLOCK = "quick_unlock";
-    public static final String SHOW_DIVIDERS = "show_dividers";
-    public static final String TOUCH_VISIBLE = "touch_visible";
+    public static final String KC_SHOW_DIVIDERS = "show_dividers";
+    public static final String KC_TOUCH_VISIBLE = "touch_visible";
+    public static final String PATTERN_SHOW_PATH = "show_path";
+    public static final String PATTERN_FEEDBACK = "haptic_feedback";
+
 
     public static final String LOCKING_OPTIONS = "locking_options";
 
@@ -58,7 +61,6 @@ public class Common {
     public static final String LOG_FILE = "log.txt";
 
     public static final String TRUSTED_DEVICES = "trusted_devices";
-
 
     public static final String CHOOSE_APPS = "choose_apps";
 

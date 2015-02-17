@@ -51,4 +51,14 @@
             android:key="touch_visible"
             android:title="@string/pref_touch_visible" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_pattern_only">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_path"
+            android:title="@string/pref_show_path" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="haptic_feedback"
+            android:title="@string/pref_haptic_feedback" />
+    </PreferenceCategory>
 </PreferenceScreen>
