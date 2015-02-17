@@ -68,8 +68,6 @@
     <string name="pref_category_other">その他</string>
     <string name="pref_fake_die_input">偽装終了ダイアログへの入力文字列</string>
 
-    <string name="pref_trusted_devices">Trusted devices</string>
-    <string name="no_trusted_devices">No trusted devices configured</string>
     <string name="no_network_connected">You\'re currently not connected to any network</string>
 
     <string name="pref_category_apps">アプリの選択</string>

@@ -173,9 +173,6 @@ public class SettingsFragment extends PreferenceFragment {
             PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PRO_VERSION).apply();
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
-        } else if (preference == findPreference(Common.TRUSTED_DEVICES)) {
-            launchFragment(new TrustedDevicesFragment(), true, this);
-            return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
             billingHelper.finish();
             launchFragment(new AppsListFragment(), true, this);

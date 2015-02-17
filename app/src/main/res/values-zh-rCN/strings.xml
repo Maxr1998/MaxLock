@@ -64,8 +64,6 @@
     <string name="pref_category_other">其它</string>
     <string name="pref_fake_die_input">假死输入</string>
 
-    <string name="pref_trusted_devices">信任的设备</string>
-    <string name="no_trusted_devices">没有信任的设备配置</string>
     <string name="no_network_connected">您目前没有连接到任何网络</string>
 
     <string name="pref_category_apps">选择应用</string>

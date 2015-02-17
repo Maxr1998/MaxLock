@@ -71,8 +71,6 @@
     <string name="pref_category_other">Andere</string>
     <string name="pref_fake_die_input">Vorgetäuschter Absturz-Eingabe</string>
 
-    <string name="pref_trusted_devices">Vertraute Geräte</string>
-    <string name="no_trusted_devices">Keine vertrauten Geräte konfiguriert</string>
     <string name="no_network_connected">Sie sind momentan mit keinem Netwerk verbunden</string>
 
     <string name="pref_category_apps">Anwendungen</string>

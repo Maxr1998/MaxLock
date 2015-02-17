@@ -16,11 +16,6 @@
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingOptionsFragment"
             android:key="locking_options"
             android:title="@string/pref_locking_options" />
-
-        <!--<PreferenceScreen
-            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.TrustedDevicesFragment"
-            android:key="trusted_devices"
-            android:title="@string/pref_trusted_devices" />-->
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_apps">

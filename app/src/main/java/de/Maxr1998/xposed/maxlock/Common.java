@@ -53,14 +53,11 @@ public class Common {
     public static final String PATTERN_SHOW_PATH = "show_path";
     public static final String PATTERN_FEEDBACK = "haptic_feedback";
 
-
     public static final String LOCKING_OPTIONS = "locking_options";
 
     public static final String ENABLE_LOGGING = "enable_logging";
     public static final String VIEW_LOGS = "view_logs";
     public static final String LOG_FILE = "log.txt";
-
-    public static final String TRUSTED_DEVICES = "trusted_devices";
 
     public static final String CHOOSE_APPS = "choose_apps";
 
