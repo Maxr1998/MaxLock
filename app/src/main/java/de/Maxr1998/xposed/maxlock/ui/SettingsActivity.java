@@ -31,6 +31,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.CompoundButton;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -101,7 +102,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.master_switch_menu_item));
+        SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_master_switch));
         master_switch.setChecked(getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).getBoolean(Common.MASTER_SWITCH_ON, true));
         master_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint({"CommitPrefEdits"})
@@ -111,6 +112,16 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.toolbar_info:
+                Util.showAbout(this);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

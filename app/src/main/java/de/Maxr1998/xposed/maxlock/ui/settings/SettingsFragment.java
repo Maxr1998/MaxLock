@@ -71,6 +71,9 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
+import de.Maxr1998.xposed.maxlock.ui.settings.appslist.AppsListFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 
 
 public class SettingsFragment extends PreferenceFragment {
@@ -204,7 +207,7 @@ public class SettingsFragment extends PreferenceFragment {
             ((SettingsActivity) getActivity()).restart();
             return true;
         } else if (preference == findPreference(Common.ABOUT)) {
-            showAbout();
+            Util.showAbout(getActivity());
             return true;
         } else if (preference == findPreference(Common.DONATE)) {
             billingHelper.showDialog();
@@ -224,7 +227,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     public void startup() {
         if (PREFS.getBoolean(Common.FIRST_START, true)) {
-            showAbout();
+            Util.showAbout(getActivity());
             PREFS.edit().putBoolean(Common.FIRST_START, false).apply();
         }
         rateDialog();
@@ -235,25 +238,6 @@ public class SettingsFragment extends PreferenceFragment {
         } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
             SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locked_apps));
         }
-    }
-
-    public void showAbout() {
-        AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
-        WebView webView = new WebView(getActivity());
-        String markdown = "";
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("about.md")));
-            String line;
-            while ((line = br.readLine()) != null) {
-                markdown = markdown + line + "\n";
-            }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String html = new AndDown().markdownToHtml(markdown);
-        webView.loadData(html, "text/html; charset=UTF-8", null);
-        about.setView(webView).create().show();
     }
 
     public void rateDialog() {
@@ -502,7 +486,7 @@ public class SettingsFragment extends PreferenceFragment {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            if (item.getItemId() == R.id.delete_log) {
+            if (item.getItemId() == R.id.toolbar_delete_log) {
                 File file = new File(getActivity().getApplicationInfo().dataDir + File.separator + Common.LOG_FILE);
                 //noinspection ResultOfMethodCallIgnored
                 file.delete();
