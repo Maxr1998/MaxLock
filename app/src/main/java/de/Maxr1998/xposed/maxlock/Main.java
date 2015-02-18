@@ -58,18 +58,16 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         }
 
         Class<?> activity = XposedHelpers.findClass("android.app.Activity", lpparam.classLoader);
-        XposedBridge.hookAllMethods(activity, "onResume", new XC_MethodHook() {
+        XposedBridge.hookAllMethods(activity, "onCreate", new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        super.beforeHookedMethod(param);
-
                         final Activity app = (Activity) param.thisObject;
                         if (app.getClass().getName().equals("android.app.Activity")) {
                             return;
                         }
-                        launchLockView(app, packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
-
                         app.moveTaskToBack(true);
+                        launchLockView(app, packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
+                        super.beforeHookedMethod(param);
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }
