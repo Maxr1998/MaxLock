@@ -35,6 +35,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nispok.snackbar.SnackbarManager;
+
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
@@ -160,6 +162,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
                 if (customApp == null) {
                     prefs.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PIN).apply();
                     prefsKey.edit().putString(Common.KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString())).apply();
+                    SnackbarManager.dismiss();
                 } else {
                     prefsPerApp.edit().putString(customApp, Common.PREF_VALUE_PIN).putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString())).apply();
                 }

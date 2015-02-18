@@ -39,6 +39,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.commonsware.cwac.anddown.AndDown;
+import com.nispok.snackbar.SnackbarManager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -139,6 +140,7 @@ public class Util {
                     if (app == null) {
                         PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, shaHash(v1)).apply();
                         PREFS.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PASSWORD).apply();
+                        SnackbarManager.dismiss();
                     } else {
                         PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
                     }

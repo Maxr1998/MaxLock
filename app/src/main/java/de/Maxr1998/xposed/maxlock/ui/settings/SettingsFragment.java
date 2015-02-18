@@ -226,7 +226,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
         rateDialog();
         if (PREFS.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
-            SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + getString(R.string.no_locked_apps)));
+            SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + " " + getString(R.string.no_locked_apps)));
         } else if (PREFS.getString(Common.LOCKING_TYPE, "").equals("")) {
             SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locking_type));
         } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
@@ -313,6 +313,7 @@ public class SettingsFragment extends PreferenceFragment {
                 launchFragment(new PinSetupFragment(), false, this);
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {
+                SnackbarManager.dismiss();
                 launchFragment(new KnockCodeSetupFragment(), false, this);
                 return true;
             } else if (preference == findPreference(Common.LOCKING_TYPE_PATTERN)) {
@@ -330,6 +331,7 @@ public class SettingsFragment extends PreferenceFragment {
                 case Util.PATTERN_CODE: {
                     if (resultCode == LockPatternActivity.RESULT_OK) {
                         Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), null);
+                        SnackbarManager.dismiss();
                     }
                     break;
                 }
