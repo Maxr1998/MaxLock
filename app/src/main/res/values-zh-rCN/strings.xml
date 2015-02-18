@@ -23,13 +23,13 @@
     <string name="txt_type_password">密码: </string>
     <string name="txt_retype_password">确认密码: </string>
 
-    <string name="choose_pin">选择您的PIN</string>
+    <string name="choose_pin">输入您的PIN</string>
     <string name="pin_too_short">PIN必须至少4位数</string>
     <string name="continue_done">完成后按继续</string>
     <string name="confirm_pin">再次确认PIN</string>
     <string name="button_continue">继续</string>
 
-    <string name="choose_knock_code">选择您的轻敲代码</string>
+    <string name="choose_knock_code">输入您的轻敲代码</string>
     <string name="knock_code_too_short">轻敲代码必须至少4点</string>
     <string name="confirm_knock_code">再次确认轻敲代码</string>
     <!-- Main screen -->
@@ -58,9 +58,9 @@
     <string name="pref_category_knock_code_only">仅轻敲代码</string>
     <string name="pref_show_dividers">显示分隔</string>
     <string name="pref_touch_visible">让触摸可见</string>
-	<string name="pref_category_pattern_only">Pattern only</string>
-    <string name="pref_show_path">Show path</string>
-    <string name="pref_haptic_feedback">Vibrate on drawing</string>
+	<string name="pref_category_pattern_only">仅图案</string>
+    <string name="pref_show_path">图案可见</string>
+    <string name="pref_haptic_feedback">滑动时振动</string>
 
     <string name="pref_locking_options">锁定设置</string>
     <string name="pref_category_logging">日志记录</string>
@@ -88,7 +88,7 @@
     <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者！</string>
     <string name="toast_backup_success">备份成功</string>
     <string name="dialog_restore_list_message">这将从备份替换当前设置！</string>
-    <string name="toast_no_files_to_restore">没有找到恢复文件</string>
+    <string name="toast_no_files_to_restore">未找到恢复文件</string>
     <string name="toast_restore_success">恢复成功</string>
     <string name="msg_search">搜索</string>
     <string name="txt_lock_on">开</string>
@@ -115,9 +115,9 @@
 		卸载这个程序您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
     <string name="uninstall">卸载</string>
 
-    <string name="device_admin_description">保护MaxLock被卸载和禁用</string>
+    <string name="device_admin_description">保护MaxLock防止被卸载和禁用</string>
 
-    <string name="dialog_like_app">你喜欢这个应用吗?</string>
+    <string name="dialog_like_app">您喜欢这个应用吗?</string>
     <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠 :)</string>
     <string name="dialog_cb_never_again">不再显示</string>
     <string name="dialog_button_donate">捐助</string>
