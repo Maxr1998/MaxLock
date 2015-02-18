@@ -53,6 +53,7 @@ Libs and code used:
 - [CWAC AndDown Markdown reader by Commonsware](https://github.com/commonsguy/cwac-anddown)
 - [FabView by Sergej Shafarenka, halfbit.de](https://github.com/beworker/fabuless)
 - [Google Guava](https://github.com/google/guava)
+- [Snackbar by nispok](https://github.com/nispok/snackbar)
 - [StatusBarTintApi by Mohammad Abu-Garbeyyeh](https://github.com/MohammadAG/Xposed-Tinted-Status-Bar/blob/master/src/com/mohammadag/colouredstatusbar/StatusBarTintApi.java)
 - [sha1/256Hash method by Adam on stackoverflow.com](http://stackoverflow.com/a/11978976)
 - [XposedBridge by rovo89 and Tungstwenty](https://github.com/rovo89/XposedBridge)
@@ -67,3 +68,6 @@ Licensed under the [GNU GPL License Version 3](http://www.gnu.org/licenses/gpl-3
 
 ###android-ColorPickerPreference, android-inapp-billing-v3, android-lockpattern, android-support-v4-preferencefragment, Apache Commons IO, CWAC AndDown, FabView, Google Guava, XposedBridge###
 Licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.txt).
+
+###Snackbar###
+Licensed under the [MIT License](http://opensource.org/licenses/MIT)
