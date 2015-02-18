@@ -69,7 +69,8 @@
     <string name="pref_view_logs">View logs</string>
     <string name="menu_delete_log">Delete logs</string>
     <string name="pref_category_other">Other</string>
-    <string name="pref_fake_die_input">Fake die input</string>
+    <string name="pref_fake_die_input">\"Fake die\" input</string>
+    <string name="pref_fake_die_input_summary">The phrase the user has to input in the dialog to open lockscreen</string>
 
     <string name="no_network_connected">You\'re currently not connected to any network</string>
 

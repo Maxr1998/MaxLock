@@ -16,6 +16,7 @@
         <EditTextPreference
             android:defaultValue="start"
             android:key="fake_die_input"
+            android:summary="@string/pref_fake_die_input_summary"
             android:title="@string/pref_fake_die_input" />
     </PreferenceCategory>
 </PreferenceScreen>

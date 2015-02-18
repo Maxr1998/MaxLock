@@ -69,7 +69,8 @@
     <string name="pref_view_logs">Logs ansehen</string>
     <string name="menu_delete_log">Logs löschen</string>
     <string name="pref_category_other">Andere</string>
-    <string name="pref_fake_die_input">Vorgetäuschter Absturz-Eingabe</string>
+    <string name="pref_fake_die_input">\"Vorgetäuschter Absturz\" Eingabe</string>
+    <string name="pref_fake_die_input_summary">Die Phrase die der Nutzer in den Dialog eingeben muss um den Sperrbildschirm zu öffnen</string>
 
     <string name="no_network_connected">Sie sind momentan mit keinem Netwerk verbunden</string>
 
