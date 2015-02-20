@@ -2,7 +2,7 @@ MaxLock
 =======
 This is a Xposed Framework App lock module.
 
-[Go to wiki](https://github.com/Maxr1998/MaxLock/wiki/About-MaxLock)
+[Go to wiki](https://github.com/Maxr1998/MaxLock/wiki/Home)
 
 Links:
 ------
