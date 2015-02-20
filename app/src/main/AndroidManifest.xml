@@ -63,8 +63,15 @@
             android:name=".ui.MasterSwitchShortcutActivity"
             android:enabled="true"
             android:excludeFromRecents="true"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/toggle_master_switch"
-            android:theme="@style/TranslucentStatusBar" />
+            android:theme="@style/TranslucentStatusBar">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name=".ui.settings.SettingsFragment$UninstallProtectionReceiver"
