@@ -35,7 +35,10 @@
     <!-- Main screen -->
     <string name="pref_locking_ui">锁屏界面</string>
     <!-- Locking UI settings -->
-    <string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
+	<string name="open_theme_manager">打开主题管理</string>
+    <string name="open_theme_manager_summary_none">没有主题应用</string>
+    <string name="open_theme_manager_summary_applied">应用: </string>
+	<string name="overridden_by_theme">(覆盖主题)</string>
     <string name="pref_background">背景图片</string>
     <string-array name="background_types">
         <item>墙纸</item>
@@ -44,6 +47,7 @@
         <!--<item>主题背景</item>-->
     </string-array>
     <string name="custom_color">自定义颜色</string>
+	<string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
     <string name="pref_invert_color">转换用户界面颜色</string>
     <string name="pref_invert_color_summary">设置这个文本和分隔器的颜色为黑色</string>
     <string name="pref_hide_title_bar">隐藏标题栏</string>
@@ -54,6 +58,9 @@
     <string name="pref_category_knock_code_only">仅轻敲代码</string>
     <string name="pref_show_dividers">显示分隔</string>
     <string name="pref_touch_visible">让触摸可见</string>
+	<string name="pref_category_pattern_only">Pattern only</string>
+    <string name="pref_show_path">Show path</string>
+    <string name="pref_haptic_feedback">Vibrate on drawing</string>
 
     <string name="pref_locking_options">锁定设置</string>
     <string name="pref_category_logging">日志记录</string>
@@ -63,6 +70,7 @@
     <string name="menu_delete_log">删除日志</string>
     <string name="pref_category_other">其它</string>
     <string name="pref_fake_die_input">假死输入</string>
+	<string name="pref_fake_die_input_summary">用户需要在对话框中输入短语才能打开锁屏</string>
 
     <string name="no_network_connected">您目前没有连接到任何网络</string>
 
@@ -90,7 +98,9 @@
     <string name="txt_custom_password">自定义密码</string>
 
     <string name="pref_category_ui">界面设置</string>
-    <string name="pref_hide_from_launcher">在桌面隐藏应用图标</string>
+    <string name="pref_hide_from_launcher">桌面隐藏应用图标</string>
+	<string name="pref_hide_master_switch_shortcut">桌面隐藏主开关快捷方式</string>
+    <string name="reboot_required">可能需要重新启动以应用更改</string>
     <string name="pref_use_dark_style">使用黑色风格</string>
 
     <string name="pref_category_about">关于</string>
@@ -112,8 +122,11 @@
     <string name="dialog_cb_never_again">不再显示</string>
     <string name="dialog_button_donate">捐助</string>
     <string name="dialog_button_rate">评分</string>
+	
+	<string name="no_locking_type">没有锁定特定类型</string>
+    <string name="no_locked_apps">没有选择锁定应用程序</string>
 
-    <string name="fake_die_message">非常抱歉,%1$s已停止.</string>
+    <string name="fake_die_message">非常抱歉,%1$s已停止</string>
     <string name="report">报告问题</string>
     <string name="report_problem">报告问题</string>
 
