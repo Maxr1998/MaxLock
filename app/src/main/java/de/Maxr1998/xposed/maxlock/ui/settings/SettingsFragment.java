@@ -187,16 +187,6 @@ public class SettingsFragment extends PreferenceFragment {
                 ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.Main");
                 getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
             }
-        } else if (preference == findPreference(Common.HIDE_MASTER_SWITCH_SHORTCUT) && preference instanceof CheckBoxPreference) {
-            CheckBoxPreference hideApp = (CheckBoxPreference) preference;
-            if (hideApp.isChecked()) {
-                Toast.makeText(getActivity(), R.string.reboot_required, Toast.LENGTH_SHORT).show();
-                ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.MasterSwitch");
-                getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-            } else {
-                ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.MasterSwitch");
-                getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-            }
         } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.ENABLE_PRO)) {
             ((SettingsActivity) getActivity()).restart();
             return true;

@@ -18,7 +18,10 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +31,7 @@ import android.widget.Toast;
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.widget.MasterSwitchWidget;
 
 @SuppressLint("CommitPrefEdits")
 public class MasterSwitchShortcutActivity extends FragmentActivity implements AuthenticationSucceededListener {
@@ -48,11 +52,10 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
             b.putString(Common.INTENT_EXTRAS_PKG_NAME, getString(R.string.unlock_master_switch));
             frag.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
-
         } else {
             prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
             Toast.makeText(this, getString(R.string.toast_master_switch_on), Toast.LENGTH_LONG).show();
-            finish();
+            fireIntentAndFinish();
         }
     }
 
@@ -60,6 +63,15 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
     public void onAuthenticationSucceeded() {
         prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
         Toast.makeText(this, getString(R.string.toast_master_switch_off), Toast.LENGTH_LONG).show();
+        fireIntentAndFinish();
+    }
+
+    public void fireIntentAndFinish() {
+        Intent intent = new Intent(this, MasterSwitchWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MasterSwitchWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
         finish();
     }
 }

@@ -64,21 +64,7 @@
             android:enabled="true"
             android:excludeFromRecents="true"
             android:label="@string/toggle_master_switch"
-            android:theme="@style/TranslucentStatusBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-
-        <activity-alias
-            android:name=".MasterSwitch"
-            android:enabled="true"
-            android:targetActivity=".ui.MasterSwitchShortcutActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
+            android:theme="@style/TranslucentStatusBar" />
 
         <receiver
             android:name=".ui.settings.SettingsFragment$UninstallProtectionReceiver"
@@ -105,6 +91,15 @@
             android:name=".ui.ThemeService"
             android:enabled="false"
             android:exported="false" />
+
+        <receiver android:name=".widget.MasterSwitchWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/masterswitch_widget_info" />
+        </receiver>
 
         <meta-data
             android:name="xposedmodule"

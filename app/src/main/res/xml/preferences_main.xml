@@ -39,11 +39,6 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="hide_master_switch"
-            android:title="@string/pref_hide_master_switch_shortcut" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
             android:key="use_dark_style"
             android:title="@string/pref_use_dark_style" />
     </PreferenceCategory>

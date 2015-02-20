@@ -95,7 +95,6 @@
 
     <string name="pref_category_ui">UI 設定</string>
     <string name="pref_hide_from_launcher">アプリアイコンを非表示にする</string>
-    <string name="pref_hide_master_switch_shortcut">マスタースイッチアイコンを非表示にする</string>
     <string name="reboot_required">変更を有効にするには端末の再起動が必要かもしれません</string>
     <string name="pref_use_dark_style">暗色スタイル</string>
 

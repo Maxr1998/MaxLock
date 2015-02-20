@@ -99,7 +99,6 @@
 
     <string name="pref_category_ui">UI settings</string>
     <string name="pref_hide_from_launcher">Hide app from launcher</string>
-    <string name="pref_hide_master_switch_shortcut">Hide MasterSwitch Shortcut from Launcher</string>
     <string name="reboot_required">A reboot may be required to apply changes</string>
     <string name="pref_use_dark_style">Use dark style</string>
 
