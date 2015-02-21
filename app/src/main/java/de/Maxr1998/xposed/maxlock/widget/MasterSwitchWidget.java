@@ -37,7 +37,8 @@ public class MasterSwitchWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Intent intent = new Intent(context, MasterSwitchShortcutActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pending = PendingIntent.getActivity(context, 0, intent, 0);
+        intent.putExtra("LaunchOnly", true);
+        PendingIntent pending = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         //noinspection deprecation
         SharedPreferences prefsPackages = context.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
         boolean masterSwitchOn = prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true);

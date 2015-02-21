@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
@@ -42,19 +43,36 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //noinspection deprecation
-        prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
-
-        if (prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true)) {
-            setContentView(R.layout.activity_lock);
-            Fragment frag = new LockFragment();
-            Bundle b = new Bundle(1);
-            b.putString(Common.INTENT_EXTRAS_PKG_NAME, getString(R.string.unlock_master_switch));
-            frag.setArguments(b);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+        if (getIntent().getBooleanExtra("LaunchOnly", false)) {
+            // Launch
+            Log.d("MaxLock", "Launching shortcut");
+            //noinspection deprecation
+            prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
+            if (prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true)) {
+                setContentView(R.layout.activity_lock);
+                Fragment frag = new LockFragment();
+                Bundle b = new Bundle(1);
+                b.putString(Common.INTENT_EXTRAS_PKG_NAME, getString(R.string.unlock_master_switch));
+                frag.setArguments(b);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+            } else {
+                prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
+                Toast.makeText(this, getString(R.string.toast_master_switch_on), Toast.LENGTH_LONG).show();
+                fireIntentAndFinish();
+            }
         } else {
-            prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
-            Toast.makeText(this, getString(R.string.toast_master_switch_on), Toast.LENGTH_LONG).show();
+            // Create shortcut
+            Log.d("MaxLock", "Creating shortcut");
+            Intent shortcut = new Intent(Intent.ACTION_MAIN);
+            shortcut.setComponent(new ComponentName(getPackageName(), ".ui.MasterSwitchShortcutActivity"));
+            shortcut.putExtra("LaunchOnly", true);
+
+            Intent install = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+            install.putExtra("duplicate", false);
+            install.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Toggle Master Switch");
+            install.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
+            install.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
+            sendBroadcast(install);
             fireIntentAndFinish();
         }
     }
