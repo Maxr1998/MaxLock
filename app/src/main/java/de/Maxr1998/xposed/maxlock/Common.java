@@ -76,6 +76,7 @@ public class Common {
 
     // Preference values
     public static final String PREF_VALUE_PASSWORD = "password";
+    public static final String PREF_VALUE_PASS_PIN = "pass_pin";
     public static final String PREF_VALUE_PIN = "pin";
     public static final String PREF_VALUE_KNOCK_CODE = "knock_code";
     public static final String PREF_VALUE_PATTERN = "pattern";

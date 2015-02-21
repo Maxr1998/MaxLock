@@ -30,6 +30,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,13 +74,17 @@ public class Util {
         PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
     }
 
-    public static void askPassword(final Context context, final String password) {
+    @SuppressLint("InlinedApi")
+    public static void askPassword(final Context context, final String password, boolean numbers) {
         try {
             authenticationSucceededListener = (AuthenticationSucceededListener) context;
         } catch (ClassCastException e) {
             throw new RuntimeException(context.getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this fragment", e);
         }
         @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.ask_password, null);
+        final EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
+        if (numbers)
+            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(false)
                 .setTitle(R.string.pref_locking_type_password)
@@ -93,7 +98,6 @@ public class Util {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
                 String val = input.getText().toString();
                 if (Util.shaHash(val).equals(password) || password.equals("")) {
                     authenticationSucceededListener.onAuthenticationSucceeded();
@@ -139,10 +143,10 @@ public class Util {
                     dialog.dismiss();
                     if (app == null) {
                         PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, shaHash(v1)).apply();
-                        PREFS.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PASSWORD).apply();
+                        PREFS.edit().putString(Common.LOCKING_TYPE, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).apply();
                         SnackbarManager.dismiss();
                     } else {
-                        PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
+                        PREFS_PER_APP.edit().putString(app, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
                     }
                     Toast.makeText(context, R.string.msg_password_changed, Toast.LENGTH_SHORT).show();
                 }

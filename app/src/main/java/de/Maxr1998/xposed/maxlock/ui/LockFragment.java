@@ -186,9 +186,10 @@ public class LockFragment extends Fragment implements View.OnClickListener {
 
         switch (lockingType) {
             case Common.PREF_VALUE_PASSWORD:
+            case Common.PREF_VALUE_PASS_PIN:
                 titleView.setVisibility(View.GONE);
                 rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-                Util.askPassword(getActivity(), password);
+                Util.askPassword(getActivity(), password, lockingType.equals(Common.PREF_VALUE_PASS_PIN));
                 break;
             case Common.PREF_VALUE_PIN:
                 inflater.inflate(R.layout.pin_field, (ViewGroup) container);
