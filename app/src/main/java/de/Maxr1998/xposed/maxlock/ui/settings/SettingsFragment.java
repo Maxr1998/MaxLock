@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -50,6 +51,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.haibison.android.lockpattern.LockPatternActivity;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
@@ -73,18 +76,16 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment implements BillingProcessor.IBillingHandler {
     static Preference UNINSTALL;
     static SharedPreferences PREFS, PREFS_KEYS, PREFS_THEME;
-    static boolean PRO_VERSION;
-    Activity mActivity;
-    BillingHelper billingHelper;
+    BillingProcessor bp;
     DevicePolicyManager devicePolicyManager;
     ComponentName deviceAdmin;
 
     public static void launchFragment(Fragment fragment, boolean fromRoot, Fragment from) {
         if (fromRoot) {
-            if (Util.noGingerbread())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 from.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             else
                 from.getFragmentManager().popBackStack();
@@ -109,34 +110,14 @@ public class SettingsFragment extends PreferenceFragment {
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), UninstallProtectionReceiver.class);
+
+        bp = new BillingProcessor(getActivity(), getString(R.string.license_key), this);
+        bp.loadOwnedPurchasesFromGoogle();
     }
 
     @Override
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
-        boolean donated = !billingHelper.getBp().listOwnedProducts().isEmpty();
-        PRO_VERSION = PREFS.getBoolean(Common.ENABLE_PRO, false);
-        String version = null;
-        try {
-            version = " v" + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        Preference about = findPreference(Common.ABOUT);
-        CheckBoxPreference ep = (CheckBoxPreference) findPreference(Common.ENABLE_PRO);
-        String appName;
-        if (donated) {
-            appName = getString(R.string.app_name_pro);
-            PREFS.edit().putBoolean(Common.ENABLE_PRO, true).apply();
-            PRO_VERSION = true;
-            ep.setEnabled(false);
-            ep.setChecked(true);
-        } else {
-            if (PRO_VERSION)
-                appName = getString(R.string.app_name_pseudo_pro);
-            else appName = getString(R.string.app_name);
-        }
-        getActivity().setTitle(appName);
-        about.setTitle(appName + version);
+        setupPro();
         UNINSTALL = findPreference(Common.UNINSTALL);
         if (isDeviceAdminActive()) {
             UNINSTALL.setTitle(R.string.uninstall);
@@ -146,17 +127,41 @@ public class SettingsFragment extends PreferenceFragment {
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
     }
 
+    public void setupPro() {
+        String version;
+        try {
+            version = " v" + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            version = "Error getting app version";
+            e.printStackTrace();
+        }
+        Preference about = findPreference(Common.ABOUT);
+        CheckBoxPreference ep = (CheckBoxPreference) findPreference(Common.ENABLE_PRO);
+        String appName;
+        if (!bp.listOwnedProducts().isEmpty()) {
+            appName = getString(R.string.app_name_pro);
+            PREFS.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+            ep.setEnabled(false);
+            ep.setChecked(true);
+        } else {
+            if (PREFS.getBoolean(Common.ENABLE_PRO, false))
+                appName = getString(R.string.app_name_pseudo_pro);
+            else appName = getString(R.string.app_name);
+        }
+        getActivity().setTitle(appName);
+        about.setTitle(appName + version);
+    }
+
     @Override
     public void onAttach(Activity activity) {
-        if (billingHelper != null) billingHelper.finish();
-        mActivity = activity;
-        billingHelper = new BillingHelper(mActivity);
+        if (bp != null) bp.release();
+        bp = new BillingProcessor(activity, getString(R.string.license_key), this);
         super.onAttach(activity);
     }
 
     @Override
     public void onDestroy() {
-        billingHelper.finish();
+        bp.release();
         super.onDestroy();
     }
 
@@ -170,11 +175,10 @@ public class SettingsFragment extends PreferenceFragment {
             launchFragment(new LockingUISettingsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
-            PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PRO_VERSION).apply();
+            PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PREFS.getBoolean(Common.ENABLE_PRO, false)).apply();
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
-            billingHelper.finish();
             launchFragment(new AppsListFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.HIDE_APP_FROM_LAUNCHER) && preference instanceof CheckBoxPreference) {
@@ -194,7 +198,7 @@ public class SettingsFragment extends PreferenceFragment {
             Util.showAbout(getActivity());
             return true;
         } else if (preference == findPreference(Common.DONATE)) {
-            billingHelper.showDialog();
+            BillingHelper.showDialog(bp, getActivity());
             return true;
         } else if (preference == findPreference(Common.UNINSTALL)) {
             if (!isDeviceAdminActive()) {
@@ -246,7 +250,7 @@ public class SettingsFragment extends PreferenceFragment {
                             }
                             break;
                         case -1:
-                            billingHelper.showDialog();
+                            BillingHelper.showDialog(bp, getActivity());
                             break;
                     }
                     PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
@@ -263,6 +267,26 @@ public class SettingsFragment extends PreferenceFragment {
 
     private boolean isDeviceAdminActive() {
         return devicePolicyManager.isAdminActive(deviceAdmin);
+    }
+
+    @Override
+    public void onProductPurchased(String s, TransactionDetails transactionDetails) {
+        ((SettingsActivity) getActivity()).restart();
+    }
+
+    @Override
+    public void onBillingInitialized() {
+
+    }
+
+    @Override
+    public void onBillingError(int i, Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+        setupPro();
     }
 
     public static class UninstallProtectionReceiver extends DeviceAdminReceiver {
@@ -416,8 +440,8 @@ public class SettingsFragment extends PreferenceFragment {
             setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_options);
             Preference el = findPreference(Common.ENABLE_LOGGING);
-            el.setEnabled(PRO_VERSION);
-            if (!PRO_VERSION) {
+            el.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
+            if (!PREFS.getBoolean(Common.ENABLE_PRO, false)) {
                 el.setSummary(R.string.toast_pro_required);
             }
         }

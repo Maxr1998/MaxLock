@@ -49,7 +49,7 @@ repositories {
 dependencies {
     // From Maven or other repos
     compile 'com.robbypond:android-ColorPickerPreference:1.11.1'
-    compile 'com.anjlab.android.iab.v3:library:1.0.14@aar'
+    compile 'com.anjlab.android.iab.v3:library:1.0.20@aar'
     compile 'com.commonsware.cwac:anddown:0.2.+'
     compile 'com.google.guava:guava:18.0'
     compile 'com.nispok:snackbar:2.8.0'
