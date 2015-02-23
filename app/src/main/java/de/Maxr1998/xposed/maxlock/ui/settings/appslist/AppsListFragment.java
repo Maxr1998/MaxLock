@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -58,6 +59,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
@@ -87,7 +89,6 @@ public class AppsListFragment extends Fragment {
         pref = getActivity().getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
     }
 
-    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
@@ -105,7 +106,7 @@ public class AppsListFragment extends Fragment {
                 }
             });
             progressDialog.show();
-            if (Util.noGingerbread())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 search.setAlpha(0);
             if (task == null)
                 task = new SetupAppList();
@@ -117,12 +118,11 @@ public class AppsListFragment extends Fragment {
         return rootView;
     }
 
-    @SuppressLint("NewApi")
     private void setup() {
         mAdapter = new CheckBoxAdapter(AppsListFragment.this, getActivity(), finalList);
         listView.setAdapter(mAdapter);
         setupSearch();
-        if (Util.noGingerbread())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             search.setAlpha(1);
         if (progressDialog != null)
             progressDialog.dismiss();
@@ -166,7 +166,7 @@ public class AppsListFragment extends Fragment {
 
             switch (item.getItemId()) {
                 case R.id.toolbar_backup_list:
-                    File curTimeDir = new File(backupDir + File.separator + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss").format(new Date(System.currentTimeMillis())) + File.separator);
+                    File curTimeDir = new File(backupDir + File.separator + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.getDefault()).format(new Date(System.currentTimeMillis())) + File.separator);
                     try {
                         if (prefsPackagesFile.exists()) {
                             FileUtils.copyFileToDirectory(prefsPackagesFile, curTimeDir);
@@ -299,7 +299,6 @@ public class AppsListFragment extends Fragment {
             progressDialog.setProgress(progress[0]);
         }
 
-        @SuppressLint("NewApi")
         @Override
         protected void onPostExecute(List<Map<String, Object>> list) {
             super.onPostExecute(list);

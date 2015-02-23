@@ -104,7 +104,6 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         lockingType = prefsPerApp.getString(requestPkg, prefs.getString(Common.LOCKING_TYPE, ""));
     }
 
-    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup mainContainer, Bundle savedInstanceState) {
         // Views
@@ -153,7 +152,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             View gapBottom = rootView.findViewById(R.id.bottom_gap);
             if (screenHeight > screenWidth) {
                 // Portrait
-                if (Util.noGingerbread()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     try {
                         navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
                     } catch (Resources.NotFoundException e) {
@@ -164,7 +163,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 screenHeight = screenHeight + navBarHeight;
             } else {
                 // Landscape
-                if (Util.noGingerbread()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     try {
                         navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height_landscape", "dimen", "android"));
                     } catch (Resources.NotFoundException e) {

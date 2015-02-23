@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +52,13 @@ public class ThemeService extends IntentService {
         super("ThemeService");
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
     public static void loadPrefs(Context context) {
         if (PREFS_THEME == null)
+            //noinspection deprecation
             PREFS_THEME = context.getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
     }
 
-    @SuppressLint("NewApi")
     public static ViewGroup.LayoutParams container(final View container, Context context, String lockingType) {
         loadPrefs(context);
         String containerMargin = "container_margin_";
@@ -71,7 +71,7 @@ public class ThemeService extends IntentService {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(container.getLayoutParams());
         layoutParams.setMargins(left, top, right, bottom);
         layoutParams.weight = 1;
-        if (Util.startEndSupported()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             layoutParams.setMarginStart(left);
             layoutParams.setMarginEnd(right);
         }
@@ -94,7 +94,7 @@ public class ThemeService extends IntentService {
         }
     }
 
-    @SuppressLint("InlinedApi")
+    @SuppressLint("WorldReadableFiles")
     public void importTheme(String packageName) {
         /**
          * Preferences
@@ -116,7 +116,7 @@ public class ThemeService extends IntentService {
                 themeFile.delete();
                 return;
             }
-            if (Util.noGingerbread())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 getSharedPreferences(Common.PREFS_THEME, MODE_MULTI_PROCESS);
             //noinspection deprecation
             getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
@@ -137,7 +137,6 @@ public class ThemeService extends IntentService {
         }
     }
 
-    @SuppressLint("InlinedApi")
     public void clearUp() {
         /**
          * Preferences
@@ -152,7 +151,7 @@ public class ThemeService extends IntentService {
          */
         //noinspection ResultOfMethodCallIgnored
         themeFile.delete();
-        if (Util.noGingerbread())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             getSharedPreferences("theme", MODE_MULTI_PROCESS);
         File theme = new File(Util.dataDir(this) + File.separator + "theme");
         try {

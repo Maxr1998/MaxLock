@@ -28,9 +28,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,7 @@ public class Util {
 
     @SuppressLint("InlinedApi")
     public static void askPassword(final Context context, final String password, boolean numbers) {
+        loadPrefs(context);
         try {
             authenticationSucceededListener = (AuthenticationSucceededListener) context;
         } catch (ClassCastException e) {
@@ -83,6 +85,26 @@ public class Util {
         }
         @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.ask_password, null);
         final EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (PREFS.getBoolean(Common.QUICK_UNLOCK, false)) {
+                    String val = input.getText().toString();
+                    if (Util.shaHash(val).equals(password) || password.equals(""))
+                        authenticationSucceededListener.onAuthenticationSucceeded();
+                }
+            }
+        });
         if (numbers)
             input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         final AlertDialog dialog = new AlertDialog.Builder(context)
@@ -273,13 +295,7 @@ public class Util {
         return context.getApplicationInfo().dataDir;
     }
 
-    public static boolean noGingerbread() {
-        return Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1;
-    }
-
-    public static boolean startEndSupported() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
-    }
+    // Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 // Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
 
     @SuppressLint({"WorldReadableFiles"})
     public static void cleanUp(Context context) {
