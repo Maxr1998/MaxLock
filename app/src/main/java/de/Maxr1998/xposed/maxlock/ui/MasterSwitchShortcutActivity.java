@@ -63,16 +63,13 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
         } else {
             // Create shortcut
             Log.d("MaxLock", "Creating shortcut");
-            Intent shortcut = new Intent(Intent.ACTION_MAIN);
-            shortcut.setComponent(new ComponentName(getPackageName(), ".ui.MasterSwitchShortcutActivity"));
+            Intent shortcut = new Intent(this, MasterSwitchShortcutActivity.class);
             shortcut.putExtra("LaunchOnly", true);
-
-            Intent install = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-            install.putExtra("duplicate", false);
-            install.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Toggle Master Switch");
+            Intent install = new Intent();
+            install.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.toggle_master_switch));
             install.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
             install.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
-            sendBroadcast(install);
+            setResult(RESULT_OK, install);
             fireIntentAndFinish();
         }
     }
