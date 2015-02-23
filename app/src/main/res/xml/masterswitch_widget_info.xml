@@ -3,6 +3,6 @@
     android:initialLayout="@layout/master_switch_widget"
     android:minHeight="48dp"
     android:minWidth="96dp"
-    android:resizeMode="none"
+    android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen" />

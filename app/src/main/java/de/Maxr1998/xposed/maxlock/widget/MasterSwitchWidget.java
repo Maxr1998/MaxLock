@@ -24,6 +24,9 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import de.Maxr1998.xposed.maxlock.Common;
@@ -47,6 +50,18 @@ public class MasterSwitchWidget extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
             views.setImageViewResource(R.id.widget_master_switch_icon, masterSwitchOn ? R.drawable.ic_widget_on_72dp : R.drawable.ic_widget_off_72dp);
             views.setOnClickPendingIntent(R.id.widget, pending);
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+        }
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
+            views.setViewVisibility(R.id.widget_app_name, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH) < 160 ? View.GONE : View.VISIBLE);
+            views.setViewVisibility(R.id.widget_title, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH) > 200 &&
+                    appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) > 100
+                    ? View.VISIBLE : View.GONE);
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }

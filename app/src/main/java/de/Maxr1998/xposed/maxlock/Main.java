@@ -65,7 +65,10 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         if (app.getClass().getName().equals("android.app.Activity")) {
                             return;
                         }
-                        app.moveTaskToBack(true);
+                        if (packageName.equals("com.keramidas.TitaniumBackup")) {
+                            XposedBridge.log("TitaniumBackup");
+                            app.finish();
+                        } else app.moveTaskToBack(true);
                         launchLockView(app, packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
                         super.beforeHookedMethod(param);
                         android.os.Process.killProcess(android.os.Process.myPid());
