@@ -51,9 +51,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (!PREFS_PACKAGES.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             return;
         }
-        Long timestamp = System.currentTimeMillis();
         Long permitTimestamp = PREFS_PACKAGES.getLong(packageName + "_tmp", 0);
-        if (permitTimestamp != 0 && timestamp - permitTimestamp <= 4000) {
+        if (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 4000) {
             return;
         }
 
@@ -65,10 +64,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 if (app.getClass().getName().equals("android.app.Activity")) {
                     return;
                 }
-                if (packageName.equals("com.keramidas.TitaniumBackup")) {
-                    XposedBridge.log("TitaniumBackup");
-                    app.finish();
-                } else app.moveTaskToBack(true);
+                app.moveTaskToBack(true);
                 launchLockView(app, packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
                 super.beforeHookedMethod(param);
                 android.os.Process.killProcess(android.os.Process.myPid());
