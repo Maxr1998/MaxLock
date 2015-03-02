@@ -4,7 +4,7 @@
     android:versionCode="27"
     android:versionName="5.0.3">
 
-<uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -69,6 +69,19 @@
             android:theme="@style/TranslucentStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".lib.DeprecatedMasterSwitch"
+            android:enabled="true"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/toggle_master_switch_deprecated"
+            android:theme="@style/TranslucentStatusBar">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>

@@ -130,6 +130,7 @@
     <string name="report_problem">Report problem</string>
 
     <string name="toggle_master_switch">Toggle MasterSwitch</string>
+    <string name="toggle_master_switch_deprecated">Toggle MasterSwitch (Deprecated)</string>
     <string name="unlock_master_switch">Unlock MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch disabled</string>
     <string name="toast_master_switch_on">MasterSwitch re-enabled</string>

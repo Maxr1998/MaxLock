@@ -130,6 +130,7 @@
     <string name="report_problem">Problem melden</string>
 
     <string name="toggle_master_switch">MasterSwitch umschalten</string>
+    <string name="toggle_master_switch_deprecated">MasterSwitch umschalten (veraltet)</string>
     <string name="unlock_master_switch">Entsperre MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch aus</string>
     <string name="toast_master_switch_on">MasterSwitch an</string>
