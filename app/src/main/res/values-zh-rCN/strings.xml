@@ -130,6 +130,7 @@
     <string name="report_problem">报告问题</string>
 
     <string name="toggle_master_switch">切换总开关</string>
+	<string name="toggle_master_switch_deprecated">切换总开关(不推荐)</string>
     <string name="unlock_master_switch">打开总开关</string>
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关重新启用</string>
