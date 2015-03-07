@@ -13,12 +13,13 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toolbar_height"
             android:layout_height="@dimen/toolbar_height"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/app_name"
-            android:padding="0dp" />
+            android:gravity="center"
+            android:padding="8dp" />
 
         <TextView
             android:id="@+id/title"
@@ -57,8 +58,8 @@
             android:id="@+id/toggleLock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
             android:textOff="@string/txt_lock_off"
             android:textOn="@string/txt_lock_on" />
     </LinearLayout>

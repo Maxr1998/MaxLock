@@ -36,12 +36,14 @@ import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +55,7 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 
 @SuppressLint("CommitPrefEdits")
-public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
+public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> implements SectionIndexer {
 
 
     private final List<Map<String, Object>> oriItemList;
@@ -222,8 +224,27 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         return mItemList.size();
     }
 
+    public String nameAt(int position) {
+        return (String) mItemList.get(position != getItemCount() ? position : position - 1).get("title");
+    }
+
     public Filter getFilter() {
         return mFilter;
+    }
+
+    @Override
+    public int getSectionForPosition(int position) {
+        return Arrays.asList(getSections()).indexOf(nameAt(position).substring(0, 1).toUpperCase());
+    }
+
+    @Override
+    public int getPositionForSection(int i) {
+        return 0;
+    }
+
+    @Override
+    public String[] getSections() {
+        return "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

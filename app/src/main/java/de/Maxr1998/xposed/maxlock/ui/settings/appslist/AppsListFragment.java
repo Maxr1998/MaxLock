@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -43,6 +44,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
@@ -66,14 +68,18 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
+import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
+import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
 public class AppsListFragment extends Fragment {
 
-    List<Map<String, Object>> itemList, finalList;
-    ViewGroup rootView;
+    static List<Map<String, Object>> finalList;
     RecyclerView recyclerView;
-    ProgressDialog progressDialog;
     AlertDialog restoreDialog;
+    VerticalRecyclerViewFastScroller fastScroller;
+    SectionTitleIndicator sectionTitleIndicator;
+    private ViewGroup rootView;
+    private ProgressDialog progressDialog;
     private AppListAdapter mAdapter;
     private SharedPreferences pref;
     private SetupAppList task;
@@ -89,11 +95,8 @@ public class AppsListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        if (finalList == null) {
+        rootView = new RelativeLayout(getActivity());
+        if (finalList == null || finalList.isEmpty()) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setCanceledOnTouchOutside(false);
@@ -117,7 +120,18 @@ public class AppsListFragment extends Fragment {
 
     private void setup() {
         mAdapter = new AppListAdapter(AppsListFragment.this, getActivity(), finalList);
+        getActivity().getLayoutInflater().inflate(R.layout.fragment_appslist, rootView);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setAdapter(mAdapter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
+            sectionTitleIndicator = (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
+            fastScroller.setRecyclerView(recyclerView);
+            recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
+            fastScroller.setSectionIndicator(sectionTitleIndicator);
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         if (progressDialog != null)
             progressDialog.dismiss();
     }
@@ -240,17 +254,27 @@ public class AppsListFragment extends Fragment {
     }
 
     private class SetupAppList extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
+
+        private List<Map<String, Object>> itemList;
+
         @Override
         protected List<Map<String, Object>> doInBackground(Void... voids) {
             PackageManager pm = getActivity().getPackageManager();
             List<ApplicationInfo> list = pm.getInstalledApplications(0);
+            progressDialog.setMax(list.size());
 
             itemList = new ArrayList<>();
             int i = 0;
             for (ApplicationInfo info : list) {
                 if (isCancelled())
                     break;
-                progressDialog.setMax(list.size());
+                while (getActivity() == null) {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 if ((pref.getBoolean("show_system_apps", false) ?
                         getActivity().getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
                         (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) && !info.packageName.equals(Common.PKG_NAME) || info.packageName.equals("com.android.packageinstaller")) {

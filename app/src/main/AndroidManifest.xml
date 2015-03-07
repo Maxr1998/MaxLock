@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="de.Maxr1998.xposed.maxlock"
     android:versionCode="27"
     android:versionName="5.0.3">
+
+    <uses-sdk tools:overrideLibrary="xyz.danoz.recyclerviewfastscroller" />
 
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
