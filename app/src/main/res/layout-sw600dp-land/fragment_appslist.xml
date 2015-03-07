@@ -5,42 +5,11 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
-
-        <de.Maxr1998.xposed.maxlock.ui.settings.appslist.SearchEditText
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_clear_black_24dp"
-            android:drawableLeft="@drawable/ic_search_black_24dp"
-            android:drawableRight="@drawable/ic_clear_black_24dp"
-            android:drawableStart="@drawable/ic_search_black_24dp"
-            android:hint="@string/msg_search"
-            android:inputType="text"
-            android:padding="5dp" />
-
-        <ImageButton
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name" />
-
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin" />
-
+        android:paddingTop="8dp" />
 </LinearLayout>

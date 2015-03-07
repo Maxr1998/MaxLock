@@ -4,52 +4,37 @@
     android:layout_height="wrap_content"
     android:baselineAligned="false"
     android:gravity="center_vertical"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:paddingRight="?android:attr/scrollbarSize">
+    android:minHeight="@dimen/toolbar_height">
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dip"
-        android:layout_marginLeft="15dip"
-        android:layout_marginRight="6dip"
-        android:layout_marginTop="6dip"
         android:layout_weight="1">
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/toolbar_height"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:contentDescription="@string/app_name"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp" />
+            android:padding="0dp" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/icon"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="72dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="20dp"
             android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
+            android:fontFamily="sans-serif"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearance" />
-
-        <TextView
-            android:id="@+id/summary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@android:id/title"
-            android:layout_below="@id/title"
-            android:layout_toRightOf="@id/icon"
-            android:maxLines="2"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/accent" />
-
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
     </RelativeLayout>
 
-    <!-- Preference should place its actual preference widget here. -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -60,8 +45,6 @@
             android:id="@+id/edit"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="@dimen/abc_action_bar_default_padding_material"
-            android:layout_marginRight="@dimen/abc_action_bar_default_padding_material"
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:padding="5dp"
@@ -74,8 +57,8 @@
             android:id="@+id/toggleLock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/abc_action_bar_default_padding_material"
-            android:layout_marginStart="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:textOff="@string/txt_lock_off"
             android:textOn="@string/txt_lock_on" />
     </LinearLayout>

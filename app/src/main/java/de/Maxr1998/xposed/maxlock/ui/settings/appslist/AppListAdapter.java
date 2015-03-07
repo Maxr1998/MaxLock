@@ -28,10 +28,10 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.ImageButton;
@@ -53,23 +53,21 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 
 @SuppressLint("CommitPrefEdits")
-public class CheckBoxAdapter extends BaseAdapter {
+public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
 
 
     private final List<Map<String, Object>> oriItemList;
     private final Fragment mFragment;
     private final Context mContext;
-    private final LayoutInflater mInflater;
     private final SharedPreferences prefsPackages, prefsPerApp;
     private final Filter mFilter;
     private List<Map<String, Object>> mItemList;
     private AlertDialog dialog;
 
     @SuppressLint("WorldReadableFiles")
-    public CheckBoxAdapter(Fragment fragment, Context context, List<Map<String, Object>> itemList) {
+    public AppListAdapter(Fragment fragment, Context context, List<Map<String, Object>> itemList) {
         mFragment = fragment;
         mContext = context;
-        mInflater = LayoutInflater.from(context);
         oriItemList = mItemList = itemList;
         //noinspection deprecation
         prefsPackages = mContext.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
@@ -78,52 +76,29 @@ public class CheckBoxAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return mItemList.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_item, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public Object getItem(int position) {
-        return mItemList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return mItemList.get(position).hashCode();
-    }
-
-    @SuppressLint("InflateParams")
-    @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
-
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.listview_item, null);
-        }
-
-        final TextView title = (TextView) convertView.findViewById(R.id.title);
-        final TextView summary = (TextView) convertView.findViewById(R.id.summary);
-        final ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
-        final ToggleButton toggleLock = (ToggleButton) convertView.findViewById(R.id.toggleLock);
-        final ImageButton imgEdit = (ImageButton) convertView.findViewById(R.id.edit);
-
+    public void onBindViewHolder(final ViewHolder hld, final int position) {
         final String sTitle = (String) mItemList.get(position).get("title");
-        final String sSummary = (String) mItemList.get(position).get("summary");
         final String key = (String) mItemList.get(position).get("key");
         final Drawable dIcon = (Drawable) mItemList.get(position).get("icon");
 
-        title.setText(sTitle);
-        summary.setText(sSummary);
-        icon.setImageDrawable(dIcon);
+        hld.appName.setText(sTitle);
+        hld.appIcon.setImageDrawable(dIcon);
 
         if (prefsPackages.getBoolean(key, false)) {
-            toggleLock.setChecked(true);
-            imgEdit.setVisibility(View.VISIBLE);
+            hld.toggle.setChecked(true);
+            hld.options.setVisibility(View.VISIBLE);
         } else {
-            toggleLock.setChecked(false);
-            imgEdit.setVisibility(View.GONE);
+            hld.toggle.setChecked(false);
+            hld.options.setVisibility(View.GONE);
         }
 
-        icon.setOnClickListener(new View.OnClickListener() {
+        hld.appIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (key.equals("com.android.packageinstaller"))
@@ -136,7 +111,7 @@ public class CheckBoxAdapter extends BaseAdapter {
             }
         });
 
-        imgEdit.setOnClickListener(new View.OnClickListener() {
+        hld.options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // AlertDialog View
@@ -219,11 +194,9 @@ public class CheckBoxAdapter extends BaseAdapter {
                         }).show();
             }
         });
-
-        toggleLock.setOnClickListener(new View.OnClickListener() {
+        hld.toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
                 am.killBackgroundProcesses(key);
 
@@ -235,19 +208,38 @@ public class CheckBoxAdapter extends BaseAdapter {
                             .putBoolean(key, true)
                             .commit();
                     // TO-DO: Custom reveal animations
-                    imgEdit.setVisibility(View.VISIBLE);
+                    hld.options.setVisibility(View.VISIBLE);
                 } else {
                     prefsPackages.edit().remove(key).commit();
-                    imgEdit.setVisibility(View.GONE);
+                    hld.options.setVisibility(View.GONE);
                 }
             }
         });
+    }
 
-        return convertView;
+    @Override
+    public int getItemCount() {
+        return mItemList.size();
     }
 
     public Filter getFilter() {
         return mFilter;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public ImageView appIcon;
+        public TextView appName;
+        public ImageButton options;
+        public ToggleButton toggle;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            appIcon = (ImageView) itemView.findViewById(R.id.icon);
+            appName = (TextView) itemView.findViewById(R.id.title);
+            options = (ImageButton) itemView.findViewById(R.id.edit);
+            toggle = (ToggleButton) itemView.findViewById(R.id.toggleLock);
+        }
     }
 
     class MyFilter extends Filter {
@@ -283,12 +275,8 @@ public class CheckBoxAdapter extends BaseAdapter {
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-
             mItemList = (List<Map<String, Object>>) results.values;
             notifyDataSetChanged();
         }
-
-
     }
-
 }

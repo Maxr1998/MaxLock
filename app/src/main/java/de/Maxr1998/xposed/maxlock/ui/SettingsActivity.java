@@ -43,7 +43,6 @@ import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 
-
 public class SettingsActivity extends ActionBarActivity implements AuthenticationSucceededListener {
 
     private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
@@ -111,6 +110,11 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
                 getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
             }
         });
+        Fragment appsList = getSupportFragmentManager().findFragmentByTag("AppsListFragment");
+        if (appsList != null && appsList.isVisible()) {
+            menu.findItem(R.id.toolbar_info).setVisible(false);
+            menu.findItem(R.id.toolbar_master_switch).setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

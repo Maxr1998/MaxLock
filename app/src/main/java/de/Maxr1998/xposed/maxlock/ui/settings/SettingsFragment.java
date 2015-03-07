@@ -90,7 +90,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             else
                 from.getFragmentManager().popBackStack();
         }
-        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null).commit();
+        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppsListFragment ? "AppsListFragment" : null).addToBackStack(null).commit();
         if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
             from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
     }

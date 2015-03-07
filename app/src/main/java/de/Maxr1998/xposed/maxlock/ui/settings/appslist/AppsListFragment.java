@@ -27,12 +27,14 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,8 +43,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
@@ -67,16 +67,14 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
-
 public class AppsListFragment extends Fragment {
 
     List<Map<String, Object>> itemList, finalList;
     ViewGroup rootView;
-    ListView listView;
+    RecyclerView recyclerView;
     ProgressDialog progressDialog;
     AlertDialog restoreDialog;
-    private CheckBoxAdapter mAdapter;
-    private EditText search;
+    private AppListAdapter mAdapter;
     private SharedPreferences pref;
     private SetupAppList task;
     private ArrayAdapter<String> restoreAdapter;
@@ -92,8 +90,9 @@ public class AppsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
-        listView = (ListView) rootView.findViewById(R.id.listview);
-        search = (EditText) rootView.findViewById(R.id.search);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         if (finalList == null) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -106,8 +105,6 @@ public class AppsListFragment extends Fragment {
                 }
             });
             progressDialog.show();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                search.setAlpha(0);
             if (task == null)
                 task = new SetupAppList();
             if (!task.getStatus().equals(AsyncTask.Status.RUNNING))
@@ -119,39 +116,29 @@ public class AppsListFragment extends Fragment {
     }
 
     private void setup() {
-        mAdapter = new CheckBoxAdapter(AppsListFragment.this, getActivity(), finalList);
-        listView.setAdapter(mAdapter);
-        setupSearch();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            search.setAlpha(1);
+        mAdapter = new AppListAdapter(AppsListFragment.this, getActivity(), finalList);
+        recyclerView.setAdapter(mAdapter);
         if (progressDialog != null)
             progressDialog.dismiss();
-    }
-
-    private void setupSearch() {
-        search.clearFocus();
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mAdapter.getFilter().filter(s);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.applist_menu, menu);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_search));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                mAdapter.getFilter().filter(s);
+                return true;
+            }
+        });
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -253,12 +240,9 @@ public class AppsListFragment extends Fragment {
     }
 
     private class SetupAppList extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
-
         @Override
         protected List<Map<String, Object>> doInBackground(Void... voids) {
-            Context activity = getActivity();
-
-            PackageManager pm = activity.getPackageManager();
+            PackageManager pm = getActivity().getPackageManager();
             List<ApplicationInfo> list = pm.getInstalledApplications(0);
 
             itemList = new ArrayList<>();
@@ -268,7 +252,7 @@ public class AppsListFragment extends Fragment {
                     break;
                 progressDialog.setMax(list.size());
                 if ((pref.getBoolean("show_system_apps", false) ?
-                        activity.getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
+                        getActivity().getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
                         (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) && !info.packageName.equals(Common.PKG_NAME) || info.packageName.equals("com.android.packageinstaller")) {
 
                     Map<String, Object> map = new HashMap<>();
