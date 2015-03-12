@@ -46,15 +46,13 @@ public class MasterSwitchWidget extends AppWidgetProvider {
         SharedPreferences prefsPackages = context.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
         boolean masterSwitchOn = prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true);
 
-
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
             views.setImageViewResource(R.id.widget_master_switch_icon, masterSwitchOn ? R.drawable.ic_widget_on_72dp : R.drawable.ic_widget_off_72dp);
             views.setOnClickPendingIntent(R.id.widget, pending);
-            appWidgetManager.updateAppWidget(appWidgetId, views);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId));
-        }
+        } else appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     @Override
