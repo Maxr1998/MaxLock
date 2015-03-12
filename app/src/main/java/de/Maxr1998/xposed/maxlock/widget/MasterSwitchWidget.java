@@ -46,11 +46,14 @@ public class MasterSwitchWidget extends AppWidgetProvider {
         SharedPreferences prefsPackages = context.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
         boolean masterSwitchOn = prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true);
 
+
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
             views.setImageViewResource(R.id.widget_master_switch_icon, masterSwitchOn ? R.drawable.ic_widget_on_72dp : R.drawable.ic_widget_off_72dp);
             views.setOnClickPendingIntent(R.id.widget, pending);
             appWidgetManager.updateAppWidget(appWidgetId, views);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId));
         }
     }
 
@@ -58,9 +61,9 @@ public class MasterSwitchWidget extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
-            views.setViewVisibility(R.id.widget_app_name, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH) < 160 ? View.GONE : View.VISIBLE);
-            views.setViewVisibility(R.id.widget_title, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH) > 200 &&
-                    appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) > 100
+            views.setViewVisibility(R.id.widget_app_name, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH) < 160 ? View.GONE : View.VISIBLE);
+            views.setViewVisibility(R.id.widget_title, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH) > 200 &&
+                    newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) > 100
                     ? View.VISIBLE : View.GONE);
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
