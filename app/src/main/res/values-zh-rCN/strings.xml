@@ -53,7 +53,7 @@
     <string name="pref_hide_title_bar">隐藏标题栏</string>
     <string name="pref_hide_input_bar">隐藏输入栏</string>
     <string name="pref_hide_input_bar_summary">隐藏清除按钮!</string>
-    <string name="pref_category_pin_only">仅PIN</string>
+    <string name="pref_category_password_and_pin">仅PIN</string>
     <string name="pref_quick_unlock">快速解锁</string>
     <string name="pref_category_knock_code_only">仅轻敲代码</string>
     <string name="pref_show_dividers">显示分隔</string>

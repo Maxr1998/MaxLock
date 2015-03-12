@@ -53,7 +53,7 @@
     <string name="pref_hide_title_bar">タイトルバーの消去</string>
     <string name="pref_hide_input_bar">入力バーの消去</string>
     <string name="pref_hide_input_bar_summary">クリアボタンも消去されます!</string>
-    <string name="pref_category_pin_only">暗証番号</string>
+    <string name="pref_category_password_and_pin">暗証番号</string>
     <string name="pref_quick_unlock">即時解除</string>
     <string name="pref_category_knock_code_only">ノックコード</string>
     <string name="pref_show_dividers">分割線の表示</string>
