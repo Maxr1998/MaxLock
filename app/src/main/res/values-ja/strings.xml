@@ -58,6 +58,9 @@
     <string name="pref_category_knock_code_only">ノックコード</string>
     <string name="pref_show_dividers">分割線の表示</string>
     <string name="pref_touch_visible">画面タッチの視覚化</string>
+    <string name="pref_category_pattern_only">パターン</string>
+    <string name="pref_show_path">パターンの表示</string>
+    <string name="pref_haptic_feedback">パターン入力時の振動</string>
 
     <string name="pref_locking_options">オプション</string>
     <string name="pref_category_logging">ログ</string>
@@ -67,8 +70,9 @@
     <string name="menu_delete_log">ログの削除</string>
     <string name="pref_category_other">その他</string>
     <string name="pref_fake_die_input">偽装終了ダイアログへの入力文字列</string>
+    <string name="pref_fake_die_input_summary">ロック画面を表示させるために必要となる入力文字列を設定します</string>
 
-    <string name="no_network_connected">You\'re currently not connected to any network</string>
+    <string name="no_network_connected">現在、インターネットに接続できません</string>
 
     <string name="pref_category_apps">アプリの選択</string>
     <string name="pref_show_system_app">システムアプリの表示</string>
@@ -99,8 +103,8 @@
     <string name="pref_use_dark_style">暗色スタイル</string>
 
     <string name="pref_category_about">このアプリについて</string>
-    <string name="app_name_pro">MaxLock プロ</string>
-    <string name="app_name_pseudo_pro">MaxLock 準プロ</string>
+    <string name="app_name_pro">MaxLock プロ版</string>
+    <string name="app_name_pseudo_pro">MaxLock 準プロ版</string>
     <string name="pref_about_summary">コピーライト &#169; 2014&#8211;2015 by Maxr1998\nタップすると詳細情報を表示します</string>
     <string name="pref_donate_upgrade_pro">寄付をしてプロ版にアップグレード</string>
     <string name="pref_enable_pro">プロ版の機能の有効化</string>
@@ -113,7 +117,7 @@
     <string name="device_admin_description">MaxLock のアンインストールや無効化を防止します</string>
 
     <string name="dialog_like_app">このアプリはいかがですか?</string>
-    <string name="dialog_like_app_text">もし気に入っていただけたら Play ストアでの評価をお願いします。また、寄付も受け付けています :)</string>
+    <string name="dialog_like_app_text">もし気に入っていただけたら Play ストアに評価を投稿してください。また、寄付も受け付けています :)</string>
     <string name="dialog_cb_never_again">再び表示しない</string>
     <string name="dialog_button_donate">寄付</string>
     <string name="dialog_button_rate">評価</string>
@@ -126,6 +130,7 @@
     <string name="report_problem">問題のレポート</string>
 
     <string name="toggle_master_switch">マスタースイッチ</string>
+    <string name="toggle_master_switch_deprecated">マスタースイッチ (非推奨)</string>
     <string name="unlock_master_switch">マスタースイッチのロック解除</string>
     <string name="toast_master_switch_off">MaxLock を無効にしました</string>
     <string name="toast_master_switch_on">MaxLock を有効にしました</string>
