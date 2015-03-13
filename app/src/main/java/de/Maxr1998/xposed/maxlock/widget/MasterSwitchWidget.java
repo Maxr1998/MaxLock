@@ -52,7 +52,8 @@ public class MasterSwitchWidget extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.widget, pending);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId));
-        } else appWidgetManager.updateAppWidget(appWidgetId, views);
+            else appWidgetManager.updateAppWidget(appWidgetId, views);
+        }
     }
 
     @Override
