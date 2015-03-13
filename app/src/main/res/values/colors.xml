@@ -10,4 +10,8 @@
     <color name="primary_red_dark">#d01716</color>
     <color name="accent">#ff9100</color>
     <color name="divider_white">#e0e0e0</color>
+    <color name="background_selected_on_white">#eeeeee</color>
+    <color name="background_selected_on_transparent">#40ffffff</color>
+
+
 </resources>

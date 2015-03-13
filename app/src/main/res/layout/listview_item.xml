@@ -44,22 +44,25 @@
 
         <ImageButton
             android:id="@+id/edit"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@color/transparent"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/appslist_settings_background"
             android:contentDescription="@string/app_name"
-            android:padding="5dp"
-            android:src="@drawable/ic_create_black_48dp"
+            android:src="@drawable/ic_settings_black_36dp"
             android:tint="?attr/colorAccent"
             android:tintMode="src_atop"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <ToggleButton
             android:id="@+id/toggleLock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="24dp"
+            android:layout_marginStart="8dp"
             android:textOff="@string/txt_lock_off"
             android:textOn="@string/txt_lock_on" />
     </LinearLayout>
