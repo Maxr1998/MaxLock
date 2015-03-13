@@ -25,24 +25,37 @@
             android:layout_width="match_parent"
             android:layout_height="0dp" />
 
-        <include layout="@de.Maxr1998.xposed.maxlock:layout/title_view" />
-
-        <include layout="@de.Maxr1998.xposed.maxlock:layout/input_view" />
-
         <View
-            android:id="@+id/bottom_gap"
             android:layout_width="match_parent"
-            android:layout_height="0dp" />
+            android:layout_height="96dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:orientation="vertical">
+
+            <include layout="@de.Maxr1998.xposed.maxlock:layout/title_view" />
+
+            <include layout="@de.Maxr1998.xposed.maxlock:layout/input_view" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="80dp"
-            android:layout_marginLeft="120dp"
-            android:layout_marginRight="120dp"
-            android:layout_marginTop="196dp"
+            android:layout_marginBottom="64dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="120dp"
             android:layout_weight="1"
             android:orientation="vertical" />
+
+        <View
+            android:id="@+id/bottom_gap"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
     </LinearLayout>
 </RelativeLayout>
