@@ -73,7 +73,7 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 
 public class AppsListFragment extends Fragment {
 
-    static List<Map<String, Object>> finalList;
+    private static List<Map<String, Object>> finalList;
     RecyclerView recyclerView;
     AlertDialog restoreDialog;
     VerticalRecyclerViewFastScroller fastScroller;
@@ -84,6 +84,10 @@ public class AppsListFragment extends Fragment {
     private SharedPreferences pref;
     private SetupAppList task;
     private ArrayAdapter<String> restoreAdapter;
+
+    public static void clearList() {
+        finalList = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

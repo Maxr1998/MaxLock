@@ -117,6 +117,13 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
 
     @Override
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
+        findPreference("show_system_apps").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                AppsListFragment.clearList();
+                return false;
+            }
+        });
         setupPro();
         UNINSTALL = findPreference(Common.UNINSTALL);
         if (isDeviceAdminActive()) {
@@ -125,6 +132,58 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
         startup();
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
+    }
+
+    public void startup() {
+        if (PREFS.getBoolean(Common.FIRST_START, true)) {
+            Util.showAbout(getActivity());
+            PREFS.edit().putBoolean(Common.FIRST_START, false).apply();
+        }
+        rateDialog();
+        if (PREFS.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
+            SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + " " + getString(R.string.no_locked_apps)));
+        } else if (PREFS.getString(Common.LOCKING_TYPE, "").equals("")) {
+            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locking_type));
+        } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
+            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locked_apps));
+        }
+    }
+
+    public void rateDialog() {
+        if (!PREFS.contains(Common.FIRST_START_TIME))
+            PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
+
+        if (!PREFS.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - PREFS.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
+            final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
+            DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (checkBox.isChecked())
+                        PREFS.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
+                    switch (i) {
+                        case -3:
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + Common.PKG_NAME)));
+                            } catch (android.content.ActivityNotFoundException e) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + Common.PKG_NAME)));
+                            }
+                            break;
+                        case -1:
+                            BillingHelper.showDialog(bp, getActivity());
+                            break;
+                    }
+                    PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
+                }
+            };
+            builder.setTitle(R.string.dialog_like_app)
+                    .setView(dialogView)
+                    .setPositiveButton(R.string.dialog_button_donate, onClickListener)
+                    .setNeutralButton(R.string.dialog_button_rate, onClickListener)
+                    .setNegativeButton(android.R.string.cancel, onClickListener)
+                    .create().show();
+        }
     }
 
     public void setupPro() {
@@ -211,58 +270,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             return true;
         }
         return false;
-    }
-
-    public void startup() {
-        if (PREFS.getBoolean(Common.FIRST_START, true)) {
-            Util.showAbout(getActivity());
-            PREFS.edit().putBoolean(Common.FIRST_START, false).apply();
-        }
-        rateDialog();
-        if (PREFS.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
-            SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + " " + getString(R.string.no_locked_apps)));
-        } else if (PREFS.getString(Common.LOCKING_TYPE, "").equals("")) {
-            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locking_type));
-        } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
-            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locked_apps));
-        }
-    }
-
-    public void rateDialog() {
-        if (!PREFS.contains(Common.FIRST_START_TIME))
-            PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
-
-        if (!PREFS.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - PREFS.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
-            final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
-            DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (checkBox.isChecked())
-                        PREFS.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
-                    switch (i) {
-                        case -3:
-                            try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + Common.PKG_NAME)));
-                            } catch (android.content.ActivityNotFoundException e) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + Common.PKG_NAME)));
-                            }
-                            break;
-                        case -1:
-                            BillingHelper.showDialog(bp, getActivity());
-                            break;
-                    }
-                    PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
-                }
-            };
-            builder.setTitle(R.string.dialog_like_app)
-                    .setView(dialogView)
-                    .setPositiveButton(R.string.dialog_button_donate, onClickListener)
-                    .setNeutralButton(R.string.dialog_button_rate, onClickListener)
-                    .setNegativeButton(android.R.string.cancel, onClickListener)
-                    .create().show();
-        }
     }
 
     private boolean isDeviceAdminActive() {
