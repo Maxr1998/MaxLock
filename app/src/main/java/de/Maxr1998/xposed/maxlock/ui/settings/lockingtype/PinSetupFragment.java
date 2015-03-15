@@ -102,14 +102,6 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        View mSetupButtons;
-        if (prefs.getBoolean(Common.USE_DARK_STYLE, false)) {
-            mSetupButtons = inflater.inflate(R.layout.split_button, rootView, false);
-        } else {
-            mSetupButtons = inflater.inflate(R.layout.split_button_light, rootView, false);
-        }
-        rootView.addView(mSetupButtons, 2);
-
         mCancelButton = (Button) rootView.findViewById(R.id.button_cancel);
         mCancelButton.setOnClickListener(this);
         mNextButton = (Button) rootView.findViewById(R.id.button_positive);

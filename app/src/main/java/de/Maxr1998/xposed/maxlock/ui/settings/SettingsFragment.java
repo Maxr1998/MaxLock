@@ -121,7 +121,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 AppsListFragment.clearList();
-                return false;
+                return true;
             }
         });
         setupPro();

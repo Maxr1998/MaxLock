@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:key="main">
-    <PreferenceCategory android:title="@string/pref_category_locking">
+    <PreferenceCategory
+        android:title="@string/pref_category_locking"
+        tools:ignore="UnusedAttribute">
         <PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingTypeSettingsFragment"
             android:key="locking_type_settings"

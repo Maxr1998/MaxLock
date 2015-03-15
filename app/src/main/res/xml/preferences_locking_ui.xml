@@ -36,7 +36,7 @@
             android:title="@string/pref_hide_input_bar" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_category_password_and_pin">
-    <CheckBoxPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="quick_unlock"
             android:title="@string/pref_quick_unlock" />

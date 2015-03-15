@@ -18,7 +18,8 @@
         android:gravity="center"
         android:lines="2"
         android:text="@string/choose_pin"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?android:textColorPrimary" />
 
     <EditText
         android:id="@+id/setup_pin_input"
@@ -29,4 +30,6 @@
         android:ems="10"
         android:imeOptions="actionNext"
         android:inputType="numberPassword" />
+
+    <include layout="@layout/split_button" />
 </LinearLayout>
