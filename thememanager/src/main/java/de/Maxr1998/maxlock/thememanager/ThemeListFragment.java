@@ -46,12 +46,12 @@ import java.util.Map;
 
 public class ThemeListFragment extends Fragment implements View.OnClickListener {
 
-    private ViewGroup rootView;
     RecyclerView mRecyclerView;
     ThemeAdapter mAdapter;
     View mBottomBar;
     TextView mTvInstall;
     Button mButtonInstall;
+    private ViewGroup rootView;
     private int position = -1;
     private boolean mShown = false;
 
@@ -168,7 +168,8 @@ public class ThemeListFragment extends Fragment implements View.OnClickListener 
             rootView.findViewById(R.id.spinner).setVisibility(View.GONE);
             mAdapter = new ThemeAdapter(ThemeListFragment.this, getActivity(), result);
             mRecyclerView.setAdapter(mAdapter);
-            if (mAdapter.getItemCount() == 0) rootView.findViewById(R.id.no_themes_text).setVisibility(View.VISIBLE);
+            if (mAdapter.getItemCount() == 0)
+                rootView.findViewById(R.id.no_themes_text).setVisibility(View.VISIBLE);
         }
     }
 }
