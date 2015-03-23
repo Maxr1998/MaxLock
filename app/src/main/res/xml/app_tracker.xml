@@ -2,10 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="TypographyDashes">
     <string name="ga_trackingId">UA-58429761-1</string>
-    <string name="ga_sampleFrequency">100.0</string>
     <bool name="ga_autoActivityTracking">true</bool>
     <bool name="ga_reportUncaughtExceptions">true</bool>
-    <integer name="ga_sessionTimeout">-1</integer>
+    <integer name="ga_sessionTimeout">300</integer>
     <screenName name="de.Maxr1998.xposed.maxlock.ui.SettingsActivity">Settings</screenName>
     <screenName name="de.Maxr1998.xposed.maxlock.ui.LockActivity">LockScreen</screenName>
 </resources>

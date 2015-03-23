@@ -48,13 +48,6 @@ import de.Maxr1998.xposed.maxlock.Util;
 
 public class LockFragment extends Fragment implements View.OnClickListener {
 
-    private final Runnable mLockPatternViewReloader = new Runnable() {
-        @Override
-        public void run() {
-            lockPatternView.clearPattern();
-            patternListener.onPatternCleared();
-        }
-    };
     public AuthenticationSucceededListener authenticationSucceededListener;
     ViewGroup rootView;
     String requestPkg;
@@ -67,6 +60,13 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     TextView pb;
     LockPatternView lockPatternView;
     LockPatternView.OnPatternListener patternListener;
+    private final Runnable mLockPatternViewReloader = new Runnable() {
+        @Override
+        public void run() {
+            lockPatternView.clearPattern();
+            patternListener.onPatternCleared();
+        }
+    };
     private int screenHeight, screenWidth;
     private String password, lockingType;
     private StringBuilder key;

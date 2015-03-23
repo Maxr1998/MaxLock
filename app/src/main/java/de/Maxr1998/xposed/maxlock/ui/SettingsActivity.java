@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -33,8 +34,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
-
-import com.google.android.gms.analytics.GoogleAnalytics;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -52,8 +51,6 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Util.cleanUp(this);
-
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceManager.setDefaultValues(this, R.xml.preferences_main, false);
@@ -81,19 +78,6 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
             lockFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment).commit();
         }
-        ((ThisApplication) getApplication()).getTracker(ThisApplication.TrackerName.APP_TRACKER);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        GoogleAnalytics.getInstance(this).reportActivityStart(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -161,7 +145,8 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     @Override
     protected void onResume() {
         super.onResume();
-        StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(android.R.color.black), -3, this);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(android.R.color.black), -3, this);
     }
 
     public void restart() {

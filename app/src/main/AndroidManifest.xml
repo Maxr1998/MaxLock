@@ -24,11 +24,7 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:enabled="true"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+            android:label="@string/app_name" />
 
         <activity-alias
             android:name=".Main"
@@ -45,7 +41,6 @@
             android:enabled="true"
             android:targetActivity=".ui.SettingsActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
             </intent-filter>
         </activity-alias>
@@ -132,10 +127,13 @@
             android:value="MaxLock" />
         <meta-data
             android:name="xposedminversion"
-            android:value="54" />
+            android:value="42" />
         <meta-data
             android:name="override_tinted_status_bar_defaults"
             android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
