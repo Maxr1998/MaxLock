@@ -99,6 +99,10 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
             menu.findItem(R.id.toolbar_info).setVisible(false);
             menu.findItem(R.id.toolbar_master_switch).setVisible(false);
         }
+        Fragment guide = getSupportFragmentManager().findFragmentByTag("GuideFragment");
+        if (guide != null && guide.isVisible()) {
+            menu.findItem(R.id.toolbar_info).setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -106,7 +110,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_info:
-                Util.showAbout(this);
+                SettingsFragment.launchFragment(new GuideFragment(), true, mSettingsFragment);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -114,6 +118,11 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
 
     @Override
     public void onBackPressed() {
+        Fragment guide = getSupportFragmentManager().findFragmentByTag("GuideFragment");
+        if (guide != null && guide.isVisible()) {
+            if (((GuideFragment) guide).back())
+                return;
+        }
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
             if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null && getSupportFragmentManager().getBackStackEntryCount() == 1)
