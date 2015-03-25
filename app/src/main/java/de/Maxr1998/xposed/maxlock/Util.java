@@ -83,7 +83,7 @@ public class Util {
         } catch (ClassCastException e) {
             throw new RuntimeException(context.getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this fragment", e);
         }
-        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.ask_password, null);
+        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_ask_password, null);
         final EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
         input.addTextChangedListener(new TextWatcher() {
             @Override
@@ -134,7 +134,7 @@ public class Util {
 
     public static void setPassword(final Context context, final String app) {
         loadPrefs(context);
-        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.set_password, null);
+        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_set_password, null);
 
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(false)
