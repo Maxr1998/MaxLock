@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="@string/txt_fake_die"
+        android:text="@string/dialog_text_fake_die"
         android:textColor="?android:textColorPrimary" />
 
     <CheckBox
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="@string/txt_custom_password"
+        android:text="@string/dialog_text_custom_password"
         android:textColor="?android:textColorPrimary" />
 
 </LinearLayout>

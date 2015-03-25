@@ -90,12 +90,12 @@
     <string name="dialog_restore_list_message">这将从备份替换当前设置！</string>
     <string name="toast_no_files_to_restore">未找到恢复文件</string>
     <string name="toast_restore_success">恢复成功</string>
-    <string name="msg_search">搜索</string>
-    <string name="txt_lock_on">开</string>
-    <string name="txt_lock_off">关</string>
-    <string name="txt_settings">设置</string>
-    <string name="txt_fake_die">显示假死窗口</string>
-    <string name="txt_custom_password">自定义密码</string>
+    <string name="menu_search">搜索</string>
+    <string name="toggle_lock_on">开</string>
+    <string name="toggle_lock_off">关</string>
+    <string name="dialog_title_settings">设置</string>
+    <string name="dialog_text_fake_die">显示假死窗口</string>
+    <string name="dialog_text_custom_password">自定义密码</string>
 
     <string name="pref_category_ui">界面设置</string>
     <string name="pref_hide_from_launcher">桌面隐藏应用图标</string>

@@ -62,7 +62,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="24dp"
             android:layout_marginStart="8dp"
-            android:textOff="@string/txt_lock_off"
-            android:textOn="@string/txt_lock_on" />
+            android:textOff="@string/toggle_lock_off"
+            android:textOn="@string/toggle_lock_on" />
     </LinearLayout>
 </LinearLayout> 

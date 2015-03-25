@@ -25,10 +25,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +43,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -59,7 +66,7 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 
 @SuppressLint("CommitPrefEdits")
-public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> implements SectionIndexer {
+public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements SectionIndexer {
 
 
     private final List<Map<String, Object>> oriItemList;
@@ -82,13 +89,13 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_item, parent, false);
-        return new ViewHolder(v);
+    public AppsListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_apps_item, parent, false);
+        return new AppsListViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder hld, final int position) {
+    public void onBindViewHolder(final AppsListViewHolder hld, final int position) {
         final String sTitle = (String) mItemList.get(position).get("title");
         final String key = (String) mItemList.get(position).get("key");
         final Drawable dIcon = (Drawable) mItemList.get(position).get("icon");
@@ -189,13 +196,18 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
                 });
                 // Finish dialog
                 dialog = new AlertDialog.Builder(mContext)
-                        .setTitle(mContext.getString(R.string.txt_settings))
+                        .setTitle(mContext.getString(R.string.dialog_title_settings))
                         .setIcon(dIcon)
                         .setView(checkBoxView)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dlg, int id) {
                                 dlg.dismiss();
+                            }
+                        }).setNeutralButton(R.string.dialog_button_exclude_activities, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                new ActivityLoader().execute(key);
                             }
                         }).show();
             }
@@ -277,19 +289,71 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         return "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class AppsListViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView appIcon;
         public TextView appName;
         public ImageButton options;
         public ToggleButton toggle;
 
-        public ViewHolder(View itemView) {
+        public AppsListViewHolder(View itemView) {
             super(itemView);
             appIcon = (ImageView) itemView.findViewById(R.id.icon);
             appName = (TextView) itemView.findViewById(R.id.title);
             options = (ImageButton) itemView.findViewById(R.id.edit);
             toggle = (ToggleButton) itemView.findViewById(R.id.toggleLock);
+        }
+    }
+
+    private static class ActivityListAdapter extends RecyclerView.Adapter<ActivityListViewHolder> {
+
+        private final List<String> activities;
+        private final Context mContext;
+        private final SharedPreferences prefsActivities;
+
+        @SuppressWarnings("deprecation")
+        @SuppressLint("WorldReadableFiles")
+        public ActivityListAdapter(Context context, List<String> list) {
+            mContext = context;
+            activities = list;
+            prefsActivities = mContext.getSharedPreferences(Common.PREFS_ACTIVITIES, Context.MODE_WORLD_READABLE);
+        }
+
+        @Override
+        public ActivityListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_activities_item, parent, false);
+            return new ActivityListViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(final ActivityListViewHolder lvh, final int position) {
+            lvh.activityName.setText(activities.get(position));
+            lvh.switchCompat.setChecked(prefsActivities.getBoolean(activities.get(position), true));
+            lvh.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (b) {
+                        prefsActivities.edit().remove(activities.get(position)).commit();
+                    } else prefsActivities.edit().putBoolean(activities.get(position), false);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return activities.size();
+        }
+    }
+
+    private static class ActivityListViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView activityName;
+        public SwitchCompat switchCompat;
+
+        public ActivityListViewHolder(View itemView) {
+            super(itemView);
+            activityName = (TextView) itemView.findViewById(R.id.activity_name);
+            switchCompat = (SwitchCompat) itemView.findViewById(R.id.activity_switch);
         }
     }
 
@@ -328,6 +392,33 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         protected void publishResults(CharSequence constraint, FilterResults results) {
             mItemList = (List<Map<String, Object>>) results.values;
             notifyDataSetChanged();
+        }
+    }
+
+    private class ActivityLoader extends AsyncTask<String, Void, List<String>> {
+
+        @Override
+        protected List<String> doInBackground(String... strings) {
+            List<String> list = new ArrayList<>();
+            try {
+                ActivityInfo[] test = mContext.getPackageManager().getPackageInfo(strings[0], PackageManager.GET_ACTIVITIES).activities;
+                for (ActivityInfo info : test) {
+                    list.add(info.name);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> list) {
+            super.onPostExecute(list);
+            RecyclerView recyclerView = new RecyclerView(mContext);
+            recyclerView.setAdapter(new ActivityListAdapter(mContext, list));
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            new AlertDialog.Builder(mContext).setTitle(R.string.dialog_title_exclude_activities).setView(recyclerView).show();
         }
     }
 }

@@ -90,12 +90,12 @@
     <string name="dialog_restore_list_message">バックアップをリストアして現在の設定を置き換えます!</string>
     <string name="toast_no_files_to_restore">リストアするファイルが見つかりません</string>
     <string name="toast_restore_success">リストアに成功しました</string>
-    <string name="msg_search">検索</string>
-    <string name="txt_lock_on">On</string>
-    <string name="txt_lock_off">Off</string>
-    <string name="txt_settings">設定</string>
-    <string name="txt_fake_die">アプリ終了を偽装する</string>
-    <string name="txt_custom_password">アプリ個別のロック画面</string>
+    <string name="menu_search">検索</string>
+    <string name="toggle_lock_on">On</string>
+    <string name="toggle_lock_off">Off</string>
+    <string name="dialog_title_settings">設定</string>
+    <string name="dialog_text_fake_die">アプリ終了を偽装する</string>
+    <string name="dialog_text_custom_password">アプリ個別のロック画面</string>
 
     <string name="pref_category_ui">UI 設定</string>
     <string name="pref_hide_from_launcher">アプリアイコンを非表示にする</string>

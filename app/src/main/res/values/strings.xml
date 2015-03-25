@@ -90,12 +90,14 @@
     <string name="dialog_restore_list_message">This will replace the current settings with the one from the backup!</string>
     <string name="toast_no_files_to_restore">No files found to restore</string>
     <string name="toast_restore_success">Backup successfully restored!</string>
-    <string name="msg_search">Search</string>
-    <string name="txt_lock_on">On</string>
-    <string name="txt_lock_off">Off</string>
-    <string name="txt_settings">Settings</string>
-    <string name="txt_fake_die">Fake die</string>
-    <string name="txt_custom_password">Custom password</string>
+    <string name="menu_search">Search</string>
+    <string name="toggle_lock_on">On</string>
+    <string name="toggle_lock_off">Off</string>
+    <string name="dialog_title_settings">Settings</string>
+    <string name="dialog_text_fake_die">Fake die</string>
+    <string name="dialog_text_custom_password">Custom password</string>
+    <string name="dialog_button_exclude_activities">Activities</string>
+    <string name="dialog_title_exclude_activities">Exclude Activities from lock</string>
 
     <string name="pref_category_ui">UI settings</string>
     <string name="pref_hide_from_launcher">Hide app from launcher</string>

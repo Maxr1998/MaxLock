@@ -32,11 +32,12 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
-    private static XSharedPreferences PREFS_PACKAGES;
+    private static XSharedPreferences PREFS_PACKAGES, PREFS_ACTIVITIES;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         PREFS_PACKAGES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_PACKAGES);
+        PREFS_ACTIVITIES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_ACTIVITIES);
         makeReadable();
     }
 
@@ -64,6 +65,9 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 if (app.getClass().getName().equals("android.app.Activity")) {
                     return;
                 }
+                if (!PREFS_ACTIVITIES.getBoolean(app.getClass().getName(), true)) {
+                    return;
+                }
                 app.moveTaskToBack(true);
                 launchLockView(app, packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
                 super.beforeHookedMethod(param);
@@ -84,5 +88,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     private void makeReadable() {
         PREFS_PACKAGES.makeWorldReadable();
         PREFS_PACKAGES.reload();
+        PREFS_ACTIVITIES.makeWorldReadable();
+        PREFS_ACTIVITIES.reload();
     }
 }

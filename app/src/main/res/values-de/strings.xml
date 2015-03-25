@@ -90,12 +90,14 @@
     <string name="dialog_restore_list_message">Dies wird die jetzigen Einstellungen mit denen vom Backup ersetzen!</string>
     <string name="toast_no_files_to_restore">Keine Dateien zum Wiederherstellen gefunden</string>
     <string name="toast_restore_success">Backup erfolgreich wiederhergestellt</string>
-    <string name="msg_search">Suche</string>
-    <string name="txt_lock_on">An</string>
-    <string name="txt_lock_off">Aus</string>
-    <string name="txt_settings">Optionen</string>
-    <string name="txt_fake_die">Vorgetäuschter Absturz</string>
-    <string name="txt_custom_password">App-Spezifisches Password</string>
+    <string name="menu_search">Suche</string>
+    <string name="toggle_lock_on">An</string>
+    <string name="toggle_lock_off">Aus</string>
+    <string name="dialog_title_settings">Optionen</string>
+    <string name="dialog_text_fake_die">Vorgetäuschter Absturz</string>
+    <string name="dialog_text_custom_password">App-Spezifisches Password</string>
+    <string name="dialog_button_exclude_activities">Aktivitäten</string>
+    <string name="dialog_title_exclude_activities">Aktivitäten von Sperre ausschließen</string>
 
     <string name="pref_category_ui">Oberfläche</string>
     <string name="pref_hide_from_launcher">Verstecke App im Launcher</string>
