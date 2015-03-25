@@ -27,7 +27,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -127,7 +126,7 @@ public class AppsListFragment extends Fragment {
         getActivity().getLayoutInflater().inflate(R.layout.fragment_appslist, rootView);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setAdapter(mAdapter);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        if (/*Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH*/false) {
             fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
             sectionTitleIndicator = (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
             fastScroller.setRecyclerView(recyclerView);
@@ -136,8 +135,7 @@ public class AppsListFragment extends Fragment {
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        if (progressDialog != null) progressDialog.dismiss();
     }
 
     @Override
