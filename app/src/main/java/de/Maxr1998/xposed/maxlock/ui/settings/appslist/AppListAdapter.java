@@ -334,7 +334,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (b) {
                         prefsActivities.edit().remove(activities.get(position)).commit();
-                    } else prefsActivities.edit().putBoolean(activities.get(position), false);
+                    } else
+                        prefsActivities.edit().putBoolean(activities.get(position), false).commit();
                 }
             });
         }
