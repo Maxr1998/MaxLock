@@ -29,6 +29,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -326,16 +327,20 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         }
 
         @Override
-        public void onBindViewHolder(final ActivityListViewHolder lvh, final int position) {
-            lvh.activityName.setText(activities.get(position));
-            lvh.switchCompat.setChecked(prefsActivities.getBoolean(activities.get(position), true));
+        public void onBindViewHolder(final ActivityListViewHolder lvh, int position) {
+            String name = activities.get(lvh.getLayoutPosition());
+            lvh.switchCompat.setChecked(prefsActivities.getBoolean(name, true));
+            lvh.switchCompat.setText(name);
             lvh.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    String now = activities.get(lvh.getLayoutPosition());
+                    System.out.println(now + " new Value: " + b);
                     if (b) {
-                        prefsActivities.edit().remove(activities.get(position)).commit();
-                    } else
-                        prefsActivities.edit().putBoolean(activities.get(position), false).commit();
+                        prefsActivities.edit().remove(now).commit();
+                    } else {
+                        prefsActivities.edit().putBoolean(now, false).commit();
+                    }
                 }
             });
         }
@@ -348,13 +353,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     private static class ActivityListViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView activityName;
         public SwitchCompat switchCompat;
 
         public ActivityListViewHolder(View itemView) {
             super(itemView);
-            activityName = (TextView) itemView.findViewById(R.id.activity_name);
             switchCompat = (SwitchCompat) itemView.findViewById(R.id.activity_switch);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                switchCompat.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            }
         }
     }
 
