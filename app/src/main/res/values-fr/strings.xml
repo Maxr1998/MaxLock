@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MaxLock</string>
+    <string name="placeholder">Place réservé</string>
+    <string name="restart_required">MaxLock nécessite un redémarrage pour que les modifications prennent effet</string>
+    <string name="toast_pro_required">La version pro est nécessaire pour utiliser cette fonctionnalité !</string>
+
+    <!-- Main screen -->
+    <string name="pref_category_locking">Verrouiller</string>
+    <string name="pref_locking_type">Type de verrouillage</string>
+    <!-- Locking type Settings -->
+    <string name="pref_locking_type_password">Mot de passe</string>
+    <string name="pref_locking_type_pin">Code PIN</string>
+    <string name="pref_locking_type_knockcode">Cliquetis code</string>
+    <string name="pref_locking_type_pattern">Motif</string>
+
+    <string name="pref_set_password">Définir le mot de passe</string>
+    <string name="msg_password_inconsistent">Le mot de passe est faible !</string>
+    <string name="msg_password_null">Le mot de passe ne peut pas etre vide !</string>
+    <string name="msg_password_changed">Le mot de passe est changé !</string>
+    <string name="msg_password_incorrect">Mot de passe Incorrecte !</string>
+    <string name="txt_type_password">Mot de passe : </string> 
+    <string name="txt_retype_password">Retaper le mot de passe: </string>
+
+    <string name="choose_pin">Choisissez votre PIN</string>
+    <string name="pin_too_short">Le PIN doit avoir un minimum de 4 chiffres</string>
+    <string name="continue_done">Appuyez sur continuer lorsque vous avez terminé</string>
+    <string name="confirm_pin">Confirmez votre PIN</string>
+    <string name="button_continue">Continue</string>
+
+    <string name="choose_knock_code">Choisissez votre code de cliquetis</string>
+    <string name="knock_code_too_short">Le cliquetis code doit avoir au moins 4 touches</string>
+    <string name="confirm_knock_code">Confirmez votre code de cliquetis</string>
+    <!-- Main screen -->
+    <string name="pref_locking_ui">Interface de l\'écran de verrouillage</string>
+    <!-- Locking UI settings -->
+    <string name="open_theme_manager">Ouvrir le gestionnaire de theme</string>
+    <string name="open_theme_manager_summary_none">Aucun thème appliqué</string>
+    <string name="open_theme_manager_summary_applied">Appliqué : </string>
+    <string name="overridden_by_theme">(Substitué par thème)</string>
+    <string name="pref_background">Image de fond</string>
+    <string-array name="background_types">
+        <item>Wallpaper</item>
+        <item>@string/custom_color</item>
+        <item>Custom image…</item>
+        <!--<item>Theme background</item>-->
+    </string-array>
+    <string name="custom_color">Couleur personnalisée</string>
+    <string name="pref_category_pin_and_knock_code">Code PIN et Cliquetis code</string>
+    <string name="pref_invert_color">Inverser la couleur des éléments de l\'interface</string>
+    <string name="pref_invert_color_summary">Cela définit la couleur des textes et des diviseurs en noir</string>
+    <string name="pref_hide_title_bar">Masquer la barre de titre</string>
+    <string name="pref_hide_input_bar">Masquer la barre d\'entrée</string>
+    <string name="pref_hide_input_bar_summary">Cela masque la touche effacer, aussi !</string>
+    <string name="pref_category_password_and_pin">Mot de passe et code PIN</string>
+    <string name="pref_quick_unlock">Déblocage rapide</string>
+    <string name="pref_category_knock_code_only">Cliquetis code uniquement</string>
+    <string name="pref_show_dividers">Afficher les diviseurs</string>
+    <string name="pref_touch_visible">Rendre les touche visible</string>
+    <string name="pref_category_pattern_only">Motif uniquement</string>
+    <string name="pref_show_path">Afficher le chemin d\'accès</string>
+    <string name="pref_haptic_feedback">Vibrer sur le dessin du motif</string>
+
+    <string name="pref_locking_options">Options de verrouillage</string>
+    <string name="pref_category_logging">Logging</string>
+    <string name="pref_enable_logging">Activer le logging</string>
+    <string name="pref_enable_logging_summary">Log failed/unfinished unlock attempts</string>
+    <string name="pref_view_logs">Voir les logs</string>
+    <string name="menu_delete_log">Supprimer les logs</string>
+    <string name="pref_category_other">Autres</string>
+    <string name="pref_fake_die_input">\"Fausse erreur\" entrée</string>
+    <string name="pref_fake_die_input_summary">L\'expression que l\'utilisateur doit entrer dans la boîte de dialogue pour afficher l\'ecran de verrouillage</string>
+
+    <string name="no_network_connected">Pas de connecxion réseau detecté</string>
+
+    <string name="pref_category_apps">Choisir vos apps</string>
+    <string name="pref_show_system_app">Show system apps</string>
+    <string name="pref_show_system_app_summary_on">Show launchable system apps</string>
+    <string name="pref_show_system_app_summary_off">Hide launchable system apps</string>
+    <string name="pref_choose_apps">Choose apps</string>
+    <string name="pref_choose_apps_summary">Select apps to be locked</string>
+
+    <string name="backup_list">Backup list</string>
+    <string name="restore_list">Restore list</string>
+    <string name="clear_list">Effacer la liste</string>
+    <string name="toast_no_files_to_backup">Pas de fichiers à sauvegarder</string>
+    <string name="toast_backup_restore_exception">Une erreur est survenue merci de contacter le developpeur !</string>
+    <string name="toast_backup_success">Sauvegarde terminée avec succès</string>
+    <string name="dialog_restore_list_message">Cela remplacera les paramètres actuels, avec celui de la sauvegarde !</string>
+    <string name="toast_no_files_to_restore">Aucun fichier trouvé à restaurer</string>
+    <string name="toast_restore_success">Sauvegarde restaurée avec succès !</string>
+    <string name="menu_search">Rechercher</string>
+    <string name="toggle_lock_on">On</string>
+    <string name="toggle_lock_off">Off</string>
+    <string name="dialog_title_settings">Paramètres</string>
+    <string name="dialog_text_fake_die">Fausse erreur</string>
+    <string name="dialog_text_custom_password">Mot de passe personnalisé</string>
+    <string name="dialog_button_exclude_activities">Activités</string>
+    <string name="dialog_title_exclude_activities">Exclure des activités du vérouillage</string>
+
+    <string name="pref_category_ui">Paramètres de l\'interface utilisateur</string>
+    <string name="pref_hide_from_launcher">Cacher l\'application du lanceur</string>
+    <string name="reboot_required">Un redémarrage est nécessaire pour appliquer les modifications</string>
+    <string name="pref_use_dark_style">Utiliser le theme sombre</string>
+
+    <string name="pref_category_about">A Propos</string>
+    <string name="app_name_pro">MaxLock Pro</string>
+    <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
+    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\nCliquer pour plus d\'informations</string>
+    <string name="pref_donate_upgrade_pro">Faire un don pour mettre à niveau vers la version pro</string>
+    <string name="pref_enable_pro">Activez la version pro</string>
+    <string name="pref_enable_pro_summary">Cela permettra d\'activer les fonctionnalités de la version pro même si vous n\'avez pas acheté MaxLock Pro</string>
+    <string name="prevent_uninstall">Protéger la desinstallation de MaxLock</string>
+    <string name="prevent_uninstall_summary">Acquérir les autorisations d\'administrateur pour MaxLock, pour proteger la desinstallation et la désactivation de Maxlock.
+        Pour désinstaller cette application vous devez d\'abord désactiver les droits admin ici ou à partir des réglages principales \"Réglages → Sécurité → Administrateurs de l\'appareil\"</string>
+    <string name="uninstall">Désinstaller</string>
+
+    <string name="device_admin_description">Protège la desinstallation et la désactivation de Maxlock</string>
+
+    <string name="dialog_like_app">Voulez vous quitter l\'application ?</string>
+    <string name="dialog_like_app_text">Si vous le faites, s\'il vous plaît laisser un avis dans le store et envisagez de faire un don :)</string>
+    <string name="dialog_cb_never_again">Jamais afficher de nouveau</string>
+    <string name="dialog_button_donate">Faire un don</string>
+    <string name="dialog_button_rate">Evaluer</string>
+
+    <string name="no_locking_type">No locking type specified</string>
+    <string name="no_locked_apps">Pas d\'application protégé</string>
+
+    <string name="fake_die_message">Malheureusement, %1$s a cessé de fonctionner.</string>
+    <string name="report">Rapport</string>
+    <string name="report_problem">Signaler un problème</string>
+
+    <string name="toggle_master_switch">Toggle MasterSwitch</string>
+    <string name="toggle_master_switch_deprecated">Activer/Désactiver le vérrou principale (Déconseillée)</string>
+    <string name="unlock_master_switch">Débloquer le Vérrou principale</string>
+    <string name="toast_master_switch_off">Vérrou principale désactivé</string>
+    <string name="toast_master_switch_on">Vérrou Principale ré-activé</string>
+    <string name="toast_no_locking_types">Aucun type de verrouillage spécifié</string>
+
+</resources>
