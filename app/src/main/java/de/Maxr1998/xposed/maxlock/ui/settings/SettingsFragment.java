@@ -135,7 +135,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
     }
 
-    public void startup() {
+    private void startup() {
         if (PREFS.getBoolean(Common.FIRST_START, true)) {
             Util.showAbout(getActivity());
             PREFS.edit().putBoolean(Common.FIRST_START, false).apply();
@@ -150,7 +150,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
     }
 
-    public void rateDialog() {
+    private void rateDialog() {
         if (!PREFS.contains(Common.FIRST_START_TIME))
             PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
 
@@ -187,7 +187,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
     }
 
-    public void setupPro() {
+    private void setupPro() {
         String version;
         try {
             version = " v" + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
@@ -301,19 +301,23 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onEnabled(Context context, Intent intent) {
             super.onEnabled(context, intent);
-            UNINSTALL.setTitle(R.string.uninstall);
-            UNINSTALL.setSummary("");
+            if (UNINSTALL != null) {
+                UNINSTALL.setTitle(R.string.uninstall);
+                UNINSTALL.setSummary("");
+            }
         }
 
         @Override
         public void onDisabled(Context context, Intent intent) {
             super.onDisabled(context, intent);
-            UNINSTALL.setTitle(R.string.prevent_uninstall);
-            UNINSTALL.setSummary(R.string.prevent_uninstall_summary);
-            Intent uninstall = new Intent(Intent.ACTION_DELETE);
-            uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
-            context.startActivity(uninstall);
+            if (UNINSTALL != null) {
+                UNINSTALL.setTitle(R.string.prevent_uninstall);
+                UNINSTALL.setSummary(R.string.prevent_uninstall_summary);
+                Intent uninstall = new Intent(Intent.ACTION_DELETE);
+                uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
+                context.startActivity(uninstall);
+            }
         }
     }
 
