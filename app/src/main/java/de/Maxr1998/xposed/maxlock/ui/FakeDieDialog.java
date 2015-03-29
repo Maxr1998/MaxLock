@@ -18,7 +18,6 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,8 +53,6 @@ public class FakeDieDialog extends Activity {
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
         app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
-        ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
-        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
         PackageManager pm = getPackageManager();
         try {
             requestPkgInfo = pm.getApplicationInfo(requestPkg, 0);
