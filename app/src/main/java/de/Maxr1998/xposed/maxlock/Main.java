@@ -44,33 +44,23 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
         makeReadable();
-
         final String packageName = lpparam.packageName;
-        if (!PREFS_PACKAGES.getBoolean(packageName, false)) {
-            return;
-        }
-        if (!PREFS_PACKAGES.getBoolean(Common.MASTER_SWITCH_ON, true)) {
-            return;
-        }
         Long permitTimestamp = PREFS_PACKAGES.getLong(packageName + "_tmp", 0);
-        if (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 4000) {
+        if (!PREFS_PACKAGES.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 4000)) {
             return;
         }
-
         Class<?> activity = XposedHelpers.findClass("android.app.Activity", lpparam.classLoader);
         XposedBridge.hookAllMethods(activity, "onCreate", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 final Activity app = (Activity) param.thisObject;
-                if (app.getClass().getName().equals("android.app.Activity")) {
-                    return;
-                }
-                if (!PREFS_ACTIVITIES.getBoolean(app.getClass().getName(), true)) {
+                if (app.getClass().getName().equals("android.app.Activity") ||
+                        !PREFS_PACKAGES.getBoolean(Common.MASTER_SWITCH_ON, true) ||
+                        !PREFS_ACTIVITIES.getBoolean(app.getClass().getName(), true)) {
                     return;
                 }
                 app.moveTaskToBack(true);
                 launchLockView(app, packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
-                super.beforeHookedMethod(param);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
