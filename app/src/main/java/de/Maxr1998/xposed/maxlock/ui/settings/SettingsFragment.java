@@ -80,7 +80,6 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 public class SettingsFragment extends PreferenceFragment implements BillingProcessor.IBillingHandler {
     static Preference UNINSTALL;
     static SharedPreferences PREFS, PREFS_KEYS, PREFS_THEME;
-    BillingProcessor bp;
     DevicePolicyManager devicePolicyManager;
     ComponentName deviceAdmin;
 
@@ -94,6 +93,10 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppsListFragment ? "AppsListFragment" : fragment instanceof GuideFragment ? "GuideFragment" : null).addToBackStack(null).commit();
         if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
             from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+    }
+
+    private BillingProcessor getBp() {
+        return ((SettingsActivity) getActivity()).getBillingProcessor();
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -111,9 +114,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), UninstallProtectionReceiver.class);
-
-        bp = new BillingProcessor(getActivity(), getString(R.string.license_key), this);
-        bp.loadOwnedPurchasesFromGoogle();
     }
 
     @Override
@@ -172,7 +172,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
                             }
                             break;
                         case -1:
-                            BillingHelper.showDialog(bp, getActivity());
+                            BillingHelper.showDialog(getBp(), getActivity());
                             break;
                     }
                     PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
@@ -198,7 +198,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         Preference about = findPreference(Common.ABOUT);
         CheckBoxPreference ep = (CheckBoxPreference) findPreference(Common.ENABLE_PRO);
         String appName;
-        if (!bp.listOwnedProducts().isEmpty()) {
+        if (!getBp().listOwnedProducts().isEmpty()) {
             appName = getString(R.string.app_name_pro);
             PREFS.edit().putBoolean(Common.ENABLE_PRO, true).apply();
             ep.setEnabled(false);
@@ -210,19 +210,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
         getActivity().setTitle(appName);
         about.setTitle(appName + version);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        if (bp != null) bp.release();
-        bp = new BillingProcessor(activity, getString(R.string.license_key), this);
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDestroy() {
-        bp.release();
-        super.onDestroy();
     }
 
     @Override
@@ -258,7 +245,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             Util.showAbout(getActivity());
             return true;
         } else if (preference == findPreference(Common.DONATE)) {
-            BillingHelper.showDialog(bp, getActivity());
+            BillingHelper.showDialog(getBp(), getActivity());
             return true;
         } else if (preference == findPreference(Common.UNINSTALL)) {
             if (!isDeviceAdminActive()) {

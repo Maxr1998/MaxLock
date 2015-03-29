@@ -68,10 +68,8 @@ public class BillingHelper {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(mContext);
-            progressDialog.setIndeterminate(true);
+            progressDialog = ProgressDialog.show(mContext, "", "", true);
             progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
         }
 
         @Override

@@ -35,6 +35,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -48,6 +50,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     private static boolean UNLOCKED = false;
     public SettingsFragment mSettingsFragment;
     SharedPreferences prefs;
+    private BillingProcessor billingProcessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,8 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
             lockFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment).commit();
         }
+        billingProcessor = new BillingProcessor(this, getString(R.string.license_key), mSettingsFragment);
+        billingProcessor.loadOwnedPurchasesFromGoogle();
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -156,6 +161,16 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
         super.onResume();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(android.R.color.black), -3, this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        billingProcessor.release();
+    }
+
+    public BillingProcessor getBillingProcessor() {
+        return billingProcessor;
     }
 
     public void restart() {
