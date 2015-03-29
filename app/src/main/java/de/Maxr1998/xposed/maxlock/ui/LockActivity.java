@@ -18,8 +18,6 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,8 +25,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-
-import com.google.android.gms.analytics.GoogleAnalytics;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -38,7 +34,6 @@ import de.Maxr1998.xposed.maxlock.Util;
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     private String requestPkg;
-    private ActivityManager am;
     private Intent app;
     private SharedPreferences prefsPackages;
     private boolean isInFocus = false, unlocked = false;
@@ -56,25 +51,13 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
         app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
-        am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
-        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
-
-        Long timestamp = System.currentTimeMillis();
-        Long permitTimestamp = prefsPackages.getLong(requestPkg + "_tmp", 0);
-        if (permitTimestamp != 0 && timestamp - permitTimestamp <= 10000) {
-            onAuthenticationSucceeded();
-        } else {
-            authenticate();
-        }
-        ((ThisApplication) getApplication()).getTracker(ThisApplication.TrackerName.APP_TRACKER);
-    }
-
-    private void authenticate() {
         Fragment frag = new LockFragment();
         Bundle b = new Bundle(1);
         b.putString(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
         frag.setArguments(b);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+
+        ((ThisApplication) getApplication()).getTracker(ThisApplication.TrackerName.APP_TRACKER);
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -84,7 +67,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         prefsPackages.edit()
                 .putLong(requestPkg + "_tmp", System.currentTimeMillis())
                 .commit();
-        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
         try {
             Intent intent = new Intent(app);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -107,13 +89,11 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @Override
     protected void onStart() {
         super.onStart();
-        GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        GoogleAnalytics.getInstance(this).reportActivityStop(this);
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_PRO, false) &&
                 PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
             Util.logFailedAuthentication(this, requestPkg);
