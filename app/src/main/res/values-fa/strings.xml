@@ -20,8 +20,8 @@
     <string name="msg_password_null">کلمه عبور نمیتواند خالی باشد!</string>
     <string name="msg_password_changed">کلمه عبور تغییر کرد!</string>
     <string name="msg_password_incorrect">کلمه عبور اشتباه است!</string>
-    <string name="msg_search">جستجو</string>
-    <string name="txt_settings">تنظیمات</string>
+    <string name="menu_search">جستجو</string>
+    <string name="dialog_title_settings">تنظیمات</string>
     <string name="txt_type_password">کلمه عبور:</string>
     <string name="txt_retype_password">کلمه عبور را مجدد وازد کنید:</string>
     <string name="dialog_text_fake_die">Fake die</string>
