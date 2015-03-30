@@ -86,4 +86,5 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         PREFS_ACTIVITIES.makeWorldReadable();
         PREFS_ACTIVITIES.reload();
     }
+    
 }
