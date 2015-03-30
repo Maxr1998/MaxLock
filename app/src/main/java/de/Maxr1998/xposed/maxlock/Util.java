@@ -233,6 +233,8 @@ public class Util {
         return (String) (REQUEST_PKG_INFO != null ? PM.getApplicationLabel(REQUEST_PKG_INFO) : packageName);
     }
 
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
     public static Drawable getApplicationIconFromPackage(String packageName, Context context) {
         PM = context.getApplicationContext().getPackageManager();
         try {

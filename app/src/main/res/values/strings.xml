@@ -156,7 +156,4 @@
 
     <string name="pref_locking_killbackground">Kill background hooks</string>
     <string name="pref_locking_killbackground_summary">Kill when ever it\'s possible MaxLock background hooked activity</string>
-
-    <string name="license_key"></string>
-
 </resources>
