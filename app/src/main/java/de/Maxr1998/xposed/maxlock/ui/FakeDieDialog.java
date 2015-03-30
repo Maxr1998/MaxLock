@@ -50,6 +50,7 @@ public class FakeDieDialog extends Activity {
 
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        getWindow().setBackgroundDrawable(new ColorDrawable(0));
         //noinspection deprecation
         prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
 
