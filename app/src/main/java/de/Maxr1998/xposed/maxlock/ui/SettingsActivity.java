@@ -38,14 +38,11 @@ import android.widget.CompoundButton;
 import com.anjlab.android.iab.v3.BillingProcessor;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
-import de.Maxr1998.xposed.maxlock.BillingHelper;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
-import de.Maxr1998.xposed.maxlock.ui.settings.GuideFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
-import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 
 public class SettingsActivity extends ActionBarActivity implements AuthenticationSucceededListener {
 
@@ -59,6 +56,9 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     protected void onCreate(Bundle savedInstanceState) {
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences_main, false);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences_locking_type, false);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences_locking_ui, false);
         if (prefs.getBoolean(Common.USE_DARK_STYLE, false)) {
             setTheme(R.style.AppTheme_Dark);
         } else {
@@ -82,10 +82,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment).commit();
         }
         billingProcessor = new BillingProcessor(this, getString(R.string.license_key), mSettingsFragment);
-        if (BillingHelper.GooglePlayServiceAvailable(getApplicationContext())) {
-            billingProcessor.loadOwnedPurchasesFromGoogle();
-        }
-        new Startup(this).execute(prefs.getBoolean(Common.FIRST_START, true));
+        billingProcessor.loadOwnedPurchasesFromGoogle();
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -153,7 +150,8 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     @Override
     protected void onPause() {
         super.onPause();
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !UNLOCKED) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_PRO, false) &&
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !UNLOCKED) {
             Util.logFailedAuthentication(this, "Main App");
         }
     }
@@ -169,7 +167,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
     protected void onDestroy() {
         super.onDestroy();
         billingProcessor.release();
-    }
+        }
 
     public BillingProcessor getBillingProcessor() {
         return billingProcessor;

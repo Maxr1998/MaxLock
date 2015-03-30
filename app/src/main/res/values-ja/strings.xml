@@ -122,8 +122,8 @@
     <string name="dialog_button_donate">寄付</string>
     <string name="dialog_button_rate">評価</string>
 
-    <string name="no_locking_type">ロック方法が設定されていません.</string>
-    <string name="no_locked_apps">ロックするアプリが選択されていません.</string>
+    <string name="no_locking_type">ロック方法が設定されていません</string>
+    <string name="no_locked_apps">ロックするアプリが選択されていません</string>
 
     <string name="fake_die_message">問題が発生したため %1$s を終了します</string>
     <string name="report">レポート</string>

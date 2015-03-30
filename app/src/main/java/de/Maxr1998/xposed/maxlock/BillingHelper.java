@@ -32,8 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class BillingHelper {
 
@@ -51,19 +49,7 @@ public class BillingHelper {
     };
 
     public static void showDialog(BillingProcessor bp, Activity activity) {
-        if (bp != null && GooglePlayServiceAvailable(activity)) {
-            new ShowDialog(bp, activity).execute();
-        } else {
-            Toast.makeText(activity, "Google Play Services unavailable", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public static boolean GooglePlayServiceAvailable(Context c) {
-        return GooglePlayServicesUtil.isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS;
-    }
-
-    public static boolean donated(Context c, BillingProcessor bp) {
-        return bp != null && GooglePlayServiceAvailable(c) && !bp.listOwnedProducts().isEmpty();
+        new ShowDialog(bp, activity).execute();
     }
 
     private static class ShowDialog extends AsyncTask<Void, Void, ListAdapter> {

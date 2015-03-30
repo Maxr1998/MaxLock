@@ -3,7 +3,7 @@ About
 Thanks to:
 ----------
 - @FatMinMin for original module
-- My friend @TechnoSparks for creating MaxLock guide and hosting it on a server, and many other support. Thank you :)
+- @TechnoSparks for the MaxLock guide, new ideas and other support. Thanks! :D
 - alexking99 for Taiwanese translation
 - @badkill for Spanish translation
 - @liveasx for Chinese translation

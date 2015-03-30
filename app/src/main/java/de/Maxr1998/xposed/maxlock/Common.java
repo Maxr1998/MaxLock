@@ -88,4 +88,14 @@ public class Common {
     public static final String PREFS_PER_APP = "per_app_settings";
     public static final String PREFS_ACTIVITIES = "activities";
     public static final String PREFS_THEME = "theme";
+
+    // Intika I.MoD
+    public static final String IIMOD_OPTIONS = "intika_imod";
+    public static final String ENABLE_DELAY_GENERAL = "enable_delaygeneral";
+    public static final String ENABLE_DELAY_PERAPP = "enable_delayperapp";
+    public static final String DELAY_INPUT_PERAPP = "delay_inputperapp";
+    public static final String DELAY_INPUT_GENERAL = "delay_inputgeneral";
+    public static final String DELAY_GENERAL_TIMER = "timer_generaldelay";
+    public static final String PREFS_KILLBACKGROUND =  "kill_background";
+
 }
