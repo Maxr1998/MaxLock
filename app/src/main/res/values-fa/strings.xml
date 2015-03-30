@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MaxLock</string>
+    <!-- Main screen -->
+    <string name="pref_category_locking">کلمه عبور</string>
+    <string name="pref_locking_type">نوع قفل</string>
+    <string name="pref_locking_type_password">کلمه عبور</string>
+    <string name="pref_locking_type_pin">رمز عددی</string>
+    <string name="pref_locking_type_knockcode">Knock code</string>
+    <string name="pref_locking_ui">تنظیمات Knock code</string>
+    <string name="pref_set_password">تنظیم پسورد</string>
+    <string name="pref_category_apps">انتخاب برنامه</string>
+    <string name="pref_show_system_app">نمایش برنامه های سیستمی</string>
+    <string name="pref_show_system_app_summary_on">برنامه های سیستمی قابل اجرا را نمایش بده</string>
+    <string name="pref_show_system_app_summary_off">برنامه های سیستمی قابل اجرا را مخفی کن</string>
+    <string name="pref_choose_apps">انتخاب برنامه</string>
+    <string name="pref_choose_apps_summary">انتخاب برنامه هایی که میخواهید قفل شوند</string>
+    <string name="pref_category_ui">تنظیمات رابط کاربری برنامه</string>
+    <string name="msg_password_inconsistent">کلمه عبور ناسازگار است!</string>
+    <string name="msg_password_null">کلمه عبور نمیتواند خالی باشد!</string>
+    <string name="msg_password_changed">کلمه عبور تغییر کرد!</string>
+    <string name="msg_password_incorrect">کلمه عبور اشتباه است!</string>
+    <string name="menu_search">جستجو</string>
+    <string name="dialog_title_settings">تنظیمات</string>
+    <string name="txt_type_password">کلمه عبور:</string>
+    <string name="txt_retype_password">کلمه عبور را مجدد وازد کنید:</string>
+    <string name="dialog_text_fake_die">Fake die</string>
+    <string name="toggle_lock_on">روشن</string>
+    <string name="toggle_lock_off">خاموش</string>
+    <string name="continue_done">Touch continue when done</string>
+    <string name="button_continue">ادامه</string>
+    <string name="choose_knock_code">knock code خود را وارد کنید</string>
+    <string name="knock_code_too_short">Knock code حداقل باید چهار کد باشد</string>
+    <string name="confirm_knock_code">خود را تایید کنید knock code</string>
+    <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
+    <string name="report">گزارش</string>
+    <string name="report_problem">گزارش مشکل</string>
+</resources>

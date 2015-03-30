@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_category_logging">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="enable_logging"
+            android:summary="@string/pref_enable_logging_summary"
+            android:title="@string/pref_enable_logging" />
+        <Preference
+            android:dependency="enable_logging"
+            android:key="view_logs"
+            android:title="@string/pref_view_logs" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_other">
+        <EditTextPreference
+            android:defaultValue="start"
+            android:key="fake_die_input"
+            android:summary="@string/pref_fake_die_input_summary"
+            android:title="@string/pref_fake_die_input" />
+    </PreferenceCategory>
+</PreferenceScreen>

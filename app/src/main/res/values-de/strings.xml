@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MaxLock</string>
+    <string name="placeholder">Platzhalter</string>
+    <string name="restart_required">MaxLock muss für die Übernahme der Änderungen neu gestartet werden</string>
+    <string name="toast_pro_required">Die Pro-Version wird für diese Funktion benötigt</string>
+
+    <!-- Main Screen -->
+    <string name="pref_category_locking">Sperre</string>
+    <string name="pref_locking_type">Sperrart</string>
+    <!-- Locking type Settings -->
+    <string name="pref_locking_type_password">Passwort</string>
+    <string name="pref_locking_type_pin">PIN</string>
+    <string name="pref_locking_type_knockcode">Knock Code</string>
+    <string name="pref_locking_type_pattern">Muster</string>
+
+    <string name="pref_set_password">Passwort ändern</string>
+    <string name="msg_password_inconsistent">Passwörter stimmen nicht überein!</string>
+    <string name="msg_password_null">Das Passwort darf nicht leer sein!</string>
+    <string name="msg_password_changed">Passwort wurde geändert!</string>
+    <string name="msg_password_incorrect">Passwort inkorrekt!</string>
+    <string name="txt_type_password">Passwort: </string>
+    <string name="txt_retype_password">Passwort wiederholen: </string>
+
+    <string name="choose_pin">PIN festlegen</string>
+    <string name="pin_too_short">Die PIN muss mindestens 4 Ziffern enthalten.</string>
+    <string name="continue_done">Wählen Sie "Weiter", sobald Sie fertig sind.</string>
+    <string name="confirm_pin">PIN bestätigen</string>
+    <string name="button_continue">Weiter</string>
+
+    <string name="choose_knock_code">Knock Code einrichten</string>
+    <string name="knock_code_too_short">Der Knock Code muss mindestens 4 Berührungen enthalten.</string>
+    <string name="confirm_knock_code">Knock Code bestätigen</string>
+    <!-- Main Screen -->
+    <string name="pref_locking_ui">Sperrbildschirm-Oberfläche</string>
+    <!-- Locking UI settings -->
+    <string name="open_theme_manager">Öffne Theme Manager</string>
+    <string name="open_theme_manager_summary_none">Kein Thema festgelegt</string>
+    <string name="open_theme_manager_summary_applied">Thema: </string>
+    <string name="overridden_by_theme">(Überschrieben durch Thema)</string>
+    <string name="pref_background">Hintergrundbild</string>
+    <string-array name="background_types">
+        <item>Systemhintergrund</item>
+        <item>@string/custom_color</item>
+        <item>Benutzerdefiniert…</item>
+        <!--<item>Thema</item>-->
+    </string-array>
+    <string name="custom_color">Farbe</string>
+    <string name="pref_category_pin_and_knock_code">PIN und Knock Code</string>
+    <string name="pref_invert_color">Invertiere Vordergrundfarbe</string>
+    <string name="pref_invert_color_summary">Farbe von Text oder Trennlinien wird auf schwarz gesetzt</string>
+    <string name="pref_hide_title_bar">Verstecke Titelleiste</string>
+    <string name="pref_hide_input_bar">Verstecke Eingabeleiste</string>
+    <string name="pref_hide_input_bar_summary">\"Löschen\" Knopf wird auch versteckt!</string>
+    <string name="pref_category_password_and_pin">Passwort und PIN</string>
+    <string name="pref_quick_unlock">Schnelles entsperren</string>
+    <string name="pref_category_knock_code_only">Nur Knock Code</string>
+    <string name="pref_show_dividers">Trennlinien anzeigen</string>
+    <string name="pref_touch_visible">Berührungen sichtbar machen</string>
+    <string name="pref_category_pattern_only">Nur Muster</string>
+    <string name="pref_show_path">Muster zeigen</string>
+    <string name="pref_haptic_feedback">Beim Zeichnen vibrieren</string>
+
+    <string name="pref_locking_options">Sperr-Optionen</string>
+    <string name="pref_category_logging">Logging</string>
+    <string name="pref_enable_logging">Logging aktivieren</string>
+    <string name="pref_enable_logging_summary">Zeichne fehlerhafte/unvollständige Entsperrvorgänge auf</string>
+    <string name="pref_view_logs">Logs ansehen</string>
+    <string name="menu_delete_log">Logs löschen</string>
+    <string name="pref_category_other">Andere</string>
+    <string name="pref_fake_die_input">\"Vorgetäuschter Absturz\" Eingabe</string>
+    <string name="pref_fake_die_input_summary">Die Phrase die der Nutzer in den Dialog eingeben muss um den Sperrbildschirm zu öffnen</string>
+
+    <string name="no_network_connected">Sie sind momentan mit keinem Netwerk verbunden</string>
+
+    <string name="pref_category_apps">Anwendungen</string>
+    <string name="pref_show_system_app">Zeige System-Anwendungen</string>
+    <string name="pref_show_system_app_summary_on">Zeige startbare System-Anwendungen</string>
+    <string name="pref_show_system_app_summary_off">Verstecke startbare System-Anwendungen</string>
+    <string name="pref_choose_apps">Anwendungen wählen</string>
+    <string name="pref_choose_apps_summary">Wähle zu sperrende Anwendungen</string>
+
+    <string name="backup_list">Liste sichern</string>
+    <string name="restore_list">Liste wiederherstellen</string>
+    <string name="clear_list">Liste leeren</string>
+    <string name="toast_no_files_to_backup">Keine Dateien zum Sichern gefunden</string>
+    <string name="toast_backup_restore_exception">Ein Fehler ist aufgetreten.\nBitte Entwickler melden!</string>
+    <string name="toast_backup_success">Sicherung war erfolgreich</string>
+    <string name="dialog_restore_list_message">Dies wird die jetzigen Einstellungen mit denen vom Backup ersetzen!</string>
+    <string name="toast_no_files_to_restore">Keine Dateien zum Wiederherstellen gefunden</string>
+    <string name="toast_restore_success">Backup erfolgreich wiederhergestellt</string>
+    <string name="menu_search">Suche</string>
+    <string name="toggle_lock_on">An</string>
+    <string name="toggle_lock_off">Aus</string>
+    <string name="dialog_title_settings">Optionen</string>
+    <string name="dialog_text_fake_die">Vorgetäuschter Absturz</string>
+    <string name="dialog_text_custom_password">App-Spezifisches Password</string>
+    <string name="dialog_button_exclude_activities">Aktivitäten</string>
+    <string name="dialog_title_exclude_activities">Aktivitäten von Sperre ausschließen</string>
+
+    <string name="pref_category_ui">Oberfläche</string>
+    <string name="pref_hide_from_launcher">Verstecke App im Launcher</string>
+    <string name="reboot_required">Ein Neustart könnte erforderlich sein um die Änderungen anzuwenden</string>
+    <string name="pref_use_dark_style">Dunkles Design benutzen</string>
+
+    <string name="pref_category_about">Über</string>
+    <string name="app_name_pro">MaxLock Pro</string>
+    <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
+    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 Maxr1998\nAnklicken, um weitere Informationen zu sehen</string>
+    <string name="pref_donate_upgrade_pro">Spenden, um auf Pro-Version upzugraden</string>
+    <string name="pref_enable_pro">Pro aktivieren</string>
+    <string name="pref_enable_pro_summary">Alle weiteren Funktionen aktivieren, selbst wenn MaxLock Pro nicht gekauft wurde</string>
+    <string name="prevent_uninstall">Schütze App vor Deinstallation</string>
+    <string name="prevent_uninstall_summary">Erlange Geräteadministratorenrechte, um die Deinstallation der App zu verhindern.
+        Die App muss dann entweder von hier deinstalliert oder über \"Einstellungen → Sicherheit → Geräteadministratoren\" erst deaktiviert und dann deinstalliert werden</string>
+    <string name="uninstall">Deinstallieren</string>
+
+    <string name="device_admin_description">Schütze MaxLock vor Deinstallation und Deaktivierung</string>
+
+    <string name="dialog_like_app">Magst du die App?</string>
+    <string name="dialog_like_app_text">Wenn ja, hinterlasse bitte eine Bewertung im Play Store und ziehe in Erwägung zu spenden :)</string>
+    <string name="dialog_cb_never_again">Nicht nochmal zeigen</string>
+    <string name="dialog_button_donate">Spenden</string>
+    <string name="dialog_button_rate">Bewerten</string>
+
+    <string name="no_locking_type">Keine Sperrart festgelegt.</string>
+    <string name="no_locked_apps">Keine zu sperrenden Apps ausgewählt.</string>
+
+    <string name="fake_die_message">\"%1$s\" wurde beendet.</string>
+    <string name="report">Bericht</string>
+    <string name="report_problem">Problem melden</string>
+
+    <string name="toggle_master_switch">MasterSwitch umschalten</string>
+    <string name="toggle_master_switch_deprecated">MasterSwitch umschalten (veraltet)</string>
+    <string name="unlock_master_switch">Entsperre MasterSwitch</string>
+    <string name="toast_master_switch_off">MasterSwitch aus</string>
+    <string name="toast_master_switch_on">MasterSwitch an</string>
+    <string name="toast_no_locking_types">Keine Sperrart festgelegt</string>
+
+</resources>
