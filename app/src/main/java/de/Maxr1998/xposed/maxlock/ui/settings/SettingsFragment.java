@@ -163,7 +163,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             launchFragment(new LockingUISettingsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
-			PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PREFS.getBoolean(Common.ENABLE_PRO, false)).apply();
+        PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PREFS.getBoolean(Common.ENABLE_PRO, false)).apply();
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;		
         }else if (preference == findPreference(Common.IIMOD_OPTIONS)) {
