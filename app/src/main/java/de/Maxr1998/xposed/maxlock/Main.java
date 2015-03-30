@@ -79,6 +79,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         app.startActivity(it);
     }
+    
     private void makeReadable() {
         PREFS_PACKAGES.makeWorldReadable();
         PREFS_PACKAGES.reload();
