@@ -368,24 +368,38 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
         @SuppressLint("DefaultLocale")
         @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-
-            constraint = constraint.toString().toLowerCase();
+        protected FilterResults performFiltering(CharSequence filter) {
+            final String search = filter.toString().toLowerCase();
 
             FilterResults results = new FilterResults();
 
-            if (constraint.length() == 0) {
+            if (search.length() == 0) {
                 results.values = oriItemList;
                 results.count = oriItemList.size();
             } else {
                 List<Map<String, Object>> filteredList = new ArrayList<>();
 
                 for (Map<String, Object> app : oriItemList) {
+                    boolean add = false;
                     String title = ((String) app.get("title")).toLowerCase();
-                    for (String part : title.split(" ")) {
-                        if (part.indexOf((String) constraint) == 0) {
-                            filteredList.add(app);
+                    if (title.startsWith(search)) {
+                        add = true;
+                    }
+                    if (!add) {
+                        for (String titlePart : title.split(" ")) {
+                            if (titlePart.startsWith(search)) {
+                                add = true;
+                            } else {
+                                for (String searchPart : search.split(" ")) {
+                                    if (titlePart.startsWith(searchPart)) {
+                                        add = true;
+                                    }
+                                }
+                            }
                         }
+                    }
+                    if (add) {
+                        filteredList.add(app);
                     }
                 }
                 results.values = filteredList;
