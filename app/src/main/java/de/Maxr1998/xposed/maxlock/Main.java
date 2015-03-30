@@ -70,6 +70,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }
         });
     }
+    
     private void launchLockView(final Activity app, String packageName, String launch) {
         Intent it = new Intent();
         it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
