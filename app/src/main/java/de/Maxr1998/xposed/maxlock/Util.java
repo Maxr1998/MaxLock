@@ -28,6 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
@@ -57,6 +58,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Util {
 
@@ -183,7 +185,7 @@ public class Util {
     }
 
     public static void logFailedAuthentication(Context context, String pkg) {
-        String toLog = "[" + new SimpleDateFormat("dd/MM/yy, HH:mm:ss").format(new Date(System.currentTimeMillis())) + "] " + getApplicationNameFromPackage(pkg, context);
+        String toLog = "[" + new SimpleDateFormat("dd/MM/yy, HH:mm:ss", Locale.getDefault()).format(new Date(System.currentTimeMillis())) + "] " + getApplicationNameFromPackage(pkg, context);
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(new BufferedWriter(new FileWriter(context.getApplicationInfo().dataDir + File.separator + Common.LOG_FILE, true)));
@@ -238,7 +240,10 @@ public class Util {
         } catch (PackageManager.NameNotFoundException e) {
             REQUEST_PKG_INFO = null;
         }
-        return REQUEST_PKG_INFO != null ? PM.getApplicationIcon(REQUEST_PKG_INFO) : context.getResources().getDrawable(R.mipmap.ic_launcher);
+        return REQUEST_PKG_INFO != null ? PM.getApplicationIcon(REQUEST_PKG_INFO) :
+                (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ?
+                        context.getResources().getDrawable(R.mipmap.ic_launcher) :
+                        context.getDrawable(R.mipmap.ic_launcher));
     }
 
     /*public static int getTextColor(Context context) {
