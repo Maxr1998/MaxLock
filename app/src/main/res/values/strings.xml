@@ -124,8 +124,8 @@
     <string name="dialog_button_donate">Donate</string>
     <string name="dialog_button_rate">Rate</string>
 
-    <string name="no_locking_type">No locking type specified</string>
-    <string name="no_locked_apps">No apps chosen to lock</string>
+    <string name="no_locking_type">No locking type specified.</string>
+    <string name="no_locked_apps">No apps chosen to lock.</string>
 
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>

@@ -124,8 +124,8 @@
     <string name="dialog_button_donate">Spenden</string>
     <string name="dialog_button_rate">Bewerten</string>
 
-    <string name="no_locking_type">Keine Sperrart festgelegt</string>
-    <string name="no_locked_apps">Keine zu sperrenden Apps ausgewählt</string>
+    <string name="no_locking_type">Keine Sperrart festgelegt.</string>
+    <string name="no_locked_apps">Keine zu sperrenden Apps ausgewählt.</string>
 
     <string name="fake_die_message">\"%1$s\" wurde beendet.</string>
     <string name="report">Bericht</string>

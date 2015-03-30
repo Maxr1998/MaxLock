@@ -20,7 +20,7 @@
     <string name="msg_password_null">Le mot de passe ne peut pas etre vide !</string>
     <string name="msg_password_changed">Le mot de passe est changé !</string>
     <string name="msg_password_incorrect">Mot de passe Incorrecte !</string>
-    <string name="txt_type_password">Mot de passe : </string> 
+    <string name="txt_type_password">Mot de passe: </string>
     <string name="txt_retype_password">Retaper le mot de passe: </string>
 
     <string name="choose_pin">Choisissez votre PIN</string>
@@ -124,8 +124,8 @@
     <string name="dialog_button_donate">Faire un don</string>
     <string name="dialog_button_rate">Evaluer</string>
 
-    <string name="no_locking_type">No locking type specified</string>
-    <string name="no_locked_apps">Pas d\'application protégé</string>
+    <string name="no_locking_type">No locking type specified.</string>
+    <string name="no_locked_apps">Pas d\'application protégé.</string>
 
     <string name="fake_die_message">Malheureusement, %1$s a cessé de fonctionner.</string>
     <string name="report">Rapport</string>

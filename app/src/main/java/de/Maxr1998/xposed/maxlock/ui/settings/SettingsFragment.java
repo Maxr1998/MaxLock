@@ -19,12 +19,10 @@ package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -47,16 +45,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.haibison.android.lockpattern.LockPatternActivity;
-import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
-import com.nispok.snackbar.enums.SnackbarType;
 
 import org.apache.commons.io.FileUtils;
 
@@ -131,60 +126,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             UNINSTALL.setTitle(R.string.uninstall);
             UNINSTALL.setSummary("");
         }
-        startup();
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
-    }
-
-    private void startup() {
-        if (PREFS.getBoolean(Common.FIRST_START, true)) {
-            Util.showAbout(getActivity());
-            PREFS.edit().putBoolean(Common.FIRST_START, false).apply();
-        }
-        rateDialog();
-        if (PREFS.getString(Common.LOCKING_TYPE, "").equals("") && !new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
-            SnackbarManager.show(Snackbar.with(getActivity()).type(SnackbarType.MULTI_LINE).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(getString(R.string.no_locking_type) + " " + getString(R.string.no_locked_apps)));
-        } else if (PREFS.getString(Common.LOCKING_TYPE, "").equals("")) {
-            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locking_type));
-        } else if (!new File(Util.dataDir(getActivity()) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists()) {
-            SnackbarManager.show(Snackbar.with(getActivity()).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false).text(R.string.no_locked_apps));
-        }
-    }
-
-    private void rateDialog() {
-        if (!PREFS.contains(Common.FIRST_START_TIME))
-            PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
-
-        if (!PREFS.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - PREFS.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
-            final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
-            DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (checkBox.isChecked())
-                        PREFS.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
-                    switch (i) {
-                        case -3:
-                            try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + Common.PKG_NAME)));
-                            } catch (android.content.ActivityNotFoundException e) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + Common.PKG_NAME)));
-                            }
-                            break;
-                        case -1:
-                            BillingHelper.showDialog(getBp(), getActivity());
-                            break;
-                    }
-                    PREFS.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
-                }
-            };
-            builder.setTitle(R.string.dialog_like_app)
-                    .setView(dialogView)
-                    .setPositiveButton(R.string.dialog_button_donate, onClickListener)
-                    .setNeutralButton(R.string.dialog_button_rate, onClickListener)
-                    .setNegativeButton(android.R.string.cancel, onClickListener)
-                    .create().show();
-        }
     }
 
     private void setupPro() {
@@ -198,7 +140,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         Preference about = findPreference(Common.ABOUT);
         CheckBoxPreference ep = (CheckBoxPreference) findPreference(Common.ENABLE_PRO);
         String appName;
-        if (!getBp().listOwnedProducts().isEmpty()) {
+        if (BillingHelper.donated(getActivity().getApplicationContext(), getBp())) {
             appName = getString(R.string.app_name_pro);
             PREFS.edit().putBoolean(Common.ENABLE_PRO, true).apply();
             ep.setEnabled(false);
