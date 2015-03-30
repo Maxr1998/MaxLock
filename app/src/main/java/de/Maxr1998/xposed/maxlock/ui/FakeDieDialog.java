@@ -54,6 +54,7 @@ public class FakeDieDialog extends Activity {
         //noinspection deprecation
         prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
 
+        // Intent Extras
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
         app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
