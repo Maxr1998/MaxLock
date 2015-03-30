@@ -51,7 +51,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         final String packageName = lpparam.packageName;
 
         Long permitTimestamp = PREFS_PACKAGES.getLong(packageName + "_tmp", 0);
-        if (!PREFS_PACKAGES.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 10000)) {
+        if (!PREFS_PACKAGES.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 5000)) {
             return;
         }
 
