@@ -117,5 +117,6 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         if (isFirstStart) {
             prefs.edit().putBoolean(Common.FIRST_START, false).apply();
         }
+        System.out.println("Startup finished");
     }
 }
