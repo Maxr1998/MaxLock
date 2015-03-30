@@ -155,7 +155,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     public void onStop() {
         super.onStop();
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
-                PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
             Util.logFailedAuthentication(this, requestPkg);
         }
         if (!isInFocus) {
