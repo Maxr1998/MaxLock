@@ -75,14 +75,14 @@
     <string name="no_network_connected">Pas de connecxion réseau detecté</string>
 
     <string name="pref_category_apps">Choisir vos apps</string>
-    <string name="pref_show_system_app">Show system apps</string>
-    <string name="pref_show_system_app_summary_on">Show launchable system apps</string>
-    <string name="pref_show_system_app_summary_off">Hide launchable system apps</string>
-    <string name="pref_choose_apps">Choose apps</string>
-    <string name="pref_choose_apps_summary">Select apps to be locked</string>
+    <string name="pref_show_system_app">Afficher les applications system</string>
+    <string name="pref_show_system_app_summary_on">Afficher les applications system qui ont une interface</string>
+    <string name="pref_show_system_app_summary_off">Masquer les applications system qui ont une interface</string>
+    <string name="pref_choose_apps">Choisir les apps</string>
+    <string name="pref_choose_apps_summary">Selectionner les application à verrouiller</string>
 
-    <string name="backup_list">Backup list</string>
-    <string name="restore_list">Restore list</string>
+    <string name="backup_list">Sauvegarder la liste</string>
+    <string name="restore_list">Restaurer la liste</string>
     <string name="clear_list">Effacer la liste</string>
     <string name="toast_no_files_to_backup">Pas de fichiers à sauvegarder</string>
     <string name="toast_backup_restore_exception">Une erreur est survenue merci de contacter le developpeur !</string>
@@ -132,10 +132,21 @@
     <string name="report_problem">Signaler un problème</string>
 
     <string name="toggle_master_switch">Toggle MasterSwitch</string>
-    <string name="toggle_master_switch_deprecated">Activer/Désactiver le vérrou principale (Déconseillée)</string>
+    <string name="toggle_master_switch_deprecated">Activer-Désactiver le vérrou principale (Déconseillée)</string>
     <string name="unlock_master_switch">Débloquer le Vérrou principale</string>
     <string name="toast_master_switch_off">Vérrou principale désactivé</string>
     <string name="toast_master_switch_on">Vérrou Principale ré-activé</string>
     <string name="toast_no_locking_types">Aucun type de verrouillage spécifié</string>
+
+    <string name="pref_category_intika">Intika I.MoD</string>
+    <string name="pref_locking_delay_general">Activez le reverrouillage intélligent général</string>
+    <string name="pref_locking_delay_general_summary">Empêcher l\'application de demander à débloquer à nouveau dans un certain délai de temps pour toutes les applications verrouillées</string>
+    <string name="pref_delay_input_general">Delais reverrouillage intélligent général</string>
+    <string name="pref_delay_input_general_summary">Entrez un nombre pour spécifier les minutes que l\'application doit attendre avant le reverrouillage général</string>
+    <string name="pref_locking_delay_perapp">Activez le reverrouillage intélligent par application</string>
+    <string name="pref_locking_delay_perapp_summary">Empêcher l\'application de demander à débloquer à nouveau dans un certain délai de temps pour chaque applications verrouillées séparément</string>
+    <string name="pref_delay_input_perapp">Delais reverrouillage intélligent par application</string>
+    <string name="pref_delay_input_perapp_summary">Entrez un nombre pour spécifier les minutes que l\'application doit attendre avant le reverrouillage chaque application</string>
+    <string name="pref_delay_needpro">Activez le reverrouillage intélligent - Version Pro</string>
 
 </resources>
