@@ -7,4 +7,12 @@
         android:id="@+id/guideView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+        
+    <ProgressBar
+        android:id="@+id/page_loading_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@android:color/white"
+        android:visibility="gone" />
+</RelativeLayout>
