@@ -163,10 +163,23 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             launchFragment(new LockingUISettingsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
-            PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PREFS.getBoolean(Common.ENABLE_PRO, false)).apply();
+        PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PREFS.getBoolean(Common.ENABLE_PRO, false)).apply();
             launchFragment(new LockingOptionsFragment(), true, this);
+            return true;		
+        }else if (preference == findPreference(Common.IIMOD_OPTIONS)) {
+            //Intika I.MoD Set as Pro Features - Auto Enable Feature on pro
+            //Ok Pro feature are disabled when pro is not available, but it should not be auto enabled when pro is activated
+            Long timer = System.currentTimeMillis() - PREFS.getLong("IMoDGlobalDelayTimer", 0);
+            PREFS.edit()
+                    .putInt(Common.DELAY_GENERAL_TIMER, timer.intValue())
+                    .commit();
+            if (!PREFS.getBoolean(Common.ENABLE_PRO, false)) {
+                PREFS.edit().putBoolean(Common.ENABLE_DELAY_PERAPP, false).apply();
+                PREFS.edit().putBoolean(Common.ENABLE_DELAY_GENERAL, false).apply();
+            }
+            launchFragment(new LockingIntikaFragment(), true, this);
             return true;
-        } else if (preference == findPreference(Common.CHOOSE_APPS)) {
+        }else if (preference == findPreference(Common.CHOOSE_APPS)) {
             launchFragment(new AppsListFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.HIDE_APP_FROM_LAUNCHER) && preference instanceof CheckBoxPreference) {
@@ -386,6 +399,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             }
         }
 
+
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -394,6 +408,25 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
                 return true;
             }
             return false;
+        }
+    }
+
+    public static class LockingIntikaFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+            addPreferencesFromResource(R.xml.preferences_locking_imod);
+            //Intika I.MoD - Loading check pro
+            Preference iimod_enabled_g = findPreference(Common.ENABLE_DELAY_GENERAL);
+            Preference iimod_enabled_p = findPreference(Common.ENABLE_DELAY_PERAPP);
+            iimod_enabled_g.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
+            iimod_enabled_p.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
+            if (!PREFS.getBoolean(Common.ENABLE_PRO, false)) {
+                //Intika I.MoD - Loading check pro
+                iimod_enabled_g.setTitle(R.string.pref_delay_needpro);
+                iimod_enabled_p.setTitle(R.string.pref_delay_needpro);
+            }
         }
     }
 

@@ -19,6 +19,11 @@
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingOptionsFragment"
             android:key="locking_options"
             android:title="@string/pref_locking_options" />
+
+        <PreferenceScreen
+            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingIntikaFragment"
+            android:key="intika_imod"
+            android:title="@string/pref_locking_intika" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_apps">
