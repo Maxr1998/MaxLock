@@ -70,7 +70,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }
         });
     }
-
     private void launchLockView(final Activity app, String packageName, String launch) {
         Intent it = new Intent();
         it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
@@ -79,12 +78,10 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         app.startActivity(it);
     }
-
     private void makeReadable() {
         PREFS_PACKAGES.makeWorldReadable();
         PREFS_PACKAGES.reload();
         PREFS_ACTIVITIES.makeWorldReadable();
         PREFS_ACTIVITIES.reload();
     }
-    
 }
