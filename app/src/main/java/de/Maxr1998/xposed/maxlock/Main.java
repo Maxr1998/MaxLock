@@ -18,11 +18,8 @@
 package de.Maxr1998.xposed.maxlock;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.os.*;
-import android.os.Process;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
