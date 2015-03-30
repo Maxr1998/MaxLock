@@ -15,4 +15,5 @@
         android:layout_height="10dp"
         android:background="@android:color/white"
         android:visibility="gone" />
+        
 </RelativeLayout>
