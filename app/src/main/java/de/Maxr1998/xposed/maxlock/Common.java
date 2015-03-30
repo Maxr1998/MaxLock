@@ -96,6 +96,4 @@ public class Common {
     public static final String DELAY_INPUT_PERAPP = "delay_inputperapp";
     public static final String DELAY_INPUT_GENERAL = "delay_inputgeneral";
     public static final String DELAY_GENERAL_TIMER = "timer_generaldelay";
-    public static final String PREFS_KILLBACKGROUND =  "kill_background";
-
 }

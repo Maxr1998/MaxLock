@@ -20,7 +20,7 @@
     <string name="msg_password_null">Le mot de passe ne peut pas etre vide !</string>
     <string name="msg_password_changed">Le mot de passe est changé !</string>
     <string name="msg_password_incorrect">Mot de passe Incorrecte !</string>
-    <string name="txt_type_password">Mot de passe : </string> 
+    <string name="txt_type_password">Mot de passe : </string>
     <string name="txt_retype_password">Retaper le mot de passe: </string>
 
     <string name="choose_pin">Choisissez votre PIN</string>

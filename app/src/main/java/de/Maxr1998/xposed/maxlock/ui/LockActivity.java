@@ -18,8 +18,6 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -42,39 +41,36 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Util.cleanUp(this);
-        //Preferences
-        //noinspection deprecation
-        prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lock);
-
+        // Intent extras
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
         app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
+        //Preferences
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //noinspection deprecation
+        prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
+        // Technical timer
+        Long permitTimestamp = prefsPackages.getLong(requestPkg + "_tmp", 0);
+        if (!prefsPackages.getBoolean(requestPkg, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 5000)) {
+            finish();
+            return;
+        }
 
         //Intika I.MoD
         Long IMoDGlobalDelayTimer = prefs.getLong("IMoDGlobalDelayTimer", 0);
-        if (prefs.getBoolean(Common.ENABLE_DELAY_GENERAL, false)) {
-            if (IMoDGlobalDelayTimer != 0 && System.currentTimeMillis() - IMoDGlobalDelayTimer <=
-                //Long.valueOf(prefs.getInt(Common.DELAY_INPUT_GENERAL, 600000)) ) {
-                prefs.getInt(Common.DELAY_INPUT_GENERAL, 600000) ) {
-                fakeAuthenticationSucceeded();
-                return;
-            }
-        }
-        else {
-            Long permitTimestampGlobal = prefsPackages.getLong(requestPkg + "_imod", 0);
-            if (prefs.getBoolean(Common.ENABLE_DELAY_PERAPP, false)) {
-                if (permitTimestampGlobal != 0 && System.currentTimeMillis() - permitTimestampGlobal <=
-                    //Long.valueOf(prefs.getInt(Common.DELAY_INPUT_PERAPP, 600000))) {
-                    prefs.getInt(Common.DELAY_INPUT_PERAPP, 600000)) {
-                    fakeAuthenticationSucceeded();
-                    return;
-                }
-            }
+        Long permitTimestampGlobal = prefsPackages.getLong(requestPkg + "_imod", 0);
+        if ((prefs.getBoolean(Common.ENABLE_DELAY_GENERAL, false) && (IMoDGlobalDelayTimer != 0 &&
+                System.currentTimeMillis() - IMoDGlobalDelayTimer <=
+                        prefs.getInt(Common.DELAY_INPUT_GENERAL, 600000))) ||
+                (prefs.getBoolean(Common.ENABLE_DELAY_PERAPP, false)) && (permitTimestampGlobal != 0 &&
+                        System.currentTimeMillis() - permitTimestampGlobal <=
+                                prefs.getInt(Common.DELAY_INPUT_PERAPP, 600000))) {
+            fakeAuthenticationSucceeded();
+            return;
         }
         //Intika I.MoD End
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_lock);
 
         //Authenticate
         Fragment frag = new LockFragment();
@@ -88,42 +84,30 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onAuthenticationSucceeded() {
-        unlocked = true;
-        prefsPackages.edit()
-                .putLong(requestPkg + "_tmp", System.currentTimeMillis())
-                .commit();
-        //Save time for intika module
+        //Save time for Intika mod
         prefsPackages.edit()
                 .putLong(requestPkg + "_imod", System.currentTimeMillis())
                 .commit();
         prefs.edit()
                 .putLong("IMoDGlobalDelayTimer", System.currentTimeMillis())
                 .commit();
-        try {
-            Intent intent = new Intent(app);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent);
-        } catch (Exception e) {
-            Intent intent_option = getPackageManager().getLaunchIntentForPackage(requestPkg);
-            intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent_option);
-        } finally {
-            finish();
-        }
-        if (prefs.getBoolean(Common.PREFS_KILLBACKGROUND, false)) {
-            forceFinishML();
-        }
+        openApp();
     }
 
-    public void fakeAuthenticationSucceeded() {
-        unlocked = true;
-        prefsPackages.edit()
-                .putLong(requestPkg + "_tmp", System.currentTimeMillis())
-                .commit();
+    @SuppressLint("CommitPrefEdits")
+    private void fakeAuthenticationSucceeded() {
         Long timer = System.currentTimeMillis() - prefs.getLong("IMoDGlobalDelayTimer", 0);
         prefs.edit()
                 .putInt(Common.DELAY_GENERAL_TIMER, timer.intValue())
                 .commit();
+        openApp();
+    }
+
+    private void openApp() {
+        unlocked = true;
+        prefsPackages.edit()
+                .putLong(requestPkg + "_tmp", System.currentTimeMillis())
+                .commit();
         try {
             Intent intent = new Intent(app);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -134,9 +118,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
             startActivity(intent_option);
         } finally {
             finish();
-        }
-        if (prefs.getBoolean(Common.PREFS_KILLBACKGROUND, false)) {
-            forceFinishML();
         }
     }
 
@@ -159,16 +140,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
         if (!isInFocus) {
             Log.d("MaxLock/LockActivity", "Lost focus, finishing.");
-            if (prefs.getBoolean(Common.PREFS_KILLBACKGROUND, false)) {
-                forceFinishML();
-            }
             finish();
         }
-    }
-
-    public void forceFinishML() {
-        ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
-        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
-        //INTIKA
     }
 }

@@ -66,6 +66,8 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         // Pro setup
         if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
             prefs.edit().putBoolean(Common.ENABLE_LOGGING, false).apply();
+            prefs.edit().putBoolean(Common.ENABLE_DELAY_PERAPP, false).apply();
+            prefs.edit().putBoolean(Common.ENABLE_DELAY_GENERAL, false).apply();
         }
         // Like app dialog
         if (!prefs.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - prefs.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
@@ -108,6 +110,8 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
             SnackbarManager.show(Snackbar.with(mContext).text(snackBar).type(noLockType && noPackages ? SnackbarType.MULTI_LINE : SnackbarType.SINGLE_LINE)
                     .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false));
         }
+        // Other
+        Util.cleanUp(mContext);
         return null;
     }
 

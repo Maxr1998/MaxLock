@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:robobunny="http://robobunny.com" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robobunny="http://robobunny.com">
 
     <PreferenceCategory android:title="@string/pref_category_intika">
         <CheckBoxPreference
@@ -9,30 +10,30 @@
             android:title="@string/pref_locking_delay_general" />
         <com.robobunny.SeekBarPreference
             android:defaultValue="600000"
-            android:max="7200000"
             android:dependency="enable_delaygeneral"
-            android:numeric="integer|decimal"
             android:key="delay_inputgeneral"
+            android:max="7200000"
+            android:numeric="integer|decimal"
             android:summary="@string/pref_delay_input_general_summary"
             android:title="@string/pref_delay_input_general"
             robobunny:identifier="1"
             robobunny:interval="60000"
             robobunny:min="60000"
             robobunny:unitsLeft=""
-            robobunny:unitsRight=" Min"/>
+            robobunny:unitsRight=" Min" />
         <com.robobunny.SeekBarPreference
             android:defaultValue="0"
-            android:max="7200000"
             android:enabled="false"
-            android:numeric="integer|decimal"
             android:key="timer_generaldelay"
+            android:max="7200000"
+            android:numeric="integer|decimal"
             android:summary="@string/pref_delay_input_general2_summary"
             android:title="@string/pref_delay_input_general2"
             robobunny:identifier="2"
             robobunny:interval="60000"
             robobunny:min="0"
             robobunny:unitsLeft=""
-            robobunny:unitsRight=" Min - Remain Relock"/>
+            robobunny:unitsRight=" Min - Remain Relock" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_intika2">
@@ -43,17 +44,17 @@
             android:title="@string/pref_locking_delay_perapp" />
         <com.robobunny.SeekBarPreference
             android:defaultValue="600000"
-            android:max="7200000"
             android:dependency="enable_delayperapp"
-            android:numeric="integer|decimal"
             android:key="delay_inputperapp"
+            android:max="7200000"
+            android:numeric="integer|decimal"
             android:summary="@string/pref_delay_input_perapp_summary"
             android:title="@string/pref_delay_input_perapp"
             robobunny:identifier="3"
             robobunny:interval="60000"
             robobunny:min="60000"
             robobunny:unitsLeft=""
-            robobunny:unitsRight=" Min"/>
+            robobunny:unitsRight=" Min" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_other">

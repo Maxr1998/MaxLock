@@ -17,8 +17,8 @@
 
 package de.Maxr1998.xposed.maxlock.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,51 +44,36 @@ public class FakeDieDialog extends Activity {
     private AlertDialog.Builder reportDialog;
     private SharedPreferences prefs, prefsPackages;
 
+    @SuppressLint("WorldReadableFiles")
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-
-        super.onCreate(savedInstanceState);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        //noinspection deprecation
-        prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
-
         // Intent Extras
         requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
         app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
+        // Preferences
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //noinspection deprecation
+        prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
 
+        //Intika I.MoD
+        Long IMoDGlobalDelayTimer = prefs.getLong("IMoDGlobalDelayTimer", 0);
+        Long permitTimestamp = prefsPackages.getLong(requestPkg + "_imod", 0);
+        if ((prefs.getBoolean(Common.ENABLE_DELAY_GENERAL, false) && (IMoDGlobalDelayTimer != 0 &&
+                System.currentTimeMillis() - IMoDGlobalDelayTimer <= prefs.getInt(Common.DELAY_INPUT_GENERAL, 600000))) ||
+                (prefs.getBoolean(Common.ENABLE_DELAY_PERAPP, false) &&
+                        (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= prefs.getInt(Common.DELAY_INPUT_PERAPP, 600000)))) {
+            fakeUnlock();
+        }
+        //Intika I.MoD End
+
+        super.onCreate(savedInstanceState);
+        getWindow().setBackgroundDrawable(new ColorDrawable(0));
         PackageManager pm = getPackageManager();
         try {
             requestPkgInfo = pm.getApplicationInfo(requestPkg, 0);
         } catch (PackageManager.NameNotFoundException e) {
             requestPkgInfo = null;
         }
-
-        //Intika I.MoD
-        Long IMoDGlobalDelayTimer = prefs.getLong("IMoDGlobalDelayTimer", 0);
-        if (prefs.getBoolean(Common.ENABLE_DELAY_GENERAL, false)) {
-            if (IMoDGlobalDelayTimer != 0 && System.currentTimeMillis() - IMoDGlobalDelayTimer <=
-                    //Long.valueOf(prefs.getInt(Common.DELAY_INPUT_GENERAL, 600000)) ) {
-                    prefs.getInt(Common.DELAY_INPUT_GENERAL, 600000) ) {
-                    fakeUnlock();
-            }
-        }
-        else {
-            if (requestPkgInfo != null) {
-                Long permitTimestamp = prefsPackages.getLong(requestPkgInfo + "_imod", 0);
-                if (prefs.getBoolean(Common.ENABLE_DELAY_PERAPP, false)) {
-                    if (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <=
-                        //Long.valueOf(prefs.getInt(Common.DELAY_INPUT_PERAPP, 600000))) {
-                        prefs.getInt(Common.DELAY_INPUT_PERAPP, 600000)) {
-                        fakeUnlock();
-                    }
-                }
-            }
-        }
-        //Intika I.MoD End
-
-        getWindow().setBackgroundDrawable(new ColorDrawable(0));
 
         String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
         alertDialog = new AlertDialog.Builder(this);
@@ -144,6 +129,7 @@ public class FakeDieDialog extends Activity {
                 .create().show();
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void fakeUnlock() {
         prefsPackages.edit()
                 .putLong(requestPkg + "_tmp", System.currentTimeMillis())
@@ -151,7 +137,7 @@ public class FakeDieDialog extends Activity {
         Long timer = System.currentTimeMillis() - prefs.getLong("IMoDGlobalDelayTimer", 0);
         prefs.edit()
                 .putInt(Common.DELAY_GENERAL_TIMER, timer.intValue())
-                .commit();
+                .apply();
         try {
             Intent intent = new Intent(app);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -163,16 +149,5 @@ public class FakeDieDialog extends Activity {
         } finally {
             finish();
         }
-        if (prefs.getBoolean(Common.PREFS_KILLBACKGROUND, false)) {
-            forceFinishML();
-        }
     }
-
-    public void forceFinishML() {
-        ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
-        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
-        //INTIKA
-    }
-
-
 }
