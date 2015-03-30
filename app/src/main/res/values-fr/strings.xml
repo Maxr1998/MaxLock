@@ -124,8 +124,8 @@
     <string name="dialog_button_donate">Faire un don</string>
     <string name="dialog_button_rate">Evaluer</string>
 
-    <string name="no_locking_type">No locking type specified</string>
-    <string name="no_locked_apps">Pas d\'application protégé</string>
+    <string name="no_locking_type">Pas de type de verrouillage spécifié.</string>
+    <string name="no_locked_apps">Pas d\'application protégé.</string>
 
     <string name="fake_die_message">Malheureusement, %1$s a cessé de fonctionner.</string>
     <string name="report">Rapport</string>
