@@ -167,10 +167,12 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.IIMOD_OPTIONS)) {
-            //Intika I.MoD Set as Pro Features - Auto Enable Feature on pro
-            //Ok Pro feature are disabled when pro is not available, but it should not be auto enabled when pro is activated
-            Long timer = System.currentTimeMillis() - PREFS.getLong("IMoDGlobalDelayTimer", 0);
-            PREFS.edit().putInt(Common.DELAY_GENERAL_TIMER, timer.intValue()).apply();
+            // Setup remain timer
+            long timer = PREFS.getInt(Common.IMOD_DELAY_GLOBAL, 600000) - (System.currentTimeMillis() - PREFS.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0));
+            if (timer < 0) {
+                timer = 0L;
+            }
+            PREFS.edit().putInt(Common.IMOD_REMAIN_TIMER_GLOBAL, (int) timer).apply();
             launchFragment(new LockingIntikaFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
@@ -411,8 +413,8 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_imod);
             //Intika I.MoD - Loading check pro
-            Preference iimod_enabled_g = findPreference(Common.ENABLE_DELAY_GENERAL);
-            Preference iimod_enabled_p = findPreference(Common.ENABLE_DELAY_PERAPP);
+            Preference iimod_enabled_g = findPreference(Common.IMOD_DELAY_GLOBAL_ENABLED);
+            Preference iimod_enabled_p = findPreference(Common.IMOD_DELAY_APP_ENABLED);
             iimod_enabled_g.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
             iimod_enabled_p.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
             if (!PREFS.getBoolean(Common.ENABLE_PRO, false)) {

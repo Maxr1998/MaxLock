@@ -91,9 +91,10 @@ public class Common {
 
     // Intika I.MoD
     public static final String IIMOD_OPTIONS = "intika_imod";
-    public static final String ENABLE_DELAY_GENERAL = "enable_delaygeneral";
-    public static final String ENABLE_DELAY_PERAPP = "enable_delayperapp";
-    public static final String DELAY_INPUT_PERAPP = "delay_inputperapp";
-    public static final String DELAY_INPUT_GENERAL = "delay_inputgeneral";
-    public static final String DELAY_GENERAL_TIMER = "timer_generaldelay";
+    public static final String IMOD_DELAY_GLOBAL_ENABLED = "enable_delaygeneral";
+    public static final String IMOD_DELAY_APP_ENABLED = "enable_delayperapp";
+    public static final String IMOD_DELAY_APP = "delay_inputperapp";
+    public static final String IMOD_DELAY_GLOBAL = "delay_inputgeneral";
+    public static final String IMOD_REMAIN_TIMER_GLOBAL = "timer_generaldelay";
+    public static final String IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer";
 }
