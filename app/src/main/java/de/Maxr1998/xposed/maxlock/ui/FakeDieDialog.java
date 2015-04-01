@@ -96,7 +96,8 @@ public class FakeDieDialog extends Activity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final EditText input = new EditText(FakeDieDialog.this);
-                        input.setInputType(InputType.TYPE_CLASS_TEXT);
+                        input.setMinLines(3);
+                        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                         reportDialog = new AlertDialog.Builder(FakeDieDialog.this);
                         reportDialog.setView(input)
                                 .setTitle(R.string.report_problem)
