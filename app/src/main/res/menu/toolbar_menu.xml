@@ -9,6 +9,7 @@
     <item
         android:id="@+id/toolbar_master_switch"
         android:title=""
+        android:visible="false"
         app:actionViewClass="android.support.v7.widget.SwitchCompat"
         app:showAsAction="always" />
 </menu>

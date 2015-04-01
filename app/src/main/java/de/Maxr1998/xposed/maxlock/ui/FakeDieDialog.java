@@ -95,38 +95,38 @@ public class FakeDieDialog extends Activity {
                 .setNeutralButton(R.string.report, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final EditText input = new EditText(FakeDieDialog.this);
-                        input.setMinLines(3);
-                        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                        reportDialog = new AlertDialog.Builder(FakeDieDialog.this);
-                        reportDialog.setView(input)
-                                .setTitle(R.string.report_problem)
-                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
-                                            Intent it = new Intent(FakeDieDialog.this, LockActivity.class);
-                                            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                            it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
-                                            it.putExtra(Common.INTENT_EXTRAS_INTENT, app);
-                                            startActivity(it);
+                        if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
+                            callLockScreen();
+                        } else {
+                            final EditText input = new EditText(FakeDieDialog.this);
+                            input.setMinLines(3);
+                            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                            reportDialog = new AlertDialog.Builder(FakeDieDialog.this);
+                            reportDialog.setView(input)
+                                    .setTitle(R.string.report_problem)
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
+                                                callLockScreen();
+                                            }
+                                            finish();
                                         }
-                                        finish();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
-                                    }
-                                })
-                                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialogInterface) {
-                                        finish();
-                                    }
-                                })
-                                .create().show();
+                                    })
+                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            finish();
+                                        }
+                                    })
+                                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                        @Override
+                                        public void onCancel(DialogInterface dialogInterface) {
+                                            finish();
+                                        }
+                                    })
+                                    .create().show();
+                        }
                     }
                 })
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -161,5 +161,13 @@ public class FakeDieDialog extends Activity {
         } finally {
             finish();
         }
+    }
+
+    public void callLockScreen(){
+        Intent it = new Intent(FakeDieDialog.this, LockActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
+        it.putExtra(Common.INTENT_EXTRAS_INTENT, app);
+        startActivity(it);
     }
 }

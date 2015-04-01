@@ -18,6 +18,7 @@ public class GuideFragment extends Fragment {
 
     private WebView webView;
     private ProgressBar progressBar;
+    Integer avoidLoopCounter = 2; //2 to be able to back to the application with 3x back
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class GuideFragment extends Fragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_guide, container, false);
         webView = (WebView) rootView.findViewById(R.id.guideView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.page_loading_bar);
@@ -41,7 +43,10 @@ public class GuideFragment extends Fragment {
                 if (index != -1) {
                     url = url.substring(0, index);
                 }
-                webView.loadUrl(url);
+                if (avoidLoopCounter > 0) {
+                    webView.loadUrl(url);
+                    avoidLoopCounter = avoidLoopCounter-1;
+                }
             }
 
             @Override
