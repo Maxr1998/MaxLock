@@ -1,9 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ MaxLock, an Xposed applock module for Android
+  ~ Copyright (C) 2014-2015  Maxr1998
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="de.Maxr1998.xposed.maxlock"
-    android:versionCode="27"
-    android:versionName="5.0.3">
+    android:versionCode="28"
+    android:versionName="5.1">
 
     <uses-sdk tools:overrideLibrary="xyz.danoz.recyclerviewfastscroller" />
 
@@ -42,6 +58,7 @@
             android:targetActivity=".ui.SettingsActivity">
             <intent-filter>
                 <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity-alias>
 
@@ -59,7 +76,6 @@
 
         <activity
             android:name=".ui.MasterSwitchShortcutActivity"
-            android:enabled="true"
             android:excludeFromRecents="true"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
@@ -73,7 +89,6 @@
 
         <activity
             android:name=".lib.DeprecatedMasterSwitch"
-            android:enabled="true"
             android:excludeFromRecents="true"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
