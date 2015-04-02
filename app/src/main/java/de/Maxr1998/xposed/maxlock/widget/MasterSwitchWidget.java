@@ -50,9 +50,10 @@ public class MasterSwitchWidget extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
             views.setImageViewResource(R.id.widget_master_switch_icon, masterSwitchOn ? R.drawable.ic_widget_on_72dp : R.drawable.ic_widget_off_72dp);
             views.setOnClickPendingIntent(R.id.widget, pending);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId));
-            else appWidgetManager.updateAppWidget(appWidgetId, views);
+            }
+            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
 

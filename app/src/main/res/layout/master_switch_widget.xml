@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:clickable="false"
         android:gravity="center"
         android:text="@string/toggle_master_switch"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -24,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:clickable="false"
         android:orientation="horizontal">
 
         <TextView
@@ -34,7 +32,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_weight="42"
-            android:clickable="false"
             android:gravity="center"
             android:text="@string/app_name"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -47,7 +44,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight=".007"
-            android:clickable="false"
             android:src="@drawable/ic_widget_on_72dp" />
     </LinearLayout>
 </LinearLayout>
