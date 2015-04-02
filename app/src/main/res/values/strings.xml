@@ -160,5 +160,4 @@
     <string name="pref_min_fake_unlock">Mini fake die</string>
     <string name="pref_min_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog (Fake die need to be enabled)</string>
 
-    <string name="license_key"></string>
 </resources>

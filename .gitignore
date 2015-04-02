@@ -24,4 +24,4 @@ gradlew*
 # Gedit save files
 *.*~
 
-app/src/main/res/values/private.xml
+app/src/main/res/values-v10/private.xml
