@@ -97,4 +97,5 @@ public class Common {
     public static final String IMOD_DELAY_GLOBAL = "delay_inputgeneral";
     public static final String IMOD_REMAIN_TIMER_GLOBAL = "timer_generaldelay";
     public static final String IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer";
+    public static final String IMOD_MIN_FAKE_UNLOCK = "enable_minfakelock";
 }

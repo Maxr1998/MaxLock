@@ -8,7 +8,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/toolbar_master_switch"
-        android:title=""
+        android:title="@string/toggle_master_switch"
         app:actionViewClass="android.support.v7.widget.SwitchCompat"
         app:showAsAction="always" />
 </menu>
