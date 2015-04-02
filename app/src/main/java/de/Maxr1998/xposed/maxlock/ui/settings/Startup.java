@@ -44,6 +44,12 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 
 public class Startup extends AsyncTask<Boolean, Void, Void> {
 
+    // Outpur vars
+    boolean showSnackBar;
+    boolean snackBarMultiLine;
+    String snackBarContent;
+    boolean showDialog;
+    AlertDialog.Builder builder;
     private Context mContext;
     private boolean isFirstStart;
     private SharedPreferences prefs;
@@ -71,7 +77,8 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         }
         // Like app dialog
         if (!prefs.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - prefs.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            showDialog = true;
+            builder = new AlertDialog.Builder(mContext);
             @SuppressLint("InflateParams") View dialogView = ((Activity) mContext).getLayoutInflater().inflate(R.layout.dialog_like_app, null);
             final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
             DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
@@ -98,18 +105,15 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
                     .setView(dialogView)
                     .setPositiveButton(R.string.dialog_button_donate, onClickListener)
                     .setNeutralButton(R.string.dialog_button_rate, onClickListener)
-                    .setNegativeButton(android.R.string.cancel, onClickListener)
-                    .create().show();
+                    .setNegativeButton(android.R.string.cancel, onClickListener);
         }
         // SnackBar with alert
         @SuppressWarnings("ConstantConditions")
         boolean noLockType = prefs.getString(Common.LOCKING_TYPE, "").equals("");
         boolean noPackages = !new File(Util.dataDir(mContext) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists();
-        String snackBar = (noLockType ? mContext.getString(R.string.no_locking_type) + " " : "") + (noPackages ? mContext.getString(R.string.no_locked_apps) : "");
-        if (noPackages || noLockType) {
-            SnackbarManager.show(Snackbar.with(mContext).text(snackBar).type(noLockType && noPackages ? SnackbarType.MULTI_LINE : SnackbarType.SINGLE_LINE)
-                    .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false));
-        }
+        snackBarContent = (noLockType ? mContext.getString(R.string.no_locking_type) + " " : "") + (noPackages ? mContext.getString(R.string.no_locked_apps) : "");
+        showSnackBar = noPackages || noLockType;
+        snackBarMultiLine = noLockType && noPackages;
         // Other
         Util.cleanUp(mContext);
         return null;
@@ -120,6 +124,14 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         super.onPostExecute(aVoid);
         if (isFirstStart) {
             prefs.edit().putBoolean(Common.FIRST_START, false).apply();
+        }
+
+        if (showDialog) {
+            builder.create().show();
+        }
+        if (showSnackBar) {
+            SnackbarManager.show(Snackbar.with(mContext).text(snackBarContent).type(snackBarMultiLine ? SnackbarType.MULTI_LINE : SnackbarType.SINGLE_LINE)
+                    .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false));
         }
         System.out.println("Startup finished");
     }
