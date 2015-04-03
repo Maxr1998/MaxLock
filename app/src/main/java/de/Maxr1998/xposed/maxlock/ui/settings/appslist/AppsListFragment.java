@@ -67,16 +67,14 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
-import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
-import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
 public class AppsListFragment extends Fragment {
 
     private static List<Map<String, Object>> finalList;
     RecyclerView recyclerView;
     AlertDialog restoreDialog;
-    VerticalRecyclerViewFastScroller fastScroller;
-    SectionTitleIndicator sectionTitleIndicator;
+    //VerticalRecyclerViewFastScroller fastScroller;
+    //SectionTitleIndicator sectionTitleIndicator;
     private ViewGroup rootView;
     private ProgressDialog progressDialog;
     private AppListAdapter mAdapter;
@@ -126,13 +124,13 @@ public class AppsListFragment extends Fragment {
         getActivity().getLayoutInflater().inflate(R.layout.fragment_appslist, rootView);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setAdapter(mAdapter);
-        if (/*Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH*/false) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
             sectionTitleIndicator = (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
             fastScroller.setRecyclerView(recyclerView);
             recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
             fastScroller.setSectionIndicator(sectionTitleIndicator);
-        }
+        }*/
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         if (progressDialog != null) progressDialog.dismiss();
@@ -163,24 +161,18 @@ public class AppsListFragment extends Fragment {
         if (pref.getBoolean(Common.ENABLE_PRO, false)) {
             final File prefsPackagesFileShort = new File(Common.PREFS_PACKAGES + ".xml");
             final File prefsPerAppFileShort = new File(Common.PREFS_PER_APP + ".xml");
+            final File prefsActivitiesFileShort = new File(Common.PREFS_ACTIVITIES + ".xml");
             final File prefsPackagesFile = new File(getActivity().getApplicationInfo().dataDir + File.separator + "shared_prefs" + File.separator + prefsPackagesFileShort);
             final File prefsPerAppFile = new File(getActivity().getApplicationInfo().dataDir + File.separator + "shared_prefs" + File.separator + prefsPerAppFileShort);
+            final File prefsActivitiesFile = new File(getActivity().getApplicationInfo().dataDir + File.separator + "shared_prefs" + File.separator + prefsActivitiesFileShort);
             final File backupDir = new File(Environment.getExternalStorageDirectory() + File.separator + "MaxLock_Backup");
 
             switch (item.getItemId()) {
                 case R.id.toolbar_backup_list:
                     File curTimeDir = new File(backupDir + File.separator + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.getDefault()).format(new Date(System.currentTimeMillis())) + File.separator);
-                    try {
-                        if (prefsPackagesFile.exists()) {
-                            FileUtils.copyFileToDirectory(prefsPackagesFile, curTimeDir);
-                            if (prefsPerAppFile.exists())
-                                FileUtils.copyFileToDirectory(prefsPerAppFile, curTimeDir);
-                        } else
-                            Toast.makeText(getActivity(), R.string.toast_no_files_to_backup, Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        Toast.makeText(getActivity(), R.string.toast_backup_restore_exception, Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
+                    backupFile(prefsPackagesFile, curTimeDir);
+                    backupFile(prefsPerAppFile, curTimeDir);
+                    backupFile(prefsActivitiesFile, curTimeDir);
                     if (curTimeDir.exists() && new File(curTimeDir + File.separator + prefsPackagesFileShort).exists())
                         Toast.makeText(getActivity(), R.string.toast_backup_success, Toast.LENGTH_SHORT).show();
                     return true;
@@ -243,6 +235,15 @@ public class AppsListFragment extends Fragment {
         } else
             Toast.makeText(getActivity(), R.string.toast_pro_required, Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
+    }
+
+    public void backupFile(File file, File directory) {
+        try {
+            FileUtils.copyFileToDirectory(file, directory);
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), R.string.toast_backup_restore_exception, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
     @Override

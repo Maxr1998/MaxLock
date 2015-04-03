@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
@@ -18,7 +17,7 @@
         android:paddingBottom="8dp"
         android:paddingTop="8dp" />
 
-    <xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller
+    <!--<xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller
         android:id="@+id/fast_scroller"
         android:layout_width="20dp"
         android:layout_height="match_parent"
@@ -36,5 +35,5 @@
         android:layout_toLeftOf="@id/fast_scroller"
         android:layout_toStartOf="@id/fast_scroller"
         custom:backgroundColor="@color/accent"
-        custom:textColor="@android:color/white" />
+        custom:textColor="@android:color/white" />-->
 </RelativeLayout>
