@@ -16,9 +16,9 @@ import de.Maxr1998.xposed.maxlock.R;
 
 public class GuideFragment extends Fragment {
 
+    Integer avoidLoopCounter = 2; //2 to be able to back to the application with 3x back
     private WebView webView;
     private ProgressBar progressBar;
-    Integer avoidLoopCounter = 2; //2 to be able to back to the application with 3x back
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class GuideFragment extends Fragment {
         });
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://vault-technosparks.rhcloud.com/maxlock/guide");
+        webView.loadUrl("http://vault-technosparks.rhcloud.com/maxlock/guide?f=inapp");
         return rootView;
     }
 
