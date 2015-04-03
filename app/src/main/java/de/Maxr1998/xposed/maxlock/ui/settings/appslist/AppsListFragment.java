@@ -51,6 +51,7 @@ import com.haibison.android.lockpattern.LockPatternActivity;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -240,6 +241,8 @@ public class AppsListFragment extends Fragment {
     public void backupFile(File file, File directory) {
         try {
             FileUtils.copyFileToDirectory(file, directory);
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
         } catch (IOException e) {
             Toast.makeText(getActivity(), R.string.toast_backup_restore_exception, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
