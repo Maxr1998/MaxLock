@@ -31,14 +31,18 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.haibison.android.lockpattern.widget.LockPatternView;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
@@ -52,11 +56,11 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     ViewGroup rootView;
     String requestPkg;
     ImageView background;
-    View mInputView, container;
+    View mInputView, container, divider;
     TextView titleView;
     ImageButton mDeleteButton;
     SharedPreferences prefs, prefsKey, prefsPerApp, prefsTheme;
-    View[] pinButtons, knockButtons, dividers;
+    View[] pinButtons;
     TextView pb;
     LockPatternView lockPatternView;
     LockPatternView.OnPatternListener patternListener;
@@ -67,10 +71,12 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             patternListener.onPatternCleared();
         }
     };
-    private int screenHeight, screenWidth;
+    int screenHeight, screenWidth;
     private String password, lockingType;
     private StringBuilder key;
     private TextView mInputText;
+    private ArrayList<Float> knockCodeX = new ArrayList<>();
+    private ArrayList<Float> knockCodeY = new ArrayList<>();
 
     @Override
     public void onAttach(Activity activity) {
@@ -114,7 +120,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         mInputText = (TextView) mInputView;
         mInputText.setText("");
         container = rootView.findViewById(R.id.container);
-        key = new StringBuilder("");
+        key = new StringBuilder(50);
         mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
         mDeleteButton.setOnClickListener(this);
         mDeleteButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -122,6 +128,10 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             public boolean onLongClick(View view) {
                 key.setLength(0);
                 mInputText.setText("");
+                if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
+                    knockCodeX.clear();
+                    knockCodeY.clear();
+                }
                 return true;
             }
         });
@@ -195,7 +205,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 setupPINLayout();
                 break;
             case Common.PREF_VALUE_KNOCK_CODE:
-                inflater.inflate(R.layout.knock_code_field, (ViewGroup) container);
+                //inflater.inflate(R.layout.knock_code_field, (ViewGroup) container);
                 setupKnockCodeLayout();
                 break;
             case Common.PREF_VALUE_PATTERN:
@@ -265,86 +275,69 @@ public class LockFragment extends Fragment implements View.OnClickListener {
 
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
-        // knock buttons
-        knockButtons = new View[]{
-                rootView.findViewById(R.id.knock_button_1),
-                rootView.findViewById(R.id.knock_button_2),
-                rootView.findViewById(R.id.knock_button_3),
-                rootView.findViewById(R.id.knock_button_4)
-        };
-        for (View kb : knockButtons) {
-            kb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int nr = 0;
-                    boolean knockButton = false;
-                    switch (view.getId()) {
-                        case R.id.knock_button_1:
-                            nr = 1;
-                            knockButton = true;
-                            break;
-                        case R.id.knock_button_2:
-                            nr = 2;
-                            knockButton = true;
-                            break;
-                        case R.id.knock_button_3:
-                            nr = 3;
-                            knockButton = true;
-                            break;
-                        case R.id.knock_button_4:
-                            nr = 4;
-                            knockButton = true;
-                            break;
+        View container = rootView.findViewById(R.id.container);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();
+        params.setMargins(0, 0, 0, 0);
+        container.setLayoutParams(params);
+        container.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent e) {
+                if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    //System.out.println("x=" + e.getRawX() + " | y=" + e.getRawY());
+                    knockCodeX.add(e.getRawX());
+                    knockCodeY.add(e.getRawY());
+                    if (knockCodeX.size() != knockCodeY.size()) {
+                        throw new RuntimeException("The amount of the X and Y coordinates doesn't match!");
                     }
-                    if (knockButton) {
-                        key.append(nr);
-                        mInputText.append("\u2022");
+
+                    mInputText.append("\u2022");
+
+                    float centerX;
+                    float differenceX = Collections.max(knockCodeX) - Collections.min(knockCodeX);
+                    if (differenceX > 50) {
+                        centerX = Collections.min(knockCodeX) + differenceX / 2;
+                    } else return false;
+
+                    float centerY;
+                    float differenceY = Collections.max(knockCodeY) - Collections.min(knockCodeY);
+                    if (differenceY > 50) {
+                        centerY = Collections.min(knockCodeY) + differenceY / 2;
+                    } else return false;
+
+                    key.setLength(0);
+
+                    for (int i = 0; i < knockCodeX.size(); i++) {
+                        float x = knockCodeX.get(i), y = knockCodeY.get(i);
+                        if (x < centerX && y < centerY)
+                            key.append("1");
+                        else if (x > centerX && y < centerY)
+                            key.append("2");
+                        else if (x < centerX && y > centerY)
+                            key.append("3");
+                        else if (x > centerX && y > centerY)
+                            key.append("4");
                     }
                     checkInput();
-                }
-            });
-            kb.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    key.setLength(0);
-                    mInputText.setText("");
                     return true;
                 }
-            });
-        }
-
-        if (!prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true)) {
-            for (View kb : knockButtons) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    kb.setBackground(getResources().getDrawable(R.drawable.transparent_background));
-                else
-                    kb.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_background));
+                return false;
             }
-        }
-        // dividers
-        dividers = new View[]{
-                rootView.findViewById(R.id.divider1),
-                rootView.findViewById(R.id.divider2),
-                rootView.findViewById(R.id.divider3),
-                rootView.findViewById(R.id.divider4)
-        };
+        });
+        // TODO: re-add divider
+        /*divider = rootView.findViewById(R.id.divider);
         if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
-            for (View divider : dividers) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    divider.setBackground(getResources().getDrawable(android.R.color.black));
-                else
-                    divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                divider.setBackground(getResources().getDrawable(android.R.color.black));
+            else
+                divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
         } else if (!prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
-            for (View divider : dividers) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    divider.setBackground(getResources().getDrawable(R.drawable.transparent_background));
-                else
-                    divider.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_background));
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                divider.setBackground(getResources().getDrawable(R.drawable.transparent_background));
+            else
+                divider.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_background));
         }
         if (screenWidth > screenHeight)
-            dividers[0].setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);*/
     }
 
     private void setupPatternLayout() {
@@ -388,7 +381,6 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 lp.width = size;
                 lp.height = size;
                 lockPatternView.setLayoutParams(lp);
-
                 break;
             }
         }
@@ -421,13 +413,20 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         if (view.getId() == mDeleteButton.getId()) {
             if (key.length() > 0) {
                 key.deleteCharAt(key.length() - 1);
-                mInputText.setText(key.toString());
+                if (mInputText.length() > 0) {
+                    mInputText.setText(mInputText.getText().subSequence(0, mInputText.getText().length() - 1));
+                }
+            }
+            if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && knockCodeX.size() > 0) {
+                knockCodeX.remove(knockCodeX.size() - 1);
+                knockCodeY.remove(knockCodeY.size() - 1);
             }
         }
     }
 
     public boolean checkInput() {
         if (Util.shaHash(key.toString()).equals(password) || password.equals("")) {
+            key.trimToSize();
             authenticationSucceededListener.onAuthenticationSucceeded();
             return true;
         }
