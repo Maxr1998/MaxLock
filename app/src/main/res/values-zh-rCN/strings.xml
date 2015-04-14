@@ -96,6 +96,8 @@
     <string name="dialog_title_settings">设置</string>
     <string name="dialog_text_fake_die">显示假死窗口</string>
     <string name="dialog_text_custom_password">自定义密码</string>
+	<string name="dialog_button_exclude_activities">活动</string>
+    <string name="dialog_title_exclude_activities">排除锁定活动</string>
 
     <string name="pref_category_ui">界面设置</string>
     <string name="pref_hide_from_launcher">桌面隐藏应用图标</string>
@@ -135,5 +137,27 @@
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关重新启用</string>
     <string name="toast_no_locking_types">没有指定锁定类型</string>
+	
+	<string name="pref_category_intika">Intika I.MoD - 宽限期 - 一般延迟</string>
+    <string name="pref_category_intika2">Intika I.MoD - 宽限期 - PerApp延迟</string>
+    <string name="pref_locking_delay_general">启用一般延迟-重新锁定</string>
+    <string name="pref_locking_delay_general_summary">避免在一段时间内再次要求解锁应用</string>
+    <string name="pref_delay_input_general">一般延迟 - 重新锁定定时器</string>
+    <string name="pref_delay_input_general_summary">输入一个数字指定延迟时间,值为分钟,锁定一般延迟</string>
+    <string name="pref_locking_delay_perapp">启用PerApp延迟 - 重新锁定</string>
+    <string name="pref_locking_delay_perapp_summary">防止要求在一定时间内为每一个应用程序再次解锁,分开而不管其他受保护的应用程序</string>
+    <string name="pref_delay_input_perapp">PerApp延迟 - 重新锁定定时器</string>
+    <string name="pref_delay_input_perapp_summary">输入一个数字指定延迟时间,值为分钟,锁定PerApp延迟</string>
+    <string name="pref_delay_needpro">启用延迟重新锁定 - 专业版</string>
+    <string name="pref_locking_intika">Intika I.MoD</string>
+
+    <string name="pref_delay_input_general2">一般的延迟 - 重新锁定定时器</string>
+    <string name="pref_delay_input_general2_summary">一般重新锁定之前保持的时间</string>
+
+    <string name="pref_locking_killbackground">终止后台挂钩</string>
+    <string name="pref_locking_killbackground_summary">终止的时候有可能导致MaxLock后台活动挂钩</string>
+
+    <string name="pref_min_fake_unlock">迷你假死</string>
+    <string name="pref_min_fake_unlock_summary"> 当启用锁屏后直接显示假死上的报告按钮对话框(需要启用假死) </string>
 
 </resources>
