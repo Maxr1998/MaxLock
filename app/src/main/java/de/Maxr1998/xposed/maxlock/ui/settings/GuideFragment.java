@@ -12,6 +12,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import java.util.Locale;
+
 import de.Maxr1998.xposed.maxlock.R;
 
 public class GuideFragment extends Fragment {
@@ -45,7 +47,7 @@ public class GuideFragment extends Fragment {
                 }
                 if (avoidLoopCounter > 0) {
                     webView.loadUrl(url);
-                    avoidLoopCounter = avoidLoopCounter-1;
+                    avoidLoopCounter = avoidLoopCounter - 1;
                 }
             }
 
@@ -70,8 +72,19 @@ public class GuideFragment extends Fragment {
         });
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://vault-technosparks.rhcloud.com/maxlock/guide?f=inapp");
+        webView.loadUrl("http://vault-technosparks.rhcloud.com/maxlock/guide?client=inapp&lang=" + getLanguageCode());
         return rootView;
+    }
+
+    public String getLanguageCode() {
+        String language = Locale.getDefault().getLanguage();
+        String country = Locale.getDefault().getCountry();
+        if (language.equals("")) {
+            return "en-GB";
+        }
+        if (!country.equals("")) {
+            return language + "-" + country;
+        } else return language;
     }
 
     public boolean back() {
