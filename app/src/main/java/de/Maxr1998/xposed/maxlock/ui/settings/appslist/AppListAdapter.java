@@ -70,19 +70,19 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements SectionIndexer {
 
 
-    private final List<Map<String, Object>> oriItemList;
     private final Fragment mFragment;
     private final Context mContext;
     private final SharedPreferences prefsPackages, prefsPerApp;
     private final Filter mFilter;
+    private List<Map<String, Object>> oriItemList;
     private List<Map<String, Object>> mItemList;
     private AlertDialog dialog;
 
     @SuppressLint("WorldReadableFiles")
-    public AppListAdapter(Fragment fragment, Context context, List<Map<String, Object>> itemList) {
+    public AppListAdapter(Fragment fragment, Context context) {
         mFragment = fragment;
         mContext = context;
-        oriItemList = mItemList = itemList;
+        mItemList = new ArrayList<>();
         //noinspection deprecation
         prefsPackages = mContext.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
         prefsPerApp = mContext.getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
@@ -288,6 +288,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
     @Override
     public String[] getSections() {
         return "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    }
+
+    public void updateList(List<Map<String, Object>> newList) {
+        mItemList = newList;
+        oriItemList = mItemList;
+        notifyDataSetChanged();
     }
 
     public static class AppsListViewHolder extends RecyclerView.ViewHolder {

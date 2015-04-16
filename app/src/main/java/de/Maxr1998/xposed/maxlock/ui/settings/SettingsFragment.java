@@ -66,7 +66,7 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
-import de.Maxr1998.xposed.maxlock.ui.settings.appslist.AppsListFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.appslist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 
@@ -84,7 +84,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             else
                 from.getFragmentManager().popBackStack();
         }
-        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppsListFragment ? "AppsListFragment" : fragment instanceof GuideFragment ? "GuideFragment" : null).addToBackStack(null).commit();
+        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : fragment instanceof GuideFragment ? "GuideFragment" : null).addToBackStack(null).commit();
         if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
             from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
     }
@@ -115,7 +115,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         findPreference("show_system_apps").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                AppsListFragment.clearList();
+                AppListFragment.clearList();
                 return true;
             }
         });
@@ -176,7 +176,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             launchFragment(new LockingIntikaFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
-            launchFragment(new AppsListFragment(), true, this);
+            launchFragment(new AppListFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.HIDE_APP_FROM_LAUNCHER) && preference instanceof CheckBoxPreference) {
             CheckBoxPreference hideApp = (CheckBoxPreference) preference;

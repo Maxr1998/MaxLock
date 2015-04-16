@@ -101,7 +101,7 @@ public class SettingsActivity extends ActionBarActivity implements Authenticatio
                 getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
             }
         });
-        Fragment appsList = getSupportFragmentManager().findFragmentByTag("AppsListFragment");
+        Fragment appsList = getSupportFragmentManager().findFragmentByTag("AppListFragment");
         if (appsList != null && appsList.isVisible()) {
             menu.findItem(R.id.toolbar_info).setVisible(false);
             menu.findItem(R.id.toolbar_master_switch).setVisible(false);
