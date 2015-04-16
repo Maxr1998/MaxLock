@@ -275,7 +275,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
 
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
-        View container = rootView.findViewById(R.id.container);
+        final View container = rootView.findViewById(R.id.container);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();
         params.setMargins(0, 0, 0, 0);
         container.setLayoutParams(params);
@@ -283,29 +283,36 @@ public class LockFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onTouch(View v, MotionEvent e) {
                 if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    //System.out.println("x=" + e.getRawX() + " | y=" + e.getRawY());
+                    mInputText.append("\u2022");
+
+                    // Center values
+                    int[] loc = new int[2];
+                    container.getLocationOnScreen(loc);
+                    int viewCenterX = loc[0] + container.getWidth() / 2;
+                    int viewCenterY = loc[1] + container.getHeight() / 2;
+
+                    // Track touch positions
                     knockCodeX.add(e.getRawX());
                     knockCodeY.add(e.getRawY());
                     if (knockCodeX.size() != knockCodeY.size()) {
                         throw new RuntimeException("The amount of the X and Y coordinates doesn't match!");
                     }
 
-                    mInputText.append("\u2022");
-
+                    // Calculate center
                     float centerX;
                     float differenceX = Collections.max(knockCodeX) - Collections.min(knockCodeX);
                     if (differenceX > 50) {
                         centerX = Collections.min(knockCodeX) + differenceX / 2;
-                    } else return false;
+                    } else centerX = viewCenterX;
 
                     float centerY;
                     float differenceY = Collections.max(knockCodeY) - Collections.min(knockCodeY);
                     if (differenceY > 50) {
                         centerY = Collections.min(knockCodeY) + differenceY / 2;
-                    } else return false;
+                    } else centerY = viewCenterY;
 
+                    // Calculate key
                     key.setLength(0);
-
                     for (int i = 0; i < knockCodeX.size(); i++) {
                         float x = knockCodeX.get(i), y = knockCodeY.get(i);
                         if (x < centerX && y < centerY)
@@ -323,21 +330,18 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        // TODO: re-add divider
-        /*divider = rootView.findViewById(R.id.divider);
+        divider = new View(getActivity());
+        divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDisplayMetrics().density)));
+        divider.setBackgroundColor(getResources().getColor(R.color.light_white));
+        ((ViewGroup) container).addView(divider);
         if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 divider.setBackground(getResources().getDrawable(android.R.color.black));
             else
                 divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
-        } else if (!prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                divider.setBackground(getResources().getDrawable(R.drawable.transparent_background));
-            else
-                divider.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_background));
+        } else if (!prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true) || screenWidth > screenHeight) {
+            divider.setVisibility(View.GONE);
         }
-        if (screenWidth > screenHeight)
-            divider.setVisibility(View.GONE);*/
     }
 
     private void setupPatternLayout() {
