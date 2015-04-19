@@ -1,11 +1,7 @@
 -dontwarn javax.annotation.**
 -dontwarn javax.inject.**
 -dontwarn sun.misc.Unsafe
--dontwarn android.support.v7.widget.RecyclerView
--dontwarn android.support.v7.widget.RecyclerView$OnScrollListener
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
--dontobfuscate
--dontoptimize
 
 -keep class !android.support.v7.internal.view.menu.**, ** { *; }
 
@@ -25,3 +21,5 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+
+-keep public class de.Maxr1998.xposed.maxlock.Main
