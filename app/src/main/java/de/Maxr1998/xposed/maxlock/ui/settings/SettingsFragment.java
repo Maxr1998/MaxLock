@@ -262,7 +262,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_type);
         }
 
@@ -308,7 +307,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
             Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.KC_SHOW_DIVIDERS), findPreference(Common.KC_TOUCH_VISIBLE)};
@@ -386,7 +384,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_options);
             Preference el = findPreference(Common.ENABLE_LOGGING);
             el.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
@@ -410,7 +407,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences_locking_imod);
             //Intika I.MoD - Loading check pro
             Preference iimod_enabled_g = findPreference(Common.IMOD_DELAY_GLOBAL_ENABLED);
