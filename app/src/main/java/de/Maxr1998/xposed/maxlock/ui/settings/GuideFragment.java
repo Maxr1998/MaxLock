@@ -19,6 +19,7 @@ import de.Maxr1998.xposed.maxlock.R;
 public class GuideFragment extends Fragment {
 
     Integer avoidLoopCounter = 2; //2 to be able to back to the application with 3x back
+    private String currentUrl;
     private WebView webView;
     private ProgressBar progressBar;
 
@@ -26,6 +27,8 @@ public class GuideFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
+        currentUrl = "http://vault-technosparks.rhcloud.com/maxlock/guide?client=inapp&lang=" + getLanguageCode();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -61,6 +64,7 @@ public class GuideFragment extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 progressBar.setVisibility(View.GONE);
+                currentUrl = url;
             }
         });
         webView.setWebChromeClient(new WebChromeClient() {
@@ -70,9 +74,8 @@ public class GuideFragment extends Fragment {
                 progressBar.setProgress(newProgress);
             }
         });
-        webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://vault-technosparks.rhcloud.com/maxlock/guide?client=inapp&lang=" + getLanguageCode());
+        webView.loadUrl(currentUrl);
         return rootView;
     }
 
