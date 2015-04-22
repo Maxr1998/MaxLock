@@ -19,20 +19,34 @@ package de.Maxr1998.xposed.maxlock;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
     private static XSharedPreferences PREFS_PACKAGES, PREFS_ACTIVITIES;
+
+    public static void launchLockView(Activity caller, Intent intent, String packageName, String launch) {
+        Intent it = new Intent();
+        it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
+        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+        caller.startActivity(it);
+    }
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -45,40 +59,62 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
         makeReadable();
         final String packageName = lpparam.packageName;
-        Long permitTimestamp = PREFS_PACKAGES.getLong(packageName + "_tmp", 0);
-        if (!PREFS_PACKAGES.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 5000)) {
+        if (!PREFS_PACKAGES.getBoolean(packageName, false)) {
             return;
         }
-        Class<?> activity = XposedHelpers.findClass("android.app.Activity", lpparam.classLoader);
-        XposedBridge.hookAllMethods(activity, "onCreate", new XC_MethodHook() {
+
+        findAndHookMethod("android.app.Activity", lpparam.classLoader, "onStart", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                reload();
                 final Activity app = (Activity) param.thisObject;
+                XposedBridge.log("Activity will start: " + app.getClass().getName() + " | Time: " + System.currentTimeMillis());
+
+                Long unlockTimestamp = Math.max(PREFS_PACKAGES.getLong(packageName + "_tmp", 0), PreferenceManager.getDefaultSharedPreferences(app).getLong("MaxLockLastUnlock", 0));
+                if (!PREFS_PACKAGES.getBoolean(packageName, false) || (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 1500)) {
+                    return;
+                }
                 if (app.getClass().getName().equals("android.app.Activity") ||
                         !PREFS_PACKAGES.getBoolean(Common.MASTER_SWITCH_ON, true) ||
                         !PREFS_ACTIVITIES.getBoolean(app.getClass().getName(), true)) {
                     return;
                 }
                 app.moveTaskToBack(true);
-                launchLockView(app, packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
-                android.os.Process.killProcess(android.os.Process.myPid());
+                launchLockView(app, app.getIntent(), packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
             }
         });
-    }
 
-    private void launchLockView(final Activity app, String packageName, String launch) {
-        Intent it = new Intent();
-        it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        it.putExtra(Common.INTENT_EXTRAS_INTENT, app.getIntent());
-        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        app.startActivity(it);
+        // Handling back action
+        findAndHookMethod("android.app.Activity", lpparam.classLoader, "onPause", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                XposedBridge.log("Activity will pause: " + param.thisObject.getClass().getName() + " | Time: " + System.currentTimeMillis());
+                PreferenceManager.getDefaultSharedPreferences((Activity) param.thisObject).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
+            }
+
+        });
+
+
+        // Handling activity starts inside package
+        findAndHookMethod("android.app.Instrumentation", lpparam.classLoader, "execStartActivity",
+                Context.class, IBinder.class, IBinder.class, Activity.class, Intent.class, int.class, Bundle.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        XposedBridge.log("Intent launched: " + param.args[0].getClass().getName() + " | Time: " + System.currentTimeMillis());
+                        PreferenceManager.getDefaultSharedPreferences((Context) param.args[0]).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
+                    }
+                });
     }
 
     private void makeReadable() {
         PREFS_PACKAGES.makeWorldReadable();
-        PREFS_PACKAGES.reload();
         PREFS_ACTIVITIES.makeWorldReadable();
+        reload();
+    }
+
+    private void reload() {
+        PREFS_PACKAGES.reload();
         PREFS_ACTIVITIES.reload();
     }
 }

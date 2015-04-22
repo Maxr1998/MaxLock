@@ -19,7 +19,6 @@ package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +32,7 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.Main;
 import de.Maxr1998.xposed.maxlock.R;
 
 
@@ -40,8 +40,8 @@ public class FakeDieDialog extends Activity {
 
     ApplicationInfo requestPkgInfo;
     AlertDialog.Builder alertDialog;
-    private String requestPkg;
-    private Intent app;
+    private String packageName;
+    private Intent original;
     private AlertDialog.Builder reportDialog;
     private SharedPreferences prefs, prefsPackages;
 
@@ -50,8 +50,8 @@ public class FakeDieDialog extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Intent Extras
-        requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
-        app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
+        packageName = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
+        original = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -59,9 +59,9 @@ public class FakeDieDialog extends Activity {
         prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
 
         // Technical timer
-        Long permitTimestamp = prefsPackages.getLong(requestPkg + "_tmp", 0);
-        if (!prefsPackages.getBoolean(requestPkg, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 5000)) {
-            fakeUnlock();
+        Long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
+        if (!prefsPackages.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 2000)) {
+            LockActivity.directUnlock(this, original, packageName);
             return;
         }
 
@@ -69,7 +69,7 @@ public class FakeDieDialog extends Activity {
         boolean IMoDDelayGlobalEnabled = prefs.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
         boolean IMoDDelayAppEnabled = prefs.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
         long IMoDLastUnlockGlobal = prefs.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0);
-        long IMoDLastUnlockApp = prefsPackages.getLong(requestPkg + "_imod", 0);
+        long IMoDLastUnlockApp = prefsPackages.getLong(packageName + "_imod", 0);
 
         if (/* Global */(IMoDDelayGlobalEnabled && (IMoDLastUnlockGlobal != 0 &&
                 System.currentTimeMillis() - IMoDLastUnlockGlobal <=
@@ -77,14 +77,14 @@ public class FakeDieDialog extends Activity {
                 ||/* Per app */(IMoDDelayAppEnabled) && (IMoDLastUnlockApp != 0 &&
                 System.currentTimeMillis() - IMoDLastUnlockApp <=
                         prefs.getInt(Common.IMOD_DELAY_APP, 600000))) {
-            fakeUnlock();
+            LockActivity.directUnlock(this, original, packageName);
             return;
         }
         // Intika I.MoD End
         getWindow().setBackgroundDrawable(new ColorDrawable(0));
         PackageManager pm = getPackageManager();
         try {
-            requestPkgInfo = pm.getApplicationInfo(requestPkg, 0);
+            requestPkgInfo = pm.getApplicationInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
             requestPkgInfo = null;
         }
@@ -96,7 +96,7 @@ public class FakeDieDialog extends Activity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
-                            callLockScreen();
+                            Main.launchLockView(FakeDieDialog.this, original, packageName, ".ui.LockActivity");
                         } else {
                             final EditText input = new EditText(FakeDieDialog.this);
                             input.setMinLines(3);
@@ -108,7 +108,7 @@ public class FakeDieDialog extends Activity {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
-                                                callLockScreen();
+                                                Main.launchLockView(FakeDieDialog.this, original, packageName, ".ui.LockActivity");
                                             }
                                             finish();
                                         }
@@ -142,32 +142,5 @@ public class FakeDieDialog extends Activity {
                     }
                 })
                 .create().show();
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    public void fakeUnlock() {
-        prefsPackages.edit()
-                .putLong(requestPkg + "_tmp", System.currentTimeMillis())
-                .commit();
-        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
-        try {
-            app.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(app);
-        } catch (Exception e) {
-            Intent intent_option = getPackageManager().getLaunchIntentForPackage(requestPkg);
-            intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent_option);
-        } finally {
-            finish();
-        }
-    }
-
-    public void callLockScreen(){
-        Intent it = new Intent(FakeDieDialog.this, LockActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
-        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
-        it.putExtra(Common.INTENT_EXTRAS_INTENT, app);
-        startActivity(it);
     }
 }

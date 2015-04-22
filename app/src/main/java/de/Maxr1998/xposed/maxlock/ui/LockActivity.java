@@ -18,7 +18,7 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,18 +34,36 @@ import de.Maxr1998.xposed.maxlock.Util;
 
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
-    private String requestPkg;
-    private Intent app;
+    private String packageName;
+    private Intent original;
     private SharedPreferences prefsPackages, prefs;
     private boolean isInFocus = false, unlocked = false;
+
+    @SuppressLint("WorldReadableFiles")
+    public static void directUnlock(Activity caller, Intent orig, String pkgName) {
+        try {
+            //noinspection deprecation
+            caller.getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE).edit()
+                    .putLong(pkgName + "_tmp", System.currentTimeMillis())
+                    .commit();
+            orig.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            caller.startActivity(orig);
+        } catch (Exception e) {
+            Intent intent_option = caller.getPackageManager().getLaunchIntentForPackage(pkgName);
+            intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            caller.startActivity(intent_option);
+        } finally {
+            caller.finish();
+        }
+    }
 
     @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Intent extras
-        requestPkg = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
-        app = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
+        packageName = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
+        original = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -53,17 +71,16 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
 
         // Technical timer
-        Long permitTimestamp = prefsPackages.getLong(requestPkg + "_tmp", 0);
-        if (!prefsPackages.getBoolean(requestPkg, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 5000)) {
+        Long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
+        if (!prefsPackages.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 2000)) {
             openApp();
-            return;
         }
 
         // Intika I.MoD
         boolean IMoDDelayGlobalEnabled = prefs.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
         boolean IMoDDelayAppEnabled = prefs.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
         long IMoDLastUnlockGlobal = prefs.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0);
-        long IMoDLastUnlockApp = prefsPackages.getLong(requestPkg + "_imod", 0);
+        long IMoDLastUnlockApp = prefsPackages.getLong(packageName + "_imod", 0);
 
         if (/* Global */(IMoDDelayGlobalEnabled && (IMoDLastUnlockGlobal != 0 &&
                 System.currentTimeMillis() - IMoDLastUnlockGlobal <=
@@ -80,7 +97,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         setContentView(R.layout.activity_lock);
         Fragment frag = new LockFragment();
         Bundle b = new Bundle(1);
-        b.putString(Common.INTENT_EXTRAS_PKG_NAME, requestPkg);
+        b.putString(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         frag.setArguments(b);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
         ((ThisApplication) getApplication()).getTracker(ThisApplication.TrackerName.APP_TRACKER);
@@ -91,7 +108,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     public void onAuthenticationSucceeded() {
         // Save time for Intika mod
         prefsPackages.edit()
-                .putLong(requestPkg + "_imod", System.currentTimeMillis())
+                .putLong(packageName + "_imod", System.currentTimeMillis())
                 .commit();
         prefs.edit()
                 .putLong(Common.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis())
@@ -102,21 +119,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @SuppressLint("CommitPrefEdits")
     private void openApp() {
         unlocked = true;
-        prefsPackages.edit()
-                .putLong(requestPkg + "_tmp", System.currentTimeMillis())
-                .commit();
-        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        am.killBackgroundProcesses("de.Maxr1998.xposed.maxlock");
-        try {
-            app.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(app);
-        } catch (Exception e) {
-            Intent intent_option = getPackageManager().getLaunchIntentForPackage(requestPkg);
-            intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent_option);
-        } finally {
-            finish();
-        }
+        directUnlock(this, original, packageName);
     }
 
     @Override
@@ -134,7 +137,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     public void onStop() {
         super.onStop();
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
-            Util.logFailedAuthentication(this, requestPkg);
+            Util.logFailedAuthentication(this, packageName);
         }
         if (!isInFocus) {
             Log.d("MaxLock/LockActivity", "Lost focus, finishing.");
