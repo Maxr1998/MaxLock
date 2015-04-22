@@ -17,9 +17,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="de.Maxr1998.xposed.maxlock"
-    android:versionCode="29"
-    android:versionName="5.1.1">
+    package="de.Maxr1998.xposed.maxlock">
 
     <uses-sdk tools:overrideLibrary="xyz.danoz.recyclerviewfastscroller" />
 

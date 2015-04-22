@@ -149,6 +149,9 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
                 appName = getString(R.string.app_name_pseudo_pro);
             else appName = getString(R.string.app_name);
         }
+        if (Util.isDevMode()) {
+            appName = getString(R.string.app_name) + " InDev";
+        }
         getActivity().setTitle(appName);
         about.setTitle(appName + version);
     }
