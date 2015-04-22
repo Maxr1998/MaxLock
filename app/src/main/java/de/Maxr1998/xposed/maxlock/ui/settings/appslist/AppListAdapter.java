@@ -18,8 +18,6 @@
 package de.Maxr1998.xposed.maxlock.ui.settings.appslist;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -117,8 +115,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
             public void onClick(View v) {
                 if (key.equals("com.android.packageinstaller"))
                     return;
-                ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
-                am.killBackgroundProcesses(key);
                 Intent it = mContext.getPackageManager().getLaunchIntentForPackage(key);
                 it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(it);
@@ -136,8 +132,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                 fakeDie.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
-                        am.killBackgroundProcesses(key);
                         CheckBox cb = (CheckBox) v;
                         boolean value = cb.isChecked();
                         prefsPackages.edit()
@@ -216,11 +210,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         hld.toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
-                am.killBackgroundProcesses(key);
-
                 ToggleButton tb = (ToggleButton) v;
-
                 boolean value = tb.isChecked();
                 if (value) {
                     prefsPackages.edit()

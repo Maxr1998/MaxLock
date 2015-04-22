@@ -135,7 +135,7 @@
     <string name="toast_master_switch_off">主開關已關閉</string>
     <string name="toast_master_switch_on">主開關重新啟用</string>
     <string name="toast_no_locking_types">沒有指定鎖定類型</string>
-    
+
     <string name="pref_category_intika">Intika I.MoD - 寬限期 - 一般延遲</string>
     <string name="pref_category_intika2">Intika I.MoD - 寬限期 - PerApp延遲</string>
     <string name="pref_locking_delay_general">啟用一般延遲-重新鎖定</string>
@@ -151,9 +151,6 @@
 
     <string name="pref_delay_input_general2">一般的延遲 - 重新鎖定計時器</string>
     <string name="pref_delay_input_general2_summary">一般重新鎖定之前保持的時間</string>
-
-    <string name="pref_locking_killbackground">終止後臺掛鉤</string>
-    <string name="pref_locking_killbackground_summary">終止的時候有可能導致MaxLock後臺活動掛鉤</string>
 
     <string name="pref_min_fake_unlock">迷你假死</string>
     <string name="pref_min_fake_unlock_summary">當啟用鎖屏後直接顯示假死上的報告按鈕對話方塊(需要啟用假死)</string>
