@@ -13,7 +13,7 @@
         android:paddingEnd="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        custom:handleColor="@color/accent" />
+        custom:rfs_handleColor="@color/accent" />
 
     <de.Maxr1998.xposed.maxlock.ui.settings.appslist.Indicator
         android:id="@+id/fast_scroller_section_title_indicator"
@@ -21,7 +21,7 @@
         android:layout_height="@dimen/list_item_height"
         android:layout_toLeftOf="@id/fast_scroller"
         android:layout_toStartOf="@id/fast_scroller"
-        custom:backgroundColor="@color/accent"
-        custom:textColor="@android:color/white" />
+        custom:rfs_backgroundColor="@color/accent"
+        custom:rfs_textColor="@android:color/white" />
 
 </merge>

@@ -28,7 +28,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -47,7 +47,7 @@ import de.Maxr1998.xposed.maxlock.ui.settings.GuideFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 
-public class SettingsActivity extends ActionBarActivity implements AuthenticationSucceededListener {
+public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
     private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
     private static boolean UNLOCKED = false;

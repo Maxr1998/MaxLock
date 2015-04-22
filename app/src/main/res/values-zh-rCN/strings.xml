@@ -137,8 +137,8 @@
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关重新启用</string>
     <string name="toast_no_locking_types">没有指定锁定类型</string>
-	
-	<string name="pref_category_intika">Intika I.MoD - 宽限期 - 一般延迟</string>
+
+    <string name="pref_category_intika">Intika I.MoD - 宽限期 - 一般延迟</string>
     <string name="pref_category_intika2">Intika I.MoD - 宽限期 - PerApp延迟</string>
     <string name="pref_locking_delay_general">启用一般延迟-重新锁定</string>
     <string name="pref_locking_delay_general_summary">避免在一段时间内再次要求解锁应用</string>
