@@ -28,7 +28,7 @@ android {
         debug {
             debuggable true
             signingConfig signingConfigs.main
-            versionNameSuffix "-dev"
+            versionNameSuffix "-beta"
         }
     }
     compileOptions {
