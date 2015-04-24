@@ -8,6 +8,10 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
     <item
+        android:id="@+id/toolbar_filter_activated"
+        android:title=""
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/toolbar_backup_list"
         android:title="@string/backup_list" />
     <item

@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,7 +81,7 @@ public class AppListFragment extends Fragment {
     SectionTitleIndicator scrollIndicator;
     private ViewGroup rootView;
     private AppListAdapter mAdapter;
-    private SharedPreferences pref;
+    private SharedPreferences prefs;
     private SetupAppList task;
     private ArrayAdapter<String> restoreAdapter;
     private ProgressDialog progressDialog;
@@ -94,7 +95,7 @@ public class AppListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        pref = getActivity().getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
         mAdapter = new AppListAdapter(AppListFragment.this, getActivity());
         // Generate list
         if (finalList == null || finalList.isEmpty()) {
@@ -144,6 +145,7 @@ public class AppListFragment extends Fragment {
 
     private void appListFinished() {
         mAdapter.updateList(finalList);
+        filter();
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
@@ -166,12 +168,13 @@ public class AppListFragment extends Fragment {
                 return true;
             }
         });
+        filterIcon(menu.findItem(R.id.toolbar_filter_activated));
     }
 
-    @SuppressLint("WorldReadableFiles")
+    @SuppressLint({"WorldReadableFiles", "CommitPrefEdits"})
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (pref.getBoolean(Common.ENABLE_PRO, false)) {
+        if (prefs.getBoolean(Common.ENABLE_PRO, false) || item.getItemId() == R.id.toolbar_filter_activated) {
             final File prefsPackagesFileShort = new File(Common.PREFS_PACKAGES + ".xml");
             final File prefsPerAppFileShort = new File(Common.PREFS_PER_APP + ".xml");
             final File prefsActivitiesFileShort = new File(Common.PREFS_ACTIVITIES + ".xml");
@@ -189,7 +192,6 @@ public class AppListFragment extends Fragment {
                     if (curTimeDir.exists() && new File(curTimeDir + File.separator + prefsPackagesFileShort).exists())
                         Toast.makeText(getActivity(), R.string.toast_backup_success, Toast.LENGTH_SHORT).show();
                     return true;
-
                 case R.id.toolbar_restore_list:
                     List<String> list = new ArrayList<>(Arrays.asList(backupDir.list()));
                     restoreAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
@@ -250,10 +252,54 @@ public class AppListFragment extends Fragment {
                     //noinspection deprecation
                     getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_WORLD_READABLE).edit().clear().commit();
                     ((SettingsActivity) getActivity()).restart();
+                    return true;
+                case R.id.toolbar_filter_activated:
+                    String appListFilter = prefs.getString("app_list_filter", "");
+                    if (appListFilter == null) {
+                        return true;
+                    }
+                    switch (appListFilter) {
+                        case "@*activated*":
+                            prefs.edit().putString("app_list_filter", "@*deactivated*").commit();
+                            break;
+                        case "@*deactivated*":
+                            prefs.edit().putString("app_list_filter", "").commit();
+                            break;
+                        default:
+                            prefs.edit().putString("app_list_filter", "@*activated*").commit();
+                            break;
+                    }
+                    filterIcon(item);
+                    filter();
+                    return true;
             }
         } else
             Toast.makeText(getActivity(), R.string.toast_pro_required, Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
+    }
+
+    private void filterIcon(MenuItem item) {
+        if (prefs == null) {
+            return;
+        }
+        String filter = prefs.getString("app_list_filter", "");
+        Drawable icon = getResources().getDrawable(R.drawable.ic_apps_white_24dp);
+        if (filter == null) {
+            return;
+        }
+        switch (filter) {
+            case "@*activated*":
+                icon = getResources().getDrawable(R.drawable.ic_check_white_24dp);
+                break;
+            case "@*deactivated*":
+                icon = getResources().getDrawable(R.drawable.ic_close_white_24dp);
+                break;
+        }
+        item.setIcon(icon);
+    }
+
+    private void filter() {
+        mAdapter.getFilter().filter(prefs.getString("app_list_filter", ""));
     }
 
     public void backupFile(File file, File directory) {
@@ -300,7 +346,7 @@ public class AppListFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                if ((pref.getBoolean("show_system_apps", false) ?
+                if ((prefs.getBoolean("show_system_apps", false) ?
                         getActivity().getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
                         (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) && !info.packageName.equals(Common.PKG_NAME) || info.packageName.equals("com.android.packageinstaller")) {
 
