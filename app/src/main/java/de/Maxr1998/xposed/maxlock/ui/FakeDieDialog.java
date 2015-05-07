@@ -32,8 +32,9 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.Main;
 import de.Maxr1998.xposed.maxlock.R;
+
+import static de.Maxr1998.xposed.maxlock.LockHelper.launchLockView;
 
 
 public class FakeDieDialog extends Activity {
@@ -96,7 +97,7 @@ public class FakeDieDialog extends Activity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
-                            Main.launchLockView(FakeDieDialog.this, original, packageName, ".ui.LockActivity");
+                            launchLockView(FakeDieDialog.this, original, packageName, ".ui.LockActivity");
                         } else {
                             final EditText input = new EditText(FakeDieDialog.this);
                             input.setMinLines(3);
@@ -108,7 +109,7 @@ public class FakeDieDialog extends Activity {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
-                                                Main.launchLockView(FakeDieDialog.this, original, packageName, ".ui.LockActivity");
+                                                launchLockView(FakeDieDialog.this, original, packageName, ".ui.LockActivity");
                                             }
                                             finish();
                                         }

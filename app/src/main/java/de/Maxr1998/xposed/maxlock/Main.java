@@ -18,16 +18,11 @@
 package de.Maxr1998.xposed.maxlock;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -36,27 +31,12 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
+import static de.Maxr1998.xposed.maxlock.LockHelper.launchLockView;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
-
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
-    private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
-            "com.whatsapp.Main",
-            "com.twitter.android.StartActivity",
-            "com.instagram"
-    };
-    private static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(ACTIVITIES_NO_UNLOCK));
     private static XSharedPreferences PREFS_PACKAGES, PREFS_ACTIVITIES;
-
-    public static void launchLockView(Activity caller, Intent intent, String packageName, String launch) {
-        Intent it = new Intent();
-        it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
-        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        caller.startActivity(it);
-    }
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -115,7 +95,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         boolean set = false;
-                        if (!((Intent) param.args[4]).getComponent().getPackageName().equals(MY_PACKAGE_NAME) && !NO_UNLOCK.contains(param.args[0].getClass().getName())) {
+                        if (!((Intent) param.args[4]).getComponent().getPackageName().equals(MY_PACKAGE_NAME) && !LockHelper.NO_UNLOCK.contains(param.args[0].getClass().getName())) {
                             PreferenceManager.getDefaultSharedPreferences((Context) param.args[0]).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
                             set = true;
                         }
