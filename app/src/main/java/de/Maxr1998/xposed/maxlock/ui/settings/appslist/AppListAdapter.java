@@ -54,6 +54,7 @@ import com.haibison.android.lockpattern.LockPatternActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -431,6 +432,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+            Collections.sort(list);
             return list;
         }
 
