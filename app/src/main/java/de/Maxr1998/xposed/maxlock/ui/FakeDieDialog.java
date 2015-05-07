@@ -60,7 +60,7 @@ public class FakeDieDialog extends Activity {
 
         // Technical timer
         Long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
-        if (!prefsPackages.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 2000)) {
+        if (!prefsPackages.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 1000)) {
             LockActivity.directUnlock(this, original, packageName);
             return;
         }

@@ -72,7 +72,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
         // Technical timer
         Long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
-        if (!prefsPackages.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 2000)) {
+        if (!prefsPackages.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 1000)) {
             openApp();
         }
 

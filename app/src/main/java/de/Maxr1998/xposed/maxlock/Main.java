@@ -25,6 +25,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
@@ -37,6 +41,12 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
+    private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
+            "com.whatsapp.Main",
+            "com.twitter.android.StartActivity",
+            "com.instagram"
+    };
+    private static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(ACTIVITIES_NO_UNLOCK));
     private static XSharedPreferences PREFS_PACKAGES, PREFS_ACTIVITIES;
 
     public static void launchLockView(Activity caller, Intent intent, String packageName, String launch) {
@@ -63,15 +73,21 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             return;
         }
 
+        findAndHookMethod("android.app.Activity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                XposedBridge.log(param.thisObject.getClass().getName() + " created at " + System.currentTimeMillis());
+            }
+        });
+
         findAndHookMethod("android.app.Activity", lpparam.classLoader, "onStart", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reload();
                 final Activity app = (Activity) param.thisObject;
-                XposedBridge.log("Activity will start: " + app.getClass().getName() + " | Time: " + System.currentTimeMillis());
 
                 Long unlockTimestamp = Math.max(PREFS_PACKAGES.getLong(packageName + "_tmp", 0), PreferenceManager.getDefaultSharedPreferences(app).getLong("MaxLockLastUnlock", 0));
-                if (!PREFS_PACKAGES.getBoolean(packageName, false) || (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 1500)) {
+                if (!PREFS_PACKAGES.getBoolean(packageName, false) || (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 500)) {
                     return;
                 }
                 if (app.getClass().getName().equals("android.app.Activity") ||
@@ -88,12 +104,9 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         findAndHookMethod("android.app.Activity", lpparam.classLoader, "onPause", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                XposedBridge.log("Activity will pause: " + param.thisObject.getClass().getName() + " | Time: " + System.currentTimeMillis());
                 PreferenceManager.getDefaultSharedPreferences((Activity) param.thisObject).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
             }
-
         });
-
 
         // Handling activity starts inside package
         findAndHookMethod("android.app.Instrumentation", lpparam.classLoader, "execStartActivity",
@@ -101,8 +114,12 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        XposedBridge.log("Intent launched: " + param.args[0].getClass().getName() + " | Time: " + System.currentTimeMillis());
-                        PreferenceManager.getDefaultSharedPreferences((Context) param.args[0]).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
+                        boolean set = false;
+                        if (!((Intent) param.args[4]).getComponent().getPackageName().equals(MY_PACKAGE_NAME) && !NO_UNLOCK.contains(param.args[0].getClass().getName())) {
+                            PreferenceManager.getDefaultSharedPreferences((Context) param.args[0]).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
+                            set = true;
+                        }
+                        XposedBridge.log(param.args[0].getClass().getName() + " started Intent " + ((Intent) param.args[4]).getComponent().getClassName() + " at " + System.currentTimeMillis() + ", " + (set ? "" : "not ") + "unlocked.");
                     }
                 });
     }
