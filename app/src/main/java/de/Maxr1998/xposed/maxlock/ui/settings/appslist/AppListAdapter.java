@@ -378,28 +378,32 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
                 for (Map<String, Object> app : oriItemList) {
                     boolean add = false;
-                    if (search.equals("@*activated*")) {
-                        add = prefsPackages.getBoolean((String) app.get("key"), false);
-                    } else if (search.equals("@*deactivated*")) {
-                        add = !prefsPackages.getBoolean((String) app.get("key"), false);
-                    } else {
-                        String title = ((String) app.get("title")).toLowerCase();
-                        if (title.startsWith(search)) {
-                            add = true;
-                        }
-                        if (!add) {
-                            for (String titlePart : title.split(" ")) {
-                                if (titlePart.startsWith(search)) {
-                                    add = true;
-                                } else {
-                                    for (String searchPart : search.split(" ")) {
-                                        if (titlePart.startsWith(searchPart)) {
-                                            add = true;
+                    switch (search) {
+                        case "@*activated*":
+                            add = prefsPackages.getBoolean((String) app.get("key"), false);
+                            break;
+                        case "@*deactivated*":
+                            add = !prefsPackages.getBoolean((String) app.get("key"), false);
+                            break;
+                        default:
+                            String title = ((String) app.get("title")).toLowerCase();
+                            if (title.startsWith(search)) {
+                                add = true;
+                            }
+                            if (!add) {
+                                for (String titlePart : title.split(" ")) {
+                                    if (titlePart.startsWith(search)) {
+                                        add = true;
+                                    } else {
+                                        for (String searchPart : search.split(" ")) {
+                                            if (titlePart.startsWith(searchPart)) {
+                                                add = true;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
+                            break;
                     }
                     if (add) {
                         filteredList.add(app);
