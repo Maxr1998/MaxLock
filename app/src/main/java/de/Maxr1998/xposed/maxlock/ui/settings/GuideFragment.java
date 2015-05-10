@@ -28,7 +28,7 @@ public class GuideFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-        currentUrl = "http://vault-technosparks.rhcloud.com/maxlock/guide?client=inapp&lang=" + getLanguageCode();
+        currentUrl = "http://maxlock.nfshost.com/?client=inapp&lang=" + getLanguageCode();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
