@@ -36,7 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.haibison.android.lockpattern.widget.LockPatternView;
@@ -50,7 +49,7 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 
-public class LockFragment extends Fragment implements View.OnClickListener {
+public class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
     public AuthenticationSucceededListener authenticationSucceededListener;
     ViewGroup rootView;
@@ -123,18 +122,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
         key = new StringBuilder(50);
         mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
         mDeleteButton.setOnClickListener(this);
-        mDeleteButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                key.setLength(0);
-                mInputText.setText("");
-                if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
-                    knockCodeX.clear();
-                    knockCodeY.clear();
-                }
-                return true;
-            }
-        });
+        mDeleteButton.setOnLongClickListener(this);
 
         // Dimens
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
@@ -205,7 +193,6 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 setupPINLayout();
                 break;
             case Common.PREF_VALUE_KNOCK_CODE:
-                //inflater.inflate(R.layout.knock_code_field, (ViewGroup) container);
                 setupKnockCodeLayout();
                 break;
             case Common.PREF_VALUE_PATTERN:
@@ -276,9 +263,7 @@ public class LockFragment extends Fragment implements View.OnClickListener {
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
         final View container = rootView.findViewById(R.id.container);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();
-        params.setMargins(0, 0, 0, 0);
-        container.setLayoutParams(params);
+        container.setOnLongClickListener(this);
         container.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent e) {
@@ -325,7 +310,6 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                             key.append("4");
                     }
                     checkInput();
-                    return true;
                 }
                 return false;
             }
@@ -420,12 +404,26 @@ public class LockFragment extends Fragment implements View.OnClickListener {
                 if (mInputText.length() > 0) {
                     mInputText.setText(mInputText.getText().subSequence(0, mInputText.getText().length() - 1));
                 }
-            }
-            if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && knockCodeX.size() > 0) {
-                knockCodeX.remove(knockCodeX.size() - 1);
-                knockCodeY.remove(knockCodeY.size() - 1);
+                if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && knockCodeX.size() > 0) {
+                    knockCodeX.remove(knockCodeX.size() - 1);
+                    knockCodeY.remove(knockCodeY.size() - 1);
+                }
             }
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        if (view.getId() == R.id.container || view.getId() == R.id.delete_input) {
+            key.setLength(0);
+            mInputText.setText("");
+            if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
+                knockCodeX.clear();
+                knockCodeY.clear();
+            }
+            return true;
+        }
+        return false;
     }
 
     public boolean checkInput() {
