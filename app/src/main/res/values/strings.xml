@@ -47,6 +47,8 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="custom_color">Custom color</string>
+    <string name="use_tablet_mode">Use tablet mode</string>
+    <string name="tablet_mode_summary">This %1$s was detected as a %2$s device because of a dpi of %3$d and a display width of %4$d pixels.</string>
     <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
     <string name="pref_invert_color">Invert color of UI elements</string>
     <string name="pref_invert_color_summary">This sets the color of texts and dividers to black</string>
@@ -107,7 +109,7 @@
     <string name="pref_category_about">About</string>
     <string name="app_name_pro">MaxLock Pro</string>
     <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
-    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\nClick to see more information</string>
+    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\nClick to see credits, used libs and license.</string>
     <string name="pref_donate_upgrade_pro">Donate to upgrade to pro-version</string>
     <string name="pref_enable_pro">Enable Pro</string>
     <string name="pref_enable_pro_summary">This will enable pro-features even if you haven\'t bought MaxLock Pro</string>
@@ -140,21 +142,21 @@
 
     <string name="pref_category_intika">Intika I.MoD - Grace Period - General</string>
     <string name="pref_category_intika2">Intika I.MoD - Grace Period - PerApp</string>
-    <string name="pref_locking_delay_general">Enable General Delayed-Relock</string>
+    <string name="pref_locking_delay_general">General Delayed-Relock</string>
     <string name="pref_locking_delay_general_summary">Prevent asking to unlock again within a certain period of time for all locked apps</string>
     <string name="pref_delay_input_general">General Delayed-Relock Timer</string>
     <string name="pref_delay_input_general_summary">Enter a number to specify the delay time value in minute for General Delayed-Relock</string>
-    <string name="pref_locking_delay_perapp">Enable PerApp Delayed Relock</string>
+    <string name="pref_locking_delay_perapp">PerApp Delayed Relock</string>
     <string name="pref_locking_delay_perapp_summary">Prevent asking to unlock again within a certain period of time for every app separately regardless other protected apps</string>
     <string name="pref_delay_input_perapp">PerApp Delayed-Relock Timer</string>
     <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for PerApp Delayed-Relock</string>
-    <string name="pref_delay_needpro">Enable Delayed Relock - Pro Version</string>
+    <string name="pref_delay_needpro">Delayed Relock - Pro Version</string>
     <string name="pref_locking_intika">Intika I.MoD</string>
 
     <string name="pref_delay_input_general2">General Delayed-Relock Timer</string>
     <string name="pref_delay_input_general2_summary">Remain time before general relock</string>
 
-    <string name="pref_min_fake_unlock">Mini fake die</string>
-    <string name="pref_min_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog (Fake die need to be enabled)</string>
+    <string name="pref_min_fake_unlock">Fake die direct unlock</string>
+    <string name="pref_min_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog</string>
 
 </resources>

@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.haibison.android.lockpattern.widget.LockPatternView;
@@ -146,8 +147,8 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         int navBarHeight = 0;
 
         if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity")) {
-            View gapTop = rootView.findViewById(R.id.top_gap);
-            View gapBottom = rootView.findViewById(R.id.bottom_gap);
+            View gapTop = rootView.findViewById(R.id.status_bar_gap);
+            View gapBottom = rootView.findViewById(R.id.nav_bar_gap);
             if (screenHeight > screenWidth) {
                 // Portrait
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -178,6 +179,21 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         // Title
         titleView.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));
         titleView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
+
+        if (!lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && prefs.getBoolean(Common.TABLET_MODE_OVERRIDE, getResources().getBoolean(R.bool.tablet_mode_default))) {
+            // Header views
+            LinearLayout.LayoutParams title = new LinearLayout.LayoutParams(titleView.getLayoutParams());
+            title.setMargins(getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), getResources().getDimensionPixelSize(R.dimen.tablet_margin_bottom), getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), 0);
+            titleView.setLayoutParams(title);
+            LinearLayout.LayoutParams input = new LinearLayout.LayoutParams(rootView.findViewById(R.id.input_bar).getLayoutParams());
+            input.setMargins(getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), 0, getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), 0);
+            rootView.findViewById(R.id.input_bar).setLayoutParams(input);
+            // Container
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();
+            params.setMargins(getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), getResources().getDimensionPixelSize(R.dimen.tablet_margin_top),
+                    getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), getResources().getDimensionPixelSize(R.dimen.tablet_margin_bottom));
+            container.setLayoutParams(params);
+        }
 
         personalizeUI();
 

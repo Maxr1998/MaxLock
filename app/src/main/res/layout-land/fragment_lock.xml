@@ -20,7 +20,7 @@
         android:padding="@dimen/activity_horizontal_margin">
 
         <View
-            android:id="@+id/top_gap"
+            android:id="@+id/status_bar_gap"
             android:layout_width="match_parent"
             android:layout_height="0dp" />
 
@@ -51,7 +51,7 @@
                 android:orientation="vertical" />
 
             <View
-                android:id="@+id/bottom_gap"
+                android:id="@+id/nav_bar_gap"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
         </LinearLayout>
