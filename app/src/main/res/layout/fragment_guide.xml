@@ -12,7 +12,6 @@
         android:id="@+id/page_loading_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@android:color/white"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 </RelativeLayout>
