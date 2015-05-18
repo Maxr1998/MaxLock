@@ -133,6 +133,25 @@
                 android:resource="@xml/masterswitch_widget_info" />
         </receiver>
 
+        <activity
+            android:name=".tasker.ConfigActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.Dark">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".tasker.TaskActionReceiver"
+            android:exported="true"
+            android:process=":background"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="xposedmodule"
             android:value="true" />

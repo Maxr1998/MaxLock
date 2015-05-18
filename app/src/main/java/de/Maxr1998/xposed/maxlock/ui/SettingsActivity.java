@@ -113,6 +113,15 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressWarnings("deprecation")
+    @SuppressLint("WorldReadableFiles")
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_master_switch));
+        master_switch.setChecked(getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).getBoolean(Common.MASTER_SWITCH_ON, true));
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -162,6 +171,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         super.onResume();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(android.R.color.black), -3, this);
+        invalidateOptionsMenu();
     }
 
     @Override

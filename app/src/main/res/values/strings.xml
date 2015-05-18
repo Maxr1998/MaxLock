@@ -5,11 +5,12 @@
     <string name="placeholder">Placeholder</string>
     <string name="restart_required">MaxLock requires a restart for changes to take effect</string>
     <string name="toast_pro_required">Pro-version is required to use this feature!</string>
-
+    <string name="no_locking_type">No locking type specified.</string>
+    <string name="no_locked_apps">No apps chosen to lock.</string>
     <!-- Main screen -->
     <string name="pref_category_locking">Lock</string>
     <string name="pref_locking_type">Locking type</string>
-    <!-- Locking type Settings -->
+    <!-- Locking type settings -->
     <string name="pref_locking_type_password">Password</string>
     <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">Knock code</string>
@@ -32,9 +33,8 @@
     <string name="choose_knock_code">Choose your knock code</string>
     <string name="knock_code_too_short">Knock code must be a least 4 touches</string>
     <string name="confirm_knock_code">Confirm your knock code</string>
-    <!-- Main screen -->
-    <string name="pref_locking_ui">Lockscreen UI</string>
     <!-- Locking UI settings -->
+    <string name="pref_locking_ui">Lockscreen UI</string>
     <string name="open_theme_manager">Open Theme Manager</string>
     <string name="open_theme_manager_summary_none">No theme applied</string>
     <string name="open_theme_manager_summary_applied">Applied: </string>
@@ -63,7 +63,7 @@
     <string name="pref_category_pattern_only">Pattern only</string>
     <string name="pref_show_path">Show path</string>
     <string name="pref_haptic_feedback">Vibrate on drawing</string>
-
+    <!-- Locking options settings -->
     <string name="pref_locking_options">Locking options</string>
     <string name="pref_category_logging">Logging</string>
     <string name="pref_enable_logging">Enable logging</string>
@@ -73,9 +73,25 @@
     <string name="pref_category_other">Others</string>
     <string name="pref_fake_die_input">\"Fake die\" input</string>
     <string name="pref_fake_die_input_summary">The phrase the user has to input in the dialog to open lockscreen</string>
-
-    <string name="no_network_connected">You\'re currently not connected to any network</string>
-
+    <string name="enable_tasker">Enable Tasker integration</string>
+    <!-- I.MoD settings -->
+    <string name="pref_locking_intika">Intika I.MoD</string>
+    <string name="pref_category_intika">Intika I.MoD - Grace Period - General</string>
+    <string name="pref_category_intika2">Intika I.MoD - Grace Period - PerApp</string>
+    <string name="pref_locking_delay_general">General Delayed-Relock</string>
+    <string name="pref_locking_delay_general_summary">Prevent asking to unlock again within a certain period of time for all locked apps</string>
+    <string name="pref_delay_input_general">General Delayed-Relock Timer</string>
+    <string name="pref_delay_input_general_summary">Enter a number to specify the delay time value in minute for General Delayed-Relock</string>
+    <string name="pref_locking_delay_perapp">PerApp Delayed Relock</string>
+    <string name="pref_locking_delay_perapp_summary">Prevent asking to unlock again within a certain period of time for every app separately regardless other protected apps</string>
+    <string name="pref_delay_input_perapp">PerApp Delayed-Relock Timer</string>
+    <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for PerApp Delayed-Relock</string>
+    <string name="pref_delay_needpro">Delayed Relock - Pro Version</string>
+    <string name="pref_delay_input_general2">General Delayed-Relock Timer</string>
+    <string name="pref_delay_input_general2_summary">Remain time before general relock</string>
+    <string name="pref_min_fake_unlock">Fake die direct unlock</string>
+    <string name="pref_min_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog</string>
+    <!-- Apps settings -->
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_show_system_app">Show system apps</string>
     <string name="pref_show_system_app_summary_on">Show launchable system apps</string>
@@ -100,63 +116,49 @@
     <string name="dialog_text_custom_password">Custom password</string>
     <string name="dialog_button_exclude_activities">Activities</string>
     <string name="dialog_title_exclude_activities">Exclude Activities from lock</string>
-
+    <!-- UI settings -->
     <string name="pref_category_ui">UI settings</string>
     <string name="pref_hide_from_launcher">Hide app from launcher</string>
     <string name="reboot_required">A reboot may be required to apply changes</string>
     <string name="pref_use_dark_style">Use dark style</string>
-
+    <!-- About information -->
     <string name="pref_category_about">About</string>
     <string name="app_name_pro">MaxLock Pro</string>
     <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
     <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\nClick to see credits, used libs and license.</string>
     <string name="pref_donate_upgrade_pro">Donate to upgrade to pro-version</string>
+    <string name="no_network_connected">You\'re currently not connected to any network</string>
     <string name="pref_enable_pro">Enable Pro</string>
     <string name="pref_enable_pro_summary">This will enable pro-features even if you haven\'t bought MaxLock Pro</string>
     <string name="prevent_uninstall">Protect app from being uninstalled</string>
     <string name="prevent_uninstall_summary">Acquire device administrator permissions for MaxLock, resulting the app cannot be uninstalled anymore.
         You then have to uninstall this app either from here or deactivate admin from \"Settings → Security → Device administrators\" and then uninstall</string>
     <string name="uninstall">Uninstall</string>
-
     <string name="device_admin_description">Protect MaxLock from being uninstalled and disabled</string>
-
+    <!-- External stuff -->
     <string name="dialog_like_app">Do you love the app?</string>
     <string name="dialog_like_app_text">If you do, please leave a review in Play Store and also consider donating :)</string>
     <string name="dialog_cb_never_again">Never show this again</string>
     <string name="dialog_button_donate">Donate</string>
     <string name="dialog_button_rate">Rate</string>
-
-    <string name="no_locking_type">No locking type specified.</string>
-    <string name="no_locked_apps">No apps chosen to lock.</string>
-
+    <!-- Fake die screen -->
     <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
     <string name="report">Report</string>
     <string name="report_problem">Report problem</string>
-
+    <!-- MasterSwitch stuff -->
     <string name="toggle_master_switch">Toggle MasterSwitch</string>
     <string name="toggle_master_switch_deprecated">Toggle MasterSwitch (Deprecated)</string>
     <string name="unlock_master_switch">Unlock MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch disabled</string>
     <string name="toast_master_switch_on">MasterSwitch re-enabled</string>
     <string name="toast_no_locking_types">No locking type specified</string>
-
-    <string name="pref_category_intika">Intika I.MoD - Grace Period - General</string>
-    <string name="pref_category_intika2">Intika I.MoD - Grace Period - PerApp</string>
-    <string name="pref_locking_delay_general">General Delayed-Relock</string>
-    <string name="pref_locking_delay_general_summary">Prevent asking to unlock again within a certain period of time for all locked apps</string>
-    <string name="pref_delay_input_general">General Delayed-Relock Timer</string>
-    <string name="pref_delay_input_general_summary">Enter a number to specify the delay time value in minute for General Delayed-Relock</string>
-    <string name="pref_locking_delay_perapp">PerApp Delayed Relock</string>
-    <string name="pref_locking_delay_perapp_summary">Prevent asking to unlock again within a certain period of time for every app separately regardless other protected apps</string>
-    <string name="pref_delay_input_perapp">PerApp Delayed-Relock Timer</string>
-    <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for PerApp Delayed-Relock</string>
-    <string name="pref_delay_needpro">Delayed Relock - Pro Version</string>
-    <string name="pref_locking_intika">Intika I.MoD</string>
-
-    <string name="pref_delay_input_general2">General Delayed-Relock Timer</string>
-    <string name="pref_delay_input_general2_summary">Remain time before general relock</string>
-
-    <string name="pref_min_fake_unlock">Fake die direct unlock</string>
-    <string name="pref_min_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog</string>
+    <!-- Tasker config stuff -->
+    <string name="configuration">Configuration:</string>
+    <string name="ms_on">MasterSwitch on</string>
+    <string name="ms_off">MasterSwitch off</string>
+    <string name="imod_reset">Reset I.MoD</string>
+    <string name="imod_reset_summary">Lock all apps which were previously unlocked with I.MoD</string>
+    <string name="apply">Apply</string>
+    <string name="tasker_integration_disabled">Tasker integration is currently disabled. You can enable it via \"MaxLock → Locking options → Enable Tasker integration\".</string>
 
 </resources>

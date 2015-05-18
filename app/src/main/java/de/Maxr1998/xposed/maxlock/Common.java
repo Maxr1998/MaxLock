@@ -59,12 +59,13 @@ public abstract class Common {
     public static final String ENABLE_LOGGING = "enable_logging";
     public static final String VIEW_LOGS = "view_logs";
     public static final String LOG_FILE = "log.txt";
+    public static final String FAKE_DIE_INPUT = "fake_die_input";
+    public static final String TASKER_ENABLED = "enable_tasker_integration";
 
     public static final String CHOOSE_APPS = "choose_apps";
 
     public static final String HIDE_APP_FROM_LAUNCHER = "hide_from_launcher";
     public static final String USE_DARK_STYLE = "use_dark_style";
-    public static final String FAKE_DIE_INPUT = "fake_die_input";
 
     public static final String ABOUT = "about";
     public static final String DONATE = "donate_upgrade_pro";
