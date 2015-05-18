@@ -62,7 +62,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Util {
+public abstract class Util {
 
     public static final int PATTERN_CODE = 48;
     public static final int PATTERN_CODE_APP = 5;
@@ -309,9 +309,11 @@ public class Util {
     @SuppressLint({"WorldReadableFiles"})
     public static void cleanUp(Context context) {
         loadPrefs(context);
-        if (!PREFS.getString("migrated", "").equals("4.0")) {
-
-            PREFS.edit().putString("migrated", "4.0").apply();
+        if (!PREFS.getString("migrated", "").equals("5.2")) {
+            PREFS.edit()
+                    .remove(Common.IMOD_LAST_UNLOCK_GLOBAL)
+                    .apply();
+            PREFS.edit().putString("migrated", "5.2").apply();
         }
     }
 

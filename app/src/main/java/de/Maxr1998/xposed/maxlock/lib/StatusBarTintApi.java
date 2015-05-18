@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 
 @SuppressWarnings("unused")
-public class StatusBarTintApi {
+public abstract class StatusBarTintApi {
     public static final String INTENT_CHANGE_COLOR_NAME = "com.mohammadag.colouredstatusbar.ChangeStatusBarColor";
 
     public static final String KEY_STATUS_BAR_TINT = "status_bar_color";

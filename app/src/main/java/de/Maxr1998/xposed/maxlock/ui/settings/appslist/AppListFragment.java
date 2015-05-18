@@ -249,8 +249,7 @@ public class AppListFragment extends Fragment {
                 case R.id.toolbar_clear_list:
                     //noinspection deprecation
                     getActivity().getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().clear().commit();
-                    //noinspection deprecation
-                    getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_WORLD_READABLE).edit().clear().commit();
+                    getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE).edit().clear().commit();
                     ((SettingsActivity) getActivity()).restart();
                     return true;
                 case R.id.toolbar_filter_activated:

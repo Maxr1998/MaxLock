@@ -29,6 +29,7 @@ import android.util.Log;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.LockHelper;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 
@@ -36,7 +37,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
     private String packageName;
     private Intent original;
-    private SharedPreferences prefsPackages, prefs;
+    private SharedPreferences prefsPackages, prefsIMod, prefsIModTemp;
     private boolean isInFocus = false, unlocked = false;
 
     @SuppressLint("WorldReadableFiles")
@@ -57,6 +58,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,32 +68,15 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         original = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
         // Preferences
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //noinspection deprecation
         prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
+        prefsIMod = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
+        prefsIModTemp = getSharedPreferences(Common.PREFS_IMOD_TEMP, MODE_WORLD_READABLE);
 
-        // Technical timer
-        Long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
-        if (!prefsPackages.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 1000)) {
-            openApp();
-        }
-
-        // Intika I.MoD
-        boolean IMoDDelayGlobalEnabled = prefs.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
-        boolean IMoDDelayAppEnabled = prefs.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
-        long IMoDLastUnlockGlobal = prefs.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0);
-        long IMoDLastUnlockApp = prefsPackages.getLong(packageName + "_imod", 0);
-
-        if (/* Global */(IMoDDelayGlobalEnabled && (IMoDLastUnlockGlobal != 0 &&
-                System.currentTimeMillis() - IMoDLastUnlockGlobal <=
-                        prefs.getInt(Common.IMOD_DELAY_GLOBAL, 600000)))
-                ||/* Per app */(IMoDDelayAppEnabled) && (IMoDLastUnlockApp != 0 &&
-                System.currentTimeMillis() - IMoDLastUnlockApp <=
-                        prefs.getInt(Common.IMOD_DELAY_APP, 600000))) {
+        long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
+        if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMod, prefsIModTemp)) {
             openApp();
             return;
         }
-        // Intika I.MoD End
 
         // Authentication fragment/UI
         setContentView(R.layout.activity_lock);
@@ -107,10 +92,14 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @Override
     public void onAuthenticationSucceeded() {
         // Save time for Intika mod
-        prefsPackages.edit()
+        prefsIModTemp.edit()
                 .putLong(packageName + "_imod", System.currentTimeMillis())
                 .commit();
-        prefs.edit()
+        // Clean Up
+        prefsPackages.edit()
+                .remove(packageName + "_imod")
+                .commit();
+        prefsIModTemp.edit()
                 .putLong(Common.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis())
                 .commit();
         openApp();

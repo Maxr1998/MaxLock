@@ -32,16 +32,19 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import static de.Maxr1998.xposed.maxlock.LockHelper.launchLockView;
+import static de.Maxr1998.xposed.maxlock.LockHelper.timerOrIMod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
-    private static XSharedPreferences PREFS_PACKAGES, PREFS_ACTIVITIES;
+    private static XSharedPreferences PREFS_PACKAGES, PREFS_ACTIVITIES, PREFS_IMOD, PREFS_IMOD_TEMP;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         PREFS_PACKAGES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_PACKAGES);
         PREFS_ACTIVITIES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_ACTIVITIES);
+        PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);
+        PREFS_IMOD_TEMP = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD_TEMP);
         makeReadable();
     }
 
@@ -65,9 +68,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reload();
                 final Activity app = (Activity) param.thisObject;
-
-                Long unlockTimestamp = Math.max(PREFS_PACKAGES.getLong(packageName + "_tmp", 0), PreferenceManager.getDefaultSharedPreferences(app).getLong("MaxLockLastUnlock", 0));
-                if (!PREFS_PACKAGES.getBoolean(packageName, false) || (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 500)) {
+                long unlockTimestamp = Math.max(PREFS_PACKAGES.getLong(packageName + "_tmp", 0), PreferenceManager.getDefaultSharedPreferences(app).getLong("MaxLockLastUnlock", 0));
+                if (timerOrIMod(packageName, unlockTimestamp, PREFS_IMOD, PREFS_IMOD_TEMP)) {
                     return;
                 }
                 if (app.getClass().getName().equals("android.app.Activity") ||
@@ -107,11 +109,15 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     private void makeReadable() {
         PREFS_PACKAGES.makeWorldReadable();
         PREFS_ACTIVITIES.makeWorldReadable();
+        PREFS_IMOD.makeWorldReadable();
+        PREFS_IMOD_TEMP.makeWorldReadable();
         reload();
     }
 
     private void reload() {
         PREFS_PACKAGES.reload();
         PREFS_ACTIVITIES.reload();
+        PREFS_IMOD.reload();
+        PREFS_IMOD_TEMP.reload();
     }
 }

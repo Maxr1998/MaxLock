@@ -35,7 +35,7 @@ import com.anjlab.android.iab.v3.BillingProcessor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-public class BillingHelper {
+public abstract class BillingHelper {
 
     private static final String[] productIds = {
             "donate_coke",

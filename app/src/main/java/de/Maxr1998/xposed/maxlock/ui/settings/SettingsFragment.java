@@ -93,17 +93,16 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         return ((SettingsActivity) getActivity()).getBillingProcessor();
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        //noinspection deprecation
         getPreferenceManager().setSharedPreferencesMode(Activity.MODE_WORLD_READABLE);
         addPreferencesFromResource(R.xml.preferences_main);
         PREFS = PreferenceManager.getDefaultSharedPreferences(getActivity());
         PREFS_KEYS = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        //noinspection deprecation
         PREFS_THEME = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -170,12 +169,13 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.IIMOD_OPTIONS)) {
+            @SuppressLint("WorldReadableFiles") @SuppressWarnings("deprecation") SharedPreferences prefsIMoD = getActivity().getSharedPreferences(Common.PREFS_IMOD, Context.MODE_WORLD_READABLE);
             // Setup remain timer
-            long timer = PREFS.getInt(Common.IMOD_DELAY_GLOBAL, 600000) - (System.currentTimeMillis() - PREFS.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0));
+            long timer = prefsIMoD.getInt(Common.IMOD_DELAY_GLOBAL, 600000) - (System.currentTimeMillis() - prefsIMoD.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0));
             if (timer < 0) {
                 timer = 0L;
             }
-            PREFS.edit().putInt(Common.IMOD_REMAIN_TIMER_GLOBAL, (int) timer).apply();
+            prefsIMoD.edit().putInt(Common.IMOD_REMAIN_TIMER_GLOBAL, (int) timer).apply();
             launchFragment(new LockingIntikaFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
@@ -265,6 +265,8 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            //noinspection deprecation
+            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.preferences_locking_type);
         }
 
@@ -310,6 +312,8 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            //noinspection deprecation
+            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
             Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.KC_SHOW_DIVIDERS), findPreference(Common.KC_TOUCH_VISIBLE)};
@@ -391,6 +395,8 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            //noinspection deprecation
+            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.preferences_locking_options);
             Preference el = findPreference(Common.ENABLE_LOGGING);
             el.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
@@ -414,6 +420,9 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            getPreferenceManager().setSharedPreferencesName(Common.PREFS_IMOD);
+            //noinspection deprecation
+            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.preferences_locking_imod);
             //Intika I.MoD - Loading check pro
             Preference iimod_enabled_g = findPreference(Common.IMOD_DELAY_GLOBAL_ENABLED);

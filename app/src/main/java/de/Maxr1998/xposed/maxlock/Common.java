@@ -17,7 +17,7 @@
 
 package de.Maxr1998.xposed.maxlock;
 
-public class Common {
+public abstract class Common {
 
     public static final String PKG_NAME = "de.Maxr1998.xposed.maxlock";
 
@@ -88,6 +88,9 @@ public class Common {
     public static final String PREFS_PACKAGES = "packages";
     public static final String PREFS_PER_APP = "per_app_settings";
     public static final String PREFS_ACTIVITIES = "activities";
+    public static final String PREFS_IMOD = "imod";
+    public static final String PREFS_IMOD_TEMP = "imod_tempfile";
+
     public static final String PREFS_THEME = "theme";
 
     // Intika I.MoD

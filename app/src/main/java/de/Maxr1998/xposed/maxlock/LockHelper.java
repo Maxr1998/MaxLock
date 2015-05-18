@@ -20,12 +20,13 @@ package de.Maxr1998.xposed.maxlock;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LockHelper {
+public abstract class LockHelper {
     public static final String MY_PACKAGE_NAME = LockHelper.class.getPackage().getName();
     private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
             "com.whatsapp.Main",
@@ -41,5 +42,25 @@ public class LockHelper {
         it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         caller.startActivity(it);
+    }
+
+    public static boolean timerOrIMod(String packageName, long unlockTimestamp, SharedPreferences iMod, SharedPreferences iModTemp) {
+        // Technical timer
+        if (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 1000) {
+            return true;
+        }
+
+        // Intika I.MoD
+        boolean iModDelayGlobalEnabled = iMod.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
+        boolean iModDelayAppEnabled = iMod.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
+        long iModLastUnlockGlobal = iModTemp.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0);
+        long iModLastUnlockApp = iModTemp.getLong(packageName + "_imod", 0);
+
+        return (iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
+                System.currentTimeMillis() - iModLastUnlockGlobal <=
+                        iMod.getInt(Common.IMOD_DELAY_GLOBAL, 600000)))
+                ||/* Per app */(iModDelayAppEnabled) && (iModLastUnlockApp != 0 &&
+                System.currentTimeMillis() - iModLastUnlockApp <=
+                        iMod.getInt(Common.IMOD_DELAY_APP, 600000));
     }
 }

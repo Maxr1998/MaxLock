@@ -32,6 +32,7 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.LockHelper;
 import de.Maxr1998.xposed.maxlock.R;
 
 import static de.Maxr1998.xposed.maxlock.LockHelper.launchLockView;
@@ -44,8 +45,9 @@ public class FakeDieDialog extends Activity {
     private String packageName;
     private Intent original;
     private AlertDialog.Builder reportDialog;
-    private SharedPreferences prefs, prefsPackages;
+    private SharedPreferences prefs, prefsPackages, prefsIMoD, prefsIMoDTemp;
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,32 +58,16 @@ public class FakeDieDialog extends Activity {
 
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //noinspection deprecation
         prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
+        prefsIMoD = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
+        prefsIMoDTemp = getSharedPreferences(Common.PREFS_IMOD_TEMP, MODE_WORLD_READABLE);
 
-        // Technical timer
-        Long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
-        if (!prefsPackages.getBoolean(packageName, false) || (permitTimestamp != 0 && System.currentTimeMillis() - permitTimestamp <= 1000)) {
+        long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
+        if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMoD, prefsIMoDTemp)) {
             LockActivity.directUnlock(this, original, packageName);
             return;
         }
 
-        // Intika I.MoD
-        boolean IMoDDelayGlobalEnabled = prefs.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
-        boolean IMoDDelayAppEnabled = prefs.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
-        long IMoDLastUnlockGlobal = prefs.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0);
-        long IMoDLastUnlockApp = prefsPackages.getLong(packageName + "_imod", 0);
-
-        if (/* Global */(IMoDDelayGlobalEnabled && (IMoDLastUnlockGlobal != 0 &&
-                System.currentTimeMillis() - IMoDLastUnlockGlobal <=
-                        prefs.getInt(Common.IMOD_DELAY_GLOBAL, 600000)))
-                ||/* Per app */(IMoDDelayAppEnabled) && (IMoDLastUnlockApp != 0 &&
-                System.currentTimeMillis() - IMoDLastUnlockApp <=
-                        prefs.getInt(Common.IMOD_DELAY_APP, 600000))) {
-            LockActivity.directUnlock(this, original, packageName);
-            return;
-        }
-        // Intika I.MoD End
         getWindow().setBackgroundDrawable(new ColorDrawable(0));
         PackageManager pm = getPackageManager();
         try {
