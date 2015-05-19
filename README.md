@@ -1,5 +1,5 @@
-MaxLock
-=======
+![MaxLock (Logo)](http://i.imgur.com/wxNJX7O.png?1)
+
 This is an Xposed Framework App lock module.
 
 Links:
