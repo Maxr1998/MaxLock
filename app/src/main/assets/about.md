@@ -11,13 +11,6 @@ Thanks to:
 - @mihahn for parts of the German translation
 - ? for persian translation (please send me a message, I forgot your name :/)
 
-Links:
-------
-- [Google Play Store page](https://play.google.com/store/apps/details?id=de.Maxr1998.xposed.maxlock)
-- [Xposed-Repo](http://repo.xposed.info/module/de.maxr1998.xposed.maxlock)
-- [XDA-Thread](http://forum.xda-developers.com/xposed/modules/app-maxlock-applock-alternative-t2883624)
-- [GitHub repository](https://github.com/Maxr1998/MaxLock)
-
 Libs and code used:
 -------------------
 - [android-ColorPickerPreference by robbypond](https://github.com/robbypond/android-ColorPickerPreference)
