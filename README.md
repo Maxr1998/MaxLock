@@ -1,8 +1,6 @@
 MaxLock
 =======
-This is a Xposed Framework App lock module.
-
-[Go to wiki](https://github.com/Maxr1998/MaxLock/wiki/Home)
+This is an Xposed Framework App lock module.
 
 Links:
 ------
@@ -16,6 +14,11 @@ Links:
 
 Changelog (Temporary place)
 ===========================
+
+###5.2 (WIP)###
+- Apps now always relock on pausing, no need to clear from recents
+- Tasker support
+- improved I.MoD
 
 ###5.1.1###
 - Fix crash at startup
