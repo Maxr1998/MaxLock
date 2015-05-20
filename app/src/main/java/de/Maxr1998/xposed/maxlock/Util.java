@@ -304,8 +304,6 @@ public abstract class Util {
         return context.getApplicationInfo().dataDir;
     }
 
-    // Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 // Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-
     @SuppressLint({"WorldReadableFiles"})
     public static void cleanUp(Context context) {
         loadPrefs(context);

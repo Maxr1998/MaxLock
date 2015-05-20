@@ -126,17 +126,10 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         mDeleteButton.setOnLongClickListener(this);
 
         // Dimens
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            Point size = new Point();
-            getActivity().getWindowManager().getDefaultDisplay().getSize(size);
-            screenWidth = size.x;
-            screenHeight = size.y;
-        } else {
-            //noinspection deprecation
-            screenWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
-            //noinspection deprecation
-            screenHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
-        }
+        Point size = new Point();
+        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
+        screenWidth = size.x;
+        screenHeight = size.y;
         int statusBarHeight;
         try {
             statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
@@ -151,23 +144,19 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             View gapBottom = rootView.findViewById(R.id.nav_bar_gap);
             if (screenHeight > screenWidth) {
                 // Portrait
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    try {
-                        navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
-                    } catch (Resources.NotFoundException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
                 }
                 gapBottom.getLayoutParams().height = navBarHeight;
                 screenHeight = screenHeight + navBarHeight;
             } else {
                 // Landscape
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    try {
-                        navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height_landscape", "dimen", "android"));
-                    } catch (Resources.NotFoundException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height_landscape", "dimen", "android"));
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
                 }
                 //noinspection SuspiciousNameCombination
                 gapBottom.getLayoutParams().width = navBarHeight;

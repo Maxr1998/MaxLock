@@ -28,7 +28,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -114,14 +113,12 @@ public class AppListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            inflater.inflate(R.layout.fast_scroller, rootView);
-            fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
-            fastScroller.setRecyclerView(recyclerView);
-            recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
-            scrollIndicator = (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
-            fastScroller.setSectionIndicator(scrollIndicator);
-        }
+        fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
+        fastScroller.setRecyclerView(recyclerView);
+        recyclerView.addOnScrollListener(fastScroller.getOnScrollListener());
+        scrollIndicator = (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
+        fastScroller.setSectionIndicator(scrollIndicator);
+
         // Show progress dialog
         if (progressDialog != null) {
             progressDialog.dismiss();

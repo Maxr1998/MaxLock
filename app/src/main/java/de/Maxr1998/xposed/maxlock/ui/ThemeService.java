@@ -116,8 +116,7 @@ public class ThemeService extends IntentService {
                 themeFile.delete();
                 return;
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                getSharedPreferences(Common.PREFS_THEME, MODE_MULTI_PROCESS);
+            getSharedPreferences(Common.PREFS_THEME, MODE_MULTI_PROCESS);
             //noinspection deprecation
             getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
 
@@ -151,8 +150,7 @@ public class ThemeService extends IntentService {
          */
         //noinspection ResultOfMethodCallIgnored
         themeFile.delete();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            getSharedPreferences("theme", MODE_MULTI_PROCESS);
+        getSharedPreferences("theme", MODE_MULTI_PROCESS);
         File theme = new File(Util.dataDir(this) + File.separator + "theme");
         try {
             FileUtils.deleteDirectory(theme);

@@ -5,8 +5,6 @@
     <dimen name="fragment_horizontal_padding">0dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
 
-    <dimen name="widget_padding">8dp</dimen>
-
     <dimen name="tablet_margin_top">144dp</dimen>
     <dimen name="tablet_margin_sides">96dp</dimen>
     <dimen name="tablet_margin_bottom">72dp</dimen>
