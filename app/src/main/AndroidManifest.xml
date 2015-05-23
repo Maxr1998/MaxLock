@@ -21,13 +21,15 @@
 
     <uses-sdk tools:overrideLibrary="xyz.danoz.recyclerviewfastscroller" />
 
-    <uses-permission android:name="com.android.vending.BILLING" />
     <!-- For wallpaper on Samsung devices -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- For backups -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- For IAPs -->
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- For shortcuts -->
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <application
@@ -62,15 +64,21 @@
         </activity-alias>
 
         <activity
+            android:name=".ui.FirstStart.FirstStartActivity"
+            android:theme="@style/AppTheme.FirstStart" />
+
+        <activity
             android:name=".ui.LockActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:process=":MLLock"
             android:theme="@style/TranslucentStatusBar" />
 
         <activity
             android:name=".ui.FakeDieDialog"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:process=":MLLock"
             android:theme="@style/FakeDieDialog" />
 
         <activity
@@ -79,6 +87,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/toggle_master_switch"
+            android:process=":MLExternal"
             android:theme="@style/TranslucentStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
@@ -92,6 +101,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/toggle_master_switch_deprecated"
+            android:process=":MLExternal"
             android:theme="@style/TranslucentStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -136,6 +146,7 @@
         <activity
             android:name=".tasker.ConfigActivity"
             android:exported="true"
+            android:process=":MLExternal"
             android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
