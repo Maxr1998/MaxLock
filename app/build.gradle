@@ -65,6 +65,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:7.3.0'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
+    compile(name: 'android-support-v4-preferencefragment', ext: 'aar')
     compile files('lib/commons-io-2.4.jar')
     provided files('lib/XposedBridgeApi-20150213.jar')
 }
