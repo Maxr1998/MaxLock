@@ -85,7 +85,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         b.putString(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         frag.setArguments(b);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
-        ((ThisApplication) getApplication()).getTracker(ThisApplication.TrackerName.APP_TRACKER);
     }
 
     @SuppressLint("CommitPrefEdits")
