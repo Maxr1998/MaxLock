@@ -38,6 +38,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
 
+        <!-- Main app -->
+        <activity
+            android:name=".ui.FirstStart.FirstStartActivity"
+            android:theme="@style/AppTheme.FirstStart" />
+
         <activity
             android:name=".ui.SettingsActivity"
             android:enabled="true"
@@ -64,9 +69,33 @@
         </activity-alias>
 
         <activity
-            android:name=".ui.FirstStart.FirstStartActivity"
-            android:theme="@style/AppTheme.FirstStart" />
+            android:name="com.haibison.android.lockpattern.LockPatternActivity"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
+            android:screenOrientation="user"
+            android:theme="@style/Alp.42447968.Theme.Dialog.Dark" />
 
+        <receiver
+            android:name=".ui.settings.SettingsFragment$UninstallProtectionReceiver"
+            android:description="@string/device_admin_description"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Theming API -->
+        <service
+            android:name=".ui.ThemeService"
+            android:enabled="false"
+            android:exported="false" />
+
+        <!-- Lock screen -->
         <activity
             android:name=".ui.LockActivity"
             android:excludeFromRecents="true"
@@ -81,6 +110,17 @@
             android:process=":MLLock"
             android:theme="@style/FakeDieDialog" />
 
+        <!-- MasterSwitch widget -->
+        <receiver android:name=".widget.MasterSwitchWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/masterswitch_widget_info" />
+        </receiver>
+
+        <!-- Shortcuts -->
         <activity
             android:name=".ui.MasterSwitchShortcutActivity"
             android:excludeFromRecents="true"
@@ -108,41 +148,7 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".ui.settings.SettingsFragment$UninstallProtectionReceiver"
-            android:description="@string/device_admin_description"
-            android:label="@string/app_name"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data
-                android:name="android.app.device_admin"
-                android:resource="@xml/device_admin" />
-            <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-                <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
-                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name="com.haibison.android.lockpattern.LockPatternActivity"
-            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
-            android:screenOrientation="user"
-            android:theme="@style/Alp.42447968.Theme.Dialog.Dark" />
-
-        <service
-            android:name=".ui.ThemeService"
-            android:enabled="false"
-            android:exported="false" />
-
-        <receiver android:name=".widget.MasterSwitchWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/masterswitch_widget_info" />
-        </receiver>
-
+        <!-- Tasker -->
         <activity
             android:name=".tasker.ConfigActivity"
             android:exported="true"
@@ -163,18 +169,44 @@
             </intent-filter>
         </receiver>
 
+        <!-- Xposed configs -->
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="MaxLock" />
+            android:value="Applocker for the Xposed Framework" />
         <meta-data
             android:name="xposedminversion"
             android:value="42" />
+        <!-- Status bar tinting below Android Lollipop -->
         <meta-data
             android:name="override_tinted_status_bar_defaults"
             android:value="true" />
+
+        <!-- Google Analytics -->
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

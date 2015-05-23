@@ -22,28 +22,26 @@ import android.app.Application;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
-import java.util.HashMap;
-
 import de.Maxr1998.xposed.maxlock.R;
 
 public class ThisApplication extends Application {
 
-    HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
+    private static GoogleAnalytics analytics;
+    private static Tracker tracker;
 
-    public ThisApplication() {
-        super();
+    public static GoogleAnalytics getAnalytics() {
+        return analytics;
     }
 
-    synchronized Tracker getTracker(TrackerName trackerId) {
-        if (!mTrackers.containsKey(trackerId)) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            Tracker t = (trackerId == TrackerName.APP_TRACKER) ? analytics.newTracker(R.xml.app_tracker) : analytics.newTracker("UA-58429761-1");
-            mTrackers.put(trackerId, t);
-        }
-        return mTrackers.get(trackerId);
+    public static Tracker getTracker() {
+        return tracker;
     }
 
-    public enum TrackerName {
-        APP_TRACKER // Tracker used only in this app.
+    @Override
+    public void onCreate() {
+        analytics = GoogleAnalytics.getInstance(this);
+
+        tracker = analytics.newTracker(R.xml.app_tracker);
+        tracker.enableAdvertisingIdCollection(true);
     }
 }
