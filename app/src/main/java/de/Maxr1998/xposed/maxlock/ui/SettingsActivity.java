@@ -43,6 +43,7 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
+import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.GuideFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
@@ -50,6 +51,7 @@ import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
     private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
+    static boolean FS_SHOW = true;
     private static boolean UNLOCKED = false;
     public SettingsFragment mSettingsFragment;
     SharedPreferences prefs;
@@ -65,6 +67,14 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             setTheme(R.style.AppTheme);
         }
         super.onCreate(savedInstanceState);
+
+        if ((FS_SHOW && Util.isDevMode()) || prefs.getInt(FirstStartActivity.FIRST_START_LAST_VERSION_KEY, 0) != FirstStartActivity.FIRST_START_LATEST_VERSION) {
+            startActivity(new Intent(this, FirstStartActivity.class));
+            FS_SHOW = false;
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -177,7 +187,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        billingProcessor.release();
+        if (billingProcessor != null) billingProcessor.release();
     }
 
     public BillingProcessor getBillingProcessor() {
@@ -186,7 +196,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     public void restart() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.restart_required);
+        builder.setMessage(R.string.dialog_text_restart_required);
         builder.setTitle(R.string.app_name)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
