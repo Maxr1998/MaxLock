@@ -16,6 +16,7 @@ Changelog (Temporary place)
 ===========================
 
 ###5.2 (WIP)###
+**You need to reboot and launch MaxLock main app at least once after updating!**
 - **Apps now always relock on pausing, no need to clear from recents**
 - Knock Code now with new relative button styled input like original LG KNOCKcode
 - Tasker support
