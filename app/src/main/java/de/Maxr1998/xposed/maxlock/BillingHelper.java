@@ -121,7 +121,7 @@ public abstract class BillingHelper {
         protected void onPostExecute(ListAdapter la) {
             progressDialog.dismiss();
             if (networkError)
-                Toast.makeText(mContext, R.string.no_network_connected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.toast_no_network_connected, Toast.LENGTH_SHORT).show();
             AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
             dialog.setAdapter(la, new DialogInterface.OnClickListener() {
                 @Override

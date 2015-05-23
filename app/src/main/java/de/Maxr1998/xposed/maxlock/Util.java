@@ -130,7 +130,7 @@ public abstract class Util {
                     dialog.dismiss();
                 } else {
                     input.setText("");
-                    Toast.makeText(context, R.string.msg_password_incorrect, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.toast_password_incorrect, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -160,10 +160,10 @@ public abstract class Util {
                 if (!v1.equals(v2)) {
                     p1.setText("");
                     p2.setText("");
-                    Toast.makeText(context, R.string.msg_password_inconsistent, Toast.LENGTH_SHORT)
+                    Toast.makeText(context, R.string.toast_password_inconsistent, Toast.LENGTH_SHORT)
                             .show();
                 } else if (v1.length() == 0) {
-                    Toast.makeText(context, R.string.msg_password_null, Toast.LENGTH_SHORT)
+                    Toast.makeText(context, R.string.toast_password_null, Toast.LENGTH_SHORT)
                             .show();
                 } else {
                     dialog.dismiss();
@@ -174,7 +174,7 @@ public abstract class Util {
                     } else {
                         PREFS_PER_APP.edit().putString(app, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
                     }
-                    Toast.makeText(context, R.string.msg_password_changed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.toast_password_changed, Toast.LENGTH_SHORT).show();
                 }
             }
         });

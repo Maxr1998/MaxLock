@@ -159,7 +159,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
                     prefsPerApp.edit().putString(customApp, Common.PREF_VALUE_PIN).putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(mSetupPinInput.getText().toString())).apply();
                 }
             } else {
-                Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.msg_password_inconsistent), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.toast_password_inconsistent), Toast.LENGTH_SHORT).show();
             }
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
                     Context.INPUT_METHOD_SERVICE);

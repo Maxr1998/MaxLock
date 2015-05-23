@@ -69,8 +69,8 @@
 
         <Preference
             android:key="uninstall"
-            android:summary="@string/prevent_uninstall_summary"
-            android:title="@string/prevent_uninstall" />
+            android:summary="@string/pref_prevent_uninstall_summary"
+            android:title="@string/pref_prevent_uninstall" />
     </PreferenceCategory>
 
 </PreferenceScreen>

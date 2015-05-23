@@ -118,7 +118,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         setupPro();
         UNINSTALL = findPreference(Common.UNINSTALL);
         if (isDeviceAdminActive()) {
-            UNINSTALL.setTitle(R.string.uninstall);
+            UNINSTALL.setTitle(R.string.pref_uninstall);
             UNINSTALL.setSummary("");
         }
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
@@ -239,7 +239,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         public void onEnabled(Context context, Intent intent) {
             super.onEnabled(context, intent);
             if (UNINSTALL != null) {
-                UNINSTALL.setTitle(R.string.uninstall);
+                UNINSTALL.setTitle(R.string.pref_uninstall);
                 UNINSTALL.setSummary("");
             }
         }
@@ -248,8 +248,8 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         public void onDisabled(Context context, Intent intent) {
             super.onDisabled(context, intent);
             if (UNINSTALL != null) {
-                UNINSTALL.setTitle(R.string.prevent_uninstall);
-                UNINSTALL.setSummary(R.string.prevent_uninstall_summary);
+                UNINSTALL.setTitle(R.string.pref_prevent_uninstall);
+                UNINSTALL.setSummary(R.string.pref_prevent_uninstall_summary);
                 Intent uninstall = new Intent(Intent.ACTION_DELETE);
                 uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
@@ -316,10 +316,10 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.KC_SHOW_DIVIDERS), findPreference(Common.KC_TOUCH_VISIBLE)};
             if (PREFS_THEME.contains(Common.THEME_PKG)) {
                 Preference themeManager = findPreference(Common.OPEN_THEME_MANAGER);
-                themeManager.setSummary(getString(R.string.open_theme_manager_summary_applied) + PREFS_THEME.getString(Common.THEME_PKG, ""));
+                themeManager.setSummary(getString(R.string.pref_open_theme_manager_summary_applied) + PREFS_THEME.getString(Common.THEME_PKG, ""));
                 for (Preference preference : overriddenByTheme) {
                     preference.setEnabled(false);
-                    preference.setSummary(preference.getSummary() != null ? preference.getSummary() : " " + getString(R.string.overridden_by_theme));
+                    preference.setSummary(preference.getSummary() != null ? preference.getSummary() : " " + getString(R.string.pref_summary_overridden_by_theme));
                 }
             }
             ListPreference lp = (ListPreference) findPreference(Common.BACKGROUND);
@@ -343,7 +343,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
                 }
             });
             Preference tabletMode = findPreference(Common.TABLET_MODE_OVERRIDE);
-            tabletMode.setSummary(String.format(getString(R.string.tablet_mode_summary),
+            tabletMode.setSummary(String.format(getString(R.string.pref_use_tablet_mode_summary),
                     Build.MODEL, getResources().getBoolean(R.bool.tablet_mode_default) ? "tablet/phablet" : "phone",
                     (int) getResources().getDisplayMetrics().xdpi, Math.min(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)));
         }

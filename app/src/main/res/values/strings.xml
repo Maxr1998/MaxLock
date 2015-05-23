@@ -3,10 +3,20 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">Placeholder</string>
-    <string name="restart_required">MaxLock requires a restart for changes to take effect</string>
+    <string name="dialog_text_restart_required">MaxLock requires a restart for changes to take effect</string>
     <string name="toast_pro_required">Pro-version is required to use this feature!</string>
-    <string name="no_locking_type">No locking type specified.</string>
-    <string name="no_locked_apps">No apps chosen to lock.</string>
+    <string name="sb_no_locking_type">No locking type specified.</string>
+    <string name="sb_no_locked_apps">No apps chosen to lock.</string>
+    <!-- First start screens-->
+    <string name="fs_welcome_maxlock">Welcome to MaxLock!</string>
+    <string name="fs_maxlock_description">MaxLock will protect your apps from unauthorized access</string>
+    <string name="fs_phone_content_description">Phone</string>
+    <string name="fs_lock_content_description">Lock on the phone</string>
+    <string name="fs_app_package_installer">Package Installer</string>
+    <string name="fs_app_settings">Settings</string>
+    <string name="fs_app_xposed_installer">Xposed Installer</string>
+    <string name="fs_recommended_apps">Enable further protection by locking these apps</string>
+    <string name="fs_recommended_apps_summary">You should tick all these apps to make sure MaxLock cannot be disabled or uninstalled</string>
     <!-- Main screen -->
     <string name="pref_category_locking">Lock</string>
     <string name="pref_locking_type">Locking type</string>
@@ -17,12 +27,12 @@
     <string name="pref_locking_type_pattern">Pattern</string>
 
     <string name="pref_set_password">Set password</string>
-    <string name="msg_password_inconsistent">Password is inconsistent!</string>
-    <string name="msg_password_null">Password can not be empty!</string>
-    <string name="msg_password_changed">Password is changed!</string>
-    <string name="msg_password_incorrect">Password incorrect!</string>
-    <string name="txt_type_password">Password: </string>
-    <string name="txt_retype_password">Retype password: </string>
+    <string name="toast_password_inconsistent">Password is inconsistent!</string>
+    <string name="toast_password_null">Password can not be empty!</string>
+    <string name="toast_password_changed">Password is changed!</string>
+    <string name="toast_password_incorrect">Password incorrect!</string>
+    <string name="dialog_text_password">Password: </string>
+    <string name="dialog_text_re_password">Retype password: </string>
 
     <string name="choose_pin">Choose your PIN</string>
     <string name="pin_too_short">PIN must have a least 4 digits</string>
@@ -35,20 +45,20 @@
     <string name="confirm_knock_code">Confirm your knock code</string>
     <!-- Locking UI settings -->
     <string name="pref_locking_ui">Lockscreen UI</string>
-    <string name="open_theme_manager">Open Theme Manager</string>
-    <string name="open_theme_manager_summary_none">No theme applied</string>
-    <string name="open_theme_manager_summary_applied">Applied: </string>
-    <string name="overridden_by_theme">(Overridden by theme)</string>
+    <string name="pref_open_theme_manager">Open Theme Manager</string>
+    <string name="pref_open_theme_manager_summary_none">No theme applied</string>
+    <string name="pref_open_theme_manager_summary_applied">Applied: </string>
+    <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>
     <string name="pref_background">Background image</string>
     <string-array name="background_types">
         <item>Wallpaper</item>
-        <item>@string/custom_color</item>
+        <item>@string/pref_custom_color</item>
         <item>Custom image…</item>
         <!--<item>Theme background</item>-->
     </string-array>
-    <string name="custom_color">Custom color</string>
-    <string name="use_tablet_mode">Use tablet mode</string>
-    <string name="tablet_mode_summary">This %1$s was detected as a %2$s device because of a dpi of %3$d and a display width of %4$d pixels.</string>
+    <string name="pref_custom_color">Custom color</string>
+    <string name="pref_use_tablet_mode">Use tablet mode</string>
+    <string name="pref_use_tablet_mode_summary">This %1$s was detected as a %2$s device because of a dpi of %3$d and a display width of %4$d pixels.</string>
     <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
     <string name="pref_invert_color">Invert color of UI elements</string>
     <string name="pref_invert_color_summary">This sets the color of texts and dividers to black</string>
@@ -73,7 +83,7 @@
     <string name="pref_category_other">Others</string>
     <string name="pref_fake_die_input">\"Fake die\" input</string>
     <string name="pref_fake_die_input_summary">The phrase the user has to input in the dialog to open lockscreen</string>
-    <string name="enable_tasker">Enable Tasker integration</string>
+    <string name="pref_enable_tasker">Enable Tasker integration</string>
     <!-- I.MoD settings -->
     <string name="pref_locking_intika">Intika I.MoD</string>
     <string name="pref_category_intika">Intika I.MoD - Grace Period - General</string>
@@ -89,8 +99,8 @@
     <string name="pref_delay_needpro">Delayed Relock - Pro Version</string>
     <string name="pref_delay_input_general2">General Delayed-Relock Timer</string>
     <string name="pref_delay_input_general2_summary">Remain time before general relock</string>
-    <string name="pref_min_fake_unlock">Fake die direct unlock</string>
-    <string name="pref_min_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog</string>
+    <string name="pref_fake_unlock">Fake die direct unlock</string>
+    <string name="pref_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_show_system_app">Show system apps</string>
@@ -99,13 +109,13 @@
     <string name="pref_choose_apps">Choose apps</string>
     <string name="pref_choose_apps_summary">Select apps to be locked</string>
 
-    <string name="backup_list">Backup list</string>
-    <string name="restore_list">Restore list</string>
-    <string name="clear_list">Clear list</string>
+    <string name="menu_backup_list">Backup list</string>
+    <string name="menu_restore_list">Restore list</string>
+    <string name="menu_clear_list">Clear list</string>
     <string name="toast_no_files_to_backup">No files found to backup</string>
     <string name="toast_backup_restore_exception">There was an error.\nPlease contact developer!</string>
     <string name="toast_backup_success">Backup successfully completed</string>
-    <string name="dialog_restore_list_message">This will replace the current settings with the one from the backup!</string>
+    <string name="dialog_text_restore_list">This will replace the current settings with the one from the backup!</string>
     <string name="toast_no_files_to_restore">No files found to restore</string>
     <string name="toast_restore_success">Backup successfully restored!</string>
     <string name="menu_search">Search</string>
@@ -127,13 +137,13 @@
     <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
     <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\nClick to see credits, used libs and license.</string>
     <string name="pref_donate_upgrade_pro">Donate to upgrade to pro-version</string>
-    <string name="no_network_connected">You\'re currently not connected to any network</string>
+    <string name="toast_no_network_connected">You\'re currently not connected to any network</string>
     <string name="pref_enable_pro">Enable Pro</string>
     <string name="pref_enable_pro_summary">This will enable pro-features even if you haven\'t bought MaxLock Pro</string>
-    <string name="prevent_uninstall">Protect app from being uninstalled</string>
-    <string name="prevent_uninstall_summary">Acquire device administrator permissions for MaxLock, resulting the app cannot be uninstalled anymore.
+    <string name="pref_prevent_uninstall">Protect app from being uninstalled</string>
+    <string name="pref_prevent_uninstall_summary">Acquire device administrator permissions for MaxLock, resulting the app cannot be uninstalled anymore.
         You then have to uninstall this app either from here or deactivate admin from \"Settings → Security → Device administrators\" and then uninstall</string>
-    <string name="uninstall">Uninstall</string>
+    <string name="pref_uninstall">Uninstall</string>
     <string name="device_admin_description">Protect MaxLock from being uninstalled and disabled</string>
     <!-- External stuff -->
     <string name="dialog_like_app">Do you love the app?</string>
@@ -142,9 +152,9 @@
     <string name="dialog_button_donate">Donate</string>
     <string name="dialog_button_rate">Rate</string>
     <!-- Fake die screen -->
-    <string name="fake_die_message">Unfortunately, %1$s has stopped.</string>
-    <string name="report">Report</string>
-    <string name="report_problem">Report problem</string>
+    <string name="dialog_text_fake_die_stopped">Unfortunately, %1$s has stopped.</string>
+    <string name="dialog_button_report">Report</string>
+    <string name="dialog_title_report_problem">Report problem</string>
     <!-- MasterSwitch stuff -->
     <string name="toggle_master_switch">Toggle MasterSwitch</string>
     <string name="toggle_master_switch_deprecated">Toggle MasterSwitch (Deprecated)</string>
@@ -153,12 +163,12 @@
     <string name="toast_master_switch_on">MasterSwitch re-enabled</string>
     <string name="toast_no_locking_types">No locking type specified</string>
     <!-- Tasker config stuff -->
-    <string name="configuration">Configuration:</string>
-    <string name="ms_on">MasterSwitch on</string>
-    <string name="ms_off">MasterSwitch off</string>
-    <string name="imod_reset">Reset I.MoD</string>
-    <string name="imod_reset_summary">Lock all apps which were previously unlocked with I.MoD</string>
-    <string name="apply">Apply</string>
+    <string name="tasker_configuration">Configuration:</string>
+    <string name="tasker_ms_on">MasterSwitch on</string>
+    <string name="tasker_ms_off">MasterSwitch off</string>
+    <string name="tasker_imod_reset">Reset I.MoD</string>
+    <string name="tasker_imod_reset_summary">Lock all apps which were previously unlocked with I.MoD</string>
+    <string name="tasker_button_apply">Apply</string>
     <string name="tasker_integration_disabled">Tasker integration is currently disabled. You can enable it via \"MaxLock → Locking options → Enable Tasker integration\".</string>
 
 </resources>

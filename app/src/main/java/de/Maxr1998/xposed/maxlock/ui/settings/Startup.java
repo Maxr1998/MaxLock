@@ -111,7 +111,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         @SuppressWarnings("ConstantConditions")
         boolean noLockType = prefs.getString(Common.LOCKING_TYPE, "").equals("");
         boolean noPackages = !new File(Util.dataDir(mContext) + File.separator + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists();
-        snackBarContent = (noLockType ? mContext.getString(R.string.no_locking_type) + " " : "") + (noPackages ? mContext.getString(R.string.no_locked_apps) : "");
+        snackBarContent = (noLockType ? mContext.getString(R.string.sb_no_locking_type) + " " : "") + (noPackages ? mContext.getString(R.string.sb_no_locked_apps) : "");
         showSnackBar = noPackages || noLockType;
         snackBarMultiLine = noLockType && noPackages;
         // Other

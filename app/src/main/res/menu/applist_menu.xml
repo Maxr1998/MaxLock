@@ -13,11 +13,11 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/toolbar_backup_list"
-        android:title="@string/backup_list" />
+        android:title="@string/menu_backup_list" />
     <item
         android:id="@+id/toolbar_restore_list"
-        android:title="@string/restore_list" />
+        android:title="@string/menu_restore_list" />
     <item
         android:id="@+id/toolbar_clear_list"
-        android:title="@string/clear_list" />
+        android:title="@string/menu_clear_list" />
 </menu>

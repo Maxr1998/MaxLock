@@ -3,7 +3,7 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">Placeholder</string>
-    <string name="restart_required">変更を適用にするには MaxLock の再起動が必要です</string>
+    <string name="dialog_text_restart_required">変更を適用にするには MaxLock の再起動が必要です</string>
     <string name="toast_pro_required">この機能を使用するにはプロ版が必要です!</string>
 
     <!-- Main screen -->
@@ -16,12 +16,12 @@
     <string name="pref_locking_type_pattern">パターン</string>
 
     <string name="pref_set_password">パスワードの設定</string>
-    <string name="msg_password_inconsistent">パスワードが一致しません!</string>
-    <string name="msg_password_null">パスワードが入力されていません!</string>
-    <string name="msg_password_changed">パスワードを変更しました!</string>
-    <string name="msg_password_incorrect">パスワードが違います!</string>
-    <string name="txt_type_password">パスワード : </string>
-    <string name="txt_retype_password">確認 : </string>
+    <string name="toast_password_inconsistent">パスワードが一致しません!</string>
+    <string name="toast_password_null">パスワードが入力されていません!</string>
+    <string name="toast_password_changed">パスワードを変更しました!</string>
+    <string name="toast_password_incorrect">パスワードが違います!</string>
+    <string name="dialog_text_password">パスワード : </string>
+    <string name="dialog_text_re_password">確認 : </string>
 
     <string name="choose_pin">暗証番号を入力してください</string>
     <string name="pin_too_short">少なくとも 4 桁の番号を入力してください</string>
@@ -35,18 +35,18 @@
     <!-- Main screen -->
     <string name="pref_locking_ui">ロック画面</string>
     <!-- Locking UI settings -->
-    <string name="open_theme_manager">Open Theme Manager</string>
-    <string name="open_theme_manager_summary_none">No theme applied</string>
-    <string name="open_theme_manager_summary_applied">Applied: </string>
-    <string name="overridden_by_theme">(Overridden by theme)</string>
+    <string name="pref_open_theme_manager">Open Theme Manager</string>
+    <string name="pref_open_theme_manager_summary_none">No theme applied</string>
+    <string name="pref_open_theme_manager_summary_applied">Applied: </string>
+    <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>
     <string name="pref_background">背景画像</string>
     <string-array name="background_types">
         <item>壁紙</item>
-        <item>@string/custom_color</item>
+        <item>@string/pref_custom_color</item>
         <item>カスタム…</item>
         <!--<item>Theme background</item>-->
     </string-array>
-    <string name="custom_color">背景色</string>
+    <string name="pref_custom_color">背景色</string>
     <string name="pref_category_pin_and_knock_code">暗証番号とノックコード</string>
     <string name="pref_invert_color">表示色の反転</string>
     <string name="pref_invert_color_summary">テキストと分割線の色を黒にします</string>
@@ -72,7 +72,7 @@
     <string name="pref_fake_die_input">偽装ダイアログへの入力文字列</string>
     <string name="pref_fake_die_input_summary">アプリの強制終了の偽装ダイアログからロック画面へ移行するために必要となる入力文字列を設定します</string>
 
-    <string name="no_network_connected">現在、インターネットに接続できません</string>
+    <string name="toast_no_network_connected">現在、インターネットに接続できません</string>
 
     <string name="pref_category_apps">アプリの選択</string>
     <string name="pref_show_system_app">システムアプリの表示</string>
@@ -81,13 +81,13 @@
     <string name="pref_choose_apps">アプリの選択</string>
     <string name="pref_choose_apps_summary">ロックするアプリを選択します</string>
 
-    <string name="backup_list">リストのバックアップ</string>
-    <string name="restore_list">リストの復元</string>
-    <string name="clear_list">リストの消去</string>
+    <string name="menu_backup_list">リストのバックアップ</string>
+    <string name="menu_restore_list">リストの復元</string>
+    <string name="menu_clear_list">リストの消去</string>
     <string name="toast_no_files_to_backup">バックアップするファイルが見つかりません</string>
     <string name="toast_backup_restore_exception">問題が発生しました\n開発者へ報告をお願いします!</string>
     <string name="toast_backup_success">バックアップに成功しました</string>
-    <string name="dialog_restore_list_message">バックアップを復元して現在の設定を置き換えます!</string>
+    <string name="dialog_text_restore_list">バックアップを復元して現在の設定を置き換えます!</string>
     <string name="toast_no_files_to_restore">復元するファイルが見つかりません</string>
     <string name="toast_restore_success">バックアップの復元に成功しました!</string>
     <string name="menu_search">検索</string>
@@ -111,10 +111,10 @@
     <string name="pref_donate_upgrade_pro">プロ版にアップグレード (寄付)</string>
     <string name="pref_enable_pro">プロ版の機能の有効化</string>
     <string name="pref_enable_pro_summary">MaxLock に寄付していなくてもプロ版の機能を有効にします</string>
-    <string name="prevent_uninstall">MaxLock のアンインストール防止</string>
-    <string name="prevent_uninstall_summary">デバイス管理者を有効にして MaxLock をアンインストール不可能にします。
+    <string name="pref_prevent_uninstall">MaxLock のアンインストール防止</string>
+    <string name="pref_prevent_uninstall_summary">デバイス管理者を有効にして MaxLock をアンインストール不可能にします。
 今後 MaxLock をアンインストールするには、この画面から行うか、\"設定 → セキュリティ → デバイス管理者\" で MaxLock を無効にしてから行うことが必要になります</string>
-    <string name="uninstall">アンインストール</string>
+    <string name="pref_uninstall">アンインストール</string>
 
     <string name="device_admin_description">MaxLock のアンインストールや無効化を防止します</string>
 
@@ -124,12 +124,12 @@
     <string name="dialog_button_donate">寄付</string>
     <string name="dialog_button_rate">評価</string>
 
-    <string name="no_locking_type">ロック方法が未設定です.</string>
-    <string name="no_locked_apps">ロックするアプリが未選択です.</string>
+    <string name="sb_no_locking_type">ロック方法が未設定です.</string>
+    <string name="sb_no_locked_apps">ロックするアプリが未選択です.</string>
 
-    <string name="fake_die_message">問題が発生したため %1$s を終了します</string>
-    <string name="report">レポート</string>
-    <string name="report_problem">問題のレポート</string>
+    <string name="dialog_text_fake_die_stopped">問題が発生したため %1$s を終了します</string>
+    <string name="dialog_button_report">レポート</string>
+    <string name="dialog_title_report_problem">問題のレポート</string>
 
     <string name="toggle_master_switch">マスタースイッチの On/Off</string>
     <string name="toggle_master_switch_deprecated">マスタースイッチの On/Off (非推奨)</string>
@@ -154,7 +154,7 @@
     <string name="pref_delay_input_general2">General Delayed-Relock Timer</string>
     <string name="pref_delay_input_general2_summary">Remain time before general relock</string>
 
-    <string name="pref_min_fake_unlock">簡易版の偽装ダイアログ</string>
-    <string name="pref_min_fake_unlock_summary">アプリの強制終了の偽装ダイアログでレポートボタンをタップするとロック画面へ直ぐに移行するようにします。アプリの強制終了の偽装を有効にする必要があります</string>
+    <string name="pref_fake_unlock">簡易版の偽装ダイアログ</string>
+    <string name="pref_fake_unlock_summary">アプリの強制終了の偽装ダイアログでレポートボタンをタップするとロック画面へ直ぐに移行するようにします。アプリの強制終了の偽装を有効にする必要があります</string>
 
 </resources>

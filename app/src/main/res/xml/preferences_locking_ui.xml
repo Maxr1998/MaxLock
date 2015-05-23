@@ -17,11 +17,11 @@
             android:defaultValue="@color/accent"
             android:enabled="false"
             android:key="background_color"
-            android:title="@string/custom_color" />
+            android:title="@string/pref_custom_color" />
         <CheckBoxPreference
             android:defaultValue="@bool/tablet_mode_default"
             android:key="tablet_mode_override"
-            android:title="@string/use_tablet_mode" />
+            android:title="@string/pref_use_tablet_mode" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_category_pin_and_knock_code">
         <CheckBoxPreference

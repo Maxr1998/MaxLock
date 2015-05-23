@@ -20,6 +20,6 @@
             android:title="@string/pref_fake_die_input" />
         <CheckBoxPreference
             android:key="enable_tasker_integration"
-            android:title="@string/enable_tasker" />
+            android:title="@string/pref_enable_tasker" />
     </PreferenceCategory>
 </PreferenceScreen>

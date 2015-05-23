@@ -78,8 +78,8 @@ public class FakeDieDialog extends Activity {
 
         String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
         alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setMessage(String.format(getResources().getString(R.string.fake_die_message), requestPkgFullName))
-                .setNeutralButton(R.string.report, new DialogInterface.OnClickListener() {
+        alertDialog.setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
+                .setNeutralButton(R.string.dialog_button_report, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
@@ -90,7 +90,7 @@ public class FakeDieDialog extends Activity {
                             input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                             reportDialog = new AlertDialog.Builder(FakeDieDialog.this);
                             reportDialog.setView(input)
-                                    .setTitle(R.string.report_problem)
+                                    .setTitle(R.string.dialog_title_report_problem)
                                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {

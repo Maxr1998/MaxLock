@@ -193,7 +193,7 @@ public class AppListFragment extends Fragment {
                     List<String> list = new ArrayList<>(Arrays.asList(backupDir.list()));
                     restoreAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
                     restoreDialog = new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.dialog_restore_list_message)
+                            .setTitle(R.string.dialog_text_restore_list)
                             .setAdapter(restoreAdapter, new DialogInterface.OnClickListener() {
                                 @SuppressLint("InlinedApi")
                                 @Override

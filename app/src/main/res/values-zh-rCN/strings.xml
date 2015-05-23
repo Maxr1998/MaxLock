@@ -3,7 +3,7 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">占位符</string>
-    <string name="restart_required">MaxLock需要重新启动以让更改生效</string>
+    <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
     <string name="toast_pro_required">使用此功能需要专业版本！</string>
 
     <!-- Main screen -->
@@ -16,12 +16,12 @@
     <string name="pref_locking_type_pattern">图案</string>
 
     <string name="pref_set_password">设置密码</string>
-    <string name="msg_password_inconsistent">密码不一致！</string>
-    <string name="msg_password_null">密码不能为空！</string>
-    <string name="msg_password_changed">密码已更改！</string>
-    <string name="msg_password_incorrect">密码不正确！</string>
-    <string name="txt_type_password">密码: </string>
-    <string name="txt_retype_password">确认密码: </string>
+    <string name="toast_password_inconsistent">密码不一致！</string>
+    <string name="toast_password_null">密码不能为空！</string>
+    <string name="toast_password_changed">密码已更改！</string>
+    <string name="toast_password_incorrect">密码不正确！</string>
+    <string name="dialog_text_password">密码: </string>
+    <string name="dialog_text_re_password">确认密码: </string>
 
     <string name="choose_pin">输入您的PIN</string>
     <string name="pin_too_short">PIN必须至少4位数</string>
@@ -35,18 +35,18 @@
     <!-- Main screen -->
     <string name="pref_locking_ui">锁屏界面</string>
     <!-- Locking UI settings -->
-    <string name="open_theme_manager">打开主题管理</string>
-    <string name="open_theme_manager_summary_none">没有主题应用</string>
-    <string name="open_theme_manager_summary_applied">应用: </string>
-    <string name="overridden_by_theme">(覆盖主题)</string>
+    <string name="pref_open_theme_manager">打开主题管理</string>
+    <string name="pref_open_theme_manager_summary_none">没有主题应用</string>
+    <string name="pref_open_theme_manager_summary_applied">应用: </string>
+    <string name="pref_summary_overridden_by_theme">(覆盖主题)</string>
     <string name="pref_background">背景图片</string>
     <string-array name="background_types">
         <item>墙纸</item>
-        <item>@string/custom_color</item>
+        <item>@string/pref_custom_color</item>
         <item>自定义图片…</item>
         <!--<item>主题背景</item>-->
     </string-array>
-    <string name="custom_color">自定义颜色</string>
+    <string name="pref_custom_color">自定义颜色</string>
     <string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
     <string name="pref_invert_color">转换用户界面颜色</string>
     <string name="pref_invert_color_summary">设置这个文本和分隔器的颜色为黑色</string>
@@ -72,7 +72,7 @@
     <string name="pref_fake_die_input">假死输入</string>
     <string name="pref_fake_die_input_summary">用户需要在对话框中输入短语才能打开锁屏</string>
 
-    <string name="no_network_connected">您目前没有连接到任何网络</string>
+    <string name="toast_no_network_connected">您目前没有连接到任何网络</string>
 
     <string name="pref_category_apps">选择应用</string>
     <string name="pref_show_system_app">显示系统应用</string>
@@ -81,13 +81,13 @@
     <string name="pref_choose_apps">选择应用</string>
     <string name="pref_choose_apps_summary">选择需要锁定的应用程序</string>
 
-    <string name="backup_list">备份列表</string>
-    <string name="restore_list">恢复列表</string>
-    <string name="clear_list">清除列表</string>
+    <string name="menu_backup_list">备份列表</string>
+    <string name="menu_restore_list">恢复列表</string>
+    <string name="menu_clear_list">清除列表</string>
     <string name="toast_no_files_to_backup">没有备份文件</string>
     <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者！</string>
     <string name="toast_backup_success">备份成功</string>
-    <string name="dialog_restore_list_message">这将从备份替换当前设置！</string>
+    <string name="dialog_text_restore_list">这将从备份替换当前设置！</string>
     <string name="toast_no_files_to_restore">未找到恢复文件</string>
     <string name="toast_restore_success">恢复成功</string>
     <string name="menu_search">搜索</string>
@@ -111,10 +111,10 @@
     <string name="pref_donate_upgrade_pro">捐助后将升级为专业版</string>
     <string name="pref_enable_pro">开启专业版</string>
     <string name="pref_enable_pro_summary">这将开启专业版功能,即使您没有购买</string>
-    <string name="prevent_uninstall">保护应用程序被卸载</string>
-    <string name="prevent_uninstall_summary">MaxLock在设备管理器权限打勾应用程序将无法卸载
+    <string name="pref_prevent_uninstall">保护应用程序被卸载</string>
+    <string name="pref_prevent_uninstall_summary">MaxLock在设备管理器权限打勾应用程序将无法卸载
 		卸载这个程序您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
-    <string name="uninstall">卸载</string>
+    <string name="pref_uninstall">卸载</string>
 
     <string name="device_admin_description">保护MaxLock防止被卸载和禁用</string>
 
@@ -124,12 +124,12 @@
     <string name="dialog_button_donate">捐助</string>
     <string name="dialog_button_rate">评分</string>
 
-    <string name="no_locking_type">没有锁定特定类型</string>
-    <string name="no_locked_apps">没有选择锁定应用程序</string>
+    <string name="sb_no_locking_type">没有锁定特定类型</string>
+    <string name="sb_no_locked_apps">没有选择锁定应用程序</string>
 
-    <string name="fake_die_message">非常抱歉,%1$s已停止</string>
-    <string name="report">报告问题</string>
-    <string name="report_problem">报告问题</string>
+    <string name="dialog_text_fake_die_stopped">非常抱歉,%1$s已停止</string>
+    <string name="dialog_button_report">报告问题</string>
+    <string name="dialog_title_report_problem">报告问题</string>
 
     <string name="toggle_master_switch">切换总开关</string>
     <string name="toggle_master_switch_deprecated">切换总开关(不推荐)</string>
@@ -154,7 +154,7 @@
     <string name="pref_delay_input_general2">一般的延迟 - 重新锁定定时器</string>
     <string name="pref_delay_input_general2_summary">一般重新锁定之前保持的时间</string>
 
-    <string name="pref_min_fake_unlock">迷你假死</string>
-    <string name="pref_min_fake_unlock_summary"> 当启用锁屏后直接显示假死上的报告按钮对话框(需要启用假死) </string>
+    <string name="pref_fake_unlock">迷你假死</string>
+    <string name="pref_fake_unlock_summary"> 当启用锁屏后直接显示假死上的报告按钮对话框(需要启用假死) </string>
 
 </resources>
