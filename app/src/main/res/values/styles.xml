@@ -21,6 +21,34 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
+    <style name="AppTheme.FirstStart" parent="AppTheme.Base" />
+
+    <style name="AppTheme.FirstStart.TitleText">
+        <item name="android:maxLines">3</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="AppTheme.FirstStart.SubtitleText">
+        <item name="android:maxLines">3</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:layout_weight">0.4</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
     <style name="TranslucentStatusBar" parent="AppTheme" />
 
     <style name="FakeDieDialog" parent="android:Theme.DeviceDefault.Dialog.NoActionBar" />
@@ -36,15 +64,29 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:weightSum">2</item>
-        <item name="android:dividerPadding">8dip</item>
+        <item name="android:dividerPadding">8dp</item>
     </style>
 
     <style name="SplitButton" parent="@android:style/Widget.Holo.Button.Borderless">
-        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:singleLine">true</item>
     </style>
 
+    <style name="Text_Button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="FlatButton">
+        <item name="android:textAppearance">@style/Text_Button</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

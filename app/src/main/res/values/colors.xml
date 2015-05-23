@@ -13,5 +13,7 @@
     <color name="background_selected_on_white">#eeeeee</color>
     <color name="background_selected_on_transparent">#40ffffff</color>
 
-
+    <color name="first_start_page1">@color/accent</color>
+    <color name="first_start_page2">#ffd600</color>
+    <color name="first_start_page3">#ff3d00</color>
 </resources>

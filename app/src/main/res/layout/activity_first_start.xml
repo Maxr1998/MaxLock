@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context="de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/first_start_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="1.0" />
+
+    <LinearLayout
+        android:id="@+id/first_start_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="48.0dip"
+        android:layout_gravity="bottom"
+        android:background="@color/first_start_page1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/skip_button"
+            style="@style/FlatButton"
+            android:layout_width="0.0dip"
+            android:layout_weight="1.0"
+            android:gravity="start"
+            android:text="SKIP" />
+
+        <FrameLayout
+            android:id="@+id/paging_indicator_container"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" />
+
+        <FrameLayout
+            android:layout_width="0.0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/continue_button"
+                style="@style/FlatButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:contentDescription="NEXT"
+                android:drawableEnd="@drawable/ic_chevron_right_white_24dp"
+                android:drawableRight="@drawable/ic_chevron_right_white_24dp" />
+
+            <Button
+                android:id="@+id/done_button"
+                style="@style/FlatButton"
+                android:layout_width="fill_parent"
+                android:gravity="end"
+                android:text="DONE"
+                android:visibility="gone" />
+        </FrameLayout>
+        -->
+    </LinearLayout>
+</LinearLayout>
