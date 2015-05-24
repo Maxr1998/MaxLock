@@ -66,6 +66,7 @@ import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
 public class FragmentInformation extends Fragment implements FirstStartActivity.FragmentPagerSelected {
 
     ViewGroup rootView;
+    View lockIcon;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,22 +76,23 @@ public class FragmentInformation extends Fragment implements FirstStartActivity.
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_information, container, false);
+        lockIcon = rootView.findViewById(R.id.first_start_lock_icon);
         return rootView;
     }
 
     @Override
     public void onSelect() {
-        if (getActivity() != null && rootView.findViewById(R.id.first_start_lock_icon) != null) {
+        if (getActivity() != null && lockIcon != null && lockIcon.getVisibility() == View.GONE) {
             Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.first_start_lock_fly_in);
-            rootView.findViewById(R.id.first_start_lock_icon).startAnimation(anim);
-            rootView.findViewById(R.id.first_start_lock_icon).setVisibility(View.VISIBLE);
+            lockIcon.startAnimation(anim);
+            lockIcon.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onScrollAway() {
-        if (rootView.findViewById(R.id.first_start_lock_icon) != null) {
-            rootView.findViewById(R.id.first_start_lock_icon).setVisibility(View.GONE);
+        if (lockIcon != null) {
+            lockIcon.setVisibility(View.GONE);
         }
     }
 }
