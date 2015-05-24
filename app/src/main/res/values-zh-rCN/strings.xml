@@ -5,11 +5,22 @@
     <string name="placeholder">占位符</string>
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
     <string name="toast_pro_required">使用此功能需要专业版本！</string>
-
+    <string name="sb_no_locking_type">没有锁定特定类型</string>
+    <string name="sb_no_locked_apps">没有选择锁定应用</string>
+    <!-- First start screens-->
+    <string name="fs_welcome_maxlock">欢迎使用MaxLock!</string>
+    <string name="fs_maxlock_description">MaxLock将保护您的应用免受未经授权访问</string>
+    <string name="fs_phone_content_description">手机</string>
+    <string name="fs_lock_content_description">锁定这个手机</string>
+    <string name="fs_app_package_installer">安装包</string>
+    <string name="fs_app_settings">设置</string>
+    <string name="fs_app_xposed_installer">Xposed安装器</string>
+    <string name="fs_recommended_apps">通过锁定这些应用能进一步保护</string>
+    <string name="fs_recommended_apps_summary">您应该勾选这些应用，以确保MaxLock不能被禁用或卸载</string>
     <!-- Main screen -->
     <string name="pref_category_locking">锁定设置</string>
     <string name="pref_locking_type">锁定类型</string>
-    <!-- Locking type Settings -->
+    <!-- Locking type settings -->
     <string name="pref_locking_type_password">密码</string>
     <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">轻敲代码</string>
@@ -32,9 +43,8 @@
     <string name="choose_knock_code">输入您的轻敲代码</string>
     <string name="knock_code_too_short">轻敲代码必须至少4点</string>
     <string name="confirm_knock_code">再次确认轻敲代码</string>
-    <!-- Main screen -->
-    <string name="pref_locking_ui">锁屏界面</string>
     <!-- Locking UI settings -->
+    <string name="pref_locking_ui">锁屏界面</string>
     <string name="pref_open_theme_manager">打开主题管理</string>
     <string name="pref_open_theme_manager_summary_none">没有主题应用</string>
     <string name="pref_open_theme_manager_summary_applied">应用: </string>
@@ -47,6 +57,8 @@
         <!--<item>主题背景</item>-->
     </string-array>
     <string name="pref_custom_color">自定义颜色</string>
+    <string name="pref_use_tablet_mode">使用平板模式</string>
+    <string name="pref_use_tablet_mode_summary">%1$s发现了这个%2$s设备由于dpi%3$d和显示的宽度为%4$d像素</string>
     <string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
     <string name="pref_invert_color">转换用户界面颜色</string>
     <string name="pref_invert_color_summary">设置这个文本和分隔器的颜色为黑色</string>
@@ -61,7 +73,7 @@
     <string name="pref_category_pattern_only">仅图案</string>
     <string name="pref_show_path">图案可见</string>
     <string name="pref_haptic_feedback">滑动时振动</string>
-
+    <!-- Locking options settings -->
     <string name="pref_locking_options">锁定设置</string>
     <string name="pref_category_logging">日志记录</string>
     <string name="pref_enable_logging">开启日志记录</string>
@@ -71,9 +83,25 @@
     <string name="pref_category_other">其它</string>
     <string name="pref_fake_die_input">假死输入</string>
     <string name="pref_fake_die_input_summary">用户需要在对话框中输入短语才能打开锁屏</string>
-
-    <string name="toast_no_network_connected">您目前没有连接到任何网络</string>
-
+    <string name="pref_enable_tasker">启用Tasker集成</string>
+    <!-- I.MoD settings -->
+    <string name="pref_locking_intika">Intika I.MoD</string>
+    <string name="pref_category_intika">Intika I.MoD - 宽限期 - 一般延迟</string>
+    <string name="pref_category_intika2">Intika I.MoD - 宽限期 - PerApp延迟</string>
+    <string name="pref_locking_delay_general">启用一般延迟-重新锁定</string>
+    <string name="pref_locking_delay_general_summary">避免在一段时间内再次要求解锁应用</string>
+    <string name="pref_delay_input_general">一般延迟 - 重新锁定定时器</string>
+    <string name="pref_delay_input_general_summary">输入一个数字指定延迟时间,值为分钟,锁定一般延迟</string>
+    <string name="pref_locking_delay_perapp">启用PerApp延迟 - 重新锁定</string>
+    <string name="pref_locking_delay_perapp_summary">防止要求在一定时间内为每一个应用程序再次解锁,分开而不管其他受保护的应用程序</string>
+    <string name="pref_delay_input_perapp">PerApp延迟 - 重新锁定定时器</string>
+    <string name="pref_delay_input_perapp_summary">输入一个数字指定延迟时间,值为分钟,锁定PerApp延迟</string>
+    <string name="pref_delay_needpro">启用延迟重新锁定 - 专业版</string>
+    <string name="pref_delay_input_general2">一般延迟 - 重新锁定定时器</string>
+    <string name="pref_delay_input_general2_summary">一般重新锁定之前的保持时间</string>
+    <string name="pref_fake_unlock">假死直接解锁</string>
+    <string name="pref_fake_unlock_summary">当启用锁屏后直接显示假死上的报告按钮对话框</string>
+    <!-- Apps settings -->
     <string name="pref_category_apps">选择应用</string>
     <string name="pref_show_system_app">显示系统应用</string>
     <string name="pref_show_system_app_summary_on">显示系统应用程序</string>
@@ -96,65 +124,51 @@
     <string name="dialog_title_settings">设置</string>
     <string name="dialog_text_fake_die">显示假死窗口</string>
     <string name="dialog_text_custom_password">自定义密码</string>
-	<string name="dialog_button_exclude_activities">活动</string>
+    <string name="dialog_button_exclude_activities">活动</string>
     <string name="dialog_title_exclude_activities">排除锁定活动</string>
-
+    <!-- UI settings -->
     <string name="pref_category_ui">界面设置</string>
     <string name="pref_hide_from_launcher">桌面隐藏应用图标</string>
     <string name="reboot_required">可能需要重新启动以应用更改</string>
     <string name="pref_use_dark_style">使用黑色风格</string>
-
+    <!-- About information -->
     <string name="pref_category_about">关于</string>
     <string name="app_name_pro">MaxLock专业版</string>
     <string name="app_name_pseudo_pro">MaxLock假冒专业版</string>
     <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\n点击这里查看更多信息</string>
     <string name="pref_donate_upgrade_pro">捐助后将升级为专业版</string>
+    <string name="toast_no_network_connected">您目前没有连接到任何网络</string>
     <string name="pref_enable_pro">开启专业版</string>
     <string name="pref_enable_pro_summary">这将开启专业版功能,即使您没有购买</string>
     <string name="pref_prevent_uninstall">保护应用程序被卸载</string>
     <string name="pref_prevent_uninstall_summary">MaxLock在设备管理器权限打勾应用程序将无法卸载
-		卸载这个程序您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
+	卸载这个程序您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
     <string name="pref_uninstall">卸载</string>
-
     <string name="device_admin_description">保护MaxLock防止被卸载和禁用</string>
-
+    <!-- External stuff -->
     <string name="dialog_like_app">您喜欢这个应用吗?</string>
     <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠 :)</string>
     <string name="dialog_cb_never_again">不再显示</string>
     <string name="dialog_button_donate">捐助</string>
     <string name="dialog_button_rate">评分</string>
-
-    <string name="sb_no_locking_type">没有锁定特定类型</string>
-    <string name="sb_no_locked_apps">没有选择锁定应用程序</string>
-
+    <!-- Fake die screen -->
     <string name="dialog_text_fake_die_stopped">非常抱歉,%1$s已停止</string>
     <string name="dialog_button_report">报告问题</string>
     <string name="dialog_title_report_problem">报告问题</string>
-
+    <!-- MasterSwitch stuff -->
     <string name="toggle_master_switch">切换总开关</string>
     <string name="toggle_master_switch_deprecated">切换总开关(不推荐)</string>
     <string name="unlock_master_switch">打开总开关</string>
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关重新启用</string>
     <string name="toast_no_locking_types">没有指定锁定类型</string>
-
-    <string name="pref_category_intika">Intika I.MoD - 宽限期 - 一般延迟</string>
-    <string name="pref_category_intika2">Intika I.MoD - 宽限期 - PerApp延迟</string>
-    <string name="pref_locking_delay_general">启用一般延迟-重新锁定</string>
-    <string name="pref_locking_delay_general_summary">避免在一段时间内再次要求解锁应用</string>
-    <string name="pref_delay_input_general">一般延迟 - 重新锁定定时器</string>
-    <string name="pref_delay_input_general_summary">输入一个数字指定延迟时间,值为分钟,锁定一般延迟</string>
-    <string name="pref_locking_delay_perapp">启用PerApp延迟 - 重新锁定</string>
-    <string name="pref_locking_delay_perapp_summary">防止要求在一定时间内为每一个应用程序再次解锁,分开而不管其他受保护的应用程序</string>
-    <string name="pref_delay_input_perapp">PerApp延迟 - 重新锁定定时器</string>
-    <string name="pref_delay_input_perapp_summary">输入一个数字指定延迟时间,值为分钟,锁定PerApp延迟</string>
-    <string name="pref_delay_needpro">启用延迟重新锁定 - 专业版</string>
-    <string name="pref_locking_intika">Intika I.MoD</string>
-
-    <string name="pref_delay_input_general2">一般的延迟 - 重新锁定定时器</string>
-    <string name="pref_delay_input_general2_summary">一般重新锁定之前保持的时间</string>
-
-    <string name="pref_fake_unlock">迷你假死</string>
-    <string name="pref_fake_unlock_summary"> 当启用锁屏后直接显示假死上的报告按钮对话框(需要启用假死) </string>
+    <!-- Tasker config stuff -->
+    <string name="tasker_configuration">配置:</string>
+    <string name="tasker_ms_on">打开主开关</string>
+    <string name="tasker_ms_off">关闭主开关</string>
+    <string name="tasker_imod_reset">重设I.MoD</string>
+    <string name="tasker_imod_reset_summary">锁定所有应用之前打开I.MoD</string>
+    <string name="tasker_button_apply">应用</string>
+    <string name="tasker_integration_disabled">当前Tasker集成已禁用。您可以通过\"MaxLock→选项→启用Tasker集成\"来开启</string>
 
 </resources>
