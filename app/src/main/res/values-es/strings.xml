@@ -30,4 +30,8 @@
     <string name="knock_code_too_short">Knock code debe ser como mínimo de 4 toques</string>
     <string name="confirm_knock_code">Confirme su knock code</string>
     <string name="app_name">MaxLock</string>
+    <string name="app_name_pro">MaxLock Pro</string>
+    <string name="fs_app_settings">Ajustes</string>
+    <string name="fs_app_package_installer">Instalador de paquetes</string>
+    <string name="fs_app_xposed_installer">Xposed Installer</string>
 </resources>

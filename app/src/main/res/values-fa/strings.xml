@@ -35,4 +35,5 @@
     <string name="dialog_text_fake_die_stopped">Unfortunately, %1$s has stopped.</string>
     <string name="dialog_button_report">گزارش</string>
     <string name="dialog_title_report_problem">گزارش مشکل</string>
+    <string name="app_name_pro">MaxLock Pro</string>
 </resources>
