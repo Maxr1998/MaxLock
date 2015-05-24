@@ -9,14 +9,14 @@
     <string name="no_locked_apps">Keine zu sperrenden Apps ausgewählt.</string>
     <!-- First start screens-->
     <string name="fs_welcome_maxlock">Willkommen bei MaxLock!</string>
-    <string name="fs_maxlock_description">MaxLock schützt deine Apps vor unberechtigten Zugriff</string>
+    <string name="fs_maxlock_description">MaxLock schützt deine Apps vor unberechtigtem Zugriff</string>
     <string name="fs_phone_content_description">Bild eines Telefons</string>
     <string name="fs_lock_content_description">Schloss über dem Telefon</string>
     <string name="fs_app_package_installer">Paket Installer</string>
     <string name="fs_app_settings">Einstellungen</string>
     <string name="fs_app_xposed_installer">Xposed Installer</string>
-    <string name="fs_recommended_apps">Verbessere Schutz durch Sperre dieser Apps</string>
-    <string name="fs_recommended_apps_summary">Du solltest alle Apps ankreuzen, um sicher zu gehen, das MaxLock nicht deaktiviert wird</string>
+    <string name="fs_recommended_apps">Verbessere den Schutz durch Sperre dieser Apps</string>
+    <string name="fs_recommended_apps_summary">Du solltest die Sperre aller Apps aktivieren, um sicher zu gehen, das MaxLock nicht deaktiviert werden kann</string>
     <!-- Main screen -->
     <string name="pref_category_locking">Sperre</string>
     <string name="pref_locking_type">Sperrart</string>
