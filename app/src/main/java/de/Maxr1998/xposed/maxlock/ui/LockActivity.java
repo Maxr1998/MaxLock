@@ -92,14 +92,14 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     public void onAuthenticationSucceeded() {
         // Save time for Intika mod
         prefsIModTemp.edit()
+                .putLong(Common.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis())
+                .commit();
+        prefsIModTemp.edit()
                 .putLong(packageName + "_imod", System.currentTimeMillis())
                 .commit();
         // Clean Up
         prefsPackages.edit()
                 .remove(packageName + "_imod")
-                .commit();
-        prefsIModTemp.edit()
-                .putLong(Common.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis())
                 .commit();
         openApp();
     }

@@ -307,11 +307,15 @@ public abstract class Util {
     @SuppressLint({"WorldReadableFiles"})
     public static void cleanUp(Context context) {
         loadPrefs(context);
-        if (!PREFS.getString("migrated", "").equals("5.2")) {
+        if (!PREFS.getString("migrated", "").equals("v5.2")) {
             PREFS.edit()
+                    .remove(Common.IMOD_DELAY_GLOBAL_ENABLED)
+                    .remove(Common.IMOD_DELAY_APP_ENABLED)
                     .remove(Common.IMOD_LAST_UNLOCK_GLOBAL)
+                    .remove(Common.IMOD_DELAY_GLOBAL)
+                    .remove(Common.IMOD_DELAY_APP)
                     .apply();
-            PREFS.edit().putString("migrated", "5.2").apply();
+            PREFS.edit().putString("migrated", "v5.2").apply();
         }
     }
 

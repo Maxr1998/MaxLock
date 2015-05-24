@@ -47,7 +47,6 @@ public class FirstStartActivity extends FragmentActivity implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_start);
-        new FirstStartTasks().execute(this);
         mPager = (ViewPager) findViewById(R.id.first_start_pager);
         mAdapter = new FirstStartPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
@@ -60,8 +59,6 @@ public class FirstStartActivity extends FragmentActivity implements View.OnClick
         continueButton.setOnClickListener(this);
         doneButton = (Button) findViewById(R.id.done_button);
         doneButton.setOnClickListener(this);
-
-        String s = "1234";
     }
 
     private void fadeBottomColor(int colorFrom, int colorTo, float percent) {
