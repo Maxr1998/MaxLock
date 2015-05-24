@@ -81,7 +81,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         if (fromRoot) {
             from.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
-        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : fragment instanceof GuideFragment ? "GuideFragment" : null).addToBackStack(null).commit();
+        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : fragment instanceof WebsiteFragment ? "WebsiteFragment" : null).addToBackStack(null).commit();
         if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
             from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
     }

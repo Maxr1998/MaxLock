@@ -44,9 +44,9 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
-import de.Maxr1998.xposed.maxlock.ui.settings.GuideFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
+import de.Maxr1998.xposed.maxlock.ui.settings.WebsiteFragment;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
@@ -81,7 +81,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
         mSettingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
-            getSupportActionBar().hide();
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
             if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null)
                 getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
             Fragment lockFragment = new LockFragment();
@@ -116,9 +118,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             menu.findItem(R.id.toolbar_info).setVisible(false);
             menu.findItem(R.id.toolbar_master_switch).setVisible(false);
         }
-        Fragment guide = getSupportFragmentManager().findFragmentByTag("GuideFragment");
-        if (guide != null && guide.isVisible()) {
-            menu.findItem(R.id.toolbar_info).setVisible(false);
+        Fragment website = getSupportFragmentManager().findFragmentByTag("WebsiteFragment");
+        if (website != null && website.isVisible() && getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        } else if (getSupportActionBar() != null && !getSupportActionBar().isShowing() && mSettingsFragment != null && !mSettingsFragment.isVisible()) {
+            getSupportActionBar().show();
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -136,7 +140,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_info:
-                SettingsFragment.launchFragment(new GuideFragment(), true, mSettingsFragment);
+                SettingsFragment.launchFragment(new WebsiteFragment(), true, mSettingsFragment);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -144,9 +148,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     @Override
     public void onBackPressed() {
-        Fragment guide = getSupportFragmentManager().findFragmentByTag("GuideFragment");
-        if (guide != null && guide.isVisible()) {
-            if (((GuideFragment) guide).back())
+        Fragment website = getSupportFragmentManager().findFragmentByTag("WebsiteFragment");
+        if (website != null && website.isVisible()) {
+            if (((WebsiteFragment) website).back())
                 return;
         }
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -164,7 +168,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         if (mSettingsFragment == null) {
             mSettingsFragment = new SettingsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, mSettingsFragment, TAG_SETTINGS_FRAGMENT).commit();
-            getSupportActionBar().show();
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().show();
+            }
         }
     }
 

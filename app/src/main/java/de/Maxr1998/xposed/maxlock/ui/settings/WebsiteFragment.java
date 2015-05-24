@@ -16,7 +16,7 @@ import java.util.Locale;
 
 import de.Maxr1998.xposed.maxlock.R;
 
-public class GuideFragment extends Fragment {
+public class WebsiteFragment extends Fragment {
 
     Integer avoidLoopCounter = 2; //2 to be able to back to the application with 3x back
     private String currentUrl;
