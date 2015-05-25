@@ -6,28 +6,38 @@
 
     <include layout="@layout/toolbar" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/settings_fragment"
-            android:name="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+
+            <fragment
+                android:id="@+id/settings_fragment"
+                android:name="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider_white" />
+
+            <FrameLayout
+                android:id="@+id/frame_container"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="visible" />
+        </LinearLayout>
 
         <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/divider_white" />
-
-        <FrameLayout
-            android:id="@+id/frame_container"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="visible" />
-    </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/toolbar_shadow_pre_lp" />
+    </RelativeLayout>
 </LinearLayout>
