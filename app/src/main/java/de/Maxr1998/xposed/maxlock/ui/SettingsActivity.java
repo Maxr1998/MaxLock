@@ -50,7 +50,10 @@ import de.Maxr1998.xposed.maxlock.ui.settings.WebsiteFragment;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
-    private static final String TAG_SETTINGS_FRAGMENT = "tag_settings_fragment";
+    private static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
+    private static final String TAG_WEBSITE_FRAGMENT = "WebsiteFragment";
+    private static final String TAG_LOCK_FRAGMENT = "LockFragment";
+
     static boolean FS_SHOW = true;
     private static boolean UNLOCKED = false;
     public SettingsFragment mSettingsFragment;
@@ -81,22 +84,23 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
         mSettingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
+            new Startup(this).execute(prefs.getBoolean(Common.FIRST_START, true));
             if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
             }
-            if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null)
+            if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null) {
                 getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+            }
             Fragment lockFragment = new LockFragment();
             Bundle b = new Bundle(1);
             b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
             lockFragment.setArguments(b);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment, TAG_LOCK_FRAGMENT).commit();
         }
         billingProcessor = new BillingProcessor(this, getString(R.string.license_key), mSettingsFragment);
         if (BillingHelper.GooglePlayServiceAvailable(getApplicationContext())) {
             billingProcessor.loadOwnedPurchasesFromGoogle();
         }
-        new Startup(this).execute(prefs.getBoolean(Common.FIRST_START, true));
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -118,10 +122,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             menu.findItem(R.id.toolbar_info).setVisible(false);
             menu.findItem(R.id.toolbar_master_switch).setVisible(false);
         }
-        Fragment website = getSupportFragmentManager().findFragmentByTag("WebsiteFragment");
-        if (website != null && website.isVisible() && getSupportActionBar() != null) {
+        Fragment website = getSupportFragmentManager().findFragmentByTag(TAG_WEBSITE_FRAGMENT);
+        Fragment lockScreen = getSupportFragmentManager().findFragmentByTag(TAG_LOCK_FRAGMENT);
+        if (website != null && website.isVisible() && getSupportActionBar() != null && getSupportFragmentManager().findFragmentById(R.id.settings_fragment) == null) {
             getSupportActionBar().hide();
-        } else if (getSupportActionBar() != null && !getSupportActionBar().isShowing() && mSettingsFragment != null && !mSettingsFragment.isVisible()) {
+        } else if (getSupportActionBar() != null && !getSupportActionBar().isShowing() && (lockScreen == null || !lockScreen.isVisible())) {
             getSupportActionBar().show();
         }
         return super.onCreateOptionsMenu(menu);
@@ -148,7 +153,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     @Override
     public void onBackPressed() {
-        Fragment website = getSupportFragmentManager().findFragmentByTag("WebsiteFragment");
+        Fragment website = getSupportFragmentManager().findFragmentByTag(TAG_WEBSITE_FRAGMENT);
         if (website != null && website.isVisible()) {
             if (((WebsiteFragment) website).back())
                 return;
