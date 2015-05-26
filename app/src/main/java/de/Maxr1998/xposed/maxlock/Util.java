@@ -265,7 +265,7 @@ public abstract class Util {
             case "theme":
                 InputStream backgroundStream;
                 try {
-                    File backgroundFile = new File(dataDir(context) + File.separator + "theme" + File.separator + "background.png");
+                    File backgroundFile = new File(dataDir(context) + "theme" + File.separator + "background.png");
                     if (backgroundFile.exists()) {
                         backgroundStream = new FileInputStream(backgroundFile);
                         M_BITMAP = BitmapFactory.decodeStream(backgroundStream);
@@ -277,7 +277,7 @@ public abstract class Util {
             case "custom":
                 InputStream inputStream;
                 try {
-                    inputStream = new FileInputStream(new File(dataDir(context) + File.separator + "background" + File.separator + "image"));
+                    inputStream = new FileInputStream(new File(dataDir(context) + "background" + File.separator + "image"));
                     M_BITMAP = BitmapFactory.decodeStream(inputStream);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -301,7 +301,7 @@ public abstract class Util {
     }
 
     public static String dataDir(Context context) {
-        return context.getApplicationInfo().dataDir;
+        return context.getApplicationInfo().dataDir + File.separator;
     }
 
     @SuppressLint({"WorldReadableFiles"})

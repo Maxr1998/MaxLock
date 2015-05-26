@@ -81,7 +81,7 @@ public class ThemeService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d("MaxLock/ThemeService", "Intent received");
-        themeFile = new File(Util.dataDir(this) + File.separator + "shared_prefs" + File.separator + themeOrigFile);
+        themeFile = new File(Util.dataDir(this) + "shared_prefs" + File.separator + themeOrigFile);
 
         int extra = intent.getIntExtra("extra", -1);
         switch (extra) {
@@ -122,7 +122,7 @@ public class ThemeService extends IntentService {
 
             // background.png
             InputStream backgroundStream = assets.open(backgroundOrigFile);
-            File backgroundFile = new File(Util.dataDir(this) + File.separator + "theme" + File.separator + backgroundOrigFile);
+            File backgroundFile = new File(Util.dataDir(this) + "theme" + File.separator + backgroundOrigFile);
             FileUtils.copyInputStreamToFile(backgroundStream, backgroundFile);
             if (themeFile.length() < 10)
                 //noinspection ResultOfMethodCallIgnored
@@ -151,7 +151,7 @@ public class ThemeService extends IntentService {
         //noinspection ResultOfMethodCallIgnored
         themeFile.delete();
         getSharedPreferences("theme", MODE_MULTI_PROCESS);
-        File theme = new File(Util.dataDir(this) + File.separator + "theme");
+        File theme = new File(Util.dataDir(this) + "theme");
         try {
             FileUtils.deleteDirectory(theme);
         } catch (IOException e) {

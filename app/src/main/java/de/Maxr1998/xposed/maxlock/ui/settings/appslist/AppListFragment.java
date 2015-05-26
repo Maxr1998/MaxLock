@@ -175,9 +175,9 @@ public class AppListFragment extends Fragment {
             final File prefsPackagesFileShort = new File(Common.PREFS_PACKAGES + ".xml");
             final File prefsPerAppFileShort = new File(Common.PREFS_PER_APP + ".xml");
             final File prefsActivitiesFileShort = new File(Common.PREFS_ACTIVITIES + ".xml");
-            final File prefsPackagesFile = new File(getActivity().getApplicationInfo().dataDir + File.separator + "shared_prefs" + File.separator + prefsPackagesFileShort);
-            final File prefsPerAppFile = new File(getActivity().getApplicationInfo().dataDir + File.separator + "shared_prefs" + File.separator + prefsPerAppFileShort);
-            final File prefsActivitiesFile = new File(getActivity().getApplicationInfo().dataDir + File.separator + "shared_prefs" + File.separator + prefsActivitiesFileShort);
+            final File prefsPackagesFile = new File(Util.dataDir(getActivity()) + "shared_prefs" + File.separator + prefsPackagesFileShort);
+            final File prefsPerAppFile = new File(Util.dataDir(getActivity()) + "shared_prefs" + File.separator + prefsPerAppFileShort);
+            final File prefsActivitiesFile = new File(Util.dataDir(getActivity()) + "shared_prefs" + File.separator + prefsActivitiesFileShort);
             final File backupDir = new File(Environment.getExternalStorageDirectory() + File.separator + "MaxLock_Backup");
 
             switch (item.getItemId()) {
