@@ -90,7 +90,7 @@ public abstract class Common {
     public static final String PREFS_PER_APP = "per_app_settings";
     public static final String PREFS_ACTIVITIES = "activities";
     public static final String PREFS_IMOD = "imod";
-    public static final String PREFS_IMOD_TEMP = "imod_tempfile";
+    public static final String PREFS_IMOD_TEMP = "imod_temp_values";
 
     public static final String PREFS_THEME = "theme";
 

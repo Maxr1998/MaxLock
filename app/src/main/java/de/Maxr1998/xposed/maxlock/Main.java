@@ -51,7 +51,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-        makeReadable();
+        reload();
         final String packageName = lpparam.packageName;
         if (!PREFS_PACKAGES.getBoolean(packageName, false)) {
             return;
@@ -112,7 +112,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         PREFS_ACTIVITIES.makeWorldReadable();
         PREFS_IMOD.makeWorldReadable();
         PREFS_IMOD_TEMP.makeWorldReadable();
-        reload();
     }
 
     private void reload() {
