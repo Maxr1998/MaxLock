@@ -5,11 +5,22 @@
     <string name="placeholder">Placeholder</string>
     <string name="dialog_text_restart_required">変更を適用にするには MaxLock の再起動が必要です</string>
     <string name="toast_pro_required">この機能を使用するにはプロ版が必要です!</string>
-
+    <string name="sb_no_locking_type">ロック方法が未設定です.</string>
+    <string name="sb_no_locked_apps">ロックするアプリが未選択です.</string>
+    <!-- First start screens-->
+    <string name="fs_welcome_maxlock">MaxLock へようこそ!</string>
+    <string name="fs_maxlock_description">MaxLock はアプリが許可無く起動されることを防止します</string>
+    <string name="fs_phone_content_description">Phone</string>
+    <string name="fs_lock_content_description">Lock on the phone</string>
+    <string name="fs_app_package_installer">パッケージ インストーラー</string>
+    <string name="fs_app_settings">システム設定</string>
+    <string name="fs_app_xposed_installer">Xposed インストーラー</string>
+    <string name="fs_recommended_apps">これらのアプリをロックすると、より確実にアプリを保護できます</string>
+    <string name="fs_recommended_apps_summary">MaxLock の無効化やアンインストールを防止するには、すべてのアプリにチェックマークを付けてください</string>
     <!-- Main screen -->
     <string name="pref_category_locking">ロックの設定</string>
     <string name="pref_locking_type">ロック方法</string>
-    <!-- Locking type Settings -->
+    <!-- Locking type settings -->
     <string name="pref_locking_type_password">パスワード</string>
     <string name="pref_locking_type_pin">暗証番号</string>
     <string name="pref_locking_type_knockcode">ノックコード</string>
@@ -32,9 +43,8 @@
     <string name="choose_knock_code">ノックコードを入力してください</string>
     <string name="knock_code_too_short">少なくとも 4 回タップしてください</string>
     <string name="confirm_knock_code">確認のためノックコードを再入力してください</string>
-    <!-- Main screen -->
-    <string name="pref_locking_ui">ロック画面</string>
     <!-- Locking UI settings -->
+    <string name="pref_locking_ui">ロック画面</string>
     <string name="pref_open_theme_manager">Open Theme Manager</string>
     <string name="pref_open_theme_manager_summary_none">No theme applied</string>
     <string name="pref_open_theme_manager_summary_applied">Applied: </string>
@@ -47,6 +57,8 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">背景色</string>
+    <string name="pref_use_tablet_mode">タブレットモード</string>
+    <string name="pref_use_tablet_mode_summary">この端末(%1$s)はドット密度が %3$d dpi で画面幅が %4$d ピクセルなので %2$s として認識されました</string>
     <string name="pref_category_pin_and_knock_code">暗証番号とノックコード</string>
     <string name="pref_invert_color">表示色の反転</string>
     <string name="pref_invert_color_summary">テキストと分割線の色を黒にします</string>
@@ -61,7 +73,7 @@
     <string name="pref_category_pattern_only">パターン</string>
     <string name="pref_show_path">パターンの表示</string>
     <string name="pref_haptic_feedback">パターン入力時の振動</string>
-
+    <!-- Locking options settings -->
     <string name="pref_locking_options">オプション</string>
     <string name="pref_category_logging">ログ</string>
     <string name="pref_enable_logging">ログの有効化</string>
@@ -70,10 +82,26 @@
     <string name="menu_delete_log">ログの削除</string>
     <string name="pref_category_other">その他</string>
     <string name="pref_fake_die_input">偽装ダイアログへの入力文字列</string>
-    <string name="pref_fake_die_input_summary">アプリの強制終了の偽装ダイアログからロック画面へ移行するために必要となる入力文字列を設定します</string>
-
-    <string name="toast_no_network_connected">現在、インターネットに接続できません</string>
-
+    <string name="pref_fake_die_input_summary">アプリ強制終了の偽装ダイアログからロック画面へ移行するために必要となる入力文字列を設定します</string>
+    <string name="pref_enable_tasker">Tasker 機能の有効化</string>
+    <!-- I.MoD settings -->
+    <string name="pref_locking_intika">Intika 拡張</string>
+    <string name="pref_category_intika">Intika 拡張 - ロック解除の有効時間 - アプリ全体</string>
+    <string name="pref_category_intika2">Intika 拡張 - ロック解除の有効時間 - アプリ個別</string>
+    <string name="pref_locking_delay_general">再ロックの先延ばし</string>
+    <string name="pref_locking_delay_general_summary">アプリのロックを解除したら一定時間は再解除を要求しないようにします</string>
+    <string name="pref_delay_input_general">再ロックまでの時間</string>
+    <string name="pref_delay_input_general_summary">アプリを再度ロックするまでの時間(分)を設定してください</string>
+    <string name="pref_locking_delay_perapp">再ロックの先延ばし</string>
+    <string name="pref_locking_delay_perapp_summary">アプリのロックを解除したら一定時間は再解除を要求しないようにします</string>
+    <string name="pref_delay_input_perapp">再ロックまでの時間</string>
+    <string name="pref_delay_input_perapp_summary">アプリを再度ロックするまでの時間(分)を設定してください</string>
+    <string name="pref_delay_needpro">再ロックの先延ばし - プロ版</string>
+    <string name="pref_delay_input_general2">再ロックまでの時間</string>
+    <string name="pref_delay_input_general2_summary">アプリ全体の再ロックまでの残り時間</string>
+    <string name="pref_fake_unlock">偽装ダイアログの直接解除</string>
+    <string name="pref_fake_unlock_summary">アプリ強制終了の偽装ダイアログでレポートボタンをタップするとロック画面へ直ぐに移行するようにします</string>
+    <!-- Apps settings -->
     <string name="pref_category_apps">アプリの選択</string>
     <string name="pref_show_system_app">システムアプリの表示</string>
     <string name="pref_show_system_app_summary_on">システムアプリを表示します</string>
@@ -94,67 +122,53 @@
     <string name="toggle_lock_on">On</string>
     <string name="toggle_lock_off">Off</string>
     <string name="dialog_title_settings">設定</string>
-    <string name="dialog_text_fake_die">アプリの強制終了の偽装</string>
+    <string name="dialog_text_fake_die">アプリ強制終了の偽装</string>
     <string name="dialog_text_custom_password">アプリ個別のロック画面</string>
     <string name="dialog_button_exclude_activities">アクティビティ</string>
     <string name="dialog_title_exclude_activities">アクティビティ個別のロック設定</string>
-
+    <!-- UI settings -->
     <string name="pref_category_ui">UI 設定</string>
     <string name="pref_hide_from_launcher">アプリアイコンの非表示</string>
     <string name="reboot_required">変更を適用するには端末の再起動が必要かもしれません</string>
     <string name="pref_use_dark_style">暗色スタイル</string>
-
+    <!-- About information -->
     <string name="pref_category_about">このアプリについて</string>
     <string name="app_name_pro">MaxLock プロ版</string>
     <string name="app_name_pseudo_pro">MaxLock 準プロ版</string>
     <string name="pref_about_summary">コピーライト &#169; 2014&#8211;2015 by Maxr1998\nタップすると詳細情報を表示します</string>
     <string name="pref_donate_upgrade_pro">プロ版にアップグレード (寄付)</string>
+    <string name="toast_no_network_connected">現在、インターネットに接続できません</string>
     <string name="pref_enable_pro">プロ版の機能の有効化</string>
     <string name="pref_enable_pro_summary">MaxLock に寄付していなくてもプロ版の機能を有効にします</string>
     <string name="pref_prevent_uninstall">MaxLock のアンインストール防止</string>
     <string name="pref_prevent_uninstall_summary">デバイス管理者を有効にして MaxLock をアンインストール不可能にします。
 今後 MaxLock をアンインストールするには、この画面から行うか、\"設定 → セキュリティ → デバイス管理者\" で MaxLock を無効にしてから行うことが必要になります</string>
     <string name="pref_uninstall">アンインストール</string>
-
     <string name="device_admin_description">MaxLock のアンインストールや無効化を防止します</string>
-
+    <!-- External stuff -->
     <string name="dialog_like_app">このアプリはいかがですか?</string>
     <string name="dialog_like_app_text">もし気に入っていただけたら Play ストアに評価を投稿してください。また、寄付も受け付けています :)</string>
     <string name="dialog_cb_never_again">再び表示しない</string>
     <string name="dialog_button_donate">寄付</string>
     <string name="dialog_button_rate">評価</string>
-
-    <string name="sb_no_locking_type">ロック方法が未設定です.</string>
-    <string name="sb_no_locked_apps">ロックするアプリが未選択です.</string>
-
+    <!-- Fake die screen -->
     <string name="dialog_text_fake_die_stopped">問題が発生したため %1$s を終了します</string>
     <string name="dialog_button_report">レポート</string>
     <string name="dialog_title_report_problem">問題のレポート</string>
-
+    <!-- MasterSwitch stuff -->
     <string name="toggle_master_switch">マスタースイッチの On/Off</string>
     <string name="toggle_master_switch_deprecated">マスタースイッチの On/Off (非推奨)</string>
     <string name="unlock_master_switch">マスタースイッチを Off にします</string>
     <string name="toast_master_switch_off">マスタースイッチを Off にしました</string>
     <string name="toast_master_switch_on">マスタースイッチを On にしました</string>
     <string name="toast_no_locking_types">ロック方法が未設定です</string>
-
-    <string name="pref_category_intika">Intika 拡張 - ロック解除の有効時間 - アプリ全体</string>
-    <string name="pref_category_intika2">Intika 拡張 - ロック解除の有効時間 - アプリ個別</string>
-    <string name="pref_locking_delay_general">再ロックの先延ばし</string>
-    <string name="pref_locking_delay_general_summary">アプリのロックを解除したら一定時間は再解除を要求しないようにします</string>
-    <string name="pref_delay_input_general">再ロックまでの時間</string>
-    <string name="pref_delay_input_general_summary">アプリを再度ロックするまでの時間(分)を設定してください</string>
-    <string name="pref_locking_delay_perapp">再ロックの先延ばし</string>
-    <string name="pref_locking_delay_perapp_summary">アプリのロックを解除したら一定時間は再解除を要求しないようにします</string>
-    <string name="pref_delay_input_perapp">再ロックまでの時間</string>
-    <string name="pref_delay_input_perapp_summary">アプリを再度ロックするまでの時間(分)を設定してください</string>
-    <string name="pref_delay_needpro">再ロックの先延ばし - プロ版</string>
-    <string name="pref_locking_intika">Intika 拡張</string>
-
-    <string name="pref_delay_input_general2">General Delayed-Relock Timer</string>
-    <string name="pref_delay_input_general2_summary">Remain time before general relock</string>
-
-    <string name="pref_fake_unlock">簡易版の偽装ダイアログ</string>
-    <string name="pref_fake_unlock_summary">アプリの強制終了の偽装ダイアログでレポートボタンをタップするとロック画面へ直ぐに移行するようにします。アプリの強制終了の偽装を有効にする必要があります</string>
+    <!-- Tasker config stuff -->
+    <string name="tasker_configuration">設定 :</string>
+    <string name="tasker_ms_on">マスタースイッチ On</string>
+    <string name="tasker_ms_off">マスタースイッチ Off</string>
+    <string name="tasker_imod_reset">Intika 拡張のリセット</string>
+    <string name="tasker_imod_reset_summary">Intika 拡張でロック解除されたアプリをすべてロックします</string>
+    <string name="tasker_button_apply">適用</string>
+    <string name="tasker_integration_disabled">Tasker 機能が無効になっています。\"MaxLock → オプション → Tasker 機能の有効化\" で有効にしてください</string>
 
 </resources>
