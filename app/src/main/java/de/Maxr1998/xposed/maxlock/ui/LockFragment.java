@@ -235,7 +235,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             @Override
             public void onGlobalLayout() {
                 kCCBackground = Bitmap.createBitmap(container.getWidth(), container.getHeight(), Bitmap.Config.ARGB_8888);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
                     container.setBackgroundDrawable(new BitmapDrawable(getResources(), kCCBackground));
                     view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 } else {

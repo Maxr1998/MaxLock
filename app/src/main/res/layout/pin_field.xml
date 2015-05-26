@@ -2,127 +2,133 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="HardcodedText">
-    <!-- Top row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <!-- 1 -->
-        <TextView
-            android:id="@+id/pin1"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="1" />
-        <!-- 2 -->
-        <TextView
-            android:id="@+id/pin2"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="2" />
-        <!-- 3 -->
-        <TextView
-            android:id="@+id/pin3"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="3" />
-    </LinearLayout>
 
-    <!-- Middle row -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <!-- 4 -->
-        <TextView
-            android:id="@+id/pin4"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- Top row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="4" />
-        <!-- 5 -->
-        <TextView
-            android:id="@+id/pin5"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="5" />
-        <!-- 6 -->
-        <TextView
-            android:id="@+id/pin6"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="6" />
-    </LinearLayout>
+            android:orientation="horizontal">
+            <!-- 1 -->
+            <TextView
+                android:id="@+id/pin1"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="1" />
+            <!-- 2 -->
+            <TextView
+                android:id="@+id/pin2"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="2" />
+            <!-- 3 -->
+            <TextView
+                android:id="@+id/pin3"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="3" />
+        </LinearLayout>
 
-    <!-- Bottom row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <!-- 7 -->
-        <TextView
-            android:id="@+id/pin7"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <!-- Middle row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="7" />
-        <!-- 8 -->
-        <TextView
-            android:id="@+id/pin8"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <!-- 4 -->
+            <TextView
+                android:id="@+id/pin4"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="4" />
+            <!-- 5 -->
+            <TextView
+                android:id="@+id/pin5"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="5" />
+            <!-- 6 -->
+            <TextView
+                android:id="@+id/pin6"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="6" />
+        </LinearLayout>
+
+        <!-- Bottom row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="8" />
-        <!-- 9 -->
-        <TextView
-            android:id="@+id/pin9"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <!-- 7 -->
+            <TextView
+                android:id="@+id/pin7"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="7" />
+            <!-- 8 -->
+            <TextView
+                android:id="@+id/pin8"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="8" />
+            <!-- 9 -->
+            <TextView
+                android:id="@+id/pin9"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="9" />
+        </LinearLayout>
+        <!-- Null row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="9" />
-    </LinearLayout>
-    <!-- Null row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <!-- Spacer -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <!-- 0 -->
-        <TextView
-            android:id="@+id/pin0"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="0" />
-        <!-- Enter -->
-        <TextView
-            android:id="@+id/pin_ok"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@android:string/ok" />
+            android:orientation="horizontal">
+            <!-- Spacer -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+            <!-- 0 -->
+            <TextView
+                android:id="@+id/pin0"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="0" />
+            <!-- Enter -->
+            <TextView
+                android:id="@+id/pin_ok"
+                style="@style/Widget.TextView.NumPadKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@android:string/ok" />
+        </LinearLayout>
     </LinearLayout>
 </merge>
