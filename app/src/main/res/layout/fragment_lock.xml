@@ -45,12 +45,11 @@
 
         <include layout="@de.Maxr1998.xposed.maxlock:layout/input_view" />
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical" />
+            android:layout_weight="1" />
 
         <View
             android:id="@+id/nav_bar_gap"

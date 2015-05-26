@@ -43,7 +43,7 @@
                 <include layout="@layout/input_view" />
             </LinearLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:id="@+id/container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

@@ -21,10 +21,20 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -34,6 +44,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,14 +65,9 @@ import de.Maxr1998.xposed.maxlock.Util;
 public class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
     public AuthenticationSucceededListener authenticationSucceededListener;
-    ViewGroup rootView;
-    String requestPkg;
     ImageView background;
-    View mInputView, container, divider;
-    TextView titleView;
-    ImageButton mDeleteButton;
+    View mInputView, divider;
     SharedPreferences prefs, prefsKey, prefsPerApp, prefsTheme;
-    View[] pinButtons;
     TextView pb;
     LockPatternView lockPatternView;
     LockPatternView.OnPatternListener patternListener;
@@ -71,12 +78,22 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             patternListener.onPatternCleared();
         }
     };
-    int screenHeight, screenWidth;
+    private ViewGroup rootView;
+    private TextView titleView;
+    private ImageButton mDeleteButton;
+    private View[] pinButtons;
+    private FrameLayout container;
+    private String requestPkg;
+    private int screenHeight, screenWidth, statusBarHeight, navBarHeight;
     private String password, lockingType;
     private StringBuilder key;
     private TextView mInputText;
     private ArrayList<Float> knockCodeX = new ArrayList<>();
     private ArrayList<Float> knockCodeY = new ArrayList<>();
+    private Bitmap kCCBackground;
+    private RippleDrawable kCTouchLP;
+    private Paint kCTouchColor = new Paint();
+    private int containerX, containerY;
 
     @Override
     public void onAttach(Activity activity) {
@@ -108,6 +125,26 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         else password = prefsKey.getString(Common.KEY_PREFERENCE, "");
 
         lockingType = prefsPerApp.getString(requestPkg, prefs.getString(Common.LOCKING_TYPE, ""));
+
+
+        // Constants
+        key = new StringBuilder(50);
+
+        Point size = new Point();
+        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
+        screenWidth = size.x;
+        screenHeight = size.y;
+        try {
+            statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
+            navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+            statusBarHeight = 0;
+            navBarHeight = 0;
+        }
+        kCTouchColor.setColor(getResources().getColor(R.color.background_selected_on_transparent));
+        kCTouchColor.setStrokeWidth(1);
+        kCTouchColor.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
     @Override
@@ -119,45 +156,21 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         mInputView = rootView.findViewById(R.id.input_view);
         mInputText = (TextView) mInputView;
         mInputText.setText("");
-        container = rootView.findViewById(R.id.container);
-        key = new StringBuilder(50);
+        container = (FrameLayout) rootView.findViewById(R.id.container);
         mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
         mDeleteButton.setOnClickListener(this);
         mDeleteButton.setOnLongClickListener(this);
 
         // Dimens
-        Point size = new Point();
-        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
-        screenWidth = size.x;
-        screenHeight = size.y;
-        int statusBarHeight;
-        try {
-            statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-            statusBarHeight = 0;
-        }
-        int navBarHeight = 0;
-
         if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity")) {
             View gapTop = rootView.findViewById(R.id.status_bar_gap);
             View gapBottom = rootView.findViewById(R.id.nav_bar_gap);
-            if (screenHeight > screenWidth) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 // Portrait
-                try {
-                    navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
-                } catch (Resources.NotFoundException e) {
-                    e.printStackTrace();
-                }
                 gapBottom.getLayoutParams().height = navBarHeight;
                 screenHeight = screenHeight + navBarHeight;
             } else {
                 // Landscape
-                try {
-                    navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height_landscape", "dimen", "android"));
-                } catch (Resources.NotFoundException e) {
-                    e.printStackTrace();
-                }
                 //noinspection SuspiciousNameCombination
                 gapBottom.getLayoutParams().width = navBarHeight;
             }
@@ -194,7 +207,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 Util.askPassword(getActivity(), password, lockingType.equals(Common.PREF_VALUE_PASS_PIN));
                 break;
             case Common.PREF_VALUE_PIN:
-                inflater.inflate(R.layout.pin_field, (ViewGroup) container);
+                inflater.inflate(R.layout.pin_field, container);
                 setupPINLayout();
                 break;
             case Common.PREF_VALUE_KNOCK_CODE:
@@ -202,7 +215,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 break;
             case Common.PREF_VALUE_PATTERN:
                 rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-                inflater.inflate(R.layout.pattern_field, (ViewGroup) container);
+                inflater.inflate(R.layout.pattern_field, container);
                 setupPatternLayout();
                 break;
             default:
@@ -212,6 +225,30 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         themeSetup();
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+                kCCBackground = Bitmap.createBitmap(container.getWidth(), container.getHeight(), Bitmap.Config.ARGB_8888);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    container.setBackgroundDrawable(new BitmapDrawable(getResources(), kCCBackground));
+                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    container.setBackground(new BitmapDrawable(getResources(), kCCBackground));
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+                // Center values
+                int[] loc = new int[2];
+                container.getLocationOnScreen(loc);
+                containerX = loc[0];
+                containerY = loc[1];
+            }
+        });
     }
 
     private void setupPINLayout() {
@@ -267,19 +304,33 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
-        final View container = rootView.findViewById(R.id.container);
+        if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            kCTouchLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.background_selected_on_transparent)), null, new ColorDrawable(Color.WHITE));
+            container.setForeground(kCTouchLP);
+            kCTouchLP.setState(new int[]{});
+        }
         container.setOnLongClickListener(this);
         container.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent e) {
                 if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true)) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            kCTouchLP.setState(new int[]{android.R.attr.state_pressed});
+                            kCTouchLP.setHotspot(e.getRawX(), e.getRawY());
+                        } else {
+                            kCTouchColor.setShader(new RadialGradient(e.getRawX() - containerX, e.getRawY() - containerY, 200,
+                                    getResources().getColor(R.color.background_selected_on_transparent), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                            Canvas c = new Canvas(kCCBackground);
+                            c.drawCircle(e.getRawX() - containerX, e.getRawY() - containerY, 100, kCTouchColor);
+                            container.invalidate();
+                        }
+                    }
                     mInputText.append("\u2022");
 
                     // Center values
-                    int[] loc = new int[2];
-                    container.getLocationOnScreen(loc);
-                    int viewCenterX = loc[0] + container.getWidth() / 2;
-                    int viewCenterY = loc[1] + container.getHeight() / 2;
+                    int viewCenterX = containerX + container.getWidth() / 2;
+                    int viewCenterY = containerY + container.getHeight() / 2;
 
                     // Track touch positions
                     knockCodeX.add(e.getRawX());
@@ -315,6 +366,11 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                             key.append("4");
                     }
                     checkInput();
+                } else if (e.getActionMasked() == MotionEvent.ACTION_UP) {
+                    if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                        kCCBackground.eraseColor(Color.TRANSPARENT);
+                        container.invalidate();
+                    }
                 }
                 return false;
             }
@@ -322,7 +378,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         divider = new View(getActivity());
         divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDisplayMetrics().density)));
         divider.setBackgroundColor(getResources().getColor(R.color.light_white));
-        ((ViewGroup) container).addView(divider);
+        container.addView(divider);
         if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 divider.setBackground(getResources().getDrawable(android.R.color.black));
