@@ -29,6 +29,7 @@ import java.util.Set;
 public abstract class LockHelper {
     public static final String MY_PACKAGE_NAME = LockHelper.class.getPackage().getName();
     private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
+            "se.feomedia.quizkampen.act.login.MainActivity",
             "com.whatsapp.Main",
             "com.twitter.android.StartActivity",
             "com.instagram"
@@ -38,7 +39,7 @@ public abstract class LockHelper {
     public static void launchLockView(Activity caller, Intent intent, String packageName, String launch) {
         Intent it = new Intent();
         it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         caller.startActivity(it);
