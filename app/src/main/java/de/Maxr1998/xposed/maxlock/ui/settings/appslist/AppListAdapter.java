@@ -268,7 +268,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     @Override
     public int getSectionForPosition(int position) {
-        return Arrays.asList(getSections()).indexOf(nameAt(position).substring(0, 1).toUpperCase());
+        int section = Arrays.asList(getSections()).indexOf(nameAt(position).substring(0, 1).toUpperCase());
+        return section != -1 ? section : Arrays.asList(getSections()).indexOf("#");
     }
 
     @Override
@@ -278,7 +279,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     @Override
     public String[] getSections() {
-        return "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        return "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("");
     }
 
     public void updateList(List<Map<String, Object>> newList) {
