@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
@@ -40,8 +41,6 @@ import static de.Maxr1998.xposed.maxlock.LockHelper.launchLockView;
 
 public class FakeDieDialog extends Activity {
 
-    ApplicationInfo requestPkgInfo;
-    AlertDialog.Builder alertDialog;
     private String packageName;
     private Intent original;
     private AlertDialog.Builder reportDialog;
@@ -65,11 +64,13 @@ public class FakeDieDialog extends Activity {
         long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
         if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMoD, prefsIMoDTemp)) {
             LockActivity.directUnlock(this, original, packageName);
+            close();
             return;
         }
 
         getWindow().setBackgroundDrawable(new ColorDrawable(0));
         PackageManager pm = getPackageManager();
+        ApplicationInfo requestPkgInfo;
         try {
             requestPkgInfo = pm.getApplicationInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
@@ -77,7 +78,7 @@ public class FakeDieDialog extends Activity {
         }
 
         String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
-        alertDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
                 .setNeutralButton(R.string.dialog_button_report, new DialogInterface.OnClickListener() {
                     @Override
@@ -97,19 +98,19 @@ public class FakeDieDialog extends Activity {
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                                 launchLockView(FakeDieDialog.this, original, packageName, ".ui.LockActivity");
                                             }
-                                            finish();
+                                            close();
                                         }
                                     })
                                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            finish();
+                                            close();
                                         }
                                     })
                                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
                                         @Override
                                         public void onCancel(DialogInterface dialogInterface) {
-                                            finish();
+                                            close();
                                         }
                                     })
                                     .create().show();
@@ -119,7 +120,7 @@ public class FakeDieDialog extends Activity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        close();
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -129,5 +130,11 @@ public class FakeDieDialog extends Activity {
                     }
                 })
                 .create().show();
+    }
+
+    private void close() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAndRemoveTask();
+        } else finish();
     }
 }
