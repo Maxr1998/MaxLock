@@ -5,7 +5,18 @@
     <string name="placeholder">佔位符</string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
     <string name="toast_pro_required">使用此功能需要專業版！</string>
-
+    <string name="sb_no_locking_type">沒有鎖定特定類型</string>
+    <string name="sb_no_locked_apps">沒有選擇鎖定應用</string>
+     <!-- First start screens-->
+    <string name="fs_welcome_maxlock">歡迎使用MaxLock!</string>
+    <string name="fs_maxlock_description">MaxLock將保護您的應用免受未經授權訪問</string>
+    <string name="fs_phone_content_description">電話</string>
+    <string name="fs_lock_content_description">鎖定這個電話</string>
+    <string name="fs_app_package_installer">安裝包</string>
+    <string name="fs_app_settings">設定</string>
+    <string name="fs_app_xposed_installer">Xposed安裝器</string>
+    <string name="fs_recommended_apps">通過鎖定這些應用能進一步保護</string>
+    <string name="fs_recommended_apps_summary">您應該勾選這些應用，以確保MaxLock不能被禁用或卸載</string>
     <!-- Main screen -->
     <string name="pref_category_locking">鎖定設置</string>
     <string name="pref_locking_type">鎖定類型</string>
@@ -32,9 +43,8 @@
     <string name="choose_knock_code">輸入你的knock code</string>
     <string name="knock_code_too_short">Knock code必須至少4點觸摸</string>
     <string name="confirm_knock_code">再次確認knock code</string>
-    <!-- Main screen -->
-    <string name="pref_locking_ui">鎖屏界面</string>
     <!-- Locking UI settings -->
+    <string name="pref_locking_ui">鎖屏界面</string>
     <string name="pref_open_theme_manager">打開主題管理</string>
     <string name="pref_open_theme_manager_summary_none">沒有主題應用</string>
     <string name="pref_open_theme_manager_summary_applied">應用： </string>
@@ -47,9 +57,11 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">自定義顏色</string>
+    <string name="pref_use_tablet_mode">使用平板模式</string>
+    <string name="pref_use_tablet_mode_summary">%1$s發現了這個%2$s裝置由於dpi%3$d和顯示的寬度為%4$d像素</string>
     <string name="pref_category_pin_and_knock_code">PIN和knock code</string>
     <string name="pref_invert_color">轉換用戶界面顏色</string>
-    <string name="pref_invert_color_summary">設置這個文本和分隔器的顏色為黑色k</string>
+    <string name="pref_invert_color_summary">設置這個文本和分隔器的顏色為黑色</string>
     <string name="pref_hide_title_bar">隱藏標題欄</string>
     <string name="pref_hide_input_bar">隱藏輸入欄</string>
     <string name="pref_hide_input_bar_summary">隱藏清除按鈕！</string>
@@ -61,8 +73,8 @@
     <string name="pref_category_pattern_only">僅圖案</string>
     <string name="pref_show_path">顥示圖案</string>
     <string name="pref_haptic_feedback">滑動時振動</string>
-
-    <string name="pref_locking_options">鎖定設置</string>
+    <!-- Locking options settings -->
+    <string name="pref_locking_options">鎖定選項</string>
     <string name="pref_category_logging">日誌記錄</string>
     <string name="pref_enable_logging">開啟日誌記錄</string>
     <string name="pref_enable_logging_summary">登錄失敗/未解鎖的嘗試</string>
@@ -71,9 +83,25 @@
     <string name="pref_category_other">其它</string>
     <string name="pref_fake_die_input">假死輸入</string>
     <string name="pref_fake_die_input_summary">用戶需要在對話框中輸入短語才能打開鎖屏</string>
-
-    <string name="toast_no_network_connected">你當前沒有連接到任何網路</string>
-
+    <string name="pref_enable_tasker">啟用Tasker集成</string>
+    <!-- I.MoD settings -->
+    <string name="pref_locking_intika">Intika I.MoD</string>
+    <string name="pref_category_intika">Intika I.MoD - 寬限期 - 一般延遲</string>
+    <string name="pref_category_intika2">Intika I.MoD - 寬限期 - PerApp延遲</string>
+    <string name="pref_locking_delay_general">啟用一般延遲-重新鎖定</string>
+    <string name="pref_locking_delay_general_summary">避免到在一段時間內再次要求解鎖應用程式</string>
+    <string name="pref_delay_input_general">一般延遲 - 重新鎖定定時器</string>
+    <string name="pref_delay_input_general_summary">輸入一個數位指定延遲時間,值為分鐘,鎖定一般延遲</string>
+    <string name="pref_locking_delay_perapp">啟用PerApp延遲 - 重新鎖定</string>
+    <string name="pref_locking_delay_perapp_summary">防止要求在一定時間內為每一個應用程式再次解鎖,分開而不管其他受保護的應用程式</string>
+    <string name="pref_delay_input_perapp">PerApp延遲 - 重新鎖定計時器</string>
+    <string name="pref_delay_input_perapp_summary">輸入一個數位指定延遲時間,值為分鐘,鎖定PerApp延遲</string>
+    <string name="pref_delay_needpro">啟用延遲重新鎖定 - 專業版</string>
+    <string name="pref_delay_input_general2">一般延遲 - 重新鎖定定時器</string>
+    <string name="pref_delay_input_general2_summary">一般重新鎖定之前的保持時間</string>
+    <string name="pref_fake_unlock">假死直接解鎖</string>
+    <string name="pref_fake_unlock_summary">當啟用鎖屏後直接顯示假死上的報告按鈕對話框</string>
+    <!-- Apps settings -->
     <string name="pref_category_apps">選擇應用</string>
     <string name="pref_show_system_app">顯示系統應用</string>
     <string name="pref_show_system_app_summary_on">顯示系統應用程式</string>
@@ -96,63 +124,51 @@
     <string name="dialog_title_settings">設定</string>
     <string name="dialog_text_fake_die">顯示假死窗口</string>
     <string name="dialog_text_custom_password">自定義密碼</string>
-
+    <string name="dialog_button_exclude_activities">活動</string>
+    <string name="dialog_title_exclude_activities">排除鎖定活動</string>
+    <!-- UI settings -->
     <string name="pref_category_ui">界面設定</string>
     <string name="pref_hide_from_launcher">桌面隱藏應用圖標</string>
     <string name="reboot_required">可能需要重新啟動以應用更改</string>
     <string name="pref_use_dark_style">使用黑暗風格</string>
-
+    <!-- About information -->
     <string name="pref_category_about">關於</string>
     <string name="app_name_pro">MaxLock專業版</string>
     <string name="app_name_pseudo_pro">MaxLock假冒專業版</string>
     <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\n點擊這里查看更多資訊</string>
     <string name="pref_donate_upgrade_pro">捐贈可升級到專業版</string>
+    <string name="toast_no_network_connected">您目前沒有連接到任何網絡</string>
     <string name="pref_enable_pro">開啟專業版</string>
     <string name="pref_enable_pro_summary">這將開啟專業版功能，即使您沒有購買</string>
     <string name="pref_prevent_uninstall">防止應用程式被卸載</string>
     <string name="pref_prevent_uninstall_summary">MaxLock在裝置管理員權限打勾應用程式將無法卸載。
         卸載此應用程式您必須在\"設定 → 安全 → 裝置管理員\"這裡或停用管理員許可權,然後卸載</string>
     <string name="pref_uninstall">卸載</string>
-
     <string name="device_admin_description">保護MaxLock防止被卸載和禁用</string>
-
+    <!-- External stuff -->
     <string name="dialog_like_app">你喜歡這個應用程式嗎？</string>
     <string name="dialog_like_app_text">如果您這樣做,請在Play Store留下您的評論或考慮捐贈 :)</string>
     <string name="dialog_cb_never_again">不再顯示</string>
     <string name="dialog_button_donate">捐贈</string>
     <string name="dialog_button_rate">評分</string>
-
-    <string name="sb_no_locking_type">沒有鎖定特定類型型</string>
-    <string name="sb_no_locked_apps">沒有選擇鎖定的應用程式</string>
-
+    <!-- Fake die screen -->
     <string name="dialog_text_fake_die_stopped">非常抱歉,%1$s已停止。</string>
     <string name="dialog_button_report">回報</string>
     <string name="dialog_title_report_problem">回報問題</string>
-
+    <!-- MasterSwitch stuff -->
     <string name="toggle_master_switch">切換總開關</string>
     <string name="toggle_master_switch_deprecated">切換總開關(不推薦)</string>
     <string name="unlock_master_switch">打開總開關</string>
     <string name="toast_master_switch_off">主開關已關閉</string>
     <string name="toast_master_switch_on">主開關重新啟用</string>
     <string name="toast_no_locking_types">沒有指定鎖定類型</string>
-
-    <string name="pref_category_intika">Intika I.MoD - 寬限期 - 一般延遲</string>
-    <string name="pref_category_intika2">Intika I.MoD - 寬限期 - PerApp延遲</string>
-    <string name="pref_locking_delay_general">啟用一般延遲-重新鎖定</string>
-    <string name="pref_locking_delay_general_summary">避免到在一段時間內再次要求解鎖應用程式</string>
-    <string name="pref_delay_input_general">一般延遲 - 重新鎖定定時器</string>
-    <string name="pref_delay_input_general_summary">輸入一個數位指定延遲時間,值為分鐘,鎖定一般延遲</string>
-    <string name="pref_locking_delay_perapp">啟用PerApp延遲 - 重新鎖定</string>
-    <string name="pref_locking_delay_perapp_summary">防止要求在一定時間內為每一個應用程式再次解鎖,分開而不管其他受保護的應用程式</string>
-    <string name="pref_delay_input_perapp">PerApp延遲 - 重新鎖定計時器</string>
-    <string name="pref_delay_input_perapp_summary">輸入一個數位指定延遲時間,值為分鐘,鎖定PerApp延遲</string>
-    <string name="pref_delay_needpro">啟用延遲重新鎖定 - 專業版</string>
-    <string name="pref_locking_intika">Intika I.MoD</string>
-
-    <string name="pref_delay_input_general2">一般的延遲 - 重新鎖定計時器</string>
-    <string name="pref_delay_input_general2_summary">一般重新鎖定之前保持的時間</string>
-
-    <string name="pref_fake_unlock">迷你假死</string>
-    <string name="pref_fake_unlock_summary">當啟用鎖屏後直接顯示假死上的報告按鈕對話方塊(需要啟用假死)</string>
+    <!-- Tasker config stuff -->
+    <string name="tasker_configuration">配置:</string>
+    <string name="tasker_ms_on">打開主開關</string>
+    <string name="tasker_ms_off">關閉主開關</string>
+    <string name="tasker_imod_reset">重設I.MoD</string>
+    <string name="tasker_imod_reset_summary">鎖定所有應用之前打開I.MoD</string>
+    <string name="tasker_button_apply">應用</string>
+    <string name="tasker_integration_disabled">當前Tasker集成已禁用。您可以通過\"MaxLock → 鎖定選項 → 啟用Tasker集成\".</string>
 
 </resources>
