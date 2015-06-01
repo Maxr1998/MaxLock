@@ -99,7 +99,9 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         boolean set = false;
-                        if (!((Intent) param.args[4]).getComponent().getPackageName().equals(MY_PACKAGE_NAME) && !LockHelper.NO_UNLOCK.contains(param.args[0].getClass().getName()) && PREFS_ACTIVITIES.getBoolean(param.args[0].getClass().getName(), true)) {
+                        if (!((Intent) param.args[4]).getComponent().getPackageName().equals(MY_PACKAGE_NAME) &&
+                                !LockHelper.NO_UNLOCK.contains(param.args[0].getClass().getName()) &&
+                                PREFS_ACTIVITIES.getBoolean(param.args[0].getClass().getName(), true)) {
                             PreferenceManager.getDefaultSharedPreferences((Context) param.args[0]).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
                             set = true;
                         }
