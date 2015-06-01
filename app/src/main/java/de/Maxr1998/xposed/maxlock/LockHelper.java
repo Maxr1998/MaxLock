@@ -29,10 +29,12 @@ import java.util.Set;
 public abstract class LockHelper {
     public static final String MY_PACKAGE_NAME = LockHelper.class.getPackage().getName();
     private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
-            "se.feomedia.quizkampen.act.login.MainActivity",
-            "com.whatsapp.Main",
+            "com.evernote.ui.HomeActivity",
+            "com.instagram",
             "com.twitter.android.StartActivity",
-            "com.instagram"
+            "com.whatsapp.Main",
+            "jp.co.johospace.jorte.MainActivity",
+            "se.feomedia.quizkampen.act.login.MainActivity"
     };
     public static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(ACTIVITIES_NO_UNLOCK));
 
