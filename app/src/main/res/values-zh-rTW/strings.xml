@@ -16,7 +16,7 @@
     <string name="fs_app_settings">設定</string>
     <string name="fs_app_xposed_installer">Xposed安裝器</string>
     <string name="fs_recommended_apps">通過鎖定這些應用能進一步保護</string>
-    <string name="fs_recommended_apps_summary">您應該勾選這些應用，以確保MaxLock不能被禁用或卸載</string>
+    <string name="fs_recommended_apps_summary">您應該勾選這些應用，以確保MaxLock不能被禁用或移除</string>
     <!-- Main screen -->
     <string name="pref_category_locking">鎖定設置</string>
     <string name="pref_locking_type">鎖定類型</string>
@@ -140,11 +140,11 @@
     <string name="toast_no_network_connected">您目前沒有連接到任何網絡</string>
     <string name="pref_enable_pro">開啟專業版</string>
     <string name="pref_enable_pro_summary">這將開啟專業版功能，即使您沒有購買</string>
-    <string name="pref_prevent_uninstall">防止應用程式被卸載</string>
-    <string name="pref_prevent_uninstall_summary">MaxLock在裝置管理員權限打勾應用程式將無法卸載。
-        卸載此應用程式您必須在\"設定 → 安全 → 裝置管理員\"這裡或停用管理員許可權,然後卸載</string>
-    <string name="pref_uninstall">卸載</string>
-    <string name="device_admin_description">保護MaxLock防止被卸載和禁用</string>
+    <string name="pref_prevent_uninstall">防止應用程式被移除</string>
+    <string name="pref_prevent_uninstall_summary">MaxLock在裝置管理員權限打勾應用程式將無法移除。
+        移除此應用程式您必須在\"設定 → 安全 → 裝置管理員\"這裡或停用管理員許可權,然後移除</string>
+    <string name="pref_uninstall">移除</string>
+    <string name="device_admin_description">保護MaxLock防止被移除和禁用</string>
     <!-- External stuff -->
     <string name="dialog_like_app">你喜歡這個應用程式嗎？</string>
     <string name="dialog_like_app_text">如果您這樣做,請在Play Store留下您的評論或考慮捐贈 :)</string>
