@@ -60,7 +60,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         findAndHookMethod("android.app.Activity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                XposedBridge.log(param.thisObject.getClass().getName() + " created at " + System.currentTimeMillis());
+                XposedBridge.log("MLc: |" + param.thisObject.getClass().getName() + "|" + System.currentTimeMillis());
             }
         });
 
@@ -102,7 +102,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                             PreferenceManager.getDefaultSharedPreferences((Context) param.args[0]).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
                             set = true;
                         }
-                        XposedBridge.log(param.args[0].getClass().getName() + " started Intent " + ((Intent) param.args[4]).getComponent().getClassName() + " at " + System.currentTimeMillis() + ", " + (set ? "" : "not ") + "unlocked.");
+                        XposedBridge.log("ML" + (set ? "u" : "n") + "I: |" + param.args[0].getClass().getName() + "|" + ((Intent) param.args[4]).getComponent().getClassName() + "|" + System.currentTimeMillis());
                     }
                 });
     }
