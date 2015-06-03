@@ -116,6 +116,22 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         snackBarMultiLine = noLockType && noPackages;
         // Other
         Util.cleanUp(mContext);
+
+        List <String> list = new ArrayList<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("/data/data/de.robv.android.xposed.installer/logs/error.log"));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("MLc: |") || line.startsWith("MLuI: |")) {
+                    list.add(line);
+                    System.out.println(line);
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         return null;
     }
 
