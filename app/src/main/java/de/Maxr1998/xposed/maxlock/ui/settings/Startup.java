@@ -124,7 +124,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
 
         List <String> list = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("/data/data/de.robv.android.xposed.installer/logs/error.log"));
+            BufferedReader br = new BufferedReader(new FileReader("/data/data/de.robv.android.xposed.installer/log/error.log"));
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.startsWith("MLc: |") || line.startsWith("MLuI: |")) {
