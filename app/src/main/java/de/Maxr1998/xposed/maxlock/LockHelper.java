@@ -32,6 +32,7 @@ public abstract class LockHelper {
             "com.evernote.ui.HomeActivity",
             "com.instagram",
             "com.twitter.android.StartActivity",
+            "com.UCMobile.main.UCMobile",
             "com.whatsapp.Main",
             "jp.co.johospace.jorte.MainActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
