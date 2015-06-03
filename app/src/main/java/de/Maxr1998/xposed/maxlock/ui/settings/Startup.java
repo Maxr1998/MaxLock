@@ -46,6 +46,7 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
+import de.Maxr1998.xposed.maxlock.ui.ThisApplication;
 
 public class Startup extends AsyncTask<Boolean, Void, Void> {
 
@@ -127,16 +128,26 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
             BufferedReader br = new BufferedReader(new FileReader("/data/data/de.robv.android.xposed.installer/log/error.log"));
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.startsWith("MLc: |") || line.startsWith("MLuI: |")) {
+                if (line.contains("MLc: |") || line.contains("MLuI: |")) {
                     list.add(line);
-                    System.out.println(line);
                 }
             }
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+        for(int i = 1; i < list.size(); i++) {
+            String[] a = list.get(i-1).split("|");
+            String[] b = list.get(i).split("|");
+            if (a[0].contains("MLc: |") && b[0].contains("MLuI: |") && a[1].equals(b[1]) && (b[3] - a[2]) < 400) {
+                ((ThisApplication) mContext.getApplication()).getTracker().send(new HitBuilders.EventBuilder()
+                    .setCategory("Launch Activities")
+                    .setAction("Unlocks")
+                    .setLabel(a[1])
+                    .setValue(1)
+                    .build());
+            }
+        }
         return null;
     }
 
