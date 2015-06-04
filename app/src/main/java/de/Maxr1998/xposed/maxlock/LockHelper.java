@@ -30,6 +30,7 @@ public abstract class LockHelper {
     public static final String MY_PACKAGE_NAME = LockHelper.class.getPackage().getName();
     private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
             "com.evernote.ui.HomeActivity",
+            "com.fstop.photo.MainActivity",
             "com.instagram",
             "com.twitter.android.StartActivity",
             "com.UCMobile.main.UCMobile",
