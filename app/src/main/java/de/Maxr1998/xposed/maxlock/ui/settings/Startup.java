@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.CheckBox;
 
+import com.google.android.gms.analytics.HitBuilders.EventBuilder;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
@@ -139,7 +140,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         for(int i = 1; i < list.size(); i++) {
             String[] a = list.get(i-1).split("|");
             String[] b = list.get(i).split("|");
-            if (a[0].contains("MLc: |") && b[0].contains("MLuI: |") && a[1].equals(b[1]) && (b[3] - a[2]) < 400) {
+            if (a[0].contains("MLc: |") && b[0].contains("MLuI: |") && a[1].equals(b[1]) && (Long.parseLong(b[3], 10) - Long.parseLong(a[2], 10)) < 400) {
                 ((ThisApplication) mContext.getApplication()).getTracker().send(new HitBuilders.EventBuilder()
                     .setCategory("Launch Activities")
                     .setAction("Unlocks")
