@@ -30,7 +30,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.google.android.gms.analytics.HitBuilders.EventBuilder;
+import com.google.android.gms.analytics.HitBuilders;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
@@ -124,7 +124,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         // Other
         Util.cleanUp(mContext);
 
-        List <String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("/data/data/de.robv.android.xposed.installer/log/error.log"));
             String line;
@@ -137,16 +137,16 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for(int i = 1; i < list.size(); i++) {
-            String[] a = list.get(i-1).split("|");
+        for (int i = 1; i < list.size(); i++) {
+            String[] a = list.get(i - 1).split("|");
             String[] b = list.get(i).split("|");
             if (a[0].contains("MLc: |") && b[0].contains("MLuI: |") && a[1].equals(b[1]) && (Long.parseLong(b[3], 10) - Long.parseLong(a[2], 10)) < 400) {
-                ((ThisApplication) mContext.getApplication()).getTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory("Launch Activities")
-                    .setAction("Unlocks")
-                    .setLabel(a[1])
-                    .setValue(1)
-                    .build());
+                ThisApplication.getTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("Launch Activities")
+                        .setAction("Unlocks")
+                        .setLabel(a[1])
+                        .setValue(1)
+                        .build());
             }
         }
         return null;
