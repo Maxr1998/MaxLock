@@ -87,7 +87,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
             showDialog = true;
             builder = new AlertDialog.Builder(mContext);
             @SuppressLint("InflateParams") View dialogView = ((Activity) mContext).getLayoutInflater().inflate(R.layout.dialog_like_app, null);
-            final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
+            @SuppressWarnings("ResourceType") final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
             DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -126,10 +126,10 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
 
         List<String> list = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("/data/data/de.robv.android.xposed.installer/log/error.log"));
+            @SuppressLint("SdCardPath") BufferedReader br = new BufferedReader(new FileReader("/data/data/de.robv.android.xposed.installer/log/error.log"));
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.contains("MLc: |") || line.contains("MLuI: |")) {
+                if (line.contains("MLaC|") || line.contains("MLiU|")) {
                     list.add(line);
                 }
             }
@@ -137,13 +137,13 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (int i = 1; i < list.size(); i++) {
-            String[] a = list.get(i - 1).split("|");
-            String[] b = list.get(i).split("|");
-            if (a[0].contains("MLc: |") && b[0].contains("MLuI: |") && a[1].equals(b[1]) && (Long.parseLong(b[3], 10) - Long.parseLong(a[2], 10)) < 400) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            String[] a = list.get(i).split("\\|");
+            String[] b = list.get(i + 1).split("\\|");
+            if (a[0].endsWith("MLaC") && b[0].endsWith("MLiU") && a[1].equals(b[1]) && Long.parseLong(b[3]) - Long.parseLong(a[3]) < 400) {
                 ThisApplication.getTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("Launch Activities")
-                        .setAction("Unlocks")
+                        .setAction("Unlock")
                         .setLabel(a[1])
                         .setValue(1)
                         .build());
