@@ -44,6 +44,7 @@ public abstract class Common {
     public static final String OPEN_THEME_MANAGER = "open_theme_manager";
     public static final String BACKGROUND = "background";
     public static final String BACKGROUND_COLOR = "background_color";
+    public static final String HIDE_STATUS_BAR = "hide_status_bar";
     public static final String TABLET_MODE_OVERRIDE = "tablet_mode_override";
     public static final String INVERT_COLOR = "invert_color";
     public static final String HIDE_TITLE_BAR = "hide_title_bar";

@@ -19,6 +19,10 @@
             android:key="background_color"
             android:title="@string/pref_custom_color" />
         <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="hide_status_bar"
+            android:title="@string/pref_hide_status_bar" />
+        <CheckBoxPreference
             android:defaultValue="@bool/tablet_mode_default"
             android:key="tablet_mode_override"
             android:title="@string/pref_use_tablet_mode" />

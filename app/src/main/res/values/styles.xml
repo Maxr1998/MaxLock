@@ -51,6 +51,10 @@
 
     <style name="TranslucentStatusBar" parent="AppTheme" />
 
+    <style name="TranslucentStatusBar.Full" parent="TranslucentStatusBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="FakeDieDialog" parent="android:Theme.DeviceDefault.Dialog.NoActionBar" />
 
     <style name="SplitButtonContainer" parent="@android:style/Holo.SegmentedButton">

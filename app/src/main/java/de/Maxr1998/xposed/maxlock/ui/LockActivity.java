@@ -62,6 +62,9 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.HIDE_STATUS_BAR, false)) {
+            setTheme(R.style.TranslucentStatusBar_Full);
+        }
         super.onCreate(savedInstanceState);
         // Intent extras
         packageName = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
