@@ -26,7 +26,7 @@
             android:layout_width="0.0dip"
             android:layout_weight="1.0"
             android:gravity="start"
-            android:text="SKIP" />
+            android:text="@string/button_skip" />
 
         <FrameLayout
             android:id="@+id/paging_indicator_container"
@@ -44,7 +44,7 @@
                 style="@style/FlatButton"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:contentDescription="NEXT"
+                android:contentDescription="@string/button_skip"
                 android:drawableEnd="@drawable/ic_chevron_right_white_24dp"
                 android:drawableRight="@drawable/ic_chevron_right_white_24dp" />
 
@@ -53,9 +53,8 @@
                 style="@style/FlatButton"
                 android:layout_width="fill_parent"
                 android:gravity="end"
-                android:text="DONE"
+                android:text="@string/button_done"
                 android:visibility="gone" />
         </FrameLayout>
-        -->
     </LinearLayout>
 </LinearLayout>

@@ -8,6 +8,9 @@
     <string name="no_locking_type">Keine Sperrart festgelegt.</string>
     <string name="no_locked_apps">Keine zu sperrenden Apps ausgewählt.</string>
     <!-- First start screens-->
+    <string name="button_skip">Überspringen</string>
+    <string name="button_next_content_description">Nächstes</string>
+    <string name="button_done">Fertig</string>
     <string name="fs_welcome_maxlock">Willkommen bei MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock schützt deine Apps vor unberechtigtem Zugriff</string>
     <string name="fs_phone_content_description">Bild eines Telefons</string>
