@@ -16,7 +16,7 @@
     <string name="fs_app_settings">Einstellungen</string>
     <string name="fs_app_xposed_installer">Xposed Installer</string>
     <string name="fs_recommended_apps">Verbessere den Schutz durch Sperre dieser Apps</string>
-    <string name="fs_recommended_apps_summary">Du solltest die Sperre aller Apps aktivieren, um sicher zu gehen, das MaxLock nicht deaktiviert werden kann</string>
+    <string name="fs_recommended_apps_summary">Du solltest die Sperre aller Apps aktivieren, um sicher zu gehen, dass MaxLock nicht deaktiviert werden kann</string>
     <!-- Main screen -->
     <string name="pref_category_locking">Sperre</string>
     <string name="pref_locking_type">Sperrart</string>
