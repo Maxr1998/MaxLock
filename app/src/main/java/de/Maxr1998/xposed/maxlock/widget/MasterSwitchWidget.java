@@ -24,8 +24,10 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -42,19 +44,19 @@ public class MasterSwitchWidget extends AppWidgetProvider {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("LaunchOnly", true);
         PendingIntent pending = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        int color = PreferenceManager.getDefaultSharedPreferences(context).getInt(Common.WIDGET_BACKGROUND_COLOR, Color.WHITE);
         //noinspection deprecation
         SharedPreferences prefsPackages = context.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
         boolean masterSwitchOn = prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true);
 
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
+            views.setInt(R.id.widget, "setBackgroundColor", color);
             views.setImageViewResource(R.id.widget_master_switch_icon, masterSwitchOn ? R.drawable.ic_widget_on_72dp : R.drawable.ic_widget_off_72dp);
             views.setOnClickPendingIntent(R.id.widget, pending);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId));
-            }
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override

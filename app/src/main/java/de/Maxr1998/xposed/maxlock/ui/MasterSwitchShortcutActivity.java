@@ -75,6 +75,12 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        fireIntentAndFinish();
+    }
+
+    @Override
     public void onAuthenticationSucceeded() {
         prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
         Toast.makeText(this, getString(R.string.toast_master_switch_off), Toast.LENGTH_LONG).show();
