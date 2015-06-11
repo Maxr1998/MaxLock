@@ -180,19 +180,25 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !UNLOCKED) {
-            Util.logFailedAuthentication(this, "Main App");
-        }
+    protected void onStart() {
+        super.onStart();
+        invalidateOptionsMenu();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(android.R.color.black), -3, this);
-        invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !UNLOCKED) {
+            Util.logFailedAuthentication(this, "Main App");
+        }
     }
 
     @Override
