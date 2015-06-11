@@ -42,16 +42,16 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
     @SuppressLint("WorldReadableFiles")
     public static void directUnlock(Activity caller, Intent orig, String pkgName) {
+        //noinspection deprecation
+        caller.getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE).edit()
+                .putLong(pkgName + Common.FLAG_TMP, System.currentTimeMillis())
+                .commit();
         try {
-            //noinspection deprecation
-            caller.getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE).edit()
-                    .putLong(pkgName + "_tmp", System.currentTimeMillis())
-                    .commit();
-            orig.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            orig.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             caller.startActivity(orig);
         } catch (Exception e) {
             Intent intent_option = caller.getPackageManager().getLaunchIntentForPackage(pkgName);
-            intent_option.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent_option.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             caller.startActivity(intent_option);
         } finally {
             caller.finish();
@@ -75,7 +75,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         prefsIMod = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
         prefsIModTemp = getSharedPreferences(Common.PREFS_IMOD_TEMP, MODE_WORLD_READABLE);
 
-        long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
+        long permitTimestamp = prefsPackages.getLong(packageName + Common.FLAG_TMP, 0);
         if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMod, prefsIModTemp)) {
             openApp();
             return;
@@ -101,17 +101,12 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
         if (prefsIMod.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false)) {
             prefsIModTemp.edit()
-                    .putLong(packageName + "_imod", System.currentTimeMillis())
+                    .putLong(packageName + Common.FLAG_IMOD, System.currentTimeMillis())
                     .commit();
         }
-        // Clean Up
-        prefsPackages.edit()
-                .remove(packageName + "_imod")
-                .commit();
         openApp();
     }
 
-    @SuppressLint("CommitPrefEdits")
     private void openApp() {
         unlocked = true;
         directUnlock(this, original, packageName);
@@ -124,19 +119,21 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
-            Util.logFailedAuthentication(this, packageName);
-        }
+    public void onPause() {
+        super.onPause();
         if (!isInFocus) {
-            Log.d("MaxLock/LockActivity", "Lost focus, finishing.");
+            Log.d("LockActivity", "Lost focus, finishing.");
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
+                Util.logFailedAuthentication(this, packageName);
+            }
             finish();
         }
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        prefsPackages.edit().putLong(packageName + Common.FLAG_CLOSE_APP, System.currentTimeMillis()).commit();
     }
 }

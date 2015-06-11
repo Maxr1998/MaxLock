@@ -32,26 +32,24 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import static de.Maxr1998.xposed.maxlock.LockHelper.launchLockView;
-import static de.Maxr1998.xposed.maxlock.LockHelper.timerOrIMod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
-    private static XSharedPreferences PREFS_PACKAGES, PREFS_ACTIVITIES, PREFS_IMOD, PREFS_IMOD_TEMP;
+    private static XSharedPreferences PREFS_PACKAGES, PREFS_ACTIVITIES/*, PREFS_IMOD, PREFS_IMOD_TEMP*/;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         XposedBridge.log("Loaded class Main @ MaxLock.");
         PREFS_PACKAGES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_PACKAGES);
         PREFS_ACTIVITIES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_ACTIVITIES);
-        PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);
-        PREFS_IMOD_TEMP = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD_TEMP);
+        /*PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);
+        PREFS_IMOD_TEMP = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD_TEMP);*/
         makeReadable();
     }
 
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-        reload();
         final String packageName = lpparam.packageName;
         if (!PREFS_PACKAGES.getBoolean(packageName, false)) {
             return;
@@ -60,7 +58,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         findAndHookMethod("android.app.Activity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                XposedBridge.log("MLc: |" + param.thisObject.getClass().getName() + "|" + System.currentTimeMillis());
+                XposedBridge.log("MLaC|" + param.thisObject.getClass().getName() + "|-|" + System.currentTimeMillis());
             }
         });
 
@@ -69,10 +67,17 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reload();
                 final Activity app = (Activity) param.thisObject;
-                long unlockTimestamp = Math.max(PREFS_PACKAGES.getLong(packageName + "_tmp", 0), PreferenceManager.getDefaultSharedPreferences(app).getLong("MaxLockLastUnlock", 0));
-                if (timerOrIMod(packageName, unlockTimestamp, PREFS_IMOD, PREFS_IMOD_TEMP)) {
+                if (System.currentTimeMillis() - PREFS_PACKAGES.getLong(packageName + Common.FLAG_CLOSE_APP, 0) <= 800) {
+                    app.finish();
                     return;
                 }
+                long unlockTimestamp = Math.max(PREFS_PACKAGES.getLong(packageName + Common.FLAG_TMP, 0), PreferenceManager.getDefaultSharedPreferences(app).getLong("MaxLockLastUnlock", 0));
+                if (System.currentTimeMillis() - unlockTimestamp <= 600) {
+                    return;
+                }
+                /*if (timerOrIMod(packageName, unlockTimestamp, PREFS_IMOD, PREFS_IMOD_TEMP)) {
+                    return;
+                }*/
                 if (app.getClass().getName().equals("android.app.Activity") ||
                         !PREFS_PACKAGES.getBoolean(Common.MASTER_SWITCH_ON, true) ||
                         !PREFS_ACTIVITIES.getBoolean(app.getClass().getName(), true) ||
@@ -105,7 +110,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                             PreferenceManager.getDefaultSharedPreferences((Context) param.args[0]).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
                             set = true;
                         }
-                        XposedBridge.log("ML" + (set ? "u" : "n") + "I: |" + param.args[0].getClass().getName() + "|" + ((Intent) param.args[4]).getComponent().getClassName() + "|" + System.currentTimeMillis());
+                        XposedBridge.log("MLi" + (set ? "U" : "N") + "|" + param.args[0].getClass().getName() + "|" + ((Intent) param.args[4]).getComponent().getClassName() + "|" + System.currentTimeMillis());
                     }
                 });
     }
@@ -113,14 +118,14 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     private void makeReadable() {
         PREFS_PACKAGES.makeWorldReadable();
         PREFS_ACTIVITIES.makeWorldReadable();
-        PREFS_IMOD.makeWorldReadable();
-        PREFS_IMOD_TEMP.makeWorldReadable();
+        /*PREFS_IMOD.makeWorldReadable();
+        PREFS_IMOD_TEMP.makeWorldReadable();*/
     }
 
     private void reload() {
         PREFS_PACKAGES.reload();
         PREFS_ACTIVITIES.reload();
-        PREFS_IMOD.reload();
-        PREFS_IMOD_TEMP.reload();
+        /*PREFS_IMOD.reload();
+        PREFS_IMOD_TEMP.reload();*/
     }
 }

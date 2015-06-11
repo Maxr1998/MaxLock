@@ -35,6 +35,7 @@ public abstract class LockHelper {
             "com.twitter.android.StartActivity",
             "com.UCMobile.main.UCMobile",
             "com.whatsapp.Main",
+            "cum.whatsfapp.Main",
             "jp.co.johospace.jorte.MainActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
     };
@@ -43,7 +44,7 @@ public abstract class LockHelper {
     public static void launchLockView(Activity caller, Intent intent, String packageName, String launch) {
         Intent it = new Intent();
         it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         caller.startActivity(it);
@@ -51,7 +52,7 @@ public abstract class LockHelper {
 
     public static boolean timerOrIMod(String packageName, long unlockTimestamp, SharedPreferences iMod, SharedPreferences iModTemp) {
         // Technical timer
-        if (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 1000) {
+        if (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 800) {
             return true;
         }
 

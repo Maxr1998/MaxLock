@@ -26,7 +26,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
@@ -44,7 +43,7 @@ public class FakeDieDialog extends Activity {
     private String packageName;
     private Intent original;
     private AlertDialog.Builder reportDialog;
-    private SharedPreferences prefs, prefsPackages, prefsIMoD, prefsIMoDTemp;
+    private SharedPreferences prefs;
 
     @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
@@ -57,14 +56,14 @@ public class FakeDieDialog extends Activity {
 
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
-        prefsIMoD = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
-        prefsIMoDTemp = getSharedPreferences(Common.PREFS_IMOD_TEMP, MODE_WORLD_READABLE);
+        SharedPreferences prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
+        SharedPreferences prefsIMoD = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
+        SharedPreferences prefsIMoDTemp = getSharedPreferences(Common.PREFS_IMOD_TEMP, MODE_WORLD_READABLE);
 
         long permitTimestamp = prefsPackages.getLong(packageName + "_tmp", 0);
         if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMoD, prefsIMoDTemp)) {
             LockActivity.directUnlock(this, original, packageName);
-            close();
+            finish();
             return;
         }
 
@@ -98,19 +97,19 @@ public class FakeDieDialog extends Activity {
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                                 launchLockView(FakeDieDialog.this, original, packageName, ".ui.LockActivity");
                                             }
-                                            close();
+                                            finish();
                                         }
                                     })
                                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            close();
+                                            finish();
                                         }
                                     })
                                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
                                         @Override
                                         public void onCancel(DialogInterface dialogInterface) {
-                                            close();
+                                            finish();
                                         }
                                     })
                                     .create().show();
@@ -120,7 +119,7 @@ public class FakeDieDialog extends Activity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        close();
+                        finish();
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -130,11 +129,5 @@ public class FakeDieDialog extends Activity {
                     }
                 })
                 .create().show();
-    }
-
-    private void close() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            finishAndRemoveTask();
-        } else finish();
     }
 }

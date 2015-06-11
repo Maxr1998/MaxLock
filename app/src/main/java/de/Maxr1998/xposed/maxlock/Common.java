@@ -105,4 +105,9 @@ public abstract class Common {
     public static final String IMOD_REMAIN_TIMER_GLOBAL = "timer_generaldelay";
     public static final String IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer";
     public static final String IMOD_MIN_FAKE_UNLOCK = "enable_direct_unlock";
+
+    public static final String FLAG_CLOSE_APP = "_close";
+    public static final String FLAG_TMP = "_tmp";
+    public static final String FLAG_IMOD = "_imod";
+
 }
