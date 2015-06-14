@@ -8,6 +8,9 @@
     <string name="sb_no_locking_type">没有锁定特定类型</string>
     <string name="sb_no_locked_apps">没有选择锁定应用</string>
     <!-- First start screens-->
+    <string name="button_skip">跳过</string>
+    <string name="button_next_content_description">下一个</string>
+    <string name="button_done">完成</string>
     <string name="fs_welcome_maxlock">欢迎使用MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock将保护您的应用免受未经授权访问</string>
     <string name="fs_phone_content_description">手机</string>
@@ -57,6 +60,7 @@
         <!--<item>主题背景</item>-->
     </string-array>
     <string name="pref_custom_color">自定义颜色</string>
+    <string name="pref_hide_status_bar">隐藏状态栏/全屏</string>
     <string name="pref_use_tablet_mode">使用平板模式</string>
     <string name="pref_use_tablet_mode_summary">%1$s发现了这个%2$s设备由于dpi%3$d和显示的宽度为%4$d像素</string>
     <string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
@@ -65,7 +69,7 @@
     <string name="pref_hide_title_bar">隐藏标题栏</string>
     <string name="pref_hide_input_bar">隐藏输入栏</string>
     <string name="pref_hide_input_bar_summary">隐藏清除按钮!</string>
-    <string name="pref_category_password_and_pin">仅PIN</string>
+    <string name="pref_category_password_and_pin">密码与PIN</string>
     <string name="pref_quick_unlock">快速解锁</string>
     <string name="pref_category_knock_code_only">仅轻敲代码</string>
     <string name="pref_show_dividers">显示分隔</string>
@@ -131,6 +135,7 @@
     <string name="pref_hide_from_launcher">桌面隐藏应用图标</string>
     <string name="reboot_required">可能需要重新启动以应用更改</string>
     <string name="pref_use_dark_style">使用黑色风格</string>
+    <string name="pref_widget_background_color">小部件背景颜色</string>
     <!-- About information -->
     <string name="pref_category_about">关于</string>
     <string name="app_name_pro">MaxLock专业版</string>
