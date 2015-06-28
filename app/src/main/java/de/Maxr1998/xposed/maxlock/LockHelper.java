@@ -34,6 +34,7 @@ public abstract class LockHelper {
             "com.instagram",
             "com.twitter.android.StartActivity",
             "com.UCMobile.main.UCMobile",
+            "com.viber.voip.WelcomeActivity",
             "com.whatsapp.Main",
             "cum.whatsfapp.Main",
             "jp.co.johospace.jorte.MainActivity",
