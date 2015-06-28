@@ -72,10 +72,6 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         if (isFirstStart) {
             prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
         }
-        // Prefs
-        PreferenceManager.setDefaultValues(mContext, R.xml.preferences_main, true);
-        PreferenceManager.setDefaultValues(mContext, R.xml.preferences_locking_type, true);
-        PreferenceManager.setDefaultValues(mContext, R.xml.preferences_locking_ui, true);
         // Pro setup
         if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
             prefs.edit().putBoolean(Common.ENABLE_LOGGING, false).apply();
