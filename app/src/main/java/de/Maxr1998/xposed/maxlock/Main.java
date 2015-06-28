@@ -40,7 +40,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        XposedBridge.log("LoadedclassMainMaxLock.");
+        XposedBridge.log("Loaded class Main @ MaxLock.");
         PREFS_PACKAGES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_PACKAGES);
         PREFS_ACTIVITIES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_ACTIVITIES);
         /*PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);
