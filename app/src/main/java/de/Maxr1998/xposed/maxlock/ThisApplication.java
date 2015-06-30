@@ -15,14 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui;
+package de.Maxr1998.xposed.maxlock;
 
 import android.app.Application;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-
-import de.Maxr1998.xposed.maxlock.R;
+import com.squareup.leakcanary.LeakCanary;
 
 public class ThisApplication extends Application {
 
@@ -39,6 +38,8 @@ public class ThisApplication extends Application {
 
     @Override
     public void onCreate() {
+        super.onCreate();
+        LeakCanary.install(this);
         analytics = GoogleAnalytics.getInstance(this);
 
         tracker = analytics.newTracker(R.xml.app_tracker);
