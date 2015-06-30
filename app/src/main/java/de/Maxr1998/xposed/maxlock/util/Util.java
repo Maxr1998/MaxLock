@@ -269,7 +269,7 @@ public abstract class Util {
             case "theme":
                 InputStream backgroundStream;
                 try {
-                    File backgroundFile = new File(dataDir(context) + "theme" + File.separator + "background.png");
+                    File backgroundFile = new File(dataDir(context) + "theme/background.png");
                     if (backgroundFile.exists()) {
                         backgroundStream = new FileInputStream(backgroundFile);
                         M_BITMAP = BitmapFactory.decodeStream(backgroundStream);
@@ -281,7 +281,7 @@ public abstract class Util {
             case "custom":
                 InputStream inputStream;
                 try {
-                    inputStream = new FileInputStream(new File(dataDir(context) + "background" + File.separator + "image"));
+                    inputStream = new FileInputStream(new File(dataDir(context) + "background/image"));
                     M_BITMAP = BitmapFactory.decodeStream(inputStream);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -320,8 +320,8 @@ public abstract class Util {
                     .remove(Common.IMOD_DELAY_GLOBAL)
                     .remove(Common.IMOD_DELAY_APP)
                     .apply();
-            new File(dataDir(context) + File.separator + "shared_prefs/activities").delete();
-            new File(dataDir(context) + File.separator + "shared_prefs/imod").delete();
+            new File(dataDir(context) + "shared_prefs/activities.xml").delete();
+            new File(dataDir(context) + "shared_prefs/imod.xml").delete();
             //new File(dataDir(context) + File.separator + "shared_prefs/imod_temp_values").delete();
             PREFS.edit().putString("migrated", "v5.3").apply();
         }

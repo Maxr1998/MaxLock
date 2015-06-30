@@ -32,13 +32,12 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class TaskActionReceiver extends BroadcastReceiver {
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint({"WorldReadableFiles", "CommitPrefEdits"})
+    @SuppressLint("CommitPrefEdits")
     @Override
     public void onReceive(Context context, Intent intent) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences prefsApps = MLPreferences.getPrefsApps(context);
-        SharedPreferences prefsTemp = context.getSharedPreferences(Common.PREFS_TEMP, Context.MODE_WORLD_READABLE);
+        SharedPreferences prefsTemp = MLPreferences.getPrefsTemp(context);
 
         if (!intent.getAction().equals("com.twofortyfouram.locale.intent.action.FIRE_SETTING") || !prefs.getBoolean(Common.TASKER_ENABLED, false)) {
             return;

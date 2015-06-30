@@ -43,7 +43,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
     @SuppressLint("WorldReadableFiles")
     public static void directUnlock(Activity caller, Intent orig, String pkgName) {
-        MLPreferences.getPrefsApps(caller).edit()
+        MLPreferences.getPrefsTemp(caller).edit()
                 .putLong(pkgName + Common.FLAG_TMP, System.currentTimeMillis())
                 .commit();
         try {
@@ -72,7 +72,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
         // Preferences
         prefsIMod = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
-        prefsTemp = getSharedPreferences(Common.PREFS_TEMP, MODE_WORLD_READABLE);
+        prefsTemp = MLPreferences.getPrefsTemp(this);
 
         long permitTimestamp = prefsTemp.getLong(packageName + Common.FLAG_TMP, 0);
         if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMod, prefsTemp)) {
