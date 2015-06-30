@@ -41,6 +41,7 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
     private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
+            "com.android.camera.CameraActivity",
             "com.evernote.ui.HomeActivity",
             "com.fstop.photo.MainActivity",
             "com.instagram",
