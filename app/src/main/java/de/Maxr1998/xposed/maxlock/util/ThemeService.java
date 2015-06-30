@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui;
+package de.Maxr1998.xposed.maxlock.util;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class ThemeService extends IntentService {
 

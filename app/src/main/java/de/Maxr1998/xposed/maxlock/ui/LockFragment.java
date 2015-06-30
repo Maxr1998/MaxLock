@@ -52,6 +52,7 @@ import java.util.List;
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.ThemeService;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {

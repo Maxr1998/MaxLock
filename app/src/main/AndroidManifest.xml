@@ -91,7 +91,7 @@
 
         <!-- Theming API -->
         <service
-            android:name=".ui.ThemeService"
+            android:name=".util.ThemeService"
             android:enabled="false"
             android:exported="false" />
 
