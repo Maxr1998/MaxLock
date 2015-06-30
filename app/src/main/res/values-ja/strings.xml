@@ -8,8 +8,11 @@
     <string name="sb_no_locking_type">ロック方法が未設定です.</string>
     <string name="sb_no_locked_apps">ロックするアプリが未選択です.</string>
     <!-- First start screens-->
+    <string name="button_skip">スキップ</string>
+    <string name="button_next_content_description">次へ</string>
+    <string name="button_done">完了</string>
     <string name="fs_welcome_maxlock">MaxLock へようこそ!</string>
-    <string name="fs_maxlock_description">MaxLock はアプリが許可無く起動されることを防止します</string>
+    <string name="fs_maxlock_description">MaxLock は許可していないアプリの起動を防止します</string>
     <string name="fs_phone_content_description">Phone</string>
     <string name="fs_lock_content_description">Lock on the phone</string>
     <string name="fs_app_package_installer">パッケージ インストーラー</string>
@@ -57,8 +60,9 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">背景色</string>
+    <string name="pref_hide_status_bar">ステータスバーの非表示</string>
     <string name="pref_use_tablet_mode">タブレットモード</string>
-    <string name="pref_use_tablet_mode_summary">この端末(%1$s)はドット密度が %3$d dpi で画面幅が %4$d ピクセルなので %2$s として認識されました</string>
+    <string name="pref_use_tablet_mode_summary">この端末(%1$s)は、ドット密度が %3$d dpi で画面幅が %4$d ピクセルなので %2$s として認識されました</string>
     <string name="pref_category_pin_and_knock_code">暗証番号とノックコード</string>
     <string name="pref_invert_color">表示色の反転</string>
     <string name="pref_invert_color_summary">テキストと分割線の色を黒にします</string>
@@ -131,6 +135,7 @@
     <string name="pref_hide_from_launcher">アプリアイコンの非表示</string>
     <string name="reboot_required">変更を適用するには端末の再起動が必要かもしれません</string>
     <string name="pref_use_dark_style">暗色スタイル</string>
+    <string name="pref_widget_background_color">ウィジェットの背景色</string>
     <!-- About information -->
     <string name="pref_category_about">このアプリについて</string>
     <string name="app_name_pro">MaxLock プロ版</string>
