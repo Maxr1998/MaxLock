@@ -60,10 +60,11 @@ import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 @SuppressLint("CommitPrefEdits")
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements SectionIndexer {
@@ -71,20 +72,18 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     private final Fragment mFragment;
     private final Context mContext;
-    private final SharedPreferences prefsPackages, prefsPerApp;
+    private final SharedPreferences prefsApps, prefsKeysPerApp;
     private final Filter mFilter;
     private List<Map<String, Object>> oriItemList;
     private List<Map<String, Object>> mItemList;
     private AlertDialog dialog;
 
-    @SuppressLint("WorldReadableFiles")
     public AppListAdapter(Fragment fragment, Context context) {
         mFragment = fragment;
         mContext = context;
         mItemList = new ArrayList<>();
-        //noinspection deprecation
-        prefsPackages = mContext.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
-        prefsPerApp = mContext.getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
+        prefsApps = MLPreferences.getPrefsApps(mContext);
+        prefsKeysPerApp = mContext.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
         mFilter = new MyFilter();
     }
 
@@ -103,7 +102,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         hld.appName.setText(sTitle);
         hld.appIcon.setImageDrawable(dIcon);
 
-        if (prefsPackages.getBoolean(key, false)) {
+        if (prefsApps.getBoolean(key, false)) {
             hld.toggle.setChecked(true);
             hld.options.setVisibility(View.VISIBLE);
         } else {
@@ -129,20 +128,20 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                 // Fake die checkbox
                 View checkBoxView = View.inflate(mContext, R.layout.per_app_settings, null);
                 CheckBox fakeDie = (CheckBox) checkBoxView.findViewById(R.id.cb_fake_die);
-                fakeDie.setChecked(prefsPackages.getBoolean(key + "_fake", false));
+                fakeDie.setChecked(prefsApps.getBoolean(key + "_fake", false));
                 fakeDie.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v;
                         boolean value = cb.isChecked();
-                        prefsPackages.edit()
+                        prefsApps.edit()
                                 .putBoolean(key + "_fake", value)
                                 .commit();
                     }
                 });
                 // Custom password checkbox
                 CheckBox customPassword = (CheckBox) checkBoxView.findViewById(R.id.cb_custom_pw);
-                customPassword.setChecked(prefsPerApp.contains(key));
+                customPassword.setChecked(prefsKeysPerApp.contains(key));
                 customPassword.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -186,7 +185,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                                 }
                             }).show();
                         } else
-                            prefsPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();
+                            prefsKeysPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();
 
                     }
                 });
@@ -214,7 +213,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                 ToggleButton tb = (ToggleButton) v;
                 boolean value = tb.isChecked();
                 if (value) {
-                    prefsPackages.edit()
+                    prefsApps.edit()
                             .putBoolean(key, true)
                             .commit();
                     AnimationSet anim = new AnimationSet(true);
@@ -223,7 +222,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                     hld.options.startAnimation(anim);
                     hld.options.setVisibility(View.VISIBLE);
                 } else {
-                    prefsPackages.edit().remove(key).commit();
+                    prefsApps.edit().remove(key).commit();
                     AnimationSet animOut = new AnimationSet(true);
                     animOut.addAnimation(AnimationUtils.loadAnimation(mContext, R.anim.appslist_settings_rotate_out));
                     animOut.addAnimation(AnimationUtils.loadAnimation(mContext, R.anim.appslist_settings_translate_out));
@@ -308,14 +307,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
         private final List<String> activities;
         private final Context mContext;
-        private final SharedPreferences prefsActivities;
+        private final SharedPreferences prefsApps;
 
-        @SuppressWarnings("deprecation")
-        @SuppressLint("WorldReadableFiles")
         public ActivityListAdapter(Context context, List<String> list) {
             mContext = context;
             activities = list;
-            prefsActivities = mContext.getSharedPreferences(Common.PREFS_ACTIVITIES, Context.MODE_WORLD_READABLE);
+            prefsApps = MLPreferences.getPrefsApps(mContext);
         }
 
         @Override
@@ -327,7 +324,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         @Override
         public void onBindViewHolder(final ActivityListViewHolder lvh, int position) {
             String name = activities.get(lvh.getLayoutPosition());
-            lvh.switchCompat.setChecked(prefsActivities.getBoolean(name, true));
+            lvh.switchCompat.setChecked(prefsApps.getBoolean(name, true));
             lvh.switchCompat.setText(name);
             lvh.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -335,9 +332,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                     String now = activities.get(lvh.getLayoutPosition());
                     System.out.println(now + " new Value: " + b);
                     if (b) {
-                        prefsActivities.edit().remove(now).commit();
+                        prefsApps.edit().remove(now).commit();
                     } else {
-                        prefsActivities.edit().putBoolean(now, false).commit();
+                        prefsApps.edit().putBoolean(now, false).commit();
                     }
                 }
             });
@@ -381,10 +378,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                     boolean add = false;
                     switch (search) {
                         case "@*activated*":
-                            add = prefsPackages.getBoolean((String) app.get("key"), false);
+                            add = prefsApps.getBoolean((String) app.get("key"), false);
                             break;
                         case "@*deactivated*":
-                            add = !prefsPackages.getBoolean((String) app.get("key"), false);
+                            add = !prefsApps.getBoolean((String) app.get("key"), false);
                             break;
                         default:
                             String title = ((String) app.get("title")).toLowerCase();

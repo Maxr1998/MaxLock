@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock;
+package de.Maxr1998.xposed.maxlock.util;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -62,6 +62,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
+import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.R;
+
 public abstract class Util {
 
     public static final int PATTERN_CODE = 48;
@@ -76,51 +80,51 @@ public abstract class Util {
     private static void loadPrefs(Context context) {
         PREFS = PreferenceManager.getDefaultSharedPreferences(context);
         PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
+        PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
     }
 
     @SuppressLint("InlinedApi")
     public static void askPassword(final Context context, final String password, boolean numbers) {
-        loadPrefs(context);
         try {
             authenticationSucceededListener = (AuthenticationSucceededListener) context;
         } catch (ClassCastException e) {
             throw new RuntimeException(context.getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this fragment", e);
         }
-        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_ask_password, null);
+        loadPrefs(context);
+        @SuppressLint("InflateParams")
+        final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_ask_password, null);
         final EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
-        input.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (PREFS.getBoolean(Common.QUICK_UNLOCK, false)) {
-                    String val = input.getText().toString();
-                    if (Util.shaHash(val).equals(password) || password.equals(""))
-                        authenticationSucceededListener.onAuthenticationSucceeded();
-                }
-            }
-        });
-        if (numbers)
-            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(false)
                 .setTitle(R.string.pref_locking_type_password)
                 .setView(dialogView)
                 .setPositiveButton(android.R.string.ok, null)
                 .create();
+        if (numbers) {
+            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        }
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (PREFS.getBoolean(Common.QUICK_UNLOCK, false)) {
+                    String val = input.getText().toString();
+                    if (Util.shaHash(val).equals(password) || password.equals("")) {
+                        dialog.dismiss();
+                        authenticationSucceededListener.onAuthenticationSucceeded();
+                    }
+                }
+            }
+        });
         dialog.show();
-
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,10 +308,11 @@ public abstract class Util {
         return context.getApplicationInfo().dataDir + File.separator;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint({"WorldReadableFiles"})
     public static void cleanUp(Context context) {
         loadPrefs(context);
-        if (!PREFS.getString("migrated", "").equals("v5.2")) {
+        if (!PREFS.getString("migrated", "").equals("v5.3")) {
             PREFS.edit()
                     .remove(Common.IMOD_DELAY_GLOBAL_ENABLED)
                     .remove(Common.IMOD_DELAY_APP_ENABLED)
@@ -315,7 +320,10 @@ public abstract class Util {
                     .remove(Common.IMOD_DELAY_GLOBAL)
                     .remove(Common.IMOD_DELAY_APP)
                     .apply();
-            PREFS.edit().putString("migrated", "v5.2").apply();
+            new File(dataDir(context) + File.separator + "shared_prefs/activities").delete();
+            new File(dataDir(context) + File.separator + "shared_prefs/imod").delete();
+            //new File(dataDir(context) + File.separator + "shared_prefs/imod_temp_values").delete();
+            PREFS.edit().putString("migrated", "v5.3").apply();
         }
     }
 

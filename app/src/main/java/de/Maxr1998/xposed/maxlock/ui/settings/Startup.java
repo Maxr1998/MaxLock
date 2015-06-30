@@ -42,12 +42,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.Maxr1998.xposed.maxlock.BillingHelper;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.ThisApplication;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
-import de.Maxr1998.xposed.maxlock.ui.ThisApplication;
+import de.Maxr1998.xposed.maxlock.util.BillingHelper;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class Startup extends AsyncTask<Boolean, Void, Void> {
 
@@ -113,7 +113,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         // SnackBar with alert
         @SuppressWarnings("ConstantConditions")
         boolean noLockType = prefs.getString(Common.LOCKING_TYPE, "").equals("");
-        boolean noPackages = !new File(Util.dataDir(mContext) + "shared_prefs" + File.separator + Common.PREFS_PACKAGES + ".xml").exists();
+        boolean noPackages = !new File(Util.dataDir(mContext) + "shared_prefs" + File.separator + Common.PREFS_APPS + ".xml").exists();
         snackBarContent = (noLockType ? mContext.getString(R.string.sb_no_locking_type) + " " : "") + (noPackages ? mContext.getString(R.string.sb_no_locked_apps) : "");
         showSnackBar = noPackages || noLockType;
         snackBarMultiLine = noLockType && noPackages;

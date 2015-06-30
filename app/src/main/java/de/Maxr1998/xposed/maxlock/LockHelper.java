@@ -22,25 +22,8 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 public abstract class LockHelper {
     public static final String MY_PACKAGE_NAME = LockHelper.class.getPackage().getName();
-    private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
-            "com.evernote.ui.HomeActivity",
-            "com.fstop.photo.MainActivity",
-            "com.instagram",
-            "com.twitter.android.StartActivity",
-            "com.UCMobile.main.UCMobile",
-            "com.viber.voip.WelcomeActivity",
-            "com.whatsapp.Main",
-            "cum.whatsfapp.Main",
-            "jp.co.johospace.jorte.MainActivity",
-            "se.feomedia.quizkampen.act.login.MainActivity"
-    };
-    public static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(ACTIVITIES_NO_UNLOCK));
 
     public static void launchLockView(Activity caller, Intent intent, String packageName, String launch) {
         Intent it = new Intent();
@@ -51,7 +34,7 @@ public abstract class LockHelper {
         caller.startActivity(it);
     }
 
-    public static boolean timerOrIMod(String packageName, long unlockTimestamp, SharedPreferences iMod, SharedPreferences iModTemp) {
+    public static boolean timerOrIMod(String packageName, long unlockTimestamp, SharedPreferences iMod, SharedPreferences temp) {
         // Technical timer
         if (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 800) {
             return true;
@@ -60,8 +43,8 @@ public abstract class LockHelper {
         // Intika I.MoD
         boolean iModDelayGlobalEnabled = iMod.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
         boolean iModDelayAppEnabled = iMod.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
-        long iModLastUnlockGlobal = iModTemp.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0);
-        long iModLastUnlockApp = iModTemp.getLong(packageName + "_imod", 0);
+        long iModLastUnlockGlobal = temp.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0);
+        long iModLastUnlockApp = temp.getLong(packageName + "_imod", 0);
 
         return (iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
                 System.currentTimeMillis() - iModLastUnlockGlobal <=

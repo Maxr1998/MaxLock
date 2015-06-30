@@ -39,7 +39,7 @@ import com.nispok.snackbar.SnackbarManager;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class PinSetupFragment extends Fragment implements View.OnClickListener {
 
@@ -60,7 +60,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
         // Prefs
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
+        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
 
         // Strings
         if (getArguments() != null)

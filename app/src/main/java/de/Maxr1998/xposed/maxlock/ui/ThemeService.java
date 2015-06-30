@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class ThemeService extends IntentService {
 

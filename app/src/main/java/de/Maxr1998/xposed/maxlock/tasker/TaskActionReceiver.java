@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class TaskActionReceiver extends BroadcastReceiver {
 
@@ -36,8 +37,8 @@ public class TaskActionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences prefsPackages = context.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
-        SharedPreferences prefsIModTemp = context.getSharedPreferences(Common.PREFS_IMOD_TEMP, Context.MODE_WORLD_READABLE);
+        SharedPreferences prefsApps = MLPreferences.getPrefsApps(context);
+        SharedPreferences prefsTemp = context.getSharedPreferences(Common.PREFS_TEMP, Context.MODE_WORLD_READABLE);
 
         if (!intent.getAction().equals("com.twofortyfouram.locale.intent.action.FIRE_SETTING") || !prefs.getBoolean(Common.TASKER_ENABLED, false)) {
             return;
@@ -48,19 +49,19 @@ public class TaskActionReceiver extends BroadcastReceiver {
 
         switch (extra.getInt(ConfigActivity.STATE_EXTRA_KEY, 0)) {
             case R.id.radio_toggle_ms:
-                prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, !prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true)).commit();
-                Toast.makeText(context, prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true) ? context.getString(R.string.toast_master_switch_on) : context.getString(R.string.toast_master_switch_off), Toast.LENGTH_SHORT).show();
+                prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, !prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)).commit();
+                Toast.makeText(context, prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) ? context.getString(R.string.toast_master_switch_on) : context.getString(R.string.toast_master_switch_off), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_ms_on:
-                prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
+                prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
                 Toast.makeText(context, context.getString(R.string.toast_master_switch_on), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_ms_off:
-                prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
+                prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
                 Toast.makeText(context, context.getString(R.string.toast_master_switch_off), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_imod_reset:
-                prefsIModTemp.edit().clear().commit();
+                prefsTemp.edit().clear().commit();
                 break;
         }
     }

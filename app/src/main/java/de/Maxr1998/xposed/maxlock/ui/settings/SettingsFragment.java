@@ -61,14 +61,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import de.Maxr1998.xposed.maxlock.BillingHelper;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.appslist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
+import de.Maxr1998.xposed.maxlock.util.BillingHelper;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 
 public class SettingsFragment extends PreferenceFragment implements BillingProcessor.IBillingHandler {

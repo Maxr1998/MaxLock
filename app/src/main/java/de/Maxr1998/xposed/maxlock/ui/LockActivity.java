@@ -31,19 +31,19 @@ import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.LockHelper;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     private String packageName;
     private Intent original;
-    private SharedPreferences prefsPackages, prefsIMod, prefsIModTemp;
+    private SharedPreferences prefsIMod, prefsTemp;
     private boolean isInFocus = false, unlocked = false;
 
     @SuppressLint("WorldReadableFiles")
     public static void directUnlock(Activity caller, Intent orig, String pkgName) {
-        //noinspection deprecation
-        caller.getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE).edit()
+        MLPreferences.getPrefsApps(caller).edit()
                 .putLong(pkgName + Common.FLAG_TMP, System.currentTimeMillis())
                 .commit();
         try {
@@ -71,12 +71,11 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         original = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
         // Preferences
-        prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, MODE_WORLD_READABLE);
         prefsIMod = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
-        prefsIModTemp = getSharedPreferences(Common.PREFS_IMOD_TEMP, MODE_WORLD_READABLE);
+        prefsTemp = getSharedPreferences(Common.PREFS_TEMP, MODE_WORLD_READABLE);
 
-        long permitTimestamp = prefsPackages.getLong(packageName + Common.FLAG_TMP, 0);
-        if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMod, prefsIModTemp)) {
+        long permitTimestamp = prefsTemp.getLong(packageName + Common.FLAG_TMP, 0);
+        if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMod, prefsTemp)) {
             openApp();
             return;
         }
@@ -95,12 +94,12 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     public void onAuthenticationSucceeded() {
         // Save time for Intika mod
         if (prefsIMod.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false)) {
-            prefsIModTemp.edit()
+            prefsTemp.edit()
                     .putLong(Common.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis())
                     .commit();
         }
         if (prefsIMod.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false)) {
-            prefsIModTemp.edit()
+            prefsTemp.edit()
                     .putLong(packageName + Common.FLAG_IMOD, System.currentTimeMillis())
                     .commit();
         }
@@ -134,6 +133,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        prefsPackages.edit().putLong(packageName + Common.FLAG_CLOSE_APP, System.currentTimeMillis()).commit();
+        prefsTemp.edit().putLong(packageName + Common.FLAG_CLOSE_APP, System.currentTimeMillis()).commit();
     }
 }

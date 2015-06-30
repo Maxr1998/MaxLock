@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class KnockCodeSetupFragment extends Fragment implements View.OnClickListener {
 
@@ -55,7 +55,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         // Prefs
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
+        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
 
         // Strings
         key = new StringBuilder("");

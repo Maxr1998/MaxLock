@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package util;
+package de.Maxr1998.xposed.maxlock.util;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

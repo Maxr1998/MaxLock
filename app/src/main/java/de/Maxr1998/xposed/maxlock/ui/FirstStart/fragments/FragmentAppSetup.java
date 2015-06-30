@@ -49,26 +49,25 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
     ViewGroup rootView;
     DevicePolicyManager devicePolicyManager;
     ComponentName deviceAdmin;
-    SharedPreferences prefsPackages;
+    SharedPreferences prefsApps;
     private String[] app_names = {
             "com.android.packageinstaller", "com.android.settings", "de.robv.android.xposed.installer"
     };
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_setup, container, false);
-        prefsPackages = getActivity().getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
+        prefsApps = MLPreferences.getPrefsApps(getActivity());
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), SettingsFragment.UninstallProtectionReceiver.class);
         CheckBox[] app_cbs = {
@@ -81,7 +80,7 @@ public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheck
             cb.setOnCheckedChangeListener(this);
         }
         for (int android = 0; android < 3; android++) {
-            app_cbs[android].setChecked(prefsPackages.getBoolean(app_names[android], false));
+            app_cbs[android].setChecked(prefsApps.getBoolean(app_names[android], false));
         }
         app_cbs[3].setChecked(devicePolicyManager.isAdminActive(deviceAdmin));
         return rootView;
@@ -98,7 +97,7 @@ public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheck
                 c++;
             case R.id.first_start_app_package:
                 c++;
-                prefsPackages.edit().putBoolean(app_names[c], b).commit();
+                prefsApps.edit().putBoolean(app_names[c], b).commit();
                 break;
             case R.id.first_start_app_device_admin:
                 if (b) {

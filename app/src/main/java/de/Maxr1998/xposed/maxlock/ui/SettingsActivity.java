@@ -38,15 +38,16 @@ import android.widget.CompoundButton;
 import com.anjlab.android.iab.v3.BillingProcessor;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
-import de.Maxr1998.xposed.maxlock.BillingHelper;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 import de.Maxr1998.xposed.maxlock.ui.settings.WebsiteFragment;
+import de.Maxr1998.xposed.maxlock.util.BillingHelper;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
@@ -104,17 +105,17 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     }
 
     @SuppressLint("WorldReadableFiles")
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_master_switch));
-        master_switch.setChecked(getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).getBoolean(Common.MASTER_SWITCH_ON, true));
+        //noinspection deprecation
+        master_switch.setChecked(getSharedPreferences(Common.PREFS_APPS, Context.MODE_WORLD_READABLE).getBoolean(Common.MASTER_SWITCH_ON, true));
         master_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint({"CommitPrefEdits"})
             @Override
             public void onCheckedChanged(CompoundButton button, boolean b) {
-                getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
+                MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
             }
         });
         Fragment appsList = getSupportFragmentManager().findFragmentByTag("AppListFragment");
@@ -132,12 +133,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         return super.onCreateOptionsMenu(menu);
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_master_switch));
-        master_switch.setChecked(getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).getBoolean(Common.MASTER_SWITCH_ON, true));
+        master_switch.setChecked(MLPreferences.getPrefsApps(SettingsActivity.this).getBoolean(Common.MASTER_SWITCH_ON, true));
         return super.onPrepareOptionsMenu(menu);
     }
 

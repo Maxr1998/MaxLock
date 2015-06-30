@@ -20,7 +20,6 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,12 +31,13 @@ import android.widget.Toast;
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.widget.MasterSwitchWidget;
 
 @SuppressLint("CommitPrefEdits")
 public class MasterSwitchShortcutActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
-    SharedPreferences prefsPackages;
+    private SharedPreferences prefsApps;
 
     @SuppressLint("WorldReadableFiles")
     @Override
@@ -46,9 +46,8 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
         if (getIntent().getBooleanExtra("LaunchOnly", false)) {
             // Launch
             Log.d("MaxLock", "Launching shortcut");
-            //noinspection deprecation
-            prefsPackages = getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
-            if (prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true)) {
+            prefsApps = MLPreferences.getPrefsApps(this);
+            if (prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)) {
                 setContentView(R.layout.activity_lock);
                 Fragment frag = new LockFragment();
                 Bundle b = new Bundle(1);
@@ -56,7 +55,7 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
                 frag.setArguments(b);
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
             } else {
-                prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
+                prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
                 Toast.makeText(this, getString(R.string.toast_master_switch_on), Toast.LENGTH_LONG).show();
                 fireIntentAndFinish();
             }
@@ -82,7 +81,7 @@ public class MasterSwitchShortcutActivity extends FragmentActivity implements Au
 
     @Override
     public void onAuthenticationSucceeded() {
-        prefsPackages.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
+        prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
         Toast.makeText(this, getString(R.string.toast_master_switch_off), Toast.LENGTH_LONG).show();
         fireIntentAndFinish();
     }

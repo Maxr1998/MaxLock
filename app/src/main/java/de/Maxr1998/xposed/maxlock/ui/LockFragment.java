@@ -21,19 +21,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.graphics.RadialGradient;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,7 +35,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -54,13 +47,12 @@ import android.widget.TextView;
 import com.haibison.android.lockpattern.widget.LockPatternView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
@@ -113,7 +105,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE);
+        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
         //noinspection deprecation
         prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
@@ -231,6 +223,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("NewApi")
             @SuppressWarnings("deprecation")
             @Override
             public void onGlobalLayout() {
@@ -304,7 +297,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
-        if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        /*if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             kCTouchLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.background_selected_on_transparent)), null, new ColorDrawable(Color.WHITE));
             container.setForeground(kCTouchLP);
             kCTouchLP.setState(new int[]{});
@@ -386,7 +379,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
         } else if (!prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true) || screenWidth > screenHeight) {
             divider.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     private void setupPatternLayout() {

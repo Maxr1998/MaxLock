@@ -66,8 +66,9 @@ import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.Util;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
+import de.Maxr1998.xposed.maxlock.util.Util;
 import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
@@ -78,7 +79,6 @@ public class AppListFragment extends Fragment {
     AlertDialog restoreDialog;
     VerticalRecyclerViewFastScroller fastScroller;
     SectionTitleIndicator scrollIndicator;
-    private ViewGroup rootView;
     private AppListAdapter mAdapter;
     private SharedPreferences prefs;
     private SetupAppList task;
@@ -107,7 +107,7 @@ public class AppListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         // Setup layout
         recyclerView = (RecyclerView) rootView.findViewById(R.id.app_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -172,21 +172,18 @@ public class AppListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (prefs.getBoolean(Common.ENABLE_PRO, false) || item.getItemId() == R.id.toolbar_filter_activated) {
-            final File prefsPackagesFileShort = new File(Common.PREFS_PACKAGES + ".xml");
-            final File prefsPerAppFileShort = new File(Common.PREFS_PER_APP + ".xml");
-            final File prefsActivitiesFileShort = new File(Common.PREFS_ACTIVITIES + ".xml");
-            final File prefsPackagesFile = new File(Util.dataDir(getActivity()) + "shared_prefs" + File.separator + prefsPackagesFileShort);
+            final File prefsAppsFileShort = new File(Common.PREFS_APPS + ".xml");
+            final File prefsPerAppFileShort = new File(Common.PREFS_KEYS_PER_APP + ".xml");
+            final File prefsAppsFile = new File(Util.dataDir(getActivity()) + "shared_prefs" + File.separator + prefsAppsFileShort);
             final File prefsPerAppFile = new File(Util.dataDir(getActivity()) + "shared_prefs" + File.separator + prefsPerAppFileShort);
-            final File prefsActivitiesFile = new File(Util.dataDir(getActivity()) + "shared_prefs" + File.separator + prefsActivitiesFileShort);
             final File backupDir = new File(Environment.getExternalStorageDirectory() + File.separator + "MaxLock_Backup");
 
             switch (item.getItemId()) {
                 case R.id.toolbar_backup_list:
                     File curTimeDir = new File(backupDir + File.separator + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.getDefault()).format(new Date(System.currentTimeMillis())) + File.separator);
-                    backupFile(prefsPackagesFile, curTimeDir);
+                    backupFile(prefsAppsFile, curTimeDir);
                     backupFile(prefsPerAppFile, curTimeDir);
-                    backupFile(prefsActivitiesFile, curTimeDir);
-                    if (curTimeDir.exists() && new File(curTimeDir + File.separator + prefsPackagesFileShort).exists())
+                    if (curTimeDir.exists() && new File(curTimeDir + File.separator + prefsAppsFileShort).exists())
                         Toast.makeText(getActivity(), R.string.toast_backup_success, Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.toolbar_restore_list:
@@ -198,29 +195,23 @@ public class AppListFragment extends Fragment {
                                 @SuppressLint("InlinedApi")
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    File restorePackagesFile = new File(backupDir + File.separator + restoreAdapter.getItem(i) + File.separator + prefsPackagesFileShort);
+                                    File restorePackagesFile = new File(backupDir + File.separator + restoreAdapter.getItem(i) + File.separator + prefsAppsFileShort);
                                     File restorePerAppFile = new File(backupDir + File.separator + restoreAdapter.getItem(i) + File.separator + prefsPerAppFileShort);
-                                    File restoreActivitiesFile = new File(backupDir + File.separator + restoreAdapter.getItem(i) + File.separator + prefsActivitiesFileShort);
                                     if (restorePackagesFile.exists()) {
                                         try {
                                             //noinspection ResultOfMethodCallIgnored
-                                            prefsPackagesFile.delete();
-                                            FileUtils.copyFile(restorePackagesFile, prefsPackagesFile);
+                                            prefsAppsFile.delete();
+                                            FileUtils.copyFile(restorePackagesFile, prefsAppsFile);
                                             if (restorePerAppFile.exists()) {
                                                 //noinspection ResultOfMethodCallIgnored
                                                 prefsPerAppFile.delete();
                                                 FileUtils.copyFile(restorePerAppFile, prefsPerAppFile);
                                             }
-                                            if (prefsActivitiesFile.exists()) {
-                                                //noinspection ResultOfMethodCallIgnored
-                                                prefsActivitiesFile.delete();
-                                                FileUtils.copyFile(restoreActivitiesFile, prefsActivitiesFile);
-                                            }
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
-                                        getActivity().getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_MULTI_PROCESS);
-                                        getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_MULTI_PROCESS);
+                                        getActivity().getSharedPreferences(Common.PREFS_APPS, Context.MODE_MULTI_PROCESS);
+                                        getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_MULTI_PROCESS);
                                         Toast.makeText(getActivity(), R.string.toast_restore_success, Toast.LENGTH_SHORT).show();
                                         ((SettingsActivity) getActivity()).restart();
                                     } else
@@ -244,16 +235,12 @@ public class AppListFragment extends Fragment {
                     });
                     return true;
                 case R.id.toolbar_clear_list:
-                    //noinspection deprecation
-                    getActivity().getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE).edit().clear().commit();
-                    getActivity().getSharedPreferences(Common.PREFS_PER_APP, Context.MODE_PRIVATE).edit().clear().commit();
+                    MLPreferences.getPrefsApps(getActivity()).edit().clear().commit();
+                    getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE).edit().clear().commit();
                     ((SettingsActivity) getActivity()).restart();
                     return true;
                 case R.id.toolbar_filter_activated:
                     String appListFilter = prefs.getString("app_list_filter", "");
-                    if (appListFilter == null) {
-                        return true;
-                    }
                     switch (appListFilter) {
                         case "@*activated*":
                             prefs.edit().putString("app_list_filter", "@*deactivated*").commit();
@@ -274,15 +261,13 @@ public class AppListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("deprecation")
     private void filterIcon(MenuItem item) {
         if (prefs == null) {
             return;
         }
         String filter = prefs.getString("app_list_filter", "");
         Drawable icon = getResources().getDrawable(R.drawable.ic_apps_white_24dp);
-        if (filter == null) {
-            return;
-        }
         switch (filter) {
             case "@*activated*":
                 icon = getResources().getDrawable(R.drawable.ic_check_white_24dp);

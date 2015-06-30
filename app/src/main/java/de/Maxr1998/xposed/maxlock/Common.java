@@ -88,11 +88,10 @@ public abstract class Common {
     // Preference files
     public static final String PREFS = "de.Maxr1998.xposed.maxlock_preferences";
     public static final String PREFS_KEY = "keys";
-    public static final String PREFS_PACKAGES = "packages";
-    public static final String PREFS_PER_APP = "per_app_settings";
-    public static final String PREFS_ACTIVITIES = "activities";
+    public static final String PREFS_APPS = "packages";
+    public static final String PREFS_KEYS_PER_APP = "per_app_settings";
+    public static final String PREFS_TEMP = "temps";
     public static final String PREFS_IMOD = "imod";
-    public static final String PREFS_IMOD_TEMP = "imod_temp_values";
 
     public static final String PREFS_THEME = "theme";
 

@@ -23,7 +23,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +33,7 @@ import android.widget.RemoteViews;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class MasterSwitchWidget extends AppWidgetProvider {
 
@@ -45,9 +45,7 @@ public class MasterSwitchWidget extends AppWidgetProvider {
         intent.putExtra("LaunchOnly", true);
         PendingIntent pending = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         int color = PreferenceManager.getDefaultSharedPreferences(context).getInt(Common.WIDGET_BACKGROUND_COLOR, Color.WHITE);
-        //noinspection deprecation
-        SharedPreferences prefsPackages = context.getSharedPreferences(Common.PREFS_PACKAGES, Context.MODE_WORLD_READABLE);
-        boolean masterSwitchOn = prefsPackages.getBoolean(Common.MASTER_SWITCH_ON, true);
+        boolean masterSwitchOn = MLPreferences.getPrefsApps(context).getBoolean(Common.MASTER_SWITCH_ON, true);
 
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
