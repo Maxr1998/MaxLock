@@ -53,6 +53,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             "com.whatsapp.Main",
             "cum.whatsfapp.Main",
             "jp.co.johospace.jorte.MainActivity",
+            "jp.naver.line.android.activity.SplashActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
     }));
     private static XSharedPreferences PREFS_APPS, PREFS_TEMP/*, PREFS_IMOD*/;
