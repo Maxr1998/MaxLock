@@ -19,13 +19,20 @@ package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.util.Log;
+import android.widget.EditText;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -34,11 +41,13 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static de.Maxr1998.xposed.maxlock.LockHelper.launchLockView;
+
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     private String packageName;
     private Intent original;
-    private SharedPreferences prefsIMod, prefsTemp;
+    private SharedPreferences prefs, prefsIMod, prefsTemp;
     private boolean isInFocus = false, unlocked = false;
 
     @SuppressLint("WorldReadableFiles")
@@ -62,8 +71,22 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.HIDE_STATUS_BAR, false)) {
-            setTheme(R.style.TranslucentStatusBar_Full);
+        String mode = getIntent().getStringExtra(Common.LOCK_ACTIVITY_MODE);
+        switch (mode) {
+            case Common.MODE_DEFAULT:
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.HIDE_STATUS_BAR, false)) {
+                    setTheme(R.style.TranslucentStatusBar_Full);
+                } else {
+                    setTheme(R.style.TranslucentStatusBar);
+                }
+                break;
+            case Common.MODE_FAKE_DIE:
+                setTheme(R.style.FakeDieDialog);
+                break;
+            default:
+                super.onCreate(savedInstanceState);
+                finish();
+                return;
         }
         super.onCreate(savedInstanceState);
         // Intent extras
@@ -71,6 +94,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         original = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
         // Preferences
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefsIMod = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
         prefsTemp = MLPreferences.getPrefsTemp(this);
 
@@ -80,13 +104,14 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
             return;
         }
 
-        // Authentication fragment/UI
-        setContentView(R.layout.activity_lock);
-        Fragment frag = new LockFragment();
-        Bundle b = new Bundle(1);
-        b.putString(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        frag.setArguments(b);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+        switch (mode) {
+            case Common.MODE_DEFAULT:
+                defaultSetup();
+                break;
+            case Common.MODE_FAKE_DIE:
+                fakeDieSetup();
+                break;
+        }
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -104,6 +129,81 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                     .commit();
         }
         openApp();
+    }
+
+    private void defaultSetup() {
+        // Authentication fragment/UI
+        setContentView(R.layout.activity_lock);
+        Fragment frag = new LockFragment();
+        Bundle b = new Bundle(1);
+        b.putString(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+        frag.setArguments(b);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+    }
+
+    private void fakeDieSetup() {
+        getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        PackageManager pm = getPackageManager();
+        ApplicationInfo requestPkgInfo;
+        try {
+            requestPkgInfo = pm.getApplicationInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            requestPkgInfo = null;
+        }
+
+        String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
+                .setNeutralButton(R.string.dialog_button_report, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
+                            launchLockView(LockActivity.this, original, packageName, ".ui.LockActivity");
+                        } else {
+                            final EditText input = new EditText(LockActivity.this);
+                            input.setMinLines(3);
+                            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                            AlertDialog.Builder reportDialog = new AlertDialog.Builder(LockActivity.this);
+                            reportDialog.setView(input)
+                                    .setTitle(R.string.dialog_title_report_problem)
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
+                                                launchLockView(LockActivity.this, original, packageName, ".ui.LockActivity");
+                                            }
+                                            finish();
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            finish();
+                                        }
+                                    })
+                                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                        @Override
+                                        public void onCancel(DialogInterface dialogInterface) {
+                                            finish();
+                                        }
+                                    })
+                                    .create().show();
+                        }
+                    }
+                })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                })
+                .create().show();
     }
 
     private void openApp() {

@@ -109,4 +109,8 @@ public abstract class Common {
     public static final String FLAG_TMP = "_tmp";
     public static final String FLAG_IMOD = "_imod";
 
+    public static final String LOCK_ACTIVITY_MODE = "la_mode";
+    public static final String MODE_DEFAULT = "default";
+    public static final String MODE_FAKE_DIE = "fake-die";
+
 }
