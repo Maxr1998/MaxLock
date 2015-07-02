@@ -45,6 +45,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             "com.evernote.ui.HomeActivity",
             "com.fstop.photo.MainActivity",
             "com.instagram",
+            "com.tumblr.ui.activity.JumpoffActivity",
             "com.twitter.android.StartActivity",
             "com.UCMobile.main.UCMobile",
             "com.viber.voip.WelcomeActivity",
