@@ -40,7 +40,7 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
-    private static final String[] ACTIVITIES_NO_UNLOCK = new String[]{
+    public static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(new String[]{
             "com.android.camera.CameraActivity",
             "com.evernote.ui.HomeActivity",
             "com.fstop.photo.MainActivity",
@@ -52,34 +52,33 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             "cum.whatsfapp.Main",
             "jp.co.johospace.jorte.MainActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
-    };
-    public static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(ACTIVITIES_NO_UNLOCK));
-    private static XSharedPreferences PREFS_PACKAGES, PREFS_TEMP/*, PREFS_IMOD, PREFS_IMOD_TEMP*/;
+    }));
+    private static XSharedPreferences PREFS_APPS, PREFS_TEMP/*, PREFS_IMOD, PREFS_IMOD_TEMP*/;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         XposedBridge.log("Loaded class Main @ MaxLock.");
-        PREFS_PACKAGES = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_APPS);
+        PREFS_APPS = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_APPS);
         PREFS_TEMP = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_TEMP);
-        /*PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);*/
+        //PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);
         makeReadable();
     }
 
     @Override
-    public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-        final String packageName = lpparam.packageName;
-        if (!PREFS_PACKAGES.getBoolean(packageName, false)) {
+    public void handleLoadPackage(LoadPackageParam lPParam) throws Throwable {
+        final String packageName = lPParam.packageName;
+        if (!PREFS_APPS.getBoolean(packageName, false)) {
             return;
         }
 
-        findAndHookMethod("android.app.Activity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+        findAndHookMethod("android.app.Activity", lPParam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 XposedBridge.log("MLaC|" + param.thisObject.getClass().getName() + "|-|" + System.currentTimeMillis());
             }
         });
 
-        findAndHookMethod("android.app.Activity", lpparam.classLoader, "onStart", new XC_MethodHook() {
+        findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reload();
@@ -96,18 +95,18 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                     return;
                 }*/
                 if (app.getClass().getName().equals("android.app.Activity") ||
-                        !PREFS_PACKAGES.getBoolean(Common.MASTER_SWITCH_ON, true) ||
-                        !PREFS_PACKAGES.getBoolean(app.getClass().getName(), true) ||
+                        !PREFS_APPS.getBoolean(Common.MASTER_SWITCH_ON, true) ||
+                        !PREFS_APPS.getBoolean(app.getClass().getName(), true) ||
                         NO_UNLOCK.contains(app.getClass().getName())) {
                     return;
                 }
                 app.moveTaskToBack(true);
-                launchLockView(app, app.getIntent(), packageName, PREFS_PACKAGES.getBoolean(packageName + "_fake", false) ? ".ui.FakeDieDialog" : ".ui.LockActivity");
+                launchLockView(app, app.getIntent(), packageName, PREFS_APPS.getBoolean(packageName + "_fake", false));
             }
         });
 
         // Handling back action
-        findAndHookMethod("android.app.Activity", lpparam.classLoader, "onPause", new XC_MethodHook() {
+        findAndHookMethod("android.app.Activity", lPParam.classLoader, "onPause", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 PreferenceManager.getDefaultSharedPreferences((Activity) param.thisObject).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
@@ -115,7 +114,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         });
 
         // Handling activity starts inside package
-        findAndHookMethod("android.app.Instrumentation", lpparam.classLoader, "execStartActivity",
+        findAndHookMethod("android.app.Instrumentation", lPParam.classLoader, "execStartActivity",
                 Context.class, IBinder.class, IBinder.class, Activity.class, Intent.class, int.class, Bundle.class,
                 new XC_MethodHook() {
                     @Override
@@ -123,7 +122,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         boolean set = false;
                         if (!((Intent) param.args[4]).getComponent().getPackageName().equals(MY_PACKAGE_NAME) &&
                                 !NO_UNLOCK.contains(param.args[0].getClass().getName()) &&
-                                PREFS_PACKAGES.getBoolean(param.args[0].getClass().getName(), true)) {
+                                PREFS_APPS.getBoolean(param.args[0].getClass().getName(), true)) {
                             PreferenceManager.getDefaultSharedPreferences((Context) param.args[0]).edit().putLong("MaxLockLastUnlock", System.currentTimeMillis()).commit();
                             set = true;
                         }
@@ -133,13 +132,13 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     }
 
     private void makeReadable() {
-        PREFS_PACKAGES.makeWorldReadable();
+        PREFS_APPS.makeWorldReadable();
         PREFS_TEMP.makeWorldReadable();
         /*PREFS_IMOD.makeWorldReadable();*/
     }
 
     private void reload() {
-        PREFS_PACKAGES.reload();
+        PREFS_APPS.reload();
         PREFS_TEMP.reload();
         /*PREFS_IMOD.reload();*/
     }

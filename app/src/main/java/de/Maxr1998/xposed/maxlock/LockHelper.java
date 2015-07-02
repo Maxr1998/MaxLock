@@ -25,10 +25,11 @@ import android.content.SharedPreferences;
 public abstract class LockHelper {
     public static final String MY_PACKAGE_NAME = LockHelper.class.getPackage().getName();
 
-    public static void launchLockView(Activity caller, Intent intent, String packageName, String launch) {
+    public static void launchLockView(Activity caller, Intent intent, String packageName, boolean fake) {
         Intent it = new Intent();
-        it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + launch));
+        it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + ".ui.LockActivity"));
         it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        it.putExtra(Common.LOCK_ACTIVITY_MODE, fake ? Common.MODE_FAKE_DIE : Common.MODE_DEFAULT);
         it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         caller.startActivity(it);

@@ -158,7 +158,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
-                            launchLockView(LockActivity.this, original, packageName, ".ui.LockActivity");
+                            launchLockView(LockActivity.this, original, packageName, false);
                         } else {
                             final EditText input = new EditText(LockActivity.this);
                             input.setMinLines(3);
@@ -170,7 +170,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
-                                                launchLockView(LockActivity.this, original, packageName, ".ui.LockActivity");
+                                                launchLockView(LockActivity.this, original, packageName, false);
                                             }
                                             finish();
                                         }
