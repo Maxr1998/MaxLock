@@ -22,4 +22,7 @@
     public static final ** CREATOR;
 }
 
+-keep class * extends android.content.ContextWrapper
+
 -keep public class de.Maxr1998.xposed.maxlock.Main
+-keep public abstract class de.Maxr1998.xposed.maxlock.LockHelper
