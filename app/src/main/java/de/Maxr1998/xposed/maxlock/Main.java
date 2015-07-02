@@ -53,7 +53,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             "jp.co.johospace.jorte.MainActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
     }));
-    private static XSharedPreferences PREFS_APPS, PREFS_TEMP/*, PREFS_IMOD, PREFS_IMOD_TEMP*/;
+    private static XSharedPreferences PREFS_APPS, PREFS_TEMP/*, PREFS_IMOD*/;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -100,7 +100,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         NO_UNLOCK.contains(app.getClass().getName())) {
                     return;
                 }
-                app.moveTaskToBack(true);
                 launchLockView(app, app.getIntent(), packageName, PREFS_APPS.getBoolean(packageName + "_fake", false));
             }
         });
