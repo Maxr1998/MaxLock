@@ -49,6 +49,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     private Intent original;
     private SharedPreferences prefs, prefsIMod, prefsTemp;
     private boolean isInFocus = false, unlocked = false;
+    private AlertDialog fakeDieDialog, reportDialog;
 
     @SuppressLint("WorldReadableFiles")
     public static void directUnlock(Activity caller, Intent orig, String pkgName) {
@@ -82,6 +83,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 break;
             case Common.MODE_FAKE_DIE:
                 setTheme(R.style.FakeDieDialog);
+                getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 break;
             default:
                 super.onCreate(savedInstanceState);
@@ -142,7 +144,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     }
 
     private void fakeDieSetup() {
-        getWindow().setBackgroundDrawable(new ColorDrawable(0));
         PackageManager pm = getPackageManager();
         ApplicationInfo requestPkgInfo;
         try {
@@ -152,8 +153,8 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
 
         String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
+        AlertDialog.Builder fakeDieDialogBuilder = new AlertDialog.Builder(this);
+        fakeDieDialog = fakeDieDialogBuilder.setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
                 .setNeutralButton(R.string.dialog_button_report, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -163,8 +164,9 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                             final EditText input = new EditText(LockActivity.this);
                             input.setMinLines(3);
                             input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                            AlertDialog.Builder reportDialog = new AlertDialog.Builder(LockActivity.this);
-                            reportDialog.setView(input)
+                            fakeDieDialog.dismiss();
+                            AlertDialog.Builder reportDialogBuilder = new AlertDialog.Builder(LockActivity.this);
+                            reportDialog = reportDialogBuilder.setView(input)
                                     .setTitle(R.string.dialog_title_report_problem)
                                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         @Override
@@ -187,7 +189,8 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                             finish();
                                         }
                                     })
-                                    .create().show();
+                                    .create();
+                            reportDialog.show();
                         }
                     }
                 })
@@ -203,7 +206,8 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                         finish();
                     }
                 })
-                .create().show();
+                .create();
+        fakeDieDialog.show();
     }
 
     private void openApp() {
@@ -220,6 +224,11 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @Override
     public void onPause() {
         super.onPause();
+        if (fakeDieDialog != null) {
+            fakeDieDialog.dismiss();
+        } else if (reportDialog != null) {
+            reportDialog.dismiss();
+        }
         if (!isInFocus) {
             Log.d("LockActivity", "Lost focus, finishing.");
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
