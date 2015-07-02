@@ -33,6 +33,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -160,6 +161,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
                             launchLockView(LockActivity.this, original, packageName, false);
+                            finish();
                         } else {
                             final EditText input = new EditText(LockActivity.this);
                             input.setMinLines(3);
@@ -173,6 +175,8 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                                 launchLockView(LockActivity.this, original, packageName, false);
+                                            } else {
+                                                Toast.makeText(LockActivity.this, "Thanks for your feedback", Toast.LENGTH_SHORT).show();
                                             }
                                             finish();
                                         }
@@ -180,13 +184,13 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            finish();
+                                            finishAndBack();
                                         }
                                     })
                                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
                                         @Override
                                         public void onCancel(DialogInterface dialogInterface) {
-                                            finish();
+                                            finishAndBack();
                                         }
                                     })
                                     .create();
@@ -197,17 +201,23 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        finishAndBack();
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                        finish();
+                        finishAndBack();
                     }
                 })
                 .create();
         fakeDieDialog.show();
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    private void finishAndBack() {
+        prefsTemp.edit().putLong(packageName + Common.FLAG_CLOSE_APP, System.currentTimeMillis()).commit();
+        finish();
     }
 
     private void openApp() {
@@ -238,10 +248,9 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        prefsTemp.edit().putLong(packageName + Common.FLAG_CLOSE_APP, System.currentTimeMillis()).commit();
+        finishAndBack();
     }
 }
