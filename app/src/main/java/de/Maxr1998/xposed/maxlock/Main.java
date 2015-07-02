@@ -43,6 +43,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(new String[]{
             "com.android.camera.CameraActivity",
             "com.evernote.ui.HomeActivity",
+            "com.facebook.nodex.startup.splashscreen.NodexSplashActivity",
             "com.fstop.photo.MainActivity",
             "com.instagram",
             "com.tumblr.ui.activity.JumpoffActivity",
