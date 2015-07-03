@@ -121,7 +121,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reload();
                 Activity app = (Activity) param.thisObject;
-                if (System.currentTimeMillis() - TEMPS.get(packageName + Common.FLAG_CLOSE_APP) <= 800) {
+                if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_CLOSE_APP)) <= 800) {
                     app.finish();
                     return;
                 }
@@ -180,7 +180,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     }
 
     public boolean timerOrIMod(String packageName) {
-        if (System.currentTimeMillis() - TEMPS.get(packageName + Common.FLAG_TMP) <= 600) {
+        if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_TMP)) <= 600) {
             return true;
         }
 
@@ -197,5 +197,9 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 System.currentTimeMillis() - iModLastUnlockApp <=
                         PREFS_IMOD.getInt(Common.IMOD_DELAY_APP, 600000));*/
         return false;
+    }
+
+    private long safeLong(Long l) {
+        return l == null ? 0L : l;
     }
 }
