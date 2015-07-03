@@ -7,7 +7,7 @@
     <string name="toast_pro_required">使用此功能需要專業版！</string>
     <string name="sb_no_locking_type">沒有鎖定特定類型</string>
     <string name="sb_no_locked_apps">沒有選擇鎖定應用</string>
-     <!-- First start screens-->
+    <!-- First start screens-->
     <string name="fs_welcome_maxlock">歡迎使用MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock將保護您的應用免受未經授權訪問</string>
     <string name="fs_phone_content_description">電話</string>

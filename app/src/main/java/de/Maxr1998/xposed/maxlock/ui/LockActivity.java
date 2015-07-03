@@ -46,7 +46,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
     private String packageName;
     private Intent original;
-    private SharedPreferences prefs, prefsIMod;
+    private SharedPreferences prefs;
     private boolean isInFocus = false, unlocked = false;
     private AlertDialog fakeDieDialog, reportDialog;
 
@@ -103,7 +103,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefsIMod = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
 
         switch (mode) {
             case Common.MODE_DEFAULT:

@@ -127,7 +127,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 }
                 if (app.getClass().getName().equals("android.app.Activity") ||
                         !PREFS_APPS.getBoolean(Common.MASTER_SWITCH_ON, true) ||
-                        System.currentTimeMillis() - TEMPS.get(packageName + Common.FLAG_TMP) <= 600/*timerOrIMod(packageName, unlockTimestamp, PREFS_IMOD, PREFS_TEMP)*/ ||
+                        timerOrIMod(packageName) ||
                         !PREFS_APPS.getBoolean(app.getClass().getName(), true) ||
                         NO_UNLOCK.contains(app.getClass().getName())) {
                     return;
@@ -177,5 +177,25 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     private void reload() {
         PREFS_APPS.reload();
         /*PREFS_IMOD.reload();*/
+    }
+
+    public boolean timerOrIMod(String packageName) {
+        if (System.currentTimeMillis() - TEMPS.get(packageName + Common.FLAG_TMP) <= 600) {
+            return true;
+        }
+
+        /*// Intika I.MoD
+        boolean iModDelayGlobalEnabled = PREFS_IMOD.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
+        boolean iModDelayAppEnabled = PREFS_IMOD.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
+        long iModLastUnlockGlobal = TEMPS.get(Common.IMOD_LAST_UNLOCK_GLOBAL);
+        long iModLastUnlockApp = TEMPS.get(packageName + Common.FLAG_IMOD);
+
+        return (iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
+                System.currentTimeMillis() - iModLastUnlockGlobal <=
+                        PREFS_IMOD.getInt(Common.IMOD_DELAY_GLOBAL, 600000)))
+                || iModDelayAppEnabled && (iModLastUnlockApp != 0 &&
+                System.currentTimeMillis() - iModLastUnlockApp <=
+                        PREFS_IMOD.getInt(Common.IMOD_DELAY_APP, 600000));*/
+        return false;
     }
 }
