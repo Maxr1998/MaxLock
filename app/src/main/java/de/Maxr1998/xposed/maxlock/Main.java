@@ -80,7 +80,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
                     TEMPS.put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_TMP, System.currentTimeMillis());
                     XposedBridge.log("Set");
-                    Thread.sleep(100, 0);
                 }
             });
             findAndHookMethod(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onAuthenticationSucceeded", new XC_MethodHook() {
@@ -187,7 +186,9 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     }
 
     private boolean timerOrIMod(String packageName) {
+        XposedBridge.log(safeLong(TEMPS.get(packageName + Common.FLAG_TMP)) + "|" + System.currentTimeMillis());
         if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_TMP)) <= 800) {
+            XposedBridge.log("unlock");
             return true;
         }
 
