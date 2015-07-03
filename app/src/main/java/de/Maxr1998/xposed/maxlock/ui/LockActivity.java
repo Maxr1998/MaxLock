@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,26 +38,20 @@ import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.LockHelper;
+import de.Maxr1998.xposed.maxlock.Main;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
-
-import static de.Maxr1998.xposed.maxlock.LockHelper.launchLockView;
 
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     private String packageName;
     private Intent original;
-    private SharedPreferences prefs, prefsIMod, prefsTemp;
+    private SharedPreferences prefs, prefsIMod;
     private boolean isInFocus = false, unlocked = false;
     private AlertDialog fakeDieDialog, reportDialog;
 
     @SuppressLint("WorldReadableFiles")
     public static void directUnlock(Activity caller, Intent orig, String pkgName) {
-        MLPreferences.getPrefsTemp(caller).edit()
-                .putLong(pkgName + Common.FLAG_TMP, System.currentTimeMillis())
-                .commit();
         try {
             orig.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             caller.startActivity(orig);
@@ -67,6 +62,16 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         } finally {
             caller.finish();
         }
+    }
+
+    public static void launchLockView(Activity caller, Intent intent, String packageName, boolean fake) {
+        Intent it = new Intent();
+        it.setComponent(new ComponentName(Main.class.getPackage().getName(), Main.class.getPackage().getName() + ".ui.LockActivity"));
+        it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        it.putExtra(Common.LOCK_ACTIVITY_MODE, fake ? Common.MODE_FAKE_DIE : Common.MODE_DEFAULT);
+        it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
+        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+        caller.startActivity(it);
     }
 
     @SuppressWarnings("deprecation")
@@ -88,7 +93,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 break;
             default:
                 super.onCreate(savedInstanceState);
-                finish();
+                onBackPressed();
                 return;
         }
         super.onCreate(savedInstanceState);
@@ -99,13 +104,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefsIMod = getSharedPreferences(Common.PREFS_IMOD, MODE_WORLD_READABLE);
-        prefsTemp = MLPreferences.getPrefsTemp(this);
-
-        long permitTimestamp = prefsTemp.getLong(packageName + Common.FLAG_TMP, 0);
-        if (LockHelper.timerOrIMod(packageName, permitTimestamp, prefsIMod, prefsTemp)) {
-            openApp();
-            return;
-        }
 
         switch (mode) {
             case Common.MODE_DEFAULT:
@@ -117,20 +115,8 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
     @Override
     public void onAuthenticationSucceeded() {
-        // Save time for Intika mod
-        if (prefsIMod.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false)) {
-            prefsTemp.edit()
-                    .putLong(Common.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis())
-                    .commit();
-        }
-        if (prefsIMod.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false)) {
-            prefsTemp.edit()
-                    .putLong(packageName + Common.FLAG_IMOD, System.currentTimeMillis())
-                    .commit();
-        }
         openApp();
     }
 
@@ -184,13 +170,13 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            finishAndBack();
+                                            onBackPressed();
                                         }
                                     })
                                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
                                         @Override
                                         public void onCancel(DialogInterface dialogInterface) {
-                                            finishAndBack();
+                                            onBackPressed();
                                         }
                                     })
                                     .create();
@@ -201,23 +187,17 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finishAndBack();
+                        onBackPressed();
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                        finishAndBack();
+                        onBackPressed();
                     }
                 })
                 .create();
         fakeDieDialog.show();
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    private void finishAndBack() {
-        prefsTemp.edit().putLong(packageName + Common.FLAG_CLOSE_APP, System.currentTimeMillis()).commit();
-        finish();
     }
 
     private void openApp() {
@@ -250,7 +230,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
     @Override
     public void onBackPressed() {
+        Log.d("ML", "Stub!");
         super.onBackPressed();
-        finishAndBack();
     }
 }

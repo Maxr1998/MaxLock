@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
@@ -37,7 +38,6 @@ public class TaskActionReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences prefsApps = MLPreferences.getPrefsApps(context);
-        SharedPreferences prefsTemp = MLPreferences.getPrefsTemp(context);
 
         if (!intent.getAction().equals("com.twofortyfouram.locale.intent.action.FIRE_SETTING") || !prefs.getBoolean(Common.TASKER_ENABLED, false)) {
             return;
@@ -60,8 +60,12 @@ public class TaskActionReceiver extends BroadcastReceiver {
                 Toast.makeText(context, context.getString(R.string.toast_master_switch_off), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_imod_reset:
-                prefsTemp.edit().clear().commit();
+                clearImod();
                 break;
         }
+    }
+
+    private void clearImod() {
+        Log.d("ML", "Stub!");
     }
 }

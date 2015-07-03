@@ -90,7 +90,6 @@ public abstract class Common {
     public static final String PREFS_KEY = "keys";
     public static final String PREFS_APPS = "packages";
     public static final String PREFS_KEYS_PER_APP = "per_app_settings";
-    public static final String PREFS_TEMP = "temps";
     public static final String PREFS_IMOD = "imod";
 
     public static final String PREFS_THEME = "theme";

@@ -30,10 +30,4 @@ public class MLPreferences {
         //noinspection deprecation
         return context.getSharedPreferences(Common.PREFS_APPS, Context.MODE_WORLD_READABLE);
     }
-
-    @SuppressLint("WorldReadableFiles")
-    public static SharedPreferences getPrefsTemp(Context context) {
-        //noinspection deprecation
-        return context.getSharedPreferences(Common.PREFS_TEMP, Context.MODE_WORLD_READABLE);
-    }
 }

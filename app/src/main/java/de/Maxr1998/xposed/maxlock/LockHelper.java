@@ -17,25 +17,12 @@
 
 package de.Maxr1998.xposed.maxlock;
 
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.SharedPreferences;
-
 public abstract class LockHelper {
     public static final String MY_PACKAGE_NAME = LockHelper.class.getPackage().getName();
 
-    public static void launchLockView(Activity caller, Intent intent, String packageName, boolean fake) {
-        Intent it = new Intent();
-        it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + ".ui.LockActivity"));
-        it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        it.putExtra(Common.LOCK_ACTIVITY_MODE, fake ? Common.MODE_FAKE_DIE : Common.MODE_DEFAULT);
-        it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
-        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        caller.startActivity(it);
-    }
 
-    public static boolean timerOrIMod(String packageName, long unlockTimestamp, SharedPreferences iMod, SharedPreferences temp) {
+
+    /*public static boolean timerOrIMod(String packageName, long unlockTimestamp, SharedPreferences iMod, SharedPreferences temp) {
         // Technical timer
         if (unlockTimestamp != 0 && System.currentTimeMillis() - unlockTimestamp <= 800) {
             return true;
@@ -50,8 +37,8 @@ public abstract class LockHelper {
         return (iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
                 System.currentTimeMillis() - iModLastUnlockGlobal <=
                         iMod.getInt(Common.IMOD_DELAY_GLOBAL, 600000)))
-                ||/* Per app */(iModDelayAppEnabled) && (iModLastUnlockApp != 0 &&
+                || iModDelayAppEnabled && (iModLastUnlockApp != 0 &&
                 System.currentTimeMillis() - iModLastUnlockApp <=
                         iMod.getInt(Common.IMOD_DELAY_APP, 600000));
-    }
+    }*/
 }
