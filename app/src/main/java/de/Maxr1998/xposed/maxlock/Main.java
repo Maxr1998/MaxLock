@@ -18,6 +18,7 @@
 package de.Maxr1998.xposed.maxlock;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,7 +38,6 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
-import static de.robv.android.xposed.XposedHelpers.findClass;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
@@ -77,8 +77,10 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (packageName.equals(MY_PACKAGE_NAME)) {
             findAndHookMethod(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "openApp", new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
                     TEMPS.put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_TMP, System.currentTimeMillis());
+                    XposedBridge.log("Set");
+                    Thread.sleep(100, 0);
                 }
             });
             findAndHookMethod(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onAuthenticationSucceeded", new XC_MethodHook() {
@@ -125,6 +127,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                     app.finish();
                     return;
                 }
+                XposedBridge.log("get");
                 if (app.getClass().getName().equals("android.app.Activity") ||
                         !PREFS_APPS.getBoolean(Common.MASTER_SWITCH_ON, true) ||
                         timerOrIMod(packageName) ||
@@ -132,9 +135,13 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         NO_UNLOCK.contains(app.getClass().getName())) {
                     return;
                 }
-                XposedHelpers.callStaticMethod(findClass(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader), "launchLockView",
-                        new Class[]{Activity.class, Intent.class, String.class, Boolean.class},
-                        app, app.getIntent(), packageName, PREFS_APPS.getBoolean(packageName + "_fake", false));
+                Intent it = new Intent();
+                it.setComponent(new ComponentName(Main.class.getPackage().getName(), Main.class.getPackage().getName() + ".ui.LockActivity"));
+                it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                it.putExtra(Common.LOCK_ACTIVITY_MODE, PREFS_APPS.getBoolean(packageName + "_fake", false) ? Common.MODE_FAKE_DIE : Common.MODE_DEFAULT);
+                it.putExtra(Common.INTENT_EXTRAS_INTENT, app.getIntent());
+                it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+                app.startActivity(it);
             }
         });
 
@@ -179,8 +186,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         /*PREFS_IMOD.reload();*/
     }
 
-    public boolean timerOrIMod(String packageName) {
-        if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_TMP)) <= 600) {
+    private boolean timerOrIMod(String packageName) {
+        if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_TMP)) <= 800) {
             return true;
         }
 

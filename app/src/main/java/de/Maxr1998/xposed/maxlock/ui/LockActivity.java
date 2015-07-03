@@ -17,8 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.ui;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -50,32 +48,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     private boolean isInFocus = false, unlocked = false;
     private AlertDialog fakeDieDialog, reportDialog;
 
-    @SuppressLint("WorldReadableFiles")
-    public static void directUnlock(Activity caller, Intent orig, String pkgName) {
-        try {
-            orig.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            caller.startActivity(orig);
-        } catch (Exception e) {
-            Intent intent_option = caller.getPackageManager().getLaunchIntentForPackage(pkgName);
-            intent_option.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            caller.startActivity(intent_option);
-        } finally {
-            caller.finish();
-        }
-    }
-
-    public static void launchLockView(Activity caller, Intent intent, String packageName, boolean fake) {
-        Intent it = new Intent();
-        it.setComponent(new ComponentName(Main.class.getPackage().getName(), Main.class.getPackage().getName() + ".ui.LockActivity"));
-        it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        it.putExtra(Common.LOCK_ACTIVITY_MODE, fake ? Common.MODE_FAKE_DIE : Common.MODE_DEFAULT);
-        it.putExtra(Common.INTENT_EXTRAS_INTENT, intent);
-        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        caller.startActivity(it);
-    }
-
-    @SuppressWarnings("deprecation")
-    @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String mode = getIntent().getStringExtra(Common.LOCK_ACTIVITY_MODE);
@@ -145,7 +117,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
-                            launchLockView(LockActivity.this, original, packageName, false);
+                            launchLockView();
                             finish();
                         } else {
                             final EditText input = new EditText(LockActivity.this);
@@ -159,7 +131,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
-                                                launchLockView(LockActivity.this, original, packageName, false);
+                                                launchLockView();
                                             } else {
                                                 Toast.makeText(LockActivity.this, "Thanks for your feedback", Toast.LENGTH_SHORT).show();
                                             }
@@ -201,7 +173,32 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
     private void openApp() {
         unlocked = true;
-        directUnlock(this, original, packageName);
+        try {
+            original.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(original);
+        } catch (Exception e) {
+            Intent intent_option = getPackageManager().getLaunchIntentForPackage(packageName);
+            intent_option.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent_option);
+        } finally {
+            finish();
+        }
+    }
+
+    public void launchLockView() {
+        Intent it = new Intent();
+        it.setComponent(new ComponentName(Main.class.getPackage().getName(), Main.class.getPackage().getName() + ".ui.LockActivity"));
+        it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_DEFAULT);
+        it.putExtra(Common.INTENT_EXTRAS_INTENT, original);
+        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+        startActivity(it);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("ML", "Stub!");
+        super.onBackPressed();
     }
 
     @Override
@@ -225,11 +222,5 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
             }
             finish();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        Log.d("ML", "Stub!");
-        super.onBackPressed();
     }
 }
