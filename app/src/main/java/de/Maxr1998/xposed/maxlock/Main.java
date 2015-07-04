@@ -57,16 +57,14 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             "jp.naver.line.android.activity.SplashActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
     }));
+    private final static HashMap<String, Long> TEMPS = new HashMap<>();
     private static XSharedPreferences PREFS_APPS/*, PREFS_IMOD*/;
-
-    private static HashMap<String, Long> TEMPS;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         XposedBridge.log("Loaded class Main @ MaxLock.");
         PREFS_APPS = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_APPS);
         //PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);
-        TEMPS = new HashMap<>();
         makeReadable();
     }
 
@@ -78,27 +76,34 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             findAndHookMethod(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "openApp", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-                    TEMPS.put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_TMP, System.currentTimeMillis());
-                    XposedBridge.log("Set");
+                    synchronized (TEMPS) {
+                        TEMPS.put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_TMP, System.currentTimeMillis());
+                    }
                 }
             });
             findAndHookMethod(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onAuthenticationSucceeded", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    TEMPS.put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_IMOD, System.currentTimeMillis());
-                    TEMPS.put(Common.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis());
+                    synchronized (TEMPS) {
+                        TEMPS.put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_IMOD, System.currentTimeMillis());
+                        TEMPS.put(Common.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis());
+                    }
                 }
             });
             findAndHookMethod(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onBackPressed", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    TEMPS.put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_CLOSE_APP, System.currentTimeMillis());
+                    synchronized (TEMPS) {
+                        TEMPS.put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_CLOSE_APP, System.currentTimeMillis());
+                    }
                 }
             });
             findAndHookMethod(MY_PACKAGE_NAME + ".tasker.TaskActionReceiver", lPParam.classLoader, "clearImod", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    TEMPS.clear();
+                    synchronized (TEMPS) {
+                        TEMPS.clear();
+                    }
                 }
             });
             return;
@@ -122,9 +127,11 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reload();
                 Activity app = (Activity) param.thisObject;
-                if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_CLOSE_APP)) <= 800) {
-                    app.finish();
-                    return;
+                synchronized (TEMPS) {
+                    if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_CLOSE_APP)) <= 800) {
+                        app.finish();
+                        return;
+                    }
                 }
                 XposedBridge.log("get");
                 if (app.getClass().getName().equals("android.app.Activity") ||
@@ -149,7 +156,9 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 if (!param.thisObject.getClass().getName().equals("android.app.Activity")) {
-                    TEMPS.put(packageName + Common.FLAG_TMP, System.currentTimeMillis());
+                    synchronized (TEMPS) {
+                        TEMPS.put(packageName + Common.FLAG_TMP, System.currentTimeMillis());
+                    }
                 }
             }
         });
@@ -167,7 +176,9 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         if (!((Intent) param.args[4]).getComponent().getPackageName().equals(MY_PACKAGE_NAME) &&
                                 !NO_UNLOCK.contains(param.args[0].getClass().getName()) &&
                                 PREFS_APPS.getBoolean(param.args[0].getClass().getName(), true)) {
-                            TEMPS.put(packageName + Common.FLAG_TMP, System.currentTimeMillis());
+                            synchronized (TEMPS) {
+                                TEMPS.put(packageName + Common.FLAG_TMP, System.currentTimeMillis());
+                            }
                             set = true;
                         }
                         XposedBridge.log("MLi" + (set ? "U" : "N") + "|" + param.args[0].getClass().getName() + "|" + ((Intent) param.args[4]).getComponent().getClassName() + "|" + System.currentTimeMillis());
@@ -186,12 +197,11 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     }
 
     private boolean timerOrIMod(String packageName) {
-        XposedBridge.log(safeLong(TEMPS.get(packageName + Common.FLAG_TMP)) + "|" + System.currentTimeMillis());
-        if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_TMP)) <= 800) {
-            XposedBridge.log("unlock");
-            return true;
-        }
-
+        synchronized (TEMPS) {
+            if (System.currentTimeMillis() - safeLong(TEMPS.get(packageName + Common.FLAG_TMP)) <= 800) {
+                XposedBridge.log("unlock");
+                return true;
+            }
         /*// Intika I.MoD
         boolean iModDelayGlobalEnabled = PREFS_IMOD.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
         boolean iModDelayAppEnabled = PREFS_IMOD.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
@@ -204,7 +214,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 || iModDelayAppEnabled && (iModLastUnlockApp != 0 &&
                 System.currentTimeMillis() - iModLastUnlockApp <=
                         PREFS_IMOD.getInt(Common.IMOD_DELAY_APP, 600000));*/
-        return false;
+            return false;
+        }
     }
 
     private long safeLong(Long l) {
