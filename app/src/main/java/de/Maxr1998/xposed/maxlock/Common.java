@@ -116,4 +116,5 @@ public abstract class Common {
 
     public static final String EXTERNAL_FILES_DIR = Environment.getExternalStorageDirectory() + "/MaxLock/";
     public static final String BACKUP_DIR = EXTERNAL_FILES_DIR + "Backup/";
+    public static final String TEMPS_FILE = EXTERNAL_FILES_DIR + "files/temps.json";
 }

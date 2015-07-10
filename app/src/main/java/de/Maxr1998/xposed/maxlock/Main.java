@@ -24,10 +24,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -36,6 +43,7 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
+import static de.Maxr1998.xposed.maxlock.Common.TEMPS_FILE;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
@@ -56,21 +64,54 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             "jp.naver.line.android.activity.SplashActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
     }));
-    private static final ConcurrentHashMap<String, Long> TEMPS = new ConcurrentHashMap<>();
     private static XSharedPreferences PREFS_APPS/*, PREFS_IMOD*/;
 
-    public static void put(final String argument) {
-        synchronized (TEMPS) {
-            TEMPS.put(argument, System.currentTimeMillis());
+    public static void put(final String... arguments) throws Throwable {
+        String json;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(TEMPS_FILE));
+            json = reader.readLine();
+            reader.close();
+        } catch (FileNotFoundException e) {
+            json = "";
         }
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(json);
+        } catch (JSONException e) {
+            jsonObject = new JSONObject();
+        }
+        for (String s : arguments) {
+            jsonObject.put(s, System.currentTimeMillis());
+        }
+        File JSONFile = new File(TEMPS_FILE);
+        if (!JSONFile.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            JSONFile.getParentFile().mkdirs();
+            //noinspection ResultOfMethodCallIgnored
+            JSONFile.createNewFile();
+        }
+        FileWriter fw = new FileWriter(JSONFile.getAbsoluteFile());
+        fw.write(jsonObject.toString());
+        fw.close();
     }
 
-    private static long get(String argument) {
-        return safeLong(TEMPS.get(argument));
-    }
-
-    public static long safeLong(Long l) {
-        return l == null ? 0L : l;
+    private static long get(String argument) throws Throwable {
+        String json;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(TEMPS_FILE));
+            json = reader.readLine();
+            reader.close();
+        } catch (FileNotFoundException e) {
+            json = "";
+        }
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(json);
+        } catch (JSONException e) {
+            jsonObject = new JSONObject();
+        }
+        return jsonObject.optLong(argument);
     }
 
     @Override
@@ -165,7 +206,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         /*PREFS_IMOD.reloadPrefs();*/
     }
 
-    private boolean timerOrIMod(String packageName) {
+    private boolean timerOrIMod(String packageName) throws Throwable {
         if (System.currentTimeMillis() - get(packageName + Common.FLAG_TMP) <= 800) {
             return true;
         }

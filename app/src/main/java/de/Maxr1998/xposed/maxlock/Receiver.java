@@ -17,11 +17,17 @@
 
 package de.Maxr1998.xposed.maxlock;
 
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileWriter;
+
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+import static de.Maxr1998.xposed.maxlock.Common.TEMPS_FILE;
 import static de.Maxr1998.xposed.maxlock.Main.MY_PACKAGE_NAME;
 import static de.Maxr1998.xposed.maxlock.Main.put;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
@@ -43,8 +49,7 @@ public class Receiver implements IXposedHookLoadPackage {
         findAndHookMethod(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onAuthenticationSucceeded", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_IMOD);
-                put(Common.IMOD_LAST_UNLOCK_GLOBAL);
+                put(XposedHelpers.getObjectField(param.thisObject, "packageName") + Common.FLAG_IMOD, Common.IMOD_LAST_UNLOCK_GLOBAL);
             }
         });
         findAndHookMethod(MY_PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onBackPressed", new XC_MethodHook() {
@@ -56,7 +61,15 @@ public class Receiver implements IXposedHookLoadPackage {
         findAndHookMethod(MY_PACKAGE_NAME + ".tasker.TaskActionReceiver", lPParam.classLoader, "clearImod", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                // TODO: Clear Map
+                JSONObject jsonObject = new JSONObject();
+                File JSONFile = new File(TEMPS_FILE);
+                if (!JSONFile.exists()) {
+                    //noinspection ResultOfMethodCallIgnored
+                    JSONFile.createNewFile();
+                }
+                FileWriter fw = new FileWriter(JSONFile.getAbsoluteFile());
+                fw.write(jsonObject.toString());
+                fw.close();
             }
         });
     }
