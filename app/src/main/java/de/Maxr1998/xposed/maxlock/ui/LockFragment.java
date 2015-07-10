@@ -21,13 +21,19 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +41,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -47,6 +54,7 @@ import android.widget.TextView;
 import com.haibison.android.lockpattern.widget.LockPatternView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
@@ -298,7 +306,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
-        /*if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             kCTouchLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.background_selected_on_transparent)), null, new ColorDrawable(Color.WHITE));
             container.setForeground(kCTouchLP);
             kCTouchLP.setState(new int[]{});
@@ -380,7 +388,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
         } else if (!prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true) || screenWidth > screenHeight) {
             divider.setVisibility(View.GONE);
-        }*/
+        }
     }
 
     private void setupPatternLayout() {
