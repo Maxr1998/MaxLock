@@ -17,6 +17,8 @@
 
 package de.Maxr1998.xposed.maxlock;
 
+import android.os.Environment;
+
 public abstract class Common {
 
     public static final String PKG_NAME = "de.Maxr1998.xposed.maxlock";
@@ -112,4 +114,6 @@ public abstract class Common {
     public static final String MODE_DEFAULT = "default";
     public static final String MODE_FAKE_DIE = "fake-die";
 
+    public static final String EXTERNAL_FILES_DIR = Environment.getExternalStorageDirectory() + "/MaxLock/";
+    public static final String BACKUP_DIR = EXTERNAL_FILES_DIR + "Backup/";
 }

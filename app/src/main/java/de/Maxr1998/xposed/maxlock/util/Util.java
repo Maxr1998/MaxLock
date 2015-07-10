@@ -29,7 +29,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
@@ -372,7 +371,7 @@ public abstract class Util {
 
     public static boolean isDevMode() {
         try {
-            BufferedReader r = new BufferedReader(new FileReader(Environment.getExternalStorageDirectory() + File.separator + "MaxLock_Backup" + File.separator + "dev_mode.key"));
+            BufferedReader r = new BufferedReader(new FileReader(Common.EXTERNAL_FILES_DIR + "dev_mode.key"));
             return Util.shaHash(r.readLine()).toLowerCase().equals("08b49da56ef8f5bf0aa51c64d5e683ba3e7599bd6e2e3906e584fca14cb95f82");
         } catch (Exception e) {
             return false;
