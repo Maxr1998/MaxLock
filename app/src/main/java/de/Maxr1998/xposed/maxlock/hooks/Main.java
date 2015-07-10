@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock;
+package de.Maxr1998.xposed.maxlock.hooks;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.Maxr1998.xposed.maxlock.Common;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
@@ -47,7 +48,7 @@ import static de.Maxr1998.xposed.maxlock.Common.TEMPS_FILE;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
-    public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
+    public static final String MY_PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
     public static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(new String[]{
             "com.android.camera.CameraActivity",
             "com.evernote.ui.HomeActivity",
@@ -64,7 +65,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             "jp.naver.line.android.activity.SplashActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
     }));
-    private static XSharedPreferences PREFS_APPS/*, PREFS_IMOD*/;
+    public static XSharedPreferences PREFS_APPS, PREFS_IMOD;
 
     public static void put(final String... arguments) throws Throwable {
         String json;
@@ -114,11 +115,17 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         return jsonObject.optLong(argument);
     }
 
+    public static void clear() throws Throwable {
+        FileWriter fw = new FileWriter(new File(TEMPS_FILE).getAbsoluteFile());
+        fw.write("{\"TheAnswer\":\"42\"}");
+        fw.close();
+    }
+
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         XposedBridge.log("Loaded class Main @ MaxLock.");
         PREFS_APPS = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_APPS);
-        //PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);
+        PREFS_IMOD = new XSharedPreferences(MY_PACKAGE_NAME, Common.PREFS_IMOD);
         makeReadable();
     }
 
@@ -156,7 +163,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                     return;
                 }
                 Intent it = new Intent();
-                it.setComponent(new ComponentName(Main.class.getPackage().getName(), Main.class.getPackage().getName() + ".ui.LockActivity"));
+                it.setComponent(new ComponentName(MY_PACKAGE_NAME, MY_PACKAGE_NAME + ".ui.LockActivity"));
                 it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 it.putExtra(Common.LOCK_ACTIVITY_MODE, PREFS_APPS.getBoolean(packageName + "_fake", false) ? Common.MODE_FAKE_DIE : Common.MODE_DEFAULT);
                 it.putExtra(Common.INTENT_EXTRAS_INTENT, app.getIntent());
@@ -198,30 +205,29 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private void makeReadable() {
         PREFS_APPS.makeWorldReadable();
-        /*PREFS_IMOD.makeWorldReadable();*/
+        PREFS_IMOD.makeWorldReadable();
     }
 
     private void reloadPrefs() {
         PREFS_APPS.reload();
-        /*PREFS_IMOD.reloadPrefs();*/
+        PREFS_IMOD.reload();
     }
 
     private boolean timerOrIMod(String packageName) throws Throwable {
         if (System.currentTimeMillis() - get(packageName + Common.FLAG_TMP) <= 800) {
             return true;
         }
-        /*// Intika I.MoD
+        // Intika I.MoD
         boolean iModDelayGlobalEnabled = PREFS_IMOD.getBoolean(Common.IMOD_DELAY_GLOBAL_ENABLED, false);
         boolean iModDelayAppEnabled = PREFS_IMOD.getBoolean(Common.IMOD_DELAY_APP_ENABLED, false);
-        long iModLastUnlockGlobal = TEMPS.get(Common.IMOD_LAST_UNLOCK_GLOBAL);
-        long iModLastUnlockApp = TEMPS.get(packageName + Common.FLAG_IMOD);
+        long iModLastUnlockGlobal = get(Common.IMOD_LAST_UNLOCK_GLOBAL);
+        long iModLastUnlockApp = get(packageName + Common.FLAG_IMOD);
 
         return (iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
                 System.currentTimeMillis() - iModLastUnlockGlobal <=
                         PREFS_IMOD.getInt(Common.IMOD_DELAY_GLOBAL, 600000)))
                 || iModDelayAppEnabled && (iModLastUnlockApp != 0 &&
                 System.currentTimeMillis() - iModLastUnlockApp <=
-                        PREFS_IMOD.getInt(Common.IMOD_DELAY_APP, 600000));*/
-        return false;
+                        PREFS_IMOD.getInt(Common.IMOD_DELAY_APP, 600000));
     }
 }

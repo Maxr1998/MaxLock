@@ -36,8 +36,8 @@ import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.Main;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.hooks.Main;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {

@@ -15,21 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock;
+package de.Maxr1998.xposed.maxlock.hooks;
 
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileWriter;
-
+import de.Maxr1998.xposed.maxlock.Common;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-import static de.Maxr1998.xposed.maxlock.Common.TEMPS_FILE;
-import static de.Maxr1998.xposed.maxlock.Main.MY_PACKAGE_NAME;
-import static de.Maxr1998.xposed.maxlock.Main.put;
+import static de.Maxr1998.xposed.maxlock.hooks.Main.MY_PACKAGE_NAME;
+import static de.Maxr1998.xposed.maxlock.hooks.Main.clear;
+import static de.Maxr1998.xposed.maxlock.hooks.Main.put;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Receiver implements IXposedHookLoadPackage {
@@ -61,15 +57,7 @@ public class Receiver implements IXposedHookLoadPackage {
         findAndHookMethod(MY_PACKAGE_NAME + ".tasker.TaskActionReceiver", lPParam.classLoader, "clearImod", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                JSONObject jsonObject = new JSONObject();
-                File JSONFile = new File(TEMPS_FILE);
-                if (!JSONFile.exists()) {
-                    //noinspection ResultOfMethodCallIgnored
-                    JSONFile.createNewFile();
-                }
-                FileWriter fw = new FileWriter(JSONFile.getAbsoluteFile());
-                fw.write(jsonObject.toString());
-                fw.close();
+                clear();
             }
         });
     }

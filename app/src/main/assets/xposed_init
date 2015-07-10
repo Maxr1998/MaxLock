@@ -1,2 +1,3 @@
-de.Maxr1998.xposed.maxlock.Main
-de.Maxr1998.xposed.maxlock.Receiver
+de.Maxr1998.xposed.maxlock.hooks.Main
+de.Maxr1998.xposed.maxlock.hooks.Receiver
+de.Maxr1998.xposed.maxlock.hooks.ScreenOff

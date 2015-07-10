@@ -55,4 +55,9 @@
             robobunny:unitsLeft=""
             robobunny:unitsRight=" Min" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_other">
+        <CheckBoxPreference
+            android:key="reset_imod_screen_off"
+            android:title="" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -105,6 +105,7 @@
     <string name="pref_delay_input_general2_summary">Verbleibende Zeit vor allgemeiner Sperrung</string>
     <string name="pref_fake_unlock">Vorgetäuschter Absturz direkt entsperren</string>
     <string name="pref_fake_unlock_summary">Zeige Sperrbildschirm direkt nachdem \"Bericht\" geklickt wurde.</string>
+    <string name="pref_rest_screen_off">Imod durch Auschalten des Displays zurücksetzen</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Anwendungen</string>
     <string name="pref_show_system_app">Zeige System-Anwendungen</string>
