@@ -105,7 +105,7 @@
     <string name="pref_delay_input_general2_summary">Remain time before general relock</string>
     <string name="pref_fake_unlock">Fake die direct unlock</string>
     <string name="pref_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog</string>
-    <string name="pref_rest_screen_off">Reset Imod on screen turned off</string>
+    <string name="pref_reset_screen_off">Reset Imod on screen turned off</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_show_system_app">Show system apps</string>

@@ -58,6 +58,6 @@
     <PreferenceCategory android:title="@string/pref_category_other">
         <CheckBoxPreference
             android:key="reset_imod_screen_off"
-            android:title="" />
+            android:title="@string/pref_reset_screen_off" />
     </PreferenceCategory>
 </PreferenceScreen>
