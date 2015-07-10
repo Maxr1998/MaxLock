@@ -311,7 +311,7 @@ public abstract class Util {
     @SuppressLint({"WorldReadableFiles"})
     public static void cleanUp(Context context) {
         loadPrefs(context);
-        if (!PREFS.getString("migrated", "").equals("v5.3")) {
+        if (!PREFS.getString("migrated", "").equals("v5.3f")) {
             PREFS.edit()
                     .remove(Common.IMOD_DELAY_GLOBAL_ENABLED)
                     .remove(Common.IMOD_DELAY_APP_ENABLED)
@@ -320,9 +320,9 @@ public abstract class Util {
                     .remove(Common.IMOD_DELAY_APP)
                     .apply();
             new File(dataDir(context) + "shared_prefs/activities.xml").delete();
-            new File(dataDir(context) + "shared_prefs/imod.xml").delete();
-            //new File(dataDir(context) + File.separator + "shared_prefs/imod_temp_values").delete();
-            PREFS.edit().putString("migrated", "v5.3").apply();
+            new File(dataDir(context) + "shared_prefs/temps.xml").delete();
+            new File(dataDir(context) + "shared_prefs/imod_temp_values").delete();
+            PREFS.edit().putString("migrated", "v5.3f").apply();
         }
     }
 
