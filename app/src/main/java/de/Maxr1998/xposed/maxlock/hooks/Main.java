@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -86,15 +87,19 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             jsonObject.put(s, System.currentTimeMillis());
         }
         File JSONFile = new File(TEMPS_FILE);
-        if (!JSONFile.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            JSONFile.getParentFile().mkdirs();
-            //noinspection ResultOfMethodCallIgnored
-            JSONFile.createNewFile();
+        try {
+            if (!JSONFile.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                JSONFile.getParentFile().mkdirs();
+                //noinspection ResultOfMethodCallIgnored
+                JSONFile.createNewFile();
+            }
+            FileWriter fw = new FileWriter(JSONFile.getAbsoluteFile());
+            fw.write(jsonObject.toString());
+            fw.close();
+        } catch (IOException e) {
+            XposedBridge.log("Error:" + arguments[0]);
         }
-        FileWriter fw = new FileWriter(JSONFile.getAbsoluteFile());
-        fw.write(jsonObject.toString());
-        fw.close();
     }
 
     private static long get(String argument) throws Throwable {
