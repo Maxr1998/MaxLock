@@ -18,7 +18,6 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,7 +36,6 @@ import android.widget.Toast;
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.hooks.Main;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
@@ -117,6 +115,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
+                            fakeDieDialog.dismiss();
                             launchLockView();
                             finish();
                         } else {
@@ -134,7 +133,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                                 reportDialog.dismiss();
                                                 launchLockView();
                                             } else {
-                                                reportDialog.dismiss();
                                                 Toast.makeText(LockActivity.this, "Thanks for your feedback", Toast.LENGTH_SHORT).show();
                                             }
                                             finish();
@@ -143,14 +141,12 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            reportDialog.dismiss();
                                             onBackPressed();
                                         }
                                     })
                                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
                                         @Override
                                         public void onCancel(DialogInterface dialogInterface) {
-                                            reportDialog.dismiss();
                                             onBackPressed();
                                         }
                                     })
@@ -162,14 +158,12 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        fakeDieDialog.dismiss();
                         onBackPressed();
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                        fakeDieDialog.dismiss();
                         onBackPressed();
                     }
                 })
@@ -192,8 +186,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     }
 
     public void launchLockView() {
-        Intent it = new Intent();
-        it.setComponent(new ComponentName(Main.class.getPackage().getName(), Main.class.getPackage().getName() + ".ui.LockActivity"));
+        Intent it = new Intent(this, LockActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_DEFAULT);
         it.putExtra(Common.INTENT_EXTRAS_INTENT, original);
