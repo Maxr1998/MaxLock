@@ -3,6 +3,7 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">Placeholder</string>
+    <string name="xposed_active">MaxLock is not active</string>
     <string name="dialog_text_restart_required">MaxLock requires a restart for changes to take effect</string>
     <string name="toast_pro_required">Pro-version is required to use this feature!</string>
     <string name="sb_no_locking_type">No locking type specified.</string>

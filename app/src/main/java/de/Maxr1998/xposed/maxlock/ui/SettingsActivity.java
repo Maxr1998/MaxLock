@@ -33,6 +33,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
@@ -83,6 +84,10 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (!isActive().equals("active")) {
+            findViewById(R.id.xposed_active).setVisibility(View.VISIBLE);
+        }
+
         mSettingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
             new Startup(this).execute(prefs.getBoolean(Common.FIRST_START, true));
@@ -102,6 +107,10 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         if (BillingHelper.GooglePlayServiceAvailable(getApplicationContext())) {
             billingProcessor.loadOwnedPurchasesFromGoogle();
         }
+    }
+
+    private String isActive() {
+        return "NO";
     }
 
     @SuppressLint("WorldReadableFiles")

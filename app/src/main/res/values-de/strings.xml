@@ -3,6 +3,7 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">Platzhalter</string>
+    <string name="xposed_active">MaxLock ist nicht aktiv</string>
     <string name="dialog_text_restart_required">MaxLock muss für die Übernahme der Änderungen neu gestartet werden</string>
     <string name="toast_pro_required">Die Pro-Version wird für diese Funktion benötigt</string>
     <string name="no_locking_type">Keine Sperrart festgelegt.</string>
