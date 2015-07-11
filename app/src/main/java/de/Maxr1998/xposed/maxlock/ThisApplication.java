@@ -21,16 +21,11 @@ import android.app.Application;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.LeakCanary;
 
 public class ThisApplication extends Application {
 
-    private static GoogleAnalytics analytics;
     private static Tracker tracker;
-
-    public static GoogleAnalytics getAnalytics() {
-        return analytics;
-    }
 
     public static Tracker getTracker() {
         return tracker;
@@ -39,8 +34,8 @@ public class ThisApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeakCanary.install(this);
-        analytics = GoogleAnalytics.getInstance(this);
+        //LeakCanary.install(this);
+        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
 
         tracker = analytics.newTracker(R.xml.app_tracker);
         tracker.enableAdvertisingIdCollection(true);

@@ -120,10 +120,10 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                             launchLockView();
                             finish();
                         } else {
+                            fakeDieDialog.dismiss();
                             final EditText input = new EditText(LockActivity.this);
                             input.setMinLines(3);
                             input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                            fakeDieDialog.dismiss();
                             AlertDialog.Builder reportDialogBuilder = new AlertDialog.Builder(LockActivity.this);
                             reportDialog = reportDialogBuilder.setView(input)
                                     .setTitle(R.string.dialog_title_report_problem)
@@ -131,8 +131,10 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
+                                                reportDialog.dismiss();
                                                 launchLockView();
                                             } else {
+                                                reportDialog.dismiss();
                                                 Toast.makeText(LockActivity.this, "Thanks for your feedback", Toast.LENGTH_SHORT).show();
                                             }
                                             finish();
@@ -141,12 +143,14 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                            reportDialog.dismiss();
                                             onBackPressed();
                                         }
                                     })
                                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
                                         @Override
                                         public void onCancel(DialogInterface dialogInterface) {
+                                            reportDialog.dismiss();
                                             onBackPressed();
                                         }
                                     })
@@ -158,12 +162,14 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        fakeDieDialog.dismiss();
                         onBackPressed();
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
+                        fakeDieDialog.dismiss();
                         onBackPressed();
                     }
                 })

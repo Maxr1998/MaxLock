@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (!isActive().equals("active")) {
+        if (!isActive().equals("yes")) {
             findViewById(R.id.xposed_active).setVisibility(View.VISIBLE);
         }
 
@@ -110,7 +110,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     }
 
     private String isActive() {
-        return "NO";
+        return "no";
     }
 
     @SuppressLint("WorldReadableFiles")
