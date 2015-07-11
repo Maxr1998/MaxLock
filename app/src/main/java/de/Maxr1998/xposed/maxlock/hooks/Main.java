@@ -86,8 +86,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         for (String s : arguments) {
             jsonObject.put(s, System.currentTimeMillis());
         }
-        File JSONFile = new File(TEMPS_FILE);
         try {
+            File JSONFile = new File(TEMPS_FILE);
             if (!JSONFile.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 JSONFile.getParentFile().mkdirs();
@@ -98,7 +98,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             fw.write(jsonObject.toString());
             fw.close();
         } catch (IOException e) {
-            XposedBridge.log("Error:" + arguments[0]);
+            // Do nothing.
         }
     }
 
@@ -193,6 +193,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        reloadPrefs();
                         if (param.thisObject.getClass().getName().equals("android.app.Activity")) {
                             return;
                         }

@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     private static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
     private static final String TAG_WEBSITE_FRAGMENT = "WebsiteFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
-
+    public static boolean IS_ACTIVE = false;
     static boolean FS_SHOW = true;
     private static boolean UNLOCKED = false;
     public SettingsFragment mSettingsFragment;
@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (!isActive().equals("yes")) {
+        if (!IS_ACTIVE) {
             findViewById(R.id.xposed_active).setVisibility(View.VISIBLE);
         }
 
@@ -107,10 +107,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         if (BillingHelper.GooglePlayServiceAvailable(getApplicationContext())) {
             billingProcessor.loadOwnedPurchasesFromGoogle();
         }
-    }
-
-    private String isActive() {
-        return "no";
     }
 
     @SuppressLint("WorldReadableFiles")

@@ -27,6 +27,7 @@ import static de.Maxr1998.xposed.maxlock.hooks.Main.MY_PACKAGE_NAME;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.clear;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.put;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 
 public class Receiver implements IXposedHookLoadPackage {
 
@@ -61,11 +62,6 @@ public class Receiver implements IXposedHookLoadPackage {
             }
         });
 
-        findAndHookMethod(MY_PACKAGE_NAME + ".ui.SettingsActivity", lPParam.classLoader, "isActive", new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                param.setResult("yes");
-            }
-        });
+        XposedHelpers.setStaticBooleanField(findClass(MY_PACKAGE_NAME + ".ui.SettingsActivity", lPParam.classLoader), "IS_ACTIVE", true);
     }
 }
