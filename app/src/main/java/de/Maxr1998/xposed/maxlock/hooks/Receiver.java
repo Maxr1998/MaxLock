@@ -61,7 +61,6 @@ public class Receiver implements IXposedHookLoadPackage {
                 clear();
             }
         });
-
         XposedHelpers.setStaticBooleanField(findClass(MY_PACKAGE_NAME + ".ui.SettingsActivity", lPParam.classLoader), "IS_ACTIVE", true);
     }
 }
