@@ -8,6 +8,9 @@
     <string name="sb_no_locking_type">沒有鎖定特定類型</string>
     <string name="sb_no_locked_apps">沒有選擇鎖定應用</string>
     <!-- First start screens-->
+    <string name="button_skip">跳過</string>
+    <string name="button_next_content_description">下一個</string>
+    <string name="button_done">完成</string>
     <string name="fs_welcome_maxlock">歡迎使用MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock將保護您的應用免受未經授權訪問</string>
     <string name="fs_phone_content_description">電話</string>
@@ -40,9 +43,9 @@
     <string name="confirm_pin">再次確認PIN</string>
     <string name="button_continue">繼續</string>
 
-    <string name="choose_knock_code">輸入你的knock code</string>
+    <string name="choose_knock_code">輸入你的Knock code</string>
     <string name="knock_code_too_short">Knock code必須至少4點觸摸</string>
-    <string name="confirm_knock_code">再次確認knock code</string>
+    <string name="confirm_knock_code">再次確認Knock code</string>
     <!-- Locking UI settings -->
     <string name="pref_locking_ui">鎖屏界面</string>
     <string name="pref_open_theme_manager">打開主題管理</string>
@@ -57,21 +60,22 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">自定義顏色</string>
+    <string name="pref_hide_status_bar">隱藏狀態欄/全屏</string>
     <string name="pref_use_tablet_mode">使用平板模式</string>
     <string name="pref_use_tablet_mode_summary">%1$s發現了這個%2$s裝置由於dpi%3$d和顯示的寬度為%4$d像素</string>
-    <string name="pref_category_pin_and_knock_code">PIN和knock code</string>
+    <string name="pref_category_pin_and_knock_code">PIN和Knock code</string>
     <string name="pref_invert_color">轉換用戶界面顏色</string>
     <string name="pref_invert_color_summary">設置這個文本和分隔器的顏色為黑色</string>
     <string name="pref_hide_title_bar">隱藏標題欄</string>
     <string name="pref_hide_input_bar">隱藏輸入欄</string>
     <string name="pref_hide_input_bar_summary">隱藏清除按鈕！</string>
-    <string name="pref_category_password_and_pin">僅PIN</string>
+    <string name="pref_category_password_and_pin">密碼和PIN</string>
     <string name="pref_quick_unlock">快速解鎖</string>
     <string name="pref_category_knock_code_only">僅Knock code</string>
     <string name="pref_show_dividers">顯示分隔</string>
     <string name="pref_touch_visible">使觸摸可見</string>
     <string name="pref_category_pattern_only">僅圖案</string>
-    <string name="pref_show_path">顥示圖案</string>
+    <string name="pref_show_path">顯示圖案</string>
     <string name="pref_haptic_feedback">滑動時振動</string>
     <!-- Locking options settings -->
     <string name="pref_locking_options">鎖定選項</string>
@@ -101,6 +105,7 @@
     <string name="pref_delay_input_general2_summary">一般重新鎖定之前的保持時間</string>
     <string name="pref_fake_unlock">假死直接解鎖</string>
     <string name="pref_fake_unlock_summary">當啟用鎖屏後直接顯示假死上的報告按鈕對話框</string>
+    <string name="pref_reset_screen_off">關閉在螢幕上I.MoD並重置</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">選擇應用</string>
     <string name="pref_show_system_app">顯示系統應用</string>
@@ -131,6 +136,7 @@
     <string name="pref_hide_from_launcher">桌面隱藏應用圖標</string>
     <string name="reboot_required">可能需要重新啟動以應用更改</string>
     <string name="pref_use_dark_style">使用黑暗風格</string>
+    <string name="pref_widget_background_color">小部件背景顏色</string>
     <!-- About information -->
     <string name="pref_category_about">關於</string>
     <string name="app_name_pro">MaxLock專業版</string>
