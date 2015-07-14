@@ -179,7 +179,7 @@ public class AppListFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.toolbar_backup_list:
                     String currentBackupDirPath = Common.BACKUP_DIR + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.getDefault())
-                            .format(new Date(System.currentTimeMillis()) + File.separator);
+                            .format(new Date(System.currentTimeMillis())) + File.separator;
                     backupFile(prefsAppsFile, new File(currentBackupDirPath));
                     backupFile(prefsPerAppFile, new File(currentBackupDirPath));
                     if (new File(currentBackupDirPath).exists() && new File(currentBackupDirPath + prefsAppsName).exists())
