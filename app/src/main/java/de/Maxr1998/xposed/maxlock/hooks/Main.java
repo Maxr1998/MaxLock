@@ -94,7 +94,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 //noinspection ResultOfMethodCallIgnored
                 JSONFile.createNewFile();
             }
-            FileWriter fw = new FileWriter(JSONFile.getAbsoluteFile());
+            FileWriter fw = new FileWriter(JSONFile);
             fw.write(jsonObject.toString());
             fw.close();
         } catch (IOException e) {
@@ -207,6 +207,15 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                         XposedBridge.log("MLi" + (set ? "U" : "N") + "|" + param.args[0].getClass().getName() + "|" + ((Intent) param.args[4]).getComponent().getClassName() + "|" + System.currentTimeMillis());
                     }
                 });
+
+        /*findAndHookMethod("java.io.File", lPParam.classLoader, "", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                if (((File)param.thisObject).getPath().equals(TEMPS_FILE)) {
+                    param.setResult(null);
+                }
+            }
+        });*/
     }
 
     private void makeReadable() {
