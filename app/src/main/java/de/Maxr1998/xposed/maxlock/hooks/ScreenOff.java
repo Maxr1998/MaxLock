@@ -17,29 +17,38 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
-import de.Maxr1998.xposed.maxlock.Common;
-import de.robv.android.xposed.IXposedHookLoadPackage;
+import java.io.FileWriter;
+
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-import static de.Maxr1998.xposed.maxlock.hooks.Main.PREFS_IMOD;
-import static de.Maxr1998.xposed.maxlock.hooks.Main.clear;
+import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
-public class ScreenOff implements IXposedHookLoadPackage {
-    @Override
-    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lPParam) throws Throwable {
-        if (!lPParam.packageName.equals("com.android.systemui")) {
-            return;
-        }
+public class ScreenOff {
 
-        findAndHookMethod("com.android.systemui.keyguard.KeyguardViewMediator", lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                if (PREFS_IMOD.getBoolean(Common.IMOD_RESET_ON_SCREEN_OFF, false)) {
-                    clear();
+    public static final String PACKAGE_NAME = "com.android.systemui";
+    public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
+
+    public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
+        try {
+            findAndHookMethod("com.android.systemui.keyguard.KeyguardViewMediator", lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
+                        clear();
+                    }
                 }
-            }
-        });
+            });
+        } catch (Throwable t) {
+            log(t);
+        }
+    }
+
+    public static void clear() throws Throwable {
+        FileWriter fw = new FileWriter(Main.TEMPS_PATH);
+        fw.write("{\"TheAnswer\":\"42\"}");
+        fw.close();
     }
 }

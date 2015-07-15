@@ -62,6 +62,7 @@ public abstract class Common {
     public static final String ENABLE_LOGGING = "enable_logging";
     public static final String VIEW_LOGS = "view_logs";
     public static final String LOG_FILE = "log.txt";
+    public static final String ENABLE_DIRECT_UNLOCK = "enable_direct_unlock";
     public static final String FAKE_DIE_INPUT = "fake_die_input";
     public static final String TASKER_ENABLED = "enable_tasker_integration";
 
@@ -92,7 +93,6 @@ public abstract class Common {
     public static final String PREFS_KEY = "keys";
     public static final String PREFS_APPS = "packages";
     public static final String PREFS_KEYS_PER_APP = "per_app_settings";
-    public static final String PREFS_IMOD = "imod";
 
     public static final String PREFS_THEME = "theme";
 
@@ -100,17 +100,6 @@ public abstract class Common {
     public static final String IIMOD_OPTIONS = "intika_imod";
     public static final String IMOD_DELAY_GLOBAL_ENABLED = "enable_delaygeneral";
     public static final String IMOD_DELAY_APP_ENABLED = "enable_delayperapp";
-    public static final String IMOD_DELAY_APP = "delay_inputperapp";
-    public static final String IMOD_DELAY_GLOBAL = "delay_inputgeneral";
-    public static final String IMOD_REMAIN_TIMER_GLOBAL = "timer_generaldelay";
-    public static final String IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer";
-    public static final String IMOD_MIN_FAKE_UNLOCK = "enable_direct_unlock";
-
-    public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
-
-    public static final String FLAG_CLOSE_APP = "_close";
-    public static final String FLAG_TMP = "_tmp";
-    public static final String FLAG_IMOD = "_imod";
 
     public static final String LOCK_ACTIVITY_MODE = "la_mode";
     public static final String MODE_DEFAULT = "default";
@@ -118,5 +107,4 @@ public abstract class Common {
 
     public static final String EXTERNAL_FILES_DIR = Environment.getExternalStorageDirectory() + "/MaxLock/";
     public static final String BACKUP_DIR = EXTERNAL_FILES_DIR + "Backup/";
-    public static final String TEMPS_FILE = EXTERNAL_FILES_DIR + "files/temps.json";
 }

@@ -314,13 +314,6 @@ public abstract class Util {
     public static void cleanUp(Context context) {
         loadPrefs(context);
         if (!PREFS.getString("migrated", "").equals("v5.3.2")) {
-            PREFS.edit()
-                    .remove(Common.IMOD_DELAY_GLOBAL_ENABLED)
-                    .remove(Common.IMOD_DELAY_APP_ENABLED)
-                    .remove(Common.IMOD_LAST_UNLOCK_GLOBAL)
-                    .remove(Common.IMOD_DELAY_GLOBAL)
-                    .remove(Common.IMOD_DELAY_APP)
-                    .apply();
             new File(dataDir(context) + "shared_prefs/activities.xml").delete();
             new File(dataDir(context) + "shared_prefs/temps.xml").delete();
             new File(dataDir(context) + "shared_prefs/imod_temp_values").delete();
