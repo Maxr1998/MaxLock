@@ -20,19 +20,6 @@
             robobunny:min="60000"
             robobunny:unitsLeft=""
             robobunny:unitsRight=" Min" />
-        <com.robobunny.SeekBarPreference
-            android:defaultValue="0"
-            android:enabled="false"
-            android:key="timer_generaldelay"
-            android:max="7200000"
-            android:numeric="integer|decimal"
-            android:summary="@string/pref_delay_input_general2_summary"
-            android:title="@string/pref_delay_input_general2"
-            robobunny:identifier="2"
-            robobunny:interval="60000"
-            robobunny:min="0"
-            robobunny:unitsLeft=""
-            robobunny:unitsRight=" Min - Remain Relock" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_intika2">

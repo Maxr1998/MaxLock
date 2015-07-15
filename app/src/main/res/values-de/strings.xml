@@ -86,6 +86,8 @@
     <string name="pref_view_logs">Logs ansehen</string>
     <string name="menu_delete_log">Logs löschen</string>
     <string name="pref_category_other">Andere</string>
+    <string name="pref_fake_unlock">Vorgetäuschter Absturz direkt entsperren</string>
+    <string name="pref_fake_unlock_summary">Zeige Sperrbildschirm direkt nachdem \"Bericht\" geklickt wurde.</string>
     <string name="pref_fake_die_input">\"Vorgetäuschter Absturz\" Eingabe</string>
     <string name="pref_fake_die_input_summary">Die Phrase die der Nutzer in den Dialog eingeben muss um den Sperrbildschirm zu öffnen</string>
     <string name="pref_enable_tasker">Tasker Integration anschalten</string>
@@ -102,10 +104,6 @@
     <string name="pref_delay_input_perapp">PerApp Entsperrfrist Timer</string>
     <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for PerApp Delayed-Relock</string>
     <string name="pref_delay_needpro">Verzögertes Sperren - Pro Version</string>
-    <string name="pref_delay_input_general2">Allgemeiner Entsperrfrist Timer</string>
-    <string name="pref_delay_input_general2_summary">Verbleibende Zeit vor allgemeiner Sperrung</string>
-    <string name="pref_fake_unlock">Vorgetäuschter Absturz direkt entsperren</string>
-    <string name="pref_fake_unlock_summary">Zeige Sperrbildschirm direkt nachdem \"Bericht\" geklickt wurde.</string>
     <string name="pref_reset_screen_off">Imod durch Auschalten des Displays zurücksetzen</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Anwendungen</string>

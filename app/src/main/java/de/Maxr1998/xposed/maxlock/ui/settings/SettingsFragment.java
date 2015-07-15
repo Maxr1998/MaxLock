@@ -166,13 +166,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.IIMOD_OPTIONS)) {
-            @SuppressLint("WorldReadableFiles") @SuppressWarnings("deprecation") SharedPreferences prefsIMoD = getActivity().getSharedPreferences(Common.PREFS_IMOD, Context.MODE_WORLD_READABLE);
-            // Setup remain timer
-            long timer = prefsIMoD.getInt(Common.IMOD_DELAY_GLOBAL, 600000) - (System.currentTimeMillis() - prefsIMoD.getLong(Common.IMOD_LAST_UNLOCK_GLOBAL, 0));
-            if (timer < 0) {
-                timer = 0L;
-            }
-            prefsIMoD.edit().putInt(Common.IMOD_REMAIN_TIMER_GLOBAL, (int) timer).apply();
+            @SuppressLint("WorldReadableFiles") @SuppressWarnings("deprecation") SharedPreferences prefsIMoD = getActivity().getSharedPreferences(Common.PREFS_APPS, Context.MODE_WORLD_READABLE);
             launchFragment(new LockingIntikaFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
@@ -417,7 +411,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            getPreferenceManager().setSharedPreferencesName(Common.PREFS_IMOD);
+            getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
             //noinspection deprecation
             getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.preferences_locking_imod);

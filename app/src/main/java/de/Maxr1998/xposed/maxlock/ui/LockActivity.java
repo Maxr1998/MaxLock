@@ -114,7 +114,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 .setNeutralButton(R.string.dialog_button_report, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (prefs.getBoolean(Common.IMOD_MIN_FAKE_UNLOCK, false)) {
+                        if (prefs.getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
                             fakeDieDialog.dismiss();
                             launchLockView();
                             finish();
