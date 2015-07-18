@@ -36,6 +36,7 @@ public class ScreenOff {
             findAndHookMethod("com.android.systemui.keyguard.KeyguardViewMediator", lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    prefsApps.reload();
                     if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
                         clear();
                     }
