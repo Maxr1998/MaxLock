@@ -3,6 +3,7 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">佔位符</string>
+    <string name="xposed_active">MaxLock尚未激活</string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
     <string name="toast_pro_required">使用此功能需要專業版！</string>
     <string name="sb_no_locking_type">沒有鎖定特定類型</string>
