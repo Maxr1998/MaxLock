@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -145,21 +144,19 @@ public class Apps {
         }
     }
 
-    public static void put(final String... arguments) throws Throwable {
+    public static void put(String... arguments) throws Throwable {
         String json;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(Main.TEMPS_PATH));
             json = reader.readLine();
             reader.close();
+            if (json == null || !json.startsWith("{")) {
+                json = "{}";
+            }
         } catch (FileNotFoundException e) {
-            json = "";
+            json = "{}";
         }
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(json);
-        } catch (JSONException e) {
-            jsonObject = new JSONObject();
-        }
+        JSONObject jsonObject = new JSONObject(json);
         for (String s : arguments) {
             jsonObject.put(s, System.currentTimeMillis());
         }
@@ -185,15 +182,13 @@ public class Apps {
             BufferedReader reader = new BufferedReader(new FileReader(Main.TEMPS_PATH));
             json = reader.readLine();
             reader.close();
+            if (json == null || !json.startsWith("{")) {
+                return 0;
+            }
         } catch (FileNotFoundException e) {
-            json = "";
+            return 0;
         }
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(json);
-        } catch (JSONException e) {
-            jsonObject = new JSONObject();
-        }
+        JSONObject jsonObject = new JSONObject(json);
         return jsonObject.optLong(argument);
     }
 

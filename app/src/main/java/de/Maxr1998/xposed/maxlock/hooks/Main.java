@@ -20,7 +20,6 @@ package de.Maxr1998.xposed.maxlock.hooks;
 import android.annotation.SuppressLint;
 
 import java.io.File;
-import java.io.FileWriter;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -53,11 +52,6 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             boolean created = tmp.createNewFile();
             boolean rwSuccess = tmp.setReadable(true, false) && tmp.setWritable(true, false);
             log(created ? "Temp-file created.\n" : "" + (rwSuccess ? "Permissions set." : "Error settings permissions"));
-            if (created) {
-                FileWriter fw = new FileWriter(TEMPS_PATH);
-                fw.write("{}");
-                fw.close();
-            }
             MaxLock.init(lPParam);
             prefsApps.reload();
         }
