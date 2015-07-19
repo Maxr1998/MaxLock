@@ -51,9 +51,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             File tmp = new File(TEMPS_PATH);
             boolean created = tmp.createNewFile();
             boolean rwSuccess = tmp.setReadable(true, false) && tmp.setWritable(true, false);
-            log(created ? "Temp-file created.\n" : "" + (rwSuccess ? "Permissions set." : "Error settings permissions"));
+            log(created ? "Temp-file created.\n" : "" + (rwSuccess ? "Permissions set." : "Error settings permissions!"));
             MaxLock.init(lPParam);
-            prefsApps.reload();
         }
 
         if (prefsApps.getBoolean(lPParam.packageName, false)) {
