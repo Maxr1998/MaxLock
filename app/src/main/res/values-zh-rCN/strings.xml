@@ -3,6 +3,7 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">占位符</string>
+	<string name="xposed_active">MaxLock未激活</string>
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
     <string name="toast_pro_required">使用此功能需要专业版本！</string>
     <string name="sb_no_locking_type">没有锁定特定类型</string>
@@ -85,6 +86,8 @@
     <string name="pref_view_logs">查看日志</string>
     <string name="menu_delete_log">删除日志</string>
     <string name="pref_category_other">其它</string>
+	<string name="pref_fake_unlock">假死直接解锁</string>
+    <string name="pref_fake_unlock_summary">当启用锁屏假死对话框中按下报告按钮后显示</string>
     <string name="pref_fake_die_input">假死输入</string>
     <string name="pref_fake_die_input_summary">用户需要在对话框中输入短语才能打开锁屏</string>
     <string name="pref_enable_tasker">启用Tasker集成</string>
@@ -101,10 +104,7 @@
     <string name="pref_delay_input_perapp">PerApp延迟 - 重新锁定定时器</string>
     <string name="pref_delay_input_perapp_summary">输入一个数字指定延迟时间,值为分钟,锁定PerApp延迟</string>
     <string name="pref_delay_needpro">启用延迟重新锁定 - 专业版</string>
-    <string name="pref_delay_input_general2">一般延迟 - 重新锁定定时器</string>
-    <string name="pref_delay_input_general2_summary">一般重新锁定之前的保持时间</string>
-    <string name="pref_fake_unlock">假死直接解锁</string>
-    <string name="pref_fake_unlock_summary">当启用锁屏后直接显示假死上的报告按钮对话框</string>
+	<string name="pref_reset_screen_off">在屏幕关闭后复位IMOD</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">选择应用</string>
     <string name="pref_show_system_app">显示系统应用</string>
@@ -139,7 +139,7 @@
     <!-- About information -->
     <string name="pref_category_about">关于</string>
     <string name="app_name_pro">MaxLock专业版</string>
-    <string name="app_name_pseudo_pro">MaxLock假冒专业版</string>
+    <string name="app_name_pseudo_pro">MaxLock伪专业版</string>
     <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\n点击这里查看更多信息</string>
     <string name="pref_donate_upgrade_pro">捐助后将升级为专业版</string>
     <string name="toast_no_network_connected">您目前没有连接到任何网络</string>
