@@ -86,6 +86,8 @@
     <string name="pref_view_logs">查看日誌</string>
     <string name="menu_delete_log">刪除日誌</string>
     <string name="pref_category_other">其它</string>
+    <string name="pref_fake_unlock">假死直接解鎖</string>
+    <string name="pref_fake_unlock_summary">當啟用鎖屏後直接顯示假死上的報告按鈕對話框</string>
     <string name="pref_fake_die_input">假死輸入</string>
     <string name="pref_fake_die_input_summary">用戶需要在對話框中輸入短語才能打開鎖屏</string>
     <string name="pref_enable_tasker">啟用Tasker集成</string>
@@ -102,11 +104,7 @@
     <string name="pref_delay_input_perapp">PerApp延遲 - 重新鎖定計時器</string>
     <string name="pref_delay_input_perapp_summary">輸入一個數位指定延遲時間,值為分鐘,鎖定PerApp延遲</string>
     <string name="pref_delay_needpro">啟用延遲重新鎖定 - 專業版</string>
-    <string name="pref_delay_input_general2">一般延遲 - 重新鎖定定時器</string>
-    <string name="pref_delay_input_general2_summary">一般重新鎖定之前的保持時間</string>
-    <string name="pref_fake_unlock">假死直接解鎖</string>
-    <string name="pref_fake_unlock_summary">當啟用鎖屏後直接顯示假死上的報告按鈕對話框</string>
-    <string name="pref_reset_screen_off">關閉在螢幕上I.MoD並重置</string>
+    <string name="pref_reset_screen_off">螢幕上關閉I.MoD並重置</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">選擇應用</string>
     <string name="pref_show_system_app">顯示系統應用</string>
