@@ -154,6 +154,7 @@ public class Apps {
                 json = "{}";
             }
         } catch (FileNotFoundException e) {
+            XposedBridge.log("ML: File not found.");
             json = "{}";
         }
         JSONObject jsonObject = new JSONObject(json);
@@ -172,7 +173,7 @@ public class Apps {
             fw.write(jsonObject.toString());
             fw.close();
         } catch (IOException e) {
-            // Do nothing.
+            e.printStackTrace();
         }
     }
 
@@ -183,9 +184,11 @@ public class Apps {
             json = reader.readLine();
             reader.close();
             if (json == null || !json.startsWith("{")) {
+                XposedBridge.log("ML: File empty or malformed!");
                 return 0;
             }
         } catch (FileNotFoundException e) {
+            XposedBridge.log("ML: File not found.");
             return 0;
         }
         JSONObject jsonObject = new JSONObject(json);
