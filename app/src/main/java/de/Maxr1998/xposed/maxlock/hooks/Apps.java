@@ -57,10 +57,11 @@ public class Apps {
 
     private static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(new String[]{
             "com.android.camera.CameraActivity",
+            "com.android.vending.AssetBrowserActivity",
             "com.evernote.ui.HomeActivity",
             "com.facebook.nodex.startup.splashscreen.NodexSplashActivity",
             "com.fstop.photo.MainActivity",
-            "com.instagram",
+            "com.instagram.android.activity.MainTabActivity",
             "com.tumblr.ui.activity.JumpoffActivity",
             "com.twitter.android.StartActivity",
             "com.UCMobile.main.UCMobile",
