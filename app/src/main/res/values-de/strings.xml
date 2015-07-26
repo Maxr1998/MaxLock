@@ -91,10 +91,10 @@
     <string name="pref_fake_die_input">\"Vorgetäuschter Absturz\" Eingabe</string>
     <string name="pref_fake_die_input_summary">Die Phrase die der Nutzer in den Dialog eingeben muss um den Sperrbildschirm zu öffnen</string>
     <string name="pref_enable_tasker">Tasker Integration anschalten</string>
-    <!-- I.MoD settings -->
-    <string name="pref_locking_intika">Intika I.MoD</string>
-    <string name="pref_category_intika">Intika I.MoD - Entsperrfrist - Allgemein</string>
-    <string name="pref_category_intika2">Intika I.MoD - Entsperrfrist - PerApp</string>
+    <!-- I.Mod settings -->
+    <string name="pref_locking_intika">Intika I.Mod</string>
+    <string name="pref_category_intika">Intika I.Mod - Entsperrfrist - Allgemein</string>
+    <string name="pref_category_intika2">Intika I.Mod - Entsperrfrist - PerApp</string>
     <string name="pref_locking_delay_general">Allgmeine Entsperrfrist</string>
     <string name="pref_locking_delay_general_summary">Frage innerhalb gesetzter Zeitspanne seit letzter Entsperrung nicht mehr nach Entsperrung</string>
     <string name="pref_delay_input_general">Allgemeiner Entsperrfrist Timer</string>
@@ -104,7 +104,7 @@
     <string name="pref_delay_input_perapp">PerApp Entsperrfrist Timer</string>
     <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for PerApp Delayed-Relock</string>
     <string name="pref_delay_needpro">Verzögertes Sperren - Pro Version</string>
-    <string name="pref_reset_screen_off">Imod durch Auschalten des Displays zurücksetzen</string>
+    <string name="pref_reset_screen_off">I.Mod durch Auschalten des Displays zurücksetzen</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Anwendungen</string>
     <string name="pref_show_system_app">Zeige System-Anwendungen</string>
@@ -171,8 +171,8 @@
     <string name="tasker_configuration">Konfiguration:</string>
     <string name="tasker_ms_on">MasterSwitch an</string>
     <string name="tasker_ms_off">MasterSwitch aus</string>
-    <string name="tasker_imod_reset">I.MoD zurücksetzen</string>
-    <string name="tasker_imod_reset_summary">Alle Apps die durch I.MoD entsperrt bleiben sollten sperren</string>
+    <string name="tasker_imod_reset">I.Mod zurücksetzen</string>
+    <string name="tasker_imod_reset_summary">Alle Apps die durch I.Mod entsperrt bleiben sollten sperren</string>
     <string name="tasker_button_apply">Speichern</string>
     <string name="tasker_integration_disabled">Tasker Integration ist zur Zeit deaktiviert. Du kannst sie via \"MaxLock → Sperr-Optionen → Tasker Integration anschalten\" anschalten.</string>
 

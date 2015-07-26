@@ -91,10 +91,10 @@
     <string name="pref_fake_die_input">\"Fake die\" input</string>
     <string name="pref_fake_die_input_summary">The phrase the user has to input in the dialog to open lockscreen</string>
     <string name="pref_enable_tasker">Enable Tasker integration</string>
-    <!-- I.MoD settings -->
-    <string name="pref_locking_intika">Intika I.MoD</string>
-    <string name="pref_category_intika">Intika I.MoD - Grace Period - General</string>
-    <string name="pref_category_intika2">Intika I.MoD - Grace Period - PerApp</string>
+    <!-- I.Mod settings -->
+    <string name="pref_locking_intika">Intika I.Mod</string>
+    <string name="pref_category_intika">Intika I.Mod - Grace Period - General</string>
+    <string name="pref_category_intika2">Intika I.Mod - Grace Period - PerApp</string>
     <string name="pref_locking_delay_general">General Delayed-Relock</string>
     <string name="pref_locking_delay_general_summary">Prevent asking to unlock again within a certain period of time for all locked apps</string>
     <string name="pref_delay_input_general">General Delayed-Relock Timer</string>
@@ -104,7 +104,7 @@
     <string name="pref_delay_input_perapp">PerApp Delayed-Relock Timer</string>
     <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for PerApp Delayed-Relock</string>
     <string name="pref_delay_needpro">Delayed Relock - Pro Version</string>
-    <string name="pref_reset_screen_off">Reset Imod on screen turned off</string>
+    <string name="pref_reset_screen_off">Reset I.Mod on screen turned off</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_show_system_app">Show system apps</string>
@@ -171,8 +171,8 @@
     <string name="tasker_configuration">Configuration:</string>
     <string name="tasker_ms_on">MasterSwitch on</string>
     <string name="tasker_ms_off">MasterSwitch off</string>
-    <string name="tasker_imod_reset">Reset I.MoD</string>
-    <string name="tasker_imod_reset_summary">Lock all apps which were previously unlocked with I.MoD</string>
+    <string name="tasker_imod_reset">Reset I.Mod</string>
+    <string name="tasker_imod_reset_summary">Lock all apps which were previously unlocked with I.Mod</string>
     <string name="tasker_button_apply">Apply</string>
     <string name="tasker_integration_disabled">Tasker integration is currently disabled. You can enable it via \"MaxLock → Locking options → Enable Tasker integration\".</string>
 
