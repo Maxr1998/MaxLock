@@ -95,6 +95,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         Fragment frag = new LockFragment();
         Bundle b = new Bundle(1);
         b.putString(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+        b.putString("activityName", original.getComponent().getClassName());
         frag.setArguments(b);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
     }

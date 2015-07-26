@@ -50,10 +50,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.haibison.android.lockpattern.widget.LockPatternView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,13 +67,19 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
-    public AuthenticationSucceededListener authenticationSucceededListener;
-    ImageView background;
-    View mInputView, divider;
-    SharedPreferences prefs, prefsKey, prefsPerApp, prefsTheme;
-    TextView pb;
-    LockPatternView lockPatternView;
-    LockPatternView.OnPatternListener patternListener;
+    private final ArrayList<Float> knockCodeX = new ArrayList<>();
+    private final ArrayList<Float> knockCodeY = new ArrayList<>();
+    private final Paint kCTouchColor = new Paint();
+    private final List<Integer> pinButtonIds = Arrays.asList(
+            R.id.pin1, R.id.pin2, R.id.pin3,
+            R.id.pin4, R.id.pin5, R.id.pin6,
+            R.id.pin7, R.id.pin8, R.id.pin9,
+            R.id.pin0, R.id.pin_ok
+    );
+    private AuthenticationSucceededListener authenticationSucceededListener;
+    private SharedPreferences prefs, prefsTheme;
+    private LockPatternView lockPatternView;
+    private LockPatternView.OnPatternListener patternListener;
     private final Runnable mLockPatternViewReloader = new Runnable() {
         @Override
         public void run() {
@@ -82,18 +90,14 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     private ViewGroup rootView;
     private TextView titleView;
     private ImageButton mDeleteButton;
-    private View[] pinButtons;
     private FrameLayout container;
     private String requestPkg;
     private int screenHeight, screenWidth, statusBarHeight, navBarHeight;
     private String password, lockingType;
     private StringBuilder key;
     private TextView mInputText;
-    private ArrayList<Float> knockCodeX = new ArrayList<>();
-    private ArrayList<Float> knockCodeY = new ArrayList<>();
     private Bitmap kCCBackground;
     private RippleDrawable kCTouchLP;
-    private Paint kCTouchColor = new Paint();
     private int containerX, containerY;
 
     @Override
@@ -113,8 +117,8 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         setRetainInstance(true);
         // Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
+        SharedPreferences prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
+        SharedPreferences prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
         //noinspection deprecation
         prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
@@ -152,9 +156,10 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     public View onCreateView(LayoutInflater inflater, ViewGroup mainContainer, Bundle savedInstanceState) {
         // Views
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, mainContainer, false);
-        background = (ImageView) rootView.findViewById(R.id.background);
+        ImageView background = (ImageView) rootView.findViewById(R.id.background);
         titleView = (TextView) rootView.findViewById(R.id.title_view);
-        mInputView = rootView.findViewById(R.id.input_view);
+        titleView.setOnLongClickListener(this);
+        View mInputView = rootView.findViewById(R.id.input_view);
         mInputText = (TextView) mInputView;
         mInputText.setText("");
         container = (FrameLayout) rootView.findViewById(R.id.container);
@@ -254,52 +259,12 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void setupPINLayout() {
-        pinButtons = new View[]{
-                rootView.findViewById(R.id.pin1),
-                rootView.findViewById(R.id.pin2),
-                rootView.findViewById(R.id.pin3),
-                rootView.findViewById(R.id.pin4),
-                rootView.findViewById(R.id.pin5),
-                rootView.findViewById(R.id.pin6),
-                rootView.findViewById(R.id.pin7),
-                rootView.findViewById(R.id.pin8),
-                rootView.findViewById(R.id.pin9),
-                rootView.findViewById(R.id.pin0),
-                rootView.findViewById(R.id.pin_ok)
-        };
-        for (View v : pinButtons) {
-            pb = (TextView) v;
-            pb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    for (View v : pinButtons) {
-                        if (view.getId() == v.getId()) {
-                            String t = ((TextView) view).getText().toString();
-                            if (!t.equals(getString(android.R.string.ok))) {
-                                key.append(t);
-                                mInputText.append(t);
-                                if (prefs.getBoolean(Common.QUICK_UNLOCK, false))
-                                    checkInput();
-                            } else {
-                                checkInput();
-                            }
-                        }
-                    }
-                }
-            });
-            pb.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    key.setLength(0);
-                    mInputText.setText("");
-                    return true;
-                }
-            });
-        }
-        if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
-            for (View v : pinButtons) {
-                pb = (TextView) v;
-                ((TextView) v).setTextColor(getResources().getColor(android.R.color.black));
+        for (int i : pinButtonIds) {
+            View pb = rootView.findViewById(i);
+            pb.setOnClickListener(this);
+            pb.setOnLongClickListener(this);
+            if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
+                ((TextView) pb).setTextColor(getResources().getColor(android.R.color.black));
             }
         }
     }
@@ -377,7 +342,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 return false;
             }
         });
-        divider = new View(getActivity());
+        View divider = new View(getActivity());
         divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDisplayMetrics().density)));
         divider.setBackgroundColor(getResources().getColor(R.color.light_white));
         container.addView(divider);
@@ -452,7 +417,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         }
     }
 
-    public void themeSetup() {
+    private void themeSetup() {
         if (!prefsTheme.contains(Common.THEME_PKG))
             return;
         container.setLayoutParams(ThemeService.container(container, getActivity(), lockingType));
@@ -461,35 +426,54 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == mDeleteButton.getId()) {
-            if (key.length() > 0) {
-                key.deleteCharAt(key.length() - 1);
-                if (mInputText.length() > 0) {
-                    mInputText.setText(mInputText.getText().subSequence(0, mInputText.getText().length() - 1));
-                }
-                if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && knockCodeX.size() > 0) {
-                    knockCodeX.remove(knockCodeX.size() - 1);
-                    knockCodeY.remove(knockCodeY.size() - 1);
-                }
+        if (pinButtonIds.contains(view.getId())) {
+            if (view.getId() == R.id.pin_ok) {
+                checkInput();
+                return;
             }
+            String t = ((TextView) view).getText().toString();
+            key.append(t);
+            mInputText.append(t);
+            if (prefs.getBoolean(Common.QUICK_UNLOCK, false)) {
+                checkInput();
+            }
+            return;
+        }
+
+        switch (view.getId()) {
+            case R.id.delete_input:
+                if (key.length() > 0) {
+                    key.deleteCharAt(key.length() - 1);
+                    if (mInputText.length() > 0) {
+                        mInputText.setText(mInputText.getText().subSequence(0, mInputText.getText().length() - 1));
+                    }
+                    if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && knockCodeX.size() > 0) {
+                        knockCodeX.remove(knockCodeX.size() - 1);
+                        knockCodeY.remove(knockCodeY.size() - 1);
+                    }
+                }
+                break;
         }
     }
 
     @Override
     public boolean onLongClick(View view) {
-        if (view.getId() == R.id.container || view.getId() == R.id.delete_input) {
-            key.setLength(0);
-            mInputText.setText("");
-            if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
-                knockCodeX.clear();
-                knockCodeY.clear();
-            }
-            return true;
+        switch (view.getId()) {
+            case R.id.title_view:
+                Toast.makeText(getActivity(), getArguments().getString("activityName"), Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                key.setLength(0);
+                mInputText.setText("");
+                if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
+                    knockCodeX.clear();
+                    knockCodeY.clear();
+                }
+                return true;
         }
-        return false;
     }
 
-    public boolean checkInput() {
+    private boolean checkInput() {
         if (Util.shaHash(key.toString()).equals(password) || password.equals("")) {
             key.trimToSize();
             authenticationSucceededListener.onAuthenticationSucceeded();
