@@ -40,7 +40,7 @@ public class ScreenOff {
                     prefsApps.reload();
                     if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
                         clear();
-                        log("Screen turned off, locked apps.");
+                        log("ML: Screen turned off, locked apps.");
                     }
                 }
             });

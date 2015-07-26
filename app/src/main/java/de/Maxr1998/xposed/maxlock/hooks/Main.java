@@ -37,7 +37,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        log("Loaded class Main from MaxLock");
+        log("ML: Loaded Main class");
         prefsApps = new XSharedPreferences(PACKAGE_NAME, "packages");
         prefsApps.makeWorldReadable();
     }
@@ -54,7 +54,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             File tmp = new File(TEMPS_PATH);
             boolean created = tmp.createNewFile();
             boolean rwSuccess = tmp.setReadable(true, false) && tmp.setWritable(true, false);
-            log(created ? "Temp-file created.\n" : "" + (rwSuccess ? "Permissions set." : "Error settings permissions!"));
+            log(created ? "ML: Temp-file created.\n" : "" + (rwSuccess ? "ML: Permissions set." : "ML: Error settings permissions!"));
             MaxLock.init(lPParam);
         }
 
