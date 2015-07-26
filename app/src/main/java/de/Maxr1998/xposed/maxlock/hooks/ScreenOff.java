@@ -29,16 +29,18 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 public class ScreenOff {
 
     public static final String PACKAGE_NAME = "com.android.systemui";
+    public static final String PACKAGE_NAME_LEGACY = "com.android.keyguard";
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
 
-    public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
+    public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam, boolean LPPlus) {
         try {
-            findAndHookMethod("com.android.systemui.keyguard.KeyguardViewMediator", lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
+            findAndHookMethod(LPPlus ? "com.android.systemui.keyguard.KeyguardViewMediator" : "com.android.keyguard.KeyguardViewMediator", lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     prefsApps.reload();
                     if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
                         clear();
+                        log("Screen turned off, locked apps.");
                     }
                 }
             });

@@ -39,7 +39,6 @@ import java.util.Set;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.robv.android.xposed.XposedBridge.log;
@@ -141,7 +140,7 @@ public class Apps {
                         }
                     });
         } catch (Throwable t) {
-            XposedBridge.log(t);
+            log(t);
         }
     }
 
@@ -155,7 +154,7 @@ public class Apps {
                 json = "{}";
             }
         } catch (FileNotFoundException e) {
-            XposedBridge.log("ML: File not found.");
+            log("ML: File not found.");
             json = "{}";
         }
         JSONObject jsonObject = new JSONObject(json);
@@ -185,11 +184,11 @@ public class Apps {
             json = reader.readLine();
             reader.close();
             if (json == null || !json.startsWith("{")) {
-                XposedBridge.log("ML: File empty or malformed!");
+                log("ML: File empty or malformed!");
                 return 0;
             }
         } catch (FileNotFoundException e) {
-            XposedBridge.log("ML: File not found.");
+            log("ML: File not found.");
             return 0;
         }
         JSONObject jsonObject = new JSONObject(json);
