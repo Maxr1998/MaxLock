@@ -17,6 +17,8 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
+import android.os.Build;
+
 import java.io.FileWriter;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -29,21 +31,21 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 public class ScreenOff {
 
     public static final String PACKAGE_NAME = "com.android.systemui";
-    public static final String PACKAGE_NAME_LEGACY = "com.android.keyguard";
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
 
-    public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam, boolean LPPlus) {
+    public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
         try {
-            findAndHookMethod(LPPlus ? "com.android.systemui.keyguard.KeyguardViewMediator" : "com.android.keyguard.KeyguardViewMediator", lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    prefsApps.reload();
-                    if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
-                        clear();
-                        log("ML: Screen turned off, locked apps.");
-                    }
-                }
-            });
+            findAndHookMethod(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? "com.android.systemui.keyguard.KeyguardViewMediator" : "com.android.keyguard.KeyguardViewMediator",
+                    lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            prefsApps.reload();
+                            if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
+                                clear();
+                                log("ML: Screen turned off, locked apps.");
+                            }
+                        }
+                    });
         } catch (Throwable t) {
             log(t);
         }

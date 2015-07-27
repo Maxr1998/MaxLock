@@ -18,7 +18,6 @@
 package de.Maxr1998.xposed.maxlock.hooks;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 
 import java.io.File;
 
@@ -44,10 +43,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(final LoadPackageParam lPParam) throws Throwable {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && lPParam.packageName.equals(ScreenOff.PACKAGE_NAME)) {
-            ScreenOff.init(prefsApps, lPParam, true);
-        } else if (lPParam.packageName.equals(ScreenOff.PACKAGE_NAME_LEGACY)) {
-            ScreenOff.init(prefsApps, lPParam, false);
+        if (lPParam.packageName.equals(ScreenOff.PACKAGE_NAME)) {
+            ScreenOff.init(prefsApps, lPParam);
         }
 
         if (lPParam.packageName.equals(MaxLock.PACKAGE_NAME)) {
