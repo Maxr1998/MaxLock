@@ -31,6 +31,7 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 public class ScreenOff {
 
     public static final String PACKAGE_NAME = "com.android.systemui";
+    public static final String PACKAGE_NAME_LEGACY = "com.android.keyguard";
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
 
     public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
