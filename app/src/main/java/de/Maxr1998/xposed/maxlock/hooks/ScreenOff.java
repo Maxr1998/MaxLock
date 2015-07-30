@@ -23,6 +23,7 @@ import java.io.FileWriter;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.robv.android.xposed.XposedBridge.log;
@@ -35,8 +36,17 @@ public class ScreenOff {
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
 
     public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
+        boolean isMiui;
         try {
-            findAndHookMethod(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? "com.android.systemui.keyguard.KeyguardViewMediator" : "com.android.keyguard.KeyguardViewMediator",
+            XposedHelpers.findClass("com.android.keyguard.MiuiKeyguardViewMediator", lPParam.classLoader);
+            log("ML: Recognized MIUI device.");
+            isMiui = true;
+        } catch (XposedHelpers.ClassNotFoundError e) {
+            isMiui = false;
+        }
+        try {
+            findAndHookMethod(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? "com.android.systemui.keyguard.KeyguardViewMediator" :
+                            isMiui ? "com.android.keyguard.MiuiKeyguardViewMediator" : "com.android.keyguard.KeyguardViewMediator",
                     lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
