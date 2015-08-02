@@ -21,7 +21,7 @@
             robobunny:unitsLeft=""
             robobunny:unitsRight=" Min" />
     </PreferenceCategory>
-
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_intika2">
         <CheckBoxPreference
             android:defaultValue="false"
@@ -42,9 +42,11 @@
             robobunny:unitsLeft=""
             robobunny:unitsRight=" Min" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
         <CheckBoxPreference
             android:key="reset_imod_screen_off"
             android:title="@string/pref_reset_screen_off" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
 </PreferenceScreen>

@@ -16,4 +16,7 @@
     <color name="first_start_page1">@color/accent</color>
     <color name="first_start_page2">#ffd600</color>
     <color name="first_start_page3">#ff3d00</color>
+
+    <color name="default_window_background">#fff1f1f1</color>
+    <color name="default_window_background_dark">#505050</color>
 </resources>

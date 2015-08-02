@@ -9,47 +9,41 @@
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingTypeSettingsFragment"
             android:key="locking_type_settings"
             android:title="@string/pref_locking_type" />
-
         <PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingUISettingsFragment"
             android:key="locking_ui_settings"
             android:title="@string/pref_locking_ui" />
-
         <PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingOptionsFragment"
             android:key="locking_options"
             android:title="@string/pref_locking_options" />
-
         <PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingIntikaFragment"
             android:key="intika_imod"
             android:title="@string/pref_locking_intika" />
     </PreferenceCategory>
-
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_apps">
         <CheckBoxPreference
             android:key="show_system_apps"
             android:summaryOff="@string/pref_show_system_app_summary_off"
             android:summaryOn="@string/pref_show_system_app_summary_on"
             android:title="@string/pref_show_system_app" />
-
         <Preference
             android:key="choose_apps"
             android:summary="@string/pref_choose_apps_summary"
             android:title="@string/pref_choose_apps" />
     </PreferenceCategory>
-
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_ui">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="hide_from_launcher"
             android:title="@string/pref_hide_from_launcher" />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="use_dark_style"
             android:title="@string/pref_use_dark_style" />
-
         <!--suppress AndroidUnknownAttribute -->
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             alphaSlider="true"
@@ -57,27 +51,24 @@
             android:key="widget_background_color"
             android:title="@string/pref_widget_background_color" />
     </PreferenceCategory>
-
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_about">
         <Preference
             android:key="about"
             android:summary="@string/pref_about_summary"
             android:title="@string/app_name" />
-
         <Preference
             android:key="donate_upgrade_pro"
             android:title="@string/pref_donate_upgrade_pro" />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_pro"
             android:summary="@string/pref_enable_pro_summary"
             android:title="@string/pref_enable_pro" />
-
         <Preference
             android:key="uninstall"
             android:summary="@string/pref_prevent_uninstall_summary"
             android:title="@string/pref_prevent_uninstall" />
     </PreferenceCategory>
-
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
 </PreferenceScreen>

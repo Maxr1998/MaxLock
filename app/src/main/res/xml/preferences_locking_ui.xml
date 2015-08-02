@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:maxlock="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/pref_locking_ui">
         <!--<Preference
             android:key="open_theme_manager"
@@ -27,6 +28,7 @@
             android:key="tablet_mode_override"
             android:title="@string/pref_use_tablet_mode" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_pin_and_knock_code">
         <CheckBoxPreference
             android:defaultValue="false"
@@ -43,12 +45,14 @@
             android:summary="@string/pref_hide_input_bar_summary"
             android:title="@string/pref_hide_input_bar" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_password_and_pin">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="quick_unlock"
             android:title="@string/pref_quick_unlock" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_knock_code_only">
         <CheckBoxPreference
             android:defaultValue="true"
@@ -59,6 +63,7 @@
             android:key="touch_visible"
             android:title="@string/pref_touch_visible" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_pattern_only">
         <CheckBoxPreference
             android:defaultValue="true"
@@ -69,4 +74,5 @@
             android:key="haptic_feedback"
             android:title="@string/pref_haptic_feedback" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference maxlock:topShadow="false" />
 </PreferenceScreen>

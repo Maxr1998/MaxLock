@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +88,12 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
     }
 
+    public static void setupPreferenceList(ListView lv) {
+        lv.setPadding(0, 0, 0, 0);
+        lv.setOverscrollFooter(new ColorDrawable(lv.getContext().getResources().getColor(
+                !PREFS.getBoolean(Common.USE_DARK_STYLE, false) ? R.color.default_window_background : R.color.default_window_background_dark)));
+    }
+
     private BillingProcessor getBp() {
         return ((SettingsActivity) getActivity()).getBillingProcessor();
     }
@@ -122,6 +130,11 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             UNINSTALL.setSummary("");
         }
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        setupPreferenceList(getListView());
     }
 
     private void setupPro() {
@@ -176,10 +189,10 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             CheckBoxPreference hideApp = (CheckBoxPreference) preference;
             if (hideApp.isChecked()) {
                 Toast.makeText(getActivity(), R.string.reboot_required, Toast.LENGTH_SHORT).show();
-                ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock");
+                ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
                 getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
             } else {
-                ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock");
+                ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
                 getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
             }
         } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.ENABLE_PRO)) {
@@ -259,6 +272,11 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             //noinspection deprecation
             getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.preferences_locking_type);
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            setupPreferenceList(getListView());
         }
 
         @Override
@@ -343,16 +361,8 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
 
         @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-            super.onPreferenceTreeClick(preferenceScreen, preference);
-            if (preference == findPreference(Common.OPEN_THEME_MANAGER)) {
-                Intent themeManager = new Intent();
-                themeManager.setComponent(new ComponentName("de.Maxr1998.maxlock.thememanager", "de.Maxr1998.maxlock.thememanager" + ".MainActivity"));
-                themeManager.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(themeManager);
-                return true;
-            }
-            return false;
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            setupPreferenceList(getListView());
         }
 
         @Override
@@ -397,6 +407,11 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
 
         @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            setupPreferenceList(getListView());
+        }
+
+        @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
             if (preference == findPreference(Common.VIEW_LOGS)) {
@@ -425,6 +440,11 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
                 iimod_enabled_g.setTitle(R.string.pref_delay_needpro);
                 iimod_enabled_p.setTitle(R.string.pref_delay_needpro);
             }
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            setupPreferenceList(getListView());
         }
     }
 

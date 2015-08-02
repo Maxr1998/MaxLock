@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:maxlock="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/pref_category_logging">
         <CheckBoxPreference
             android:defaultValue="false"
@@ -11,7 +12,7 @@
             android:key="view_logs"
             android:title="@string/pref_view_logs" />
     </PreferenceCategory>
-
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
         <CheckBoxPreference
             android:defaultValue="false"
@@ -29,4 +30,5 @@
             android:key="enable_tasker_integration"
             android:title="@string/pref_enable_tasker" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference maxlock:topShadow="false" />
 </PreferenceScreen>
