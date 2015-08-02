@@ -56,7 +56,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     private static final String TAG_WEBSITE_FRAGMENT = "WebsiteFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
     public static boolean IS_ACTIVE = false;
-    static boolean FS_SHOW = true;
     private static boolean UNLOCKED = false;
     public SettingsFragment mSettingsFragment;
     SharedPreferences prefs;
@@ -73,9 +72,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         }
         super.onCreate(savedInstanceState);
 
-        if ((FS_SHOW && Util.isDevMode()) || prefs.getInt(FirstStartActivity.FIRST_START_LAST_VERSION_KEY, 0) != FirstStartActivity.FIRST_START_LATEST_VERSION) {
+        if (prefs.getInt(FirstStartActivity.FIRST_START_LAST_VERSION_KEY, 0) != FirstStartActivity.FIRST_START_LATEST_VERSION) {
             startActivity(new Intent(this, FirstStartActivity.class));
-            FS_SHOW = false;
             finish();
             return;
         }
