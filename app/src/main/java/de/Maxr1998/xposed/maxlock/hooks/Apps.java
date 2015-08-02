@@ -69,6 +69,7 @@ public class Apps {
             "cum.whatsfapp.Main",
             "jp.co.johospace.jorte.MainActivity",
             "jp.naver.line.android.activity.SplashActivity",
+            "lysesoft.andftp.SplashActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
     }));
 
