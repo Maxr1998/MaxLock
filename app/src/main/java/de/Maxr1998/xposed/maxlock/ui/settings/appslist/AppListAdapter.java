@@ -110,6 +110,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
             hld.options.setVisibility(View.GONE);
         }
 
+        // Launch app when tapping icon
         hld.appIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +208,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                         }).show();
             }
         });
+        // Turn lock on/off
         hld.toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

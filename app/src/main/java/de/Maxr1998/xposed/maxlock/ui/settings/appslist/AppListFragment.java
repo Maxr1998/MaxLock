@@ -35,6 +35,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -73,19 +74,19 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 
 public class AppListFragment extends Fragment {
 
-    private static List<Map<String, Object>> finalList;
+    private static List<Map<String, Object>> APP_LIST;
+    private static SetupAppList TASK;
+    private static ProgressDialog PROGRESS_DIALOG;
     RecyclerView recyclerView;
     AlertDialog restoreDialog;
     VerticalRecyclerViewFastScroller fastScroller;
     SectionTitleIndicator scrollIndicator;
     private AppListAdapter mAdapter;
     private SharedPreferences prefs;
-    private SetupAppList task;
     private ArrayAdapter<String> restoreAdapter;
-    private ProgressDialog progressDialog;
 
     public static void clearList() {
-        finalList = null;
+        APP_LIST = null;
     }
 
     @Override
@@ -96,11 +97,9 @@ public class AppListFragment extends Fragment {
         prefs = getActivity().getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
         mAdapter = new AppListAdapter(AppListFragment.this, getActivity());
         // Generate list
-        if (finalList == null || finalList.isEmpty()) {
-            task = new SetupAppList();
-            task.execute();
-        } else {
-            appListFinished();
+        if (APP_LIST == null && TASK == null) {
+            TASK = new SetupAppList();
+            TASK.execute();
         }
     }
 
@@ -119,32 +118,31 @@ public class AppListFragment extends Fragment {
         fastScroller.setSectionIndicator(scrollIndicator);
 
         // Show progress dialog
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setCancelable(true);
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                task.cancel(true);
-            }
-        });
-        if (task != null && task.getStatus().equals(AsyncTask.Status.RUNNING)) {
-            progressDialog.show();
-            progressDialog.setMax(task.listSize);
+        if (APP_LIST == null) {
+            PROGRESS_DIALOG = new ProgressDialog(getActivity());
+            PROGRESS_DIALOG.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            PROGRESS_DIALOG.setCanceledOnTouchOutside(false);
+            PROGRESS_DIALOG.setCancelable(true);
+            PROGRESS_DIALOG.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    PROGRESS_DIALOG.dismiss();
+                    getFragmentManager().popBackStack();
+                }
+            });
+            PROGRESS_DIALOG.setMax(TASK.max);
+            PROGRESS_DIALOG.show();
+        } else {
+            appListFinished();
         }
         return rootView;
     }
 
     private void appListFinished() {
-        mAdapter.updateList(finalList);
+        mAdapter.updateList(APP_LIST);
         filter();
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
+        if (PROGRESS_DIALOG != null)
+            PROGRESS_DIALOG.dismiss();
     }
 
     @Override
@@ -258,6 +256,17 @@ public class AppListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public void backupFile(File file, File directory) {
+        try {
+            FileUtils.copyFileToDirectory(file, directory);
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), R.string.toast_backup_restore_exception, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("deprecation")
     private void filterIcon(MenuItem item) {
         if (prefs == null) {
@@ -280,22 +289,11 @@ public class AppListFragment extends Fragment {
         mAdapter.getFilter().filter(prefs.getString("app_list_filter", ""));
     }
 
-    public void backupFile(File file, File directory) {
-        try {
-            FileUtils.copyFileToDirectory(file, directory);
-        } catch (FileNotFoundException f) {
-            f.printStackTrace();
-        } catch (IOException e) {
-            Toast.makeText(getActivity(), R.string.toast_backup_restore_exception, Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (String.valueOf(requestCode).startsWith(String.valueOf(Util.PATTERN_CODE_APP))) {
             if (resultCode == LockPatternActivity.RESULT_OK) {
-                String app = (String) finalList.get(Integer.parseInt(String.valueOf(requestCode).substring(1))).get("key");
+                String app = (String) APP_LIST.get(Integer.parseInt(String.valueOf(requestCode).substring(1))).get("key");
                 Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), app);
             }
         } else super.onActivityResult(requestCode, resultCode, data);
@@ -303,43 +301,41 @@ public class AppListFragment extends Fragment {
 
     private class SetupAppList extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
 
-        public int listSize = 0;
+        public int max = 0;
+        public int progress = 0;
         private List<Map<String, Object>> itemList;
 
         @Override
         protected List<Map<String, Object>> doInBackground(Void... voids) {
+            System.gc();
             PackageManager pm = getActivity().getPackageManager();
             List<ApplicationInfo> list = pm.getInstalledApplications(0);
-            listSize = list.size();
-
+            max = list.size();
             itemList = new ArrayList<>();
-            int i = 0;
             for (ApplicationInfo info : list) {
-                if (isCancelled())
-                    break;
                 while (getActivity() == null) {
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(5);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                if ((prefs.getBoolean("show_system_apps", false) ?
-                        getActivity().getPackageManager().getLaunchIntentForPackage(info.packageName) != null :
-                        (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) && !info.packageName.equals(Common.PKG_NAME) || info.packageName.equals("com.android.packageinstaller")) {
-
+                String pkgName = info.packageName;
+                if ((getActivity().getPackageManager().getLaunchIntentForPackage(pkgName) != null && !pkgName.equals(Common.PKG_NAME)) || pkgName.equals("com.android.packageinstaller")) {
                     Map<String, Object> map = new HashMap<>();
-
                     map.put("title", pm.getApplicationLabel(info));
-                    map.put("key", info.packageName);
-                    map.put("icon", pm.getApplicationIcon(info));
-
+                    map.put("key", pkgName);
+                    try {
+                        map.put("icon", pm.getApplicationIcon(info));
+                    } catch (OutOfMemoryError o) {
+                        Log.e("MaxLock", "OutOfMemory while reading application icons!");
+                    }
                     itemList.add(map);
                 }
-                publishProgress(i);
-                i++;
+                progress++;
+                publishProgress(progress);
             }
-
+            System.gc();
             Collections.sort(itemList, new Comparator<Map<String, Object>>() {
                 @Override
                 public int compare(Map<String, Object> lhs, Map<String, Object> rhs) {
@@ -353,19 +349,15 @@ public class AppListFragment extends Fragment {
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
-            if (progressDialog != null) progressDialog.setProgress(progress[0]);
+            if (PROGRESS_DIALOG != null)
+                PROGRESS_DIALOG.setProgress(progress[0]);
         }
 
         @Override
         protected void onPostExecute(List<Map<String, Object>> list) {
             super.onPostExecute(list);
-            finalList = list;
+            APP_LIST = list;
             appListFinished();
-        }
-
-        @Override
-        protected void onCancelled() {
-            getFragmentManager().popBackStack();
         }
     }
 }
