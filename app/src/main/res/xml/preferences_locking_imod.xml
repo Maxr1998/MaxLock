@@ -11,15 +11,13 @@
             android:defaultValue="600000"
             android:dependency="enable_delaygeneral"
             android:key="delay_inputgeneral"
-            android:max="7200000"
+            android:max="3600000"
             android:numeric="integer|decimal"
             android:summary="@string/pref_delay_input_general_summary"
             android:title="@string/pref_delay_input_general"
-            robobunny:identifier="1"
-            robobunny:interval="60000"
+            robobunny:interval="30000"
             robobunny:min="60000"
-            robobunny:unitsLeft=""
-            robobunny:unitsRight=" Min" />
+            robobunny:unitsRight=" min" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_intika2">
@@ -32,15 +30,13 @@
             android:defaultValue="600000"
             android:dependency="enable_delayperapp"
             android:key="delay_inputperapp"
-            android:max="7200000"
+            android:max="3600000"
             android:numeric="integer|decimal"
             android:summary="@string/pref_delay_input_perapp_summary"
             android:title="@string/pref_delay_input_perapp"
-            robobunny:identifier="3"
-            robobunny:interval="60000"
+            robobunny:interval="30000"
             robobunny:min="60000"
-            robobunny:unitsLeft=""
-            robobunny:unitsRight=" Min" />
+            robobunny:unitsRight=" min" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
