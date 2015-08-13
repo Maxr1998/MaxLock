@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="28dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="28dp"
+    android:layout_marginStart="8dp"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/toolbar_height"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:contentDescription="@string/app_name"
+        android:gravity="center"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:fontFamily="sans-serif"
+        android:singleLine="true"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/edit"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/appslist_settings_background"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_settings_black_36dp"
+        android:tint="?attr/colorAccent"
+        android:tintMode="src_atop" />
+
+    <ToggleButton
+        android:id="@+id/toggleLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="@string/toggle_lock_off"
+        android:textOn="@string/toggle_lock_on" />
+</LinearLayout>
