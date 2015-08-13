@@ -39,6 +39,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.preference.PreferenceFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -86,6 +87,8 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : fragment instanceof WebsiteFragment ? "WebsiteFragment" : null).addToBackStack(null).commit();
         if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
             from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+        //noinspection ConstantConditions
+        ((AppCompatActivity) from.getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public static void setupPreferenceList(ListView lv) {

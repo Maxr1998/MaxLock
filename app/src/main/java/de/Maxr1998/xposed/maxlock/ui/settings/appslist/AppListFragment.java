@@ -127,7 +127,7 @@ public class AppListFragment extends Fragment {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
                     PROGRESS_DIALOG.dismiss();
-                    getFragmentManager().popBackStack();
+                    getActivity().onBackPressed();
                 }
             });
             PROGRESS_DIALOG.setMax(TASK.max);
@@ -146,10 +146,17 @@ public class AppListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         inflater.inflate(R.menu.applist_menu, menu);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_search));
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu.findItem(R.id.toolbar_filter_activated).setVisible(false);
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

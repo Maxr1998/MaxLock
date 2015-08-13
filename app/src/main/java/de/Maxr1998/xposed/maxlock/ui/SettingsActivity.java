@@ -121,11 +121,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
             }
         });
-        Fragment appsList = getSupportFragmentManager().findFragmentByTag("AppListFragment");
-        if (appsList != null && appsList.isVisible()) {
-            menu.findItem(R.id.toolbar_info).setVisible(false);
-            menu.findItem(R.id.toolbar_master_switch).setVisible(false);
-        }
         Fragment website = getSupportFragmentManager().findFragmentByTag(TAG_WEBSITE_FRAGMENT);
         Fragment lockScreen = getSupportFragmentManager().findFragmentByTag(TAG_LOCK_FRAGMENT);
         if (website != null && website.isVisible() && getSupportActionBar() != null && getSupportFragmentManager().findFragmentById(R.id.settings_fragment) == null) {
@@ -150,6 +145,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             case R.id.toolbar_info:
                 SettingsFragment.launchFragment(new WebsiteFragment(), true, mSettingsFragment);
                 break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -163,8 +161,13 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         }
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-            if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null && getSupportFragmentManager().getBackStackEntryCount() == 1)
-                getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                //noinspection ConstantConditions
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null) {
+                    getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+                }
+            }
         } else {
             super.onBackPressed();
         }
