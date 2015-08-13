@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/toolbar_info"
-        android:icon="@drawable/ic_info_white_24dp"
-        android:title="@string/pref_category_about"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/toolbar_master_switch"
-        android:title="@string/toggle_master_switch"
-        app:actionViewClass="android.support.v7.widget.SwitchCompat"
-        app:showAsAction="always" />
+    <group android:id="@+id/menu_group_default">
+        <item
+            android:id="@+id/toolbar_info"
+            android:icon="@drawable/ic_info_white_24dp"
+            android:title="@string/pref_category_about"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/toolbar_master_switch"
+            android:title="@string/toggle_master_switch"
+            app:actionViewClass="android.support.v7.widget.SwitchCompat"
+            app:showAsAction="always" />
+    </group>
 </menu>

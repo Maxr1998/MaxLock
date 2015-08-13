@@ -34,7 +34,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,8 +41,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
@@ -147,19 +148,20 @@ public class AppListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
         inflater.inflate(R.menu.applist_menu, menu);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_search));
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.setGroupVisible(R.id.menu_group_default, false);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_search));
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                menu.findItem(R.id.toolbar_filter_activated).setVisible(false);
+                menu.setGroupVisible(R.id.menu_group_hide_on_search, false);
             }
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                 return false;
             }
 
@@ -167,6 +169,13 @@ public class AppListFragment extends Fragment {
             public boolean onQueryTextChange(String s) {
                 mAdapter.getFilter().filter(s);
                 return true;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                menu.setGroupVisible(R.id.menu_group_hide_on_search, true);
+                return false;
             }
         });
         filterIcon(menu.findItem(R.id.toolbar_filter_activated));
@@ -182,6 +191,9 @@ public class AppListFragment extends Fragment {
             final File prefsPerAppFile = new File(Util.dataDir(getActivity()) + "shared_prefs/" + prefsPerAppName);
 
             switch (item.getItemId()) {
+                case android.R.id.home:
+                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    return false;
                 case R.id.toolbar_backup_list:
                     String currentBackupDirPath = Common.BACKUP_DIR + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.getDefault())
                             .format(new Date(System.currentTimeMillis())) + File.separator;
