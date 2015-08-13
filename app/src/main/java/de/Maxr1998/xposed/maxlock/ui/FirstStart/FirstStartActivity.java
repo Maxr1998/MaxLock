@@ -39,7 +39,7 @@ public class FirstStartActivity extends FragmentActivity implements View.OnClick
 
     public static final int FIRST_START_LATEST_VERSION = 28;
     public static final String FIRST_START_LAST_VERSION_KEY = "first_start_last_version";
-    FirstStartPagerAdapter mAdapter;
+    private FirstStartPagerAdapter mAdapter;
     private ViewPager mPager;
     private Button skipButton, continueButton, doneButton;
 
@@ -51,7 +51,7 @@ public class FirstStartActivity extends FragmentActivity implements View.OnClick
         mAdapter = new FirstStartPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
         mPager.setOffscreenPageLimit(2);
-        mPager.setOnPageChangeListener(this);
+        mPager.addOnPageChangeListener(this);
 
         skipButton = (Button) findViewById(R.id.skip_button);
         skipButton.setOnClickListener(this);
@@ -147,7 +147,7 @@ public class FirstStartActivity extends FragmentActivity implements View.OnClick
 
     private static class FirstStartPagerAdapter extends FragmentPagerAdapter {
 
-        private Fragment[] items = new Fragment[3];
+        private final Fragment[] items = new Fragment[3];
 
         public FirstStartPagerAdapter(FragmentManager fm) {
             super(fm);

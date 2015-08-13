@@ -71,8 +71,8 @@ public abstract class Util {
 
     public static final int PATTERN_CODE = 48;
     public static final int PATTERN_CODE_APP = 5;
-    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-    static AuthenticationSucceededListener authenticationSucceededListener;
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    private static AuthenticationSucceededListener authenticationSucceededListener;
     private static Bitmap M_BITMAP;
     private static SharedPreferences PREFS, PREFS_KEY, PREFS_PER_APP;
     private static ApplicationInfo REQUEST_PKG_INFO;
@@ -220,7 +220,7 @@ public abstract class Util {
         return hash;
     }
 
-    public static String bytesToHex(byte[] bytes) {
+    private static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;

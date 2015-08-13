@@ -28,11 +28,9 @@ import de.Maxr1998.xposed.maxlock.R;
 
 public class FragmentWelcome extends Fragment {
 
-    private ViewGroup rootView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_welcome, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_welcome, container, false);
         return rootView;
     }
 }

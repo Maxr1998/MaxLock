@@ -88,7 +88,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     @Override
     public AppsListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_apps_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_list_item, parent, false);
         return new AppsListViewHolder(v);
     }
 
@@ -258,7 +258,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         return mItemList.size();
     }
 
-    public String nameAt(int position) {
+    private String nameAt(int position) {
         return (String) mItemList.get(position != getItemCount() ? position : position - 1).get("title");
     }
 
@@ -290,10 +290,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     public static class AppsListViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView appIcon;
-        public TextView appName;
-        public ImageButton options;
-        public ToggleButton toggle;
+        public final ImageView appIcon;
+        public final TextView appName;
+        public final ImageButton options;
+        public final ToggleButton toggle;
 
         public AppsListViewHolder(View itemView) {
             super(itemView);
@@ -349,7 +349,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     private static class ActivityListViewHolder extends RecyclerView.ViewHolder {
 
-        public SwitchCompat switchCompat;
+        public final SwitchCompat switchCompat;
 
         public ActivityListViewHolder(View itemView) {
             super(itemView);
@@ -360,7 +360,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         }
     }
 
-    class MyFilter extends Filter {
+    private class MyFilter extends Filter {
 
         @SuppressLint("DefaultLocale")
         @Override

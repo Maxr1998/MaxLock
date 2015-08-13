@@ -17,7 +17,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            tools:ignore="TextViewEdits" />
 
         <ImageButton
             android:id="@+id/delete_input"

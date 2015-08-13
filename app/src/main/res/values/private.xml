@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="license_key" translateable="false">DUMMY</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="license_key" translateable="false" tools:ignore="MissingTranslation">DUMMY</string>
 </resources>

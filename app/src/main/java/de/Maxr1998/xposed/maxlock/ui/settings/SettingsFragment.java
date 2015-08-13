@@ -75,10 +75,11 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 
 public class SettingsFragment extends PreferenceFragment implements BillingProcessor.IBillingHandler {
-    static Preference UNINSTALL;
-    static SharedPreferences PREFS, PREFS_KEYS, PREFS_THEME;
-    DevicePolicyManager devicePolicyManager;
-    ComponentName deviceAdmin;
+    private static Preference UNINSTALL;
+    private static SharedPreferences PREFS;
+    private static SharedPreferences PREFS_THEME;
+    private DevicePolicyManager devicePolicyManager;
+    private ComponentName deviceAdmin;
 
     public static void launchFragment(Fragment fragment, boolean fromRoot, Fragment from) {
         if (fromRoot) {
@@ -91,7 +92,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         ((AppCompatActivity) from.getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public static void setupPreferenceList(ListView lv) {
+    private static void setupPreferenceList(ListView lv) {
         lv.setPadding(0, 0, 0, 0);
         lv.setOverscrollFooter(new ColorDrawable(lv.getContext().getResources().getColor(
                 !PREFS.getBoolean(Common.USE_DARK_STYLE, false) ? R.color.default_window_background : R.color.default_window_background_dark)));
@@ -110,7 +111,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         getPreferenceManager().setSharedPreferencesMode(Activity.MODE_WORLD_READABLE);
         addPreferencesFromResource(R.xml.preferences_main);
         PREFS = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        PREFS_KEYS = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         PREFS_THEME = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -182,7 +182,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.IIMOD_OPTIONS)) {
-            @SuppressLint("WorldReadableFiles") @SuppressWarnings("deprecation") SharedPreferences prefsIMoD = getActivity().getSharedPreferences(Common.PREFS_APPS, Context.MODE_WORLD_READABLE);
             launchFragment(new LockingIntikaFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {

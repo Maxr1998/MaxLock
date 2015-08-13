@@ -55,16 +55,15 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     private static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
     private static final String TAG_WEBSITE_FRAGMENT = "WebsiteFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
-    public static boolean IS_ACTIVE = false;
+    private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
-    public SettingsFragment mSettingsFragment;
-    SharedPreferences prefs;
+    private SettingsFragment mSettingsFragment;
     private BillingProcessor billingProcessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Preferences
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean(Common.USE_DARK_STYLE, false)) {
             setTheme(R.style.AppTheme_Dark);
         } else {

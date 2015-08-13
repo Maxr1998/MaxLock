@@ -34,7 +34,7 @@ import de.Maxr1998.xposed.maxlock.R;
 public class ConfigActivity extends AppCompatActivity {
 
     public static final String STATE_EXTRA_KEY = "de.Maxr1998.xposed.maxlock.extra.STRING_MESSAGE";
-    public Intent result;
+    private Intent result;
     private SharedPreferences prefs;
 
     @Override

@@ -34,12 +34,12 @@ import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 
-public class SetupAppListTask extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
+class SetupAppListTask extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
 
     private final Context mContext;
-    public int mProgress = 0;
+    private final AppListFragment mFragment;
+    private int mProgress = 0;
     private ProgressDialog mProgressDialog;
-    private AppListFragment mFragment;
     private List<ApplicationInfo> mTempAppList;
 
     public SetupAppListTask(Context c, AppListFragment a) {

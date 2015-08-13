@@ -29,7 +29,7 @@ import de.Maxr1998.xposed.maxlock.R;
 
 public class ShadowDummyPreference extends Preference {
 
-    boolean end, dark;
+    private final boolean end, dark;
 
     @SuppressLint("WorldReadableFiles")
     public ShadowDummyPreference(Context context, AttributeSet attr) {

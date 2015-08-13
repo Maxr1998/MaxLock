@@ -38,18 +38,17 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
-    ViewGroup rootView;
-    DevicePolicyManager devicePolicyManager;
-    ComponentName deviceAdmin;
-    SharedPreferences prefsApps;
-    private String[] app_names = {
+    private final String[] app_names = {
             "com.android.packageinstaller", "com.android.settings", "de.robv.android.xposed.installer"
     };
+    private DevicePolicyManager devicePolicyManager;
+    private ComponentName deviceAdmin;
+    private SharedPreferences prefsApps;
 
     @SuppressLint("WorldReadableFiles")
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_setup, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_setup, container, false);
         prefsApps = MLPreferences.getPrefsApps(getActivity());
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), SettingsFragment.UninstallProtectionReceiver.class);

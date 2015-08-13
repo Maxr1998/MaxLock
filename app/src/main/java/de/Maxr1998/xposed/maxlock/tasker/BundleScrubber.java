@@ -24,7 +24,7 @@ import android.os.Bundle;
  * Helper class to scrub Bundles of invalid extras. This is a workaround for an Android bug:
  * <http://code.google.com/p/android/issues/detail?id=16006>.
  */
-public final class BundleScrubber {
+final class BundleScrubber {
 
     /**
      * Scrubs Intents for private serializable subclasses in the Intent extras. If the Intent's extras contain
@@ -36,12 +36,9 @@ public final class BundleScrubber {
      *               parameter may be null.
      * @return true if the Intent was scrubbed, false if the Intent was not modified.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static boolean scrub(final Intent intent) {
-        if (null == intent) {
-            return false;
-        }
-
-        return scrub(intent.getExtras());
+        return intent != null && scrub(intent.getExtras());
     }
 
     /**

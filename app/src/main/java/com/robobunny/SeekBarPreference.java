@@ -52,8 +52,8 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
     private void setValuesFromXml(AttributeSet attrs) {
         mMaxValue = attrs.getAttributeIntValue(ANDROID_XMLNS, "max", 100);
         mMinValue = attrs.getAttributeIntValue(SEEK_BAR_XMLNS, "min", 0);
-        String units = getAttributeStringValue(attrs, SEEK_BAR_XMLNS, "units", "");
-        mUnits = getAttributeStringValue(attrs, SEEK_BAR_XMLNS, "unitsRight", units);
+        String units = getAttributeStringValue(attrs, "units", "");
+        mUnits = getAttributeStringValue(attrs, "unitsRight", units);
         try {
             String newInterval = attrs.getAttributeValue(SEEK_BAR_XMLNS, "interval");
             if (newInterval != null)
@@ -64,8 +64,8 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
 
     }
 
-    private String getAttributeStringValue(AttributeSet attrs, String namespace, String name, String defaultValue) {
-        String value = attrs.getAttributeValue(namespace, name);
+    private String getAttributeStringValue(AttributeSet attrs, String name, String defaultValue) {
+        String value = attrs.getAttributeValue(SeekBarPreference.SEEK_BAR_XMLNS, name);
         if (value == null)
             value = defaultValue;
 
@@ -116,7 +116,7 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
     /**
      * Update a SeekBarPreference view with our current state
      */
-    protected void updateView(View view) {
+    private void updateView(View view) {
         try {
             mStatusText = (TextView) view.findViewById(R.id.seekBarPrefValue);
             mSeekBar.setProgress(mCurrentValue - mMinValue);

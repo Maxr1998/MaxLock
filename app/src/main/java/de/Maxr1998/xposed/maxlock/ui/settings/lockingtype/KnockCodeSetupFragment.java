@@ -36,10 +36,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class KnockCodeSetupFragment extends Fragment implements View.OnClickListener {
 
-    ViewGroup rootView;
-    View mInputView;
-    String customApp;
-    Button mCancelButton;
+    private String customApp;
     private String mFirstKey;
     private SharedPreferences prefs, prefsKey, prefsPerApp;
     private StringBuilder key;
@@ -67,9 +64,9 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Views
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_knock_code_setup, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_knock_code_setup, container, false);
         mDescView = (TextView) rootView.findViewById(R.id.kc_description);
-        mInputView = rootView.findViewById(R.id.inputView);
+        View mInputView = rootView.findViewById(R.id.inputView);
         mInputView.setOnClickListener(this);
         mInputText = (TextView) mInputView;
         View[] knockButtons = new View[]{
@@ -83,7 +80,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
             kb[i] = (Button) knockButtons[i];
             kb[i].setOnClickListener(this);
         }
-        mCancelButton = (Button) rootView.findViewById(R.id.button_cancel);
+        Button mCancelButton = (Button) rootView.findViewById(R.id.button_cancel);
         mCancelButton.setOnClickListener(this);
         mNextButton = (Button) rootView.findViewById(R.id.button_positive);
         mNextButton.setOnClickListener(this);
@@ -127,7 +124,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         updateUi();
     }
 
-    public void updateUi() {
+    private void updateUi() {
         if (mUiStage.equals("first")) {
             mInputText.setText(genPass(key));
             if (key.length() > 3) {
@@ -148,7 +145,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         }
     }
 
-    public void handleStage() {
+    private void handleStage() {
         if (mUiStage.equals("first")) {
             mFirstKey = key.toString();
             key.setLength(0);
@@ -170,7 +167,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
         }
     }
 
-    String genPass(StringBuilder str) {
+    private String genPass(StringBuilder str) {
         StringBuilder x = new StringBuilder("");
 
         for (int i = 0; i < str.length(); i++) {

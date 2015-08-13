@@ -186,7 +186,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
     }
 
-    public void launchLockView() {
+    private void launchLockView() {
         Intent it = new Intent(this, LockActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_DEFAULT);

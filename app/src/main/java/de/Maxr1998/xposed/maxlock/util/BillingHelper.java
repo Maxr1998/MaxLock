@@ -70,9 +70,9 @@ public abstract class BillingHelper {
     }
 
     private static class ShowDialog extends AsyncTask<Void, Void, ListAdapter> {
-        private ProgressDialog progressDialog;
-        private BillingProcessor bp;
-        private Activity mContext;
+        private final ProgressDialog progressDialog;
+        private final BillingProcessor bp;
+        private final Activity mContext;
 
         public ShowDialog(BillingProcessor bp, Activity activity) {
             this.bp = bp;

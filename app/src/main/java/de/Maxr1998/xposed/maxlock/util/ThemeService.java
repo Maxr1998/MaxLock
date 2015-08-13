@@ -42,9 +42,8 @@ public class ThemeService extends IntentService {
 
     private static final String themeOrigFile = "theme.xml";
     private static SharedPreferences PREFS_THEME;
-    public final String backgroundOrigFile = "background.png";
-    File themeFile;
-    SharedPreferences prefs;
+    private File themeFile;
+    private SharedPreferences prefs;
 
 
     public ThemeService() {
@@ -52,7 +51,7 @@ public class ThemeService extends IntentService {
     }
 
     @SuppressLint("WorldReadableFiles")
-    public static void loadPrefs(Context context) {
+    private static void loadPrefs(Context context) {
         if (PREFS_THEME == null)
             //noinspection deprecation
             PREFS_THEME = context.getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
@@ -94,7 +93,7 @@ public class ThemeService extends IntentService {
     }
 
     @SuppressLint("WorldReadableFiles")
-    public void importTheme(String packageName) {
+    private void importTheme(String packageName) {
         /**
          * Preferences
          */
@@ -120,6 +119,7 @@ public class ThemeService extends IntentService {
             getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
 
             // background.png
+            String backgroundOrigFile = "background.png";
             InputStream backgroundStream = assets.open(backgroundOrigFile);
             File backgroundFile = new File(Util.dataDir(this) + "theme" + File.separator + backgroundOrigFile);
             FileUtils.copyInputStreamToFile(backgroundStream, backgroundFile);
@@ -135,7 +135,7 @@ public class ThemeService extends IntentService {
         }
     }
 
-    public void clearUp() {
+    private void clearUp() {
         /**
          * Preferences
          */

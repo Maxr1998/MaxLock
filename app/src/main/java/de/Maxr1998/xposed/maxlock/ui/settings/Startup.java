@@ -51,15 +51,15 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class Startup extends AsyncTask<Boolean, Void, Void> {
 
+    private final Context mContext;
+    private final SharedPreferences prefs;
     // Outpur vars
-    boolean showSnackBar;
-    boolean snackBarMultiLine;
-    String snackBarContent;
-    boolean showDialog;
-    AlertDialog.Builder builder;
-    private Context mContext;
+    private boolean showSnackBar;
+    private boolean snackBarMultiLine;
+    private String snackBarContent;
+    private boolean showDialog;
+    private AlertDialog.Builder builder;
     private boolean isFirstStart;
-    private SharedPreferences prefs;
 
     public Startup(Context context) {
         mContext = context;

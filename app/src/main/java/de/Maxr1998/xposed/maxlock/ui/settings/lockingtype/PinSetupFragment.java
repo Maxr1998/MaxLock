@@ -43,10 +43,8 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class PinSetupFragment extends Fragment implements View.OnClickListener {
 
-    ViewGroup rootView;
-    String customApp;
-    EditText mSetupPinInput;
-    Button mCancelButton;
+    private String customApp;
+    private EditText mSetupPinInput;
     private String mFirstKey;
     private String mUiStage = "first";
     private Button mNextButton;
@@ -69,7 +67,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_pin_setup, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_pin_setup, container, false);
         mDescView = (TextView) rootView.findViewById(R.id.description);
         mSetupPinInput = (EditText) rootView.findViewById(R.id.setup_pin_input);
         mSetupPinInput.addTextChangedListener(new TextWatcher() {
@@ -102,7 +100,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        mCancelButton = (Button) rootView.findViewById(R.id.button_cancel);
+        Button mCancelButton = (Button) rootView.findViewById(R.id.button_cancel);
         mCancelButton.setOnClickListener(this);
         mNextButton = (Button) rootView.findViewById(R.id.button_positive);
         mNextButton.setOnClickListener(this);
@@ -124,7 +122,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void updateUi(int textLength) {
+    private void updateUi(int textLength) {
         if (mUiStage.equals("first")) {
             if (textLength > 3) {
                 mDescView.setText(R.string.continue_done);
@@ -143,7 +141,7 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void handleStage() {
+    private void handleStage() {
         if (mUiStage.equals("first")) {
             mFirstKey = mSetupPinInput.getText().toString();
             mSetupPinInput.setText("");

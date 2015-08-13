@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">Placeholder</string>
@@ -63,7 +63,7 @@
     <string name="pref_custom_color">Custom color</string>
     <string name="pref_hide_status_bar">Hide status bar/Fullscreen</string>
     <string name="pref_use_tablet_mode">Use tablet mode</string>
-    <string name="pref_use_tablet_mode_summary">This %1$s was detected as a %2$s device because of a dpi of %3$d and a display width of %4$d pixels.</string>
+    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">This %1$s was detected as a %2$s device because of a dpi of %3$d and a display width of %4$d pixels.</string>
     <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
     <string name="pref_invert_color">Invert color of UI elements</string>
     <string name="pref_invert_color_summary">This sets the color of texts and dividers to black</string>

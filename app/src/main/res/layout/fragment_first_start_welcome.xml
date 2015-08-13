@@ -19,7 +19,8 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_welcome" />
+        android:src="@drawable/ic_welcome"
+        tools:ignore="ContentDescription" />
 
     <View
         android:layout_width="match_parent"

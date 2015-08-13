@@ -31,17 +31,11 @@ import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
 
 public class FragmentInformation extends Fragment implements FirstStartActivity.FragmentPagerSelected {
 
-    ViewGroup rootView;
-    View lockIcon;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private View lockIcon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_information, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_information, container, false);
         lockIcon = rootView.findViewById(R.id.first_start_lock_icon);
         return rootView;
     }
