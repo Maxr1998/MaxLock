@@ -69,7 +69,6 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 @SuppressLint("CommitPrefEdits")
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements SectionIndexer {
 
-
     private final Fragment mFragment;
     private final Context mContext;
     private final SharedPreferences prefsApps, prefsKeysPerApp;
