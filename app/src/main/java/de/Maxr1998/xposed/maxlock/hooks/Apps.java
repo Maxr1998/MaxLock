@@ -57,19 +57,27 @@ public class Apps {
     private static final Set<String> NO_UNLOCK = new HashSet<>(Arrays.asList(new String[]{
             "com.android.camera.CameraActivity",
             "com.android.vending.AssetBrowserActivity",
+            "com.bbm.ui.activities.StartupActivity",
             "com.evernote.ui.HomeActivity",
             "com.facebook.nodex.startup.splashscreen.NodexSplashActivity",
             "com.fstop.photo.MainActivity",
+            "com.google.android.apps.bigtop.activities.InitActivity",
+            "com.google.android.apps.chrome.document.ChromeLauncherActivity",
+            "com.google.android.apps.docs.app.NewMainProxyActivity",
             "com.instagram.android.activity.MainTabActivity",
+            "com.newhatsapp.Main",
             "com.tumblr.ui.activity.JumpoffActivity",
             "com.twitter.android.StartActivity",
             "com.UCMobile.main.UCMobile",
             "com.viber.voip.WelcomeActivity",
             "com.whatsapp.Main",
+            "com.whatsfapp.Main",
+            "com.whatsmapp.Main",
             "cum.whatsfapp.Main",
             "jp.co.johospace.jorte.MainActivity",
             "jp.naver.line.android.activity.SplashActivity",
             "lysesoft.andftp.SplashActivity",
+            "org.chromium.chrome.browser.document.ChromeLauncherActivity",
             "se.feomedia.quizkampen.act.login.MainActivity"
     }));
 
