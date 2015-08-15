@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:maxlock="http://schemas.android.com/apk/res-auto"
     xmlns:robobunny="http://robobunny.com">
     <PreferenceCategory android:title="@string/pref_category_intika">
         <CheckBoxPreference
@@ -44,5 +45,5 @@
             android:key="reset_imod_screen_off"
             android:title="@string/pref_reset_screen_off" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
+    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference maxlock:topShadow="false" />
 </PreferenceScreen>
