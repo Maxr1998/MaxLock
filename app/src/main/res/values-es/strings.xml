@@ -8,9 +8,6 @@
     <string name="pref_locking_type_knockcode">Knock code</string>
     <string name="pref_set_password">Establecer contraseña</string>
     <string name="pref_category_apps">Elegir aplicaciones</string>
-    <string name="pref_show_system_app">Mostrar aplicaciones del sistema</string>
-    <string name="pref_show_system_app_summary_on">Mostrar aplicaciones del sistema lanzables</string>
-    <string name="pref_show_system_app_summary_off">Ocultar aplicaciones del sistema lanzables</string>
     <string name="pref_choose_apps">Elegir aplicaciones</string>
     <string name="pref_choose_apps_summary">Seleccionar aplicaciones para ser bloqueadas</string>
     <string name="toast_password_inconsistent">La contraseña es inconsistente!</string>

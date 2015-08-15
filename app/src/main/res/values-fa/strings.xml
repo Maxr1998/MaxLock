@@ -10,9 +10,6 @@
     <string name="pref_locking_ui">تنظیمات Knock code</string>
     <string name="pref_set_password">تنظیم پسورد</string>
     <string name="pref_category_apps">انتخاب برنامه</string>
-    <string name="pref_show_system_app">نمایش برنامه های سیستمی</string>
-    <string name="pref_show_system_app_summary_on">برنامه های سیستمی قابل اجرا را نمایش بده</string>
-    <string name="pref_show_system_app_summary_off">برنامه های سیستمی قابل اجرا را مخفی کن</string>
     <string name="pref_choose_apps">انتخاب برنامه</string>
     <string name="pref_choose_apps_summary">انتخاب برنامه هایی که میخواهید قفل شوند</string>
     <string name="pref_category_ui">تنظیمات رابط کاربری برنامه</string>

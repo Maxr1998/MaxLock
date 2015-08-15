@@ -107,9 +107,6 @@
 	<string name="pref_reset_screen_off">在屏幕关闭后复位IMOD</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">选择应用</string>
-    <string name="pref_show_system_app">显示系统应用</string>
-    <string name="pref_show_system_app_summary_on">显示系统应用程序</string>
-    <string name="pref_show_system_app_summary_off">隐藏系统应用程序</string>
     <string name="pref_choose_apps">选择应用</string>
     <string name="pref_choose_apps_summary">选择需要锁定的应用程序</string>
 

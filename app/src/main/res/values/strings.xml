@@ -107,9 +107,6 @@
     <string name="pref_reset_screen_off">Reset I.Mod on screen turned off</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Choose apps</string>
-    <string name="pref_show_system_app">Show system apps</string>
-    <string name="pref_show_system_app_summary_on">Show launchable system apps</string>
-    <string name="pref_show_system_app_summary_off">Hide launchable system apps</string>
     <string name="pref_choose_apps">Choose apps</string>
     <string name="pref_choose_apps_summary">Select apps to be locked</string>
 

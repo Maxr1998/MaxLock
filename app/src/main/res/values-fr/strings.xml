@@ -75,9 +75,6 @@
     <string name="toast_no_network_connected">Pas de connecxion réseau detecté</string>
 
     <string name="pref_category_apps">Choisir vos apps</string>
-    <string name="pref_show_system_app">Afficher les applications system</string>
-    <string name="pref_show_system_app_summary_on">Afficher les applications system qui ont une interface</string>
-    <string name="pref_show_system_app_summary_off">Masquer les applications system qui ont une interface</string>
     <string name="pref_choose_apps">Choisir les apps</string>
     <string name="pref_choose_apps_summary">Selectionner les application à verrouiller</string>
 
