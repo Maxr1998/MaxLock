@@ -101,8 +101,6 @@
     <string name="pref_delay_input_perapp">再ロックまでの時間</string>
     <string name="pref_delay_input_perapp_summary">アプリを再度ロックするまでの時間(分)を設定してください</string>
     <string name="pref_delay_needpro">再ロックの先延ばし - プロ版</string>
-    <string name="pref_delay_input_general2">再ロックまでの時間</string>
-    <string name="pref_delay_input_general2_summary">アプリ全体の再ロックまでの残り時間</string>
     <string name="pref_fake_unlock">偽装ダイアログの直接解除</string>
     <string name="pref_fake_unlock_summary">アプリ強制終了の偽装ダイアログでレポートボタンをタップするとロック画面へ直ぐに移行するようにします</string>
     <!-- Apps settings -->

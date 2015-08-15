@@ -371,13 +371,13 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 Uri uri = null;
-                InputStream inputStream;
                 if (data != null) {
                     uri = data.getData();
                 }
                 if (uri == null) {
                     throw new NullPointerException();
                 }
+                InputStream inputStream;
                 try {
                     inputStream = getActivity().getContentResolver().openInputStream(uri);
                     File destination = new File(getActivity().getApplicationInfo().dataDir + File.separator + "background" + File.separator + "image");
@@ -385,9 +385,10 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
                         //noinspection ResultOfMethodCallIgnored
                         destination.delete();
                     }
+                    assert inputStream != null;
                     FileUtils.copyInputStreamToFile(inputStream, destination);
                     inputStream.close();
-                } catch (Exception e) {
+                } catch (IOException | AssertionError e) {
                     e.printStackTrace();
                 }
             }

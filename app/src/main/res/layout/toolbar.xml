@@ -9,7 +9,8 @@
         android:layout_height="@dimen/toolbar_height"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        tools:ignore="UnusedAttribute" />
 
     <TextView
         android:id="@+id/xposed_active"
@@ -22,5 +23,6 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold|italic"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
 </merge>

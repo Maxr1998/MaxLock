@@ -55,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     private static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
     private static final String TAG_WEBSITE_FRAGMENT = "WebsiteFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
+    @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
     private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
     private SettingsFragment mSettingsFragment;

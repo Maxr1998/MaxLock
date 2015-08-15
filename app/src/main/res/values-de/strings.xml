@@ -6,8 +6,8 @@
     <string name="xposed_active">MaxLock ist nicht aktiv</string>
     <string name="dialog_text_restart_required">MaxLock muss für die Übernahme der Änderungen neu gestartet werden</string>
     <string name="toast_pro_required">Die Pro-Version wird für diese Funktion benötigt</string>
-    <string name="no_locking_type">Keine Sperrart festgelegt.</string>
-    <string name="no_locked_apps">Keine zu sperrenden Apps ausgewählt.</string>
+    <string name="sb_no_locking_type">Keine Sperrart festgelegt.</string>
+    <string name="sb_no_locked_apps">Keine zu sperrenden Apps ausgewählt.</string>
     <!-- First start screens-->
     <string name="button_skip">Überspringen</string>
     <string name="button_next_content_description">Nächstes</string>

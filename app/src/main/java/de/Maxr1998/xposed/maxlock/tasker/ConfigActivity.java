@@ -35,11 +35,10 @@ public class ConfigActivity extends AppCompatActivity {
 
     public static final String STATE_EXTRA_KEY = "de.Maxr1998.xposed.maxlock.extra.STRING_MESSAGE";
     private Intent result;
-    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         super.onCreate(savedInstanceState);
 

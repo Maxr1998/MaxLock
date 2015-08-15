@@ -13,6 +13,7 @@
             android:entryValues="@array/background_type_values"
             android:key="background"
             android:title="@string/pref_background" />
+        <!--suppress AndroidUnknownAttribute -->
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             alphaSlider="false"
             android:defaultValue="@color/accent"

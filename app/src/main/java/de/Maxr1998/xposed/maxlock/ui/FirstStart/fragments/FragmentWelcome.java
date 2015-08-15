@@ -30,7 +30,6 @@ public class FragmentWelcome extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_welcome, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_first_start_welcome, container, false);
     }
 }
