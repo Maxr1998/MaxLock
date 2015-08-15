@@ -119,13 +119,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
 
     @Override
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
-        findPreference("show_system_apps").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                AppListFragment.clearList();
-                return true;
-            }
-        });
         setupPro();
         UNINSTALL = findPreference(Common.UNINSTALL);
         if (isDeviceAdminActive()) {
