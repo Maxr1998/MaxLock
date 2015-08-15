@@ -58,8 +58,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:palette-v7:22.2.1'
     compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.google.android.gms:play-services-base:7.5.0'
-    compile 'com.google.android.gms:play-services-analytics:7.5.0'
+    compile 'com.google.android.gms:play-services-base:7.8.0'
+    compile 'com.google.android.gms:play-services-analytics:7.8.0'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
     compile(name: 'android-support-v4-preferencefragment', ext: 'aar')
