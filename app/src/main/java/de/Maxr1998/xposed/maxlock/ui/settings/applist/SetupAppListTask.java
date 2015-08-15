@@ -71,15 +71,15 @@ class SetupAppListTask extends AsyncTask<Void, Integer, List<Map<String, Object>
         for (ApplicationInfo info : mTempAppList) {
             String pkgName = info.packageName;
             if ((mContext.getPackageManager().getLaunchIntentForPackage(pkgName) != null && !pkgName.equals(Common.PKG_NAME)) || pkgName.equals("com.android.packageinstaller")) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("title", mContext.getPackageManager().getApplicationLabel(info));
-                map.put("key", pkgName);
                 try {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("title", mContext.getPackageManager().getApplicationLabel(info));
+                    map.put("key", pkgName);
                     map.put("icon", mContext.getPackageManager().getApplicationIcon(info));
+                    mItemList.add(map);
                 } catch (OutOfMemoryError o) {
                     Log.e("MaxLock", "OutOfMemory while reading application icons!");
                 }
-                mItemList.add(map);
             }
             mProgress++;
             publishProgress(mProgress);
