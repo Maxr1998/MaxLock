@@ -157,6 +157,8 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
         String status = String.valueOf(mCurrentValue / 60000);
         if (mCurrentValue % 60000 == 30000) {
             status = status + ":30";
+        } else {
+            status = status + ":00";
         }
         mStatusText.setText(status);
         mStatusText.setMinimumWidth(30);
