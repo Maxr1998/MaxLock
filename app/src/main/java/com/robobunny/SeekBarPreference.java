@@ -66,15 +66,12 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
 
     private String getAttributeStringValue(AttributeSet attrs, String name, String defaultValue) {
         String value = attrs.getAttributeValue(SeekBarPreference.SEEK_BAR_XMLNS, name);
-        if (value == null)
-            value = defaultValue;
-
-        return value;
+        return value == null ? defaultValue : value;
     }
 
     @Override
-    protected View onCreateView(ViewGroup parent) {
-        View view = super.onCreateView(parent);
+    protected View onCreateView(ViewGroup v) {
+        View view = super.onCreateView(v);
         // The basic preference layout puts the widget frame to the right of the title and summary,
         // so we need to change it a bit - the seekbar should be under them.
         LinearLayout layout = (LinearLayout) view;
@@ -88,10 +85,14 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
     public void onBindView(@NonNull View view) {
         super.onBindView(view);
         try {
-            // move our seekbar to the new view we've been given
+            View summary = view.findViewById(android.R.id.summary);
             ViewParent oldContainer = mSeekBar.getParent();
             ViewGroup newContainer = (ViewGroup) view.findViewById(R.id.seekBarPrefBarContainer);
 
+            summary.setPadding(0, 0, (int) view.getContext().getResources().getDisplayMetrics().density * 16, 0);
+            View textContainer = ((View) summary.getParent());
+            textContainer.setPadding(textContainer.getPaddingLeft(), textContainer.getPaddingTop(), textContainer.getPaddingRight(), textContainer.getPaddingBottom() / 2);
+            // move our seekbar to the new view we've been given
             if (oldContainer != newContainer) {
                 // remove the seekbar from the old view
                 if (oldContainer != null) {
