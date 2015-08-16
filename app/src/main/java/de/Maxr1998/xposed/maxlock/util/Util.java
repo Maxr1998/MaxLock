@@ -30,6 +30,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -376,5 +377,24 @@ public abstract class Util {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * This method calculates a size in pixels from a given dp value.
+     *
+     * @param o  Object of either View or Context
+     * @param dp Value to convert to pixels
+     * @return Calculated Pixels
+     */
+    public static int dpToPx(@NonNull Object o, int dp) {
+        Context c;
+        if (o instanceof View) {
+            c = ((View) o).getContext();
+        } else if (o instanceof Context) {
+            c = (Context) o;
+        } else {
+            throw new IllegalArgumentException("This object only takes views or contexts as argument!");
+        }
+        return (int) c.getResources().getDisplayMetrics().density * dp;
     }
 }

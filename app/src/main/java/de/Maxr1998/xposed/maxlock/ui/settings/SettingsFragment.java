@@ -35,12 +35,15 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,9 +63,15 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -445,7 +454,9 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
     }
 
     public static class LogViewerFragment extends Fragment {
-        private TextView textView;
+
+        private RecyclerView mLogRecycler;
+        private TextView mEmptyText;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -455,24 +466,28 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
 
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            textView = new TextView(getActivity()) {
-                {
-                    setVerticalScrollBarEnabled(true);
-                    setMovementMethod(ScrollingMovementMethod.getInstance());
-                    setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
-                }
-            };
+            View rootView = inflater.inflate(R.layout.fragment_logs, container, false);
+            mLogRecycler = (RecyclerView) rootView.findViewById(R.id.log_recycler);
+            mEmptyText = (TextView) rootView.findViewById(R.id.logs_empty_text);
+            List<String> text = new ArrayList<>();
             try {
                 BufferedReader br = new BufferedReader(new FileReader(getActivity().getApplicationInfo().dataDir + File.separator + Common.LOG_FILE));
                 String line;
                 while ((line = br.readLine()) != null) {
-                    textView.append(line);
-                    textView.append("\n");
+                    text.add(line);
                 }
+            } catch (FileNotFoundException e) {
+                mLogRecycler.setVisibility(View.GONE);
+                mEmptyText.setVisibility(View.VISIBLE);
+                return rootView;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return textView;
+            mLogRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mLogRecycler.setItemAnimator(new DefaultItemAnimator());
+            LogRecyclerAdapter adapter = new LogRecyclerAdapter(text);
+            mLogRecycler.setAdapter(adapter);
+            return rootView;
         }
 
         @Override
@@ -487,10 +502,65 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
                 File file = new File(getActivity().getApplicationInfo().dataDir + File.separator + Common.LOG_FILE);
                 //noinspection ResultOfMethodCallIgnored
                 file.delete();
-                textView.setText("");
+                mLogRecycler.setVisibility(View.GONE);
+                mEmptyText.findViewById(R.id.logs_empty_text).setVisibility(View.VISIBLE);
                 return true;
             }
             return super.onOptionsItemSelected(item);
+        }
+
+        private static class LogRecyclerAdapter extends RecyclerView.Adapter<LogRecyclerAdapter.LogViewHolder> {
+
+            private List<String> data;
+
+            public LogRecyclerAdapter(@NonNull List<String> d) {
+                data = d;
+            }
+
+            @Override
+            public LogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_log_item, parent, false);
+                return new LogViewHolder(v);
+            }
+
+            @Override
+            public void onBindViewHolder(LogViewHolder holder, int p) {
+                int position = holder.getLayoutPosition();
+                String mCurrent = data.get(position);
+                boolean showDate;
+                if (position < 1) {
+                    showDate = true;
+                } else {
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+                        showDate = sdf.parse(mCurrent.substring(1, 9)).getTime() > sdf.parse(data.get(position - 1).substring(1, 9)).getTime();
+                    } catch (ParseException e) {
+                        showDate = false;
+                        e.printStackTrace();
+                    }
+                }
+                holder.mDate.setVisibility(showDate ? View.VISIBLE : View.GONE);
+                holder.mDate.setText(showDate ? mCurrent.substring(1, 9).replace('/', '.') : "");
+                holder.mTime.setText(mCurrent.substring(11, 19));
+                holder.mAppName.setText(mCurrent.substring(21));
+            }
+
+            @Override
+            public int getItemCount() {
+                return data.size();
+            }
+
+            protected static class LogViewHolder extends RecyclerView.ViewHolder {
+
+                protected TextView mDate, mTime, mAppName;
+
+                public LogViewHolder(View itemView) {
+                    super(itemView);
+                    mDate = (TextView) itemView.findViewById(R.id.log_item_date);
+                    mTime = (TextView) itemView.findViewById(R.id.log_item_time);
+                    mAppName = (TextView) itemView.findViewById(R.id.log_item_app_name);
+                }
+            }
         }
     }
 }

@@ -85,6 +85,7 @@
     <string name="pref_enable_logging_summary">Log failed/unfinished unlock attempts</string>
     <string name="pref_view_logs">View logs</string>
     <string name="menu_delete_log">Delete logs</string>
+    <string name="logs_empty_text">There are no log entries</string>
     <string name="pref_category_other">Others</string>
     <string name="pref_fake_unlock">Fake die direct unlock</string>
     <string name="pref_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog</string>
