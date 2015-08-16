@@ -88,7 +88,7 @@ public class Apps {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (!param.thisObject.getClass().getName().equals("android.app.Activity")) {
-                        log("MLaC|" + param.thisObject.getClass().getName() + "|-|" + System.currentTimeMillis());
+                        log("MLaC|" + param.thisObject.getClass().getName() + "||" + System.currentTimeMillis());
                     }
                 }
             });
@@ -96,6 +96,7 @@ public class Apps {
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    log("MLaS|" + param.thisObject.getClass().getName() + "||" + System.currentTimeMillis());
                     prefsApps.reload();
                     Activity app = (Activity) param.thisObject;
                     if (System.currentTimeMillis() - get(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
