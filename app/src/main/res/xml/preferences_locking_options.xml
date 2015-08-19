@@ -24,8 +24,8 @@
             android:defaultValue="start"
             android:dependency="enable_direct_unlock"
             android:key="fake_die_input"
-            android:summary="@string/pref_fake_die_input_summary"
-            android:title="@string/pref_fake_die_input" />
+            android:summary="@string/pref_fake_crash_passphrase_summary"
+            android:title="@string/pref_fake_crash_passphrase" />
         <CheckBoxPreference
             android:key="enable_tasker_integration"
             android:title="@string/pref_enable_tasker" />

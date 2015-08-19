@@ -69,8 +69,8 @@
     <string name="pref_view_logs">Voir les logs</string>
     <string name="menu_delete_log">Supprimer les logs</string>
     <string name="pref_category_other">Autres</string>
-    <string name="pref_fake_die_input">\"Fausse erreur\" entrée</string>
-    <string name="pref_fake_die_input_summary">L\'expression que l\'utilisateur doit entrer dans la boîte de dialogue pour afficher l\'ecran de verrouillage</string>
+    <string name="pref_fake_crash_passphrase">\"Fausse erreur\" entrée</string>
+    <string name="pref_fake_crash_passphrase_summary">L\'expression que l\'utilisateur doit entrer dans la boîte de dialogue pour afficher l\'ecran de verrouillage</string>
 
     <string name="toast_no_network_connected">Pas de connecxion réseau detecté</string>
 
@@ -91,7 +91,7 @@
     <string name="toggle_lock_on">On</string>
     <string name="toggle_lock_off">Off</string>
     <string name="dialog_title_settings">Paramètres</string>
-    <string name="dialog_text_fake_die">Fausse erreur</string>
+    <string name="dialog_text_fake_crash">Fausse erreur</string>
     <string name="dialog_text_custom_password">Mot de passe personnalisé</string>
     <string name="dialog_button_exclude_activities">Activités</string>
     <string name="dialog_title_exclude_activities">Exclure des activités du vérouillage</string>

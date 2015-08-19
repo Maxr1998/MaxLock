@@ -87,25 +87,26 @@
     <string name="menu_delete_log">Delete logs</string>
     <string name="logs_empty_text">There are no log entries</string>
     <string name="pref_category_other">Others</string>
-    <string name="pref_fake_unlock">Fake die direct unlock</string>
-    <string name="pref_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the report button on the fake die dialog</string>
-    <string name="pref_fake_die_input">\"Fake die\" input</string>
-    <string name="pref_fake_die_input_summary">The phrase the user has to input in the dialog to open lockscreen</string>
+    <string name="pref_fake_unlock">Fake crash direct unlock</string>
+    <string name="pref_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the <i>\"Unfortunately, X has stopped."</i> button on the \"App crashed…\" dialog</string>
+    <string name="pref_fake_crash_passphrase">Fake crash passphrase</string>
+    <string name="pref_fake_crash_passphrase_summary">The phrase the user has to input in the dialog to open lockscreen</string>
     <string name="pref_enable_tasker">Enable Tasker integration</string>
     <!-- I.Mod settings -->
     <string name="pref_locking_intika">Intika I.Mod</string>
-    <string name="pref_category_intika">Intika I.Mod - Grace Period - General</string>
-    <string name="pref_category_intika2">Intika I.Mod - Grace Period - PerApp</string>
-    <string name="pref_locking_delay_general">General Delayed-Relock</string>
+    <string name="pref_category_intika">Intika I.Mod - Grace period - Global</string>
+    <string name="pref_category_intika2">Intika I.Mod - Grace period - Per app</string>
+    <string name="pref_locking_delay_general">Global delayed re-lock</string>
     <string name="pref_locking_delay_general_summary">Prevent asking to unlock again within a certain period of time for all locked apps</string>
-    <string name="pref_delay_input_general">General Delayed-Relock Timer</string>
-    <string name="pref_delay_input_general_summary">Enter a number to specify the delay time value in minute for General Delayed-Relock</string>
-    <string name="pref_locking_delay_perapp">PerApp Delayed Relock</string>
+    <string name="pref_delay_input_general">Global delayed re-lock timer</string>
+    <string name="pref_delay_input_general_summary">Enter a number to specify the delay time value in minute for global delayed re-lock</string>
+    <string name="pref_locking_delay_perapp">Per app delayed re-lock</string>
     <string name="pref_locking_delay_perapp_summary">Prevent asking to unlock again within a certain period of time for every app separately regardless other protected apps</string>
-    <string name="pref_delay_input_perapp">PerApp Delayed-Relock Timer</string>
-    <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for PerApp Delayed-Relock</string>
-    <string name="pref_delay_needpro">Delayed Relock - Pro Version</string>
-    <string name="pref_reset_screen_off">Reset I.Mod on screen turned off</string>
+    <string name="pref_delay_input_perapp">Per app delayed re-lock timer</string>
+    <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for per app delayed re-lock</string>
+    <string name="pref_delay_needpro">Delayed re-lock - Pro version</string>
+    <string name="pref_reset_screen_off">Auto-reset I.Mod</string>
+    <string name="pref_reset_screen_off_summary">Reset I.Mod Timer when turning screen off</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_choose_apps">Choose apps</string>
@@ -124,7 +125,7 @@
     <string name="toggle_lock_on">On</string>
     <string name="toggle_lock_off">Off</string>
     <string name="dialog_title_settings">Settings</string>
-    <string name="dialog_text_fake_die">Fake die</string>
+    <string name="dialog_text_fake_crash">Fake crash</string>
     <string name="dialog_text_custom_password">Custom password</string>
     <string name="dialog_button_exclude_activities">Activities</string>
     <string name="dialog_title_exclude_activities">Exclude Activities from lock</string>
@@ -154,7 +155,7 @@
     <string name="dialog_cb_never_again">Never show this again</string>
     <string name="dialog_button_donate">Donate</string>
     <string name="dialog_button_rate">Rate</string>
-    <!-- Fake die screen -->
+    <!-- Fake crash screen -->
     <string name="dialog_text_fake_die_stopped">Unfortunately, %1$s has stopped.</string>
     <string name="dialog_button_report">Report</string>
     <string name="dialog_title_report_problem">Report problem</string>

@@ -88,8 +88,8 @@
     <string name="pref_category_other">其它</string>
 	<string name="pref_fake_unlock">假死直接解锁</string>
     <string name="pref_fake_unlock_summary">当启用锁屏假死对话框中按下报告按钮后显示</string>
-    <string name="pref_fake_die_input">假死输入</string>
-    <string name="pref_fake_die_input_summary">用户需要在对话框中输入短语才能打开锁屏</string>
+    <string name="pref_fake_crash_passphrase">假死输入</string>
+    <string name="pref_fake_crash_passphrase_summary">用户需要在对话框中输入短语才能打开锁屏</string>
     <string name="pref_enable_tasker">启用Tasker集成</string>
     <!-- I.MoD settings -->
     <string name="pref_locking_intika">Intika I.MoD</string>
@@ -123,7 +123,7 @@
     <string name="toggle_lock_on">开</string>
     <string name="toggle_lock_off">关</string>
     <string name="dialog_title_settings">设置</string>
-    <string name="dialog_text_fake_die">显示假死窗口</string>
+    <string name="dialog_text_fake_crash">显示假死窗口</string>
     <string name="dialog_text_custom_password">自定义密码</string>
     <string name="dialog_button_exclude_activities">活动</string>
     <string name="dialog_title_exclude_activities">排除锁定活动</string>
