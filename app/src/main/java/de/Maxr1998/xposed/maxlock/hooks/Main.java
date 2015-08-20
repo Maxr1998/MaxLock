@@ -51,7 +51,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         if (lPParam.packageName.equals(MaxLock.PACKAGE_NAME)) {
             File tmp = new File(TEMPS_PATH);
-            boolean created = tmp.createNewFile();
+            boolean created = tmp.getParentFile().mkdirs() || tmp.createNewFile();
             boolean rwSuccess = tmp.setReadable(true, false) && tmp.setWritable(true, false);
             log(created ? "ML: Temp-file created.\n" : "" + (rwSuccess ? "ML: Permissions set." : "ML: Error settings permissions!"));
             MaxLock.init(lPParam);
