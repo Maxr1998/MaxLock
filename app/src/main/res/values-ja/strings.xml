@@ -23,7 +23,7 @@
     <string name="fs_recommended_apps_summary">MaxLock の無効化やアンインストールを防止するには、すべてのアプリにチェックマークを付けてください</string>
     <!-- Main screen -->
     <string name="pref_category_locking">ロックの設定</string>
-    <string name="pref_locking_type">ロック方法</string>
+    <string name="pref_screen_locking_type">ロック方法</string>
     <!-- Locking type settings -->
     <string name="pref_locking_type_password">パスワード</string>
     <string name="pref_locking_type_pin">暗証番号</string>
@@ -48,7 +48,7 @@
     <string name="knock_code_too_short">少なくとも 4 回タップしてください</string>
     <string name="confirm_knock_code">確認のためノックコードを再入力してください</string>
     <!-- Locking UI settings -->
-    <string name="pref_locking_ui">ロック画面</string>
+    <string name="pref_screen_locking_ui">ロック画面</string>
     <string name="pref_open_theme_manager">Open Theme Manager</string>
     <string name="pref_open_theme_manager_summary_none">No theme applied</string>
     <string name="pref_open_theme_manager_summary_applied">Applied: </string>
@@ -79,7 +79,7 @@
     <string name="pref_show_path">パターンの表示</string>
     <string name="pref_haptic_feedback">パターン入力時の振動</string>
     <!-- Locking options settings -->
-    <string name="pref_locking_options">オプション</string>
+    <string name="pref_screen_locking_options">オプション</string>
     <string name="pref_category_logging">ログ</string>
     <string name="pref_enable_logging">ログの有効化</string>
     <string name="pref_enable_logging_summary">ロックの解除失敗や解除中断などをログに記録します</string>
@@ -93,7 +93,7 @@
     <string name="pref_fake_crash_passphrase_summary">アプリ強制終了の偽装ダイアログからロック画面へ移行するための入力文字列を設定します</string>
     <string name="pref_enable_tasker">Tasker 機能の有効化</string>
     <!-- I.Mod settings -->
-    <string name="pref_locking_intika">Intika 拡張</string>
+    <string name="pref_screen_locking_intika">Intika 拡張</string>
     <string name="pref_category_intika">Intika 拡張 - ロック解除の有効時間 - アプリ全体</string>
     <string name="pref_category_intika2">Intika 拡張 - ロック解除の有効時間 - アプリ個別</string>
     <string name="pref_locking_delay_general">再ロックの先延ばし</string>

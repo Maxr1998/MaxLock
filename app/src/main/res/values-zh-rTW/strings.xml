@@ -23,7 +23,7 @@
     <string name="fs_recommended_apps_summary">您應該勾選這些應用，以確保MaxLock不能被禁用或移除</string>
     <!-- Main screen -->
     <string name="pref_category_locking">鎖定設置</string>
-    <string name="pref_locking_type">鎖定類型</string>
+    <string name="pref_screen_locking_type">鎖定類型</string>
     <!-- Locking type Settings -->
     <string name="pref_locking_type_password">密碼</string>
     <string name="pref_locking_type_pin">PIN</string>
@@ -48,7 +48,7 @@
     <string name="knock_code_too_short">Knock code必須至少4點觸摸</string>
     <string name="confirm_knock_code">再次確認Knock code</string>
     <!-- Locking UI settings -->
-    <string name="pref_locking_ui">鎖屏界面</string>
+    <string name="pref_screen_locking_ui">鎖屏界面</string>
     <string name="pref_open_theme_manager">打開主題管理</string>
     <string name="pref_open_theme_manager_summary_none">沒有主題應用</string>
     <string name="pref_open_theme_manager_summary_applied">應用： </string>
@@ -79,7 +79,7 @@
     <string name="pref_show_path">顯示圖案</string>
     <string name="pref_haptic_feedback">滑動時振動</string>
     <!-- Locking options settings -->
-    <string name="pref_locking_options">鎖定選項</string>
+    <string name="pref_screen_locking_options">鎖定選項</string>
     <string name="pref_category_logging">日誌記錄</string>
     <string name="pref_enable_logging">開啟日誌記錄</string>
     <string name="pref_enable_logging_summary">登錄失敗/未解鎖的嘗試</string>
@@ -92,7 +92,7 @@
     <string name="pref_fake_crash_passphrase_summary">用戶需要在對話框中輸入短語才能打開鎖屏</string>
     <string name="pref_enable_tasker">啟用Tasker集成</string>
     <!-- I.MoD settings -->
-    <string name="pref_locking_intika">Intika I.MoD</string>
+    <string name="pref_screen_locking_intika">Intika I.MoD</string>
     <string name="pref_category_intika">Intika I.MoD - 寬限期 - 一般延遲</string>
     <string name="pref_category_intika2">Intika I.MoD - 寬限期 - PerApp延遲</string>
     <string name="pref_locking_delay_general">啟用一般延遲-重新鎖定</string>

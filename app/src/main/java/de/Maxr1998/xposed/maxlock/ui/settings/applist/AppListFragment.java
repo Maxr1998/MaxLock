@@ -27,6 +27,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -73,10 +74,6 @@ public class AppListFragment extends Fragment {
     private SharedPreferences prefs;
     private ArrayAdapter<String> restoreAdapter;
 
-    public static void clearList() {
-        APP_LIST = null;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +90,9 @@ public class AppListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getActivity().setTitle(getString(R.string.pref_screen_apps));
+        //noinspection ConstantConditions
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         // Setup layout
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.app_list);

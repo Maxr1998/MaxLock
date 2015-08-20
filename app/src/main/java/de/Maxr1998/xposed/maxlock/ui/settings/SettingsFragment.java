@@ -26,21 +26,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.preference.PreferenceFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,7 +45,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,34 +72,17 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 import de.Maxr1998.xposed.maxlock.util.BillingHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 
-public class SettingsFragment extends PreferenceFragment implements BillingProcessor.IBillingHandler {
+public class SettingsFragment extends MaxLockPreferenceFragment implements BillingProcessor.IBillingHandler {
     private static Preference UNINSTALL;
-    private static SharedPreferences PREFS;
     private static SharedPreferences PREFS_THEME;
     private DevicePolicyManager devicePolicyManager;
     private ComponentName deviceAdmin;
-
-    public static void launchFragment(Fragment fragment, boolean fromRoot, Fragment from) {
-        if (fromRoot) {
-            from.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : fragment instanceof WebsiteFragment ? "WebsiteFragment" : null).addToBackStack(null).commit();
-        if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
-            from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
-        //noinspection ConstantConditions
-        ((AppCompatActivity) from.getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private static void setupPreferenceList(ListView lv) {
-        lv.setPadding(0, 0, 0, 0);
-        lv.setOverscrollFooter(new ColorDrawable(lv.getContext().getResources().getColor(
-                !PREFS.getBoolean(Common.USE_DARK_STYLE, false) ? R.color.default_window_background : R.color.default_window_background_dark)));
-    }
 
     private BillingProcessor getBp() {
         return ((SettingsActivity) getActivity()).getBillingProcessor();
@@ -117,9 +94,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        getPreferenceManager().setSharedPreferencesMode(Activity.MODE_WORLD_READABLE);
         addPreferencesFromResource(R.xml.preferences_main);
-        PREFS = PreferenceManager.getDefaultSharedPreferences(getActivity());
         PREFS_THEME = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -137,37 +112,28 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         return super.onCreateView(paramLayoutInflater, paramViewGroup, paramBundle);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        setupPreferenceList(getListView());
-    }
-
     private void setupPro() {
+        SwitchPreference ep = (SwitchPreference) findPreference(Common.ENABLE_PRO);
+        if (Util.isDevMode()) {
+            title = getString(R.string.app_name) + " Indev";
+        } else if (BillingHelper.donated(getActivity().getApplicationContext(), getBp())) {
+            title = getString(R.string.app_name_pro);
+            prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+            ep.setEnabled(false);
+            ep.setChecked(true);
+        } else if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
+            title = getString(R.string.app_name_pseudo_pro);
+        } else {
+            title = getString(R.string.app_name);
+        }
         String version;
         try {
             version = " v" + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            version = "Error getting app version";
+            version = "*Error*";
             e.printStackTrace();
         }
-        Preference about = findPreference(Common.ABOUT);
-        CheckBoxPreference ep = (CheckBoxPreference) findPreference(Common.ENABLE_PRO);
-        String appName;
-        if (BillingHelper.donated(getActivity().getApplicationContext(), getBp())) {
-            appName = getString(R.string.app_name_pro);
-            PREFS.edit().putBoolean(Common.ENABLE_PRO, true).apply();
-            ep.setEnabled(false);
-            ep.setChecked(true);
-        } else {
-            if (PREFS.getBoolean(Common.ENABLE_PRO, false))
-                appName = getString(R.string.app_name_pseudo_pro);
-            else appName = getString(R.string.app_name);
-        }
-        if (Util.isDevMode()) {
-            appName = getString(R.string.app_name) + " Indev";
-        }
-        getActivity().setTitle(appName);
-        about.setTitle(appName + version);
+        findPreference(Common.ABOUT).setTitle(title + version);
     }
 
     @Override
@@ -180,7 +146,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
             launchFragment(new LockingUISettingsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
-            PREFS.edit().putBoolean(Common.ENABLE_LOGGING, PREFS.getBoolean(Common.ENABLE_PRO, false)).apply();
+            prefs.edit().putBoolean(Common.ENABLE_LOGGING, prefs.getBoolean(Common.ENABLE_PRO, false)).apply();
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.IIMOD_OPTIONS)) {
@@ -189,8 +155,8 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
             launchFragment(new AppListFragment(), true, this);
             return true;
-        } else if (preference == findPreference(Common.HIDE_APP_FROM_LAUNCHER) && preference instanceof CheckBoxPreference) {
-            CheckBoxPreference hideApp = (CheckBoxPreference) preference;
+        } else if (preference == findPreference(Common.HIDE_APP_FROM_LAUNCHER)) {
+            SwitchPreference hideApp = (SwitchPreference) preference;
             if (hideApp.isChecked()) {
                 Toast.makeText(getActivity(), R.string.reboot_required, Toast.LENGTH_SHORT).show();
                 ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
@@ -269,18 +235,12 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
     }
 
-    public static class LockingTypeSettingsFragment extends PreferenceFragment {
+    public static class LockingTypeSettingsFragment extends MaxLockPreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            //noinspection deprecation
-            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
+            title = getString(R.string.pref_screen_locking_type);
             addPreferencesFromResource(R.xml.preferences_locking_type);
-        }
-
-        @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            setupPreferenceList(getListView());
         }
 
         @Override
@@ -319,14 +279,13 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
     }
 
-    public static class LockingUISettingsFragment extends PreferenceFragment {
+    public static class LockingUISettingsFragment extends MaxLockPreferenceFragment {
         private static final int READ_REQUEST_CODE = 42;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            //noinspection deprecation
-            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
+            title = getString(R.string.pref_screen_locking_ui);
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
             Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.KC_SHOW_DIVIDERS), findPreference(Common.KC_TOUCH_VISIBLE)};
@@ -365,11 +324,6 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
 
         @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            setupPreferenceList(getListView());
-        }
-
-        @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 Uri uri = null;
@@ -397,23 +351,17 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
     }
 
-    public static class LockingOptionsFragment extends PreferenceFragment {
+    public static class LockingOptionsFragment extends MaxLockPreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            //noinspection deprecation
-            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
+            title = getString(R.string.pref_screen_locking_options);
             addPreferencesFromResource(R.xml.preferences_locking_options);
             Preference el = findPreference(Common.ENABLE_LOGGING);
-            el.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
-            if (!PREFS.getBoolean(Common.ENABLE_PRO, false)) {
+            el.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
+            if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
                 el.setSummary(R.string.toast_pro_required);
             }
-        }
-
-        @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            setupPreferenceList(getListView());
         }
 
         @Override
@@ -427,29 +375,23 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
         }
     }
 
-    public static class LockingIntikaFragment extends PreferenceFragment {
+    public static class LockingIntikaFragment extends MaxLockPreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            title = getString(R.string.pref_screen_locking_intika);
             getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
-            //noinspection deprecation
-            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.preferences_locking_imod);
             //Intika I.MoD - Loading check pro
             Preference iimod_enabled_g = findPreference(Common.IMOD_DELAY_GLOBAL_ENABLED);
             Preference iimod_enabled_p = findPreference(Common.IMOD_DELAY_APP_ENABLED);
-            iimod_enabled_g.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
-            iimod_enabled_p.setEnabled(PREFS.getBoolean(Common.ENABLE_PRO, false));
-            if (!PREFS.getBoolean(Common.ENABLE_PRO, false)) {
+            iimod_enabled_g.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
+            iimod_enabled_p.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
+            if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
                 //Intika I.MoD - Loading check pro
                 iimod_enabled_g.setTitle(R.string.pref_delay_needpro);
                 iimod_enabled_p.setTitle(R.string.pref_delay_needpro);
             }
-        }
-
-        @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            setupPreferenceList(getListView());
         }
     }
 
@@ -466,6 +408,7 @@ public class SettingsFragment extends PreferenceFragment implements BillingProce
 
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            getActivity().setTitle(getString(R.string.pref_screen_logs));
             View rootView = inflater.inflate(R.layout.fragment_logs, container, false);
             mLogRecycler = (RecyclerView) rootView.findViewById(R.id.log_recycler);
             mEmptyText = (TextView) rootView.findViewById(R.id.logs_empty_text);

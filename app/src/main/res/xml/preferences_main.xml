@@ -9,19 +9,19 @@
         <PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingTypeSettingsFragment"
             android:key="locking_type_settings"
-            android:title="@string/pref_locking_type" />
+            android:title="@string/pref_screen_locking_type" />
         <PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingUISettingsFragment"
             android:key="locking_ui_settings"
-            android:title="@string/pref_locking_ui" />
+            android:title="@string/pref_screen_locking_ui" />
         <PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingOptionsFragment"
             android:key="locking_options"
-            android:title="@string/pref_locking_options" />
+            android:title="@string/pref_screen_locking_options" />
         <PreferenceScreen
             android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingIntikaFragment"
             android:key="intika_imod"
-            android:title="@string/pref_locking_intika" />
+            android:title="@string/pref_screen_locking_intika" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_apps">
@@ -32,11 +32,11 @@
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_ui">
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="hide_from_launcher"
             android:title="@string/pref_hide_from_launcher" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="use_dark_style"
             android:title="@string/pref_use_dark_style" />
@@ -56,7 +56,7 @@
         <Preference
             android:key="donate_upgrade_pro"
             android:title="@string/pref_donate_upgrade_pro" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enable_pro"
             android:summary="@string/pref_enable_pro_summary"

@@ -21,10 +21,9 @@
     <string name="fs_app_xposed_installer">Xposed Installer</string>
     <string name="fs_recommended_apps">Enable further protection by locking these apps</string>
     <string name="fs_recommended_apps_summary">You should tick all these apps to make sure MaxLock cannot be disabled or uninstalled</string>
-    <!-- Main screen -->
-    <string name="pref_category_locking">Lock</string>
-    <string name="pref_locking_type">Locking type</string>
     <!-- Locking type settings -->
+    <string name="pref_category_locking">Lock</string>
+    <string name="pref_screen_locking_type">Locking type</string>
     <string name="pref_locking_type_password">Password</string>
     <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">Knock code</string>
@@ -48,7 +47,7 @@
     <string name="knock_code_too_short">Knock code must be a least 4 touches</string>
     <string name="confirm_knock_code">Confirm your knock code</string>
     <!-- Locking UI settings -->
-    <string name="pref_locking_ui">Lockscreen UI</string>
+    <string name="pref_screen_locking_ui">Lockscreen UI</string>
     <string name="pref_open_theme_manager">Open Theme Manager</string>
     <string name="pref_open_theme_manager_summary_none">No theme applied</string>
     <string name="pref_open_theme_manager_summary_applied">Applied: </string>
@@ -79,11 +78,12 @@
     <string name="pref_show_path">Show path</string>
     <string name="pref_haptic_feedback">Vibrate on drawing</string>
     <!-- Locking options settings -->
-    <string name="pref_locking_options">Locking options</string>
+    <string name="pref_screen_locking_options">Locking options</string>
     <string name="pref_category_logging">Logging</string>
     <string name="pref_enable_logging">Enable logging</string>
     <string name="pref_enable_logging_summary">Log failed/unfinished unlock attempts</string>
     <string name="pref_view_logs">View logs</string>
+    <string name="pref_screen_logs">Logs</string>
     <string name="menu_delete_log">Delete logs</string>
     <string name="logs_empty_text">There are no log entries</string>
     <string name="pref_category_other">Others</string>
@@ -93,7 +93,7 @@
     <string name="pref_fake_crash_passphrase_summary">The phrase the user has to input in the dialog to open lockscreen</string>
     <string name="pref_enable_tasker">Enable Tasker integration</string>
     <!-- I.Mod settings -->
-    <string name="pref_locking_intika">Intika I.Mod</string>
+    <string name="pref_screen_locking_intika">Intika I.Mod</string>
     <string name="pref_category_intika">Intika I.Mod - Grace period - Global</string>
     <string name="pref_category_intika2">Intika I.Mod - Grace period - Per app</string>
     <string name="pref_locking_delay_general">Global delayed re-lock</string>
@@ -111,6 +111,7 @@
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_choose_apps">Choose apps</string>
     <string name="pref_choose_apps_summary">Select apps to be locked</string>
+    <string name="pref_screen_apps">Apps</string>
 
     <string name="menu_backup_list">Backup list</string>
     <string name="menu_restore_list">Restore list</string>

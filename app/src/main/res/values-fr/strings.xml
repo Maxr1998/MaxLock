@@ -8,7 +8,7 @@
 
     <!-- Main screen -->
     <string name="pref_category_locking">Verrouiller</string>
-    <string name="pref_locking_type">Type de verrouillage</string>
+    <string name="pref_screen_locking_type">Type de verrouillage</string>
     <!-- Locking type Settings -->
     <string name="pref_locking_type_password">Mot de passe</string>
     <string name="pref_locking_type_pin">Code PIN</string>
@@ -33,7 +33,7 @@
     <string name="knock_code_too_short">Le cliquetis code doit avoir au moins 4 touches</string>
     <string name="confirm_knock_code">Confirmez votre code de cliquetis</string>
     <!-- Main screen -->
-    <string name="pref_locking_ui">Interface de l\'écran de verrouillage</string>
+    <string name="pref_screen_locking_ui">Interface de l\'écran de verrouillage</string>
     <!-- Locking UI settings -->
     <string name="pref_open_theme_manager">Ouvrir le gestionnaire de theme</string>
     <string name="pref_open_theme_manager_summary_none">Aucun thème appliqué</string>
@@ -62,7 +62,7 @@
     <string name="pref_show_path">Afficher le chemin d\'accès</string>
     <string name="pref_haptic_feedback">Vibrer sur le dessin du motif</string>
 
-    <string name="pref_locking_options">Options de verrouillage</string>
+    <string name="pref_screen_locking_options">Options de verrouillage</string>
     <string name="pref_category_logging">Logging</string>
     <string name="pref_enable_logging">Activer le logging</string>
     <string name="pref_enable_logging_summary">Log failed/unfinished unlock attempts</string>

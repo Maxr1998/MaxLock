@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:maxlock="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory android:title="@string/pref_locking_ui">
+    <PreferenceCategory android:title="@string/pref_screen_locking_ui">
         <!--<Preference
             android:key="open_theme_manager"
             android:summary="@string/open_theme_manager_summary_none"
@@ -20,27 +20,27 @@
             android:enabled="false"
             android:key="background_color"
             android:title="@string/pref_custom_color" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="hide_status_bar"
             android:title="@string/pref_hide_status_bar" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="@bool/tablet_mode_default"
             android:key="tablet_mode_override"
             android:title="@string/pref_use_tablet_mode" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_pin_and_knock_code">
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="invert_color"
             android:summary="@string/pref_invert_color_summary"
             android:title="@string/pref_invert_color" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="hide_title_bar"
             android:title="@string/pref_hide_title_bar" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="hide_input_bar"
             android:summary="@string/pref_hide_input_bar_summary"
@@ -48,29 +48,29 @@
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_password_and_pin">
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="quick_unlock"
             android:title="@string/pref_quick_unlock" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_knock_code_only">
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="true"
             android:key="show_dividers"
             android:title="@string/pref_show_dividers" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="true"
             android:key="touch_visible"
             android:title="@string/pref_touch_visible" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_pattern_only">
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="true"
             android:key="show_path"
             android:title="@string/pref_show_path" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="true"
             android:key="haptic_feedback"
             android:title="@string/pref_haptic_feedback" />

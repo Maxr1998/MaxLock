@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:maxlock="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/pref_category_logging">
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enable_logging"
             android:summary="@string/pref_enable_logging_summary"
@@ -14,7 +14,11 @@
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
-        <CheckBoxPreference
+        <SwitchPreference
+            android:key="bla"
+            android:summary="BLA"
+            android:title="BLAAAAAA" />
+        <SwitchPreference
             android:defaultValue="false"
             android:disableDependentsState="true"
             android:key="enable_direct_unlock"
@@ -26,7 +30,7 @@
             android:key="fake_die_input"
             android:summary="@string/pref_fake_crash_passphrase_summary"
             android:title="@string/pref_fake_crash_passphrase" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="enable_tasker_integration"
             android:title="@string/pref_enable_tasker" />
     </PreferenceCategory>

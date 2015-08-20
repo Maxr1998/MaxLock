@@ -34,12 +34,12 @@ public class WebsiteFragment extends Fragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_guide, container, false);
         webView = (WebView) rootView.findViewById(R.id.guideView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.page_loading_bar);
         progressBar.setMax(100);
         webView.setWebViewClient(new WebViewClient() {
+            @SuppressWarnings("deprecation")
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);

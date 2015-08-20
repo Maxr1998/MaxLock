@@ -46,6 +46,7 @@ import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 import de.Maxr1998.xposed.maxlock.ui.settings.WebsiteFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.util.BillingHelper;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
@@ -143,7 +144,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_info:
-                SettingsFragment.launchFragment(new WebsiteFragment(), true, mSettingsFragment);
+                MaxLockPreferenceFragment.launchFragment(new WebsiteFragment(), true, mSettingsFragment);
                 break;
             case android.R.id.home:
                 onBackPressed();

@@ -21,10 +21,9 @@
     <string name="fs_app_xposed_installer">Xposed Installer</string>
     <string name="fs_recommended_apps">Verbessere den Schutz durch Sperre dieser Apps</string>
     <string name="fs_recommended_apps_summary">Du solltest die Sperre aller Apps aktivieren, um sicher zu gehen, dass MaxLock nicht deaktiviert werden kann</string>
-    <!-- Main screen -->
-    <string name="pref_category_locking">Sperre</string>
-    <string name="pref_locking_type">Sperrart</string>
     <!-- Locking type settings -->
+    <string name="pref_category_locking">Sperre</string>
+    <string name="pref_screen_locking_type">Sperrart</string>
     <string name="pref_locking_type_password">Passwort</string>
     <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">Knock Code</string>
@@ -48,7 +47,7 @@
     <string name="knock_code_too_short">Der Knock Code muss mindestens 4 Berührungen enthalten.</string>
     <string name="confirm_knock_code">Knock Code bestätigen</string>
     <!-- Locking UI settings -->
-    <string name="pref_locking_ui">Sperrbildschirm-Oberfläche</string>
+    <string name="pref_screen_locking_ui">Sperrbildschirm</string>
     <string name="pref_open_theme_manager">Öffne Theme Manager</string>
     <string name="pref_open_theme_manager_summary_none">Kein Thema festgelegt</string>
     <string name="pref_open_theme_manager_summary_applied">Thema: </string>
@@ -79,11 +78,12 @@
     <string name="pref_show_path">Muster zeigen</string>
     <string name="pref_haptic_feedback">Beim Zeichnen vibrieren</string>
     <!-- Locking options settings -->
-    <string name="pref_locking_options">Sperr-Optionen</string>
+    <string name="pref_screen_locking_options">Sperr-Optionen</string>
     <string name="pref_category_logging">Logging</string>
     <string name="pref_enable_logging">Logging aktivieren</string>
     <string name="pref_enable_logging_summary">Zeichne fehlerhafte/unvollständige Entsperrvorgänge auf</string>
     <string name="pref_view_logs">Logs ansehen</string>
+    <string name="pref_screen_logs">Logs</string>
     <string name="menu_delete_log">Logs löschen</string>
     <string name="logs_empty_text">Keine Log-Einträge vorhanden</string>
     <string name="pref_category_other">Andere</string>
@@ -93,7 +93,7 @@
     <string name="pref_fake_crash_passphrase_summary">Die Phrase die der Nutzer in den Dialog eingeben muss um den Sperrbildschirm zu öffnen</string>
     <string name="pref_enable_tasker">Tasker Integration anschalten</string>
     <!-- I.Mod settings -->
-    <string name="pref_locking_intika">Intika I.Mod</string>
+    <string name="pref_screen_locking_intika">Intika I.Mod</string>
     <string name="pref_category_intika">Intika I.Mod - Entsperrfrist - Allgemein</string>
     <string name="pref_category_intika2">Intika I.Mod - Entsperrfrist - Per app</string>
     <string name="pref_locking_delay_general">Globale Entsperrfrist</string>
@@ -111,6 +111,7 @@
     <string name="pref_category_apps">Anwendungen</string>
     <string name="pref_choose_apps">Anwendungen wählen</string>
     <string name="pref_choose_apps_summary">Wähle zu sperrende Anwendungen</string>
+    <string name="pref_screen_apps">@string/pref_category_apps</string>
 
     <string name="menu_backup_list">Liste sichern</string>
     <string name="menu_restore_list">Liste wiederherstellen</string>

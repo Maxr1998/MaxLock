@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:maxlock="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory android:title="@string/pref_locking_type">
+    <PreferenceCategory android:title="@string/pref_screen_locking_type">
         <Preference
             android:key="locking_type_password"
             android:title="@string/pref_locking_type_password" />
