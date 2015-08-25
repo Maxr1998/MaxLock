@@ -56,13 +56,23 @@
         <item name="android:layout_height">0dp</item>
     </style>
 
+    <style name="FakeDieDialog" parent="android:Theme.DeviceDefault.Dialog.NoActionBar" />
+
     <style name="TranslucentStatusBar" parent="AppTheme" />
 
     <style name="TranslucentStatusBar.Full" parent="TranslucentStatusBar">
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="FakeDieDialog" parent="android:Theme.DeviceDefault.Dialog.NoActionBar" />
+    <style name="Widget.TextView.NumPadKey" parent="@android:style/Widget.TextView">
+        <item name="android:singleLine">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:background">@drawable/selectable_background</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
 
     <style name="Preference">
         <item name="android:layout">@layout/preference</item>
