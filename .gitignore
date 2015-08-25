@@ -1,5 +1,7 @@
-# generated files
+# Generated files
 build/
+app/build
+thememanager/build
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -16,7 +18,7 @@ lint.xml
 *.iws
 .idea/
 
-#Gradle
+# Gradle
 gradle/
 .gradle/
 gradlew*
@@ -24,4 +26,5 @@ gradlew*
 # Gedit save files
 *.*~
 
+# Private files
 app/src/main/res/values-v15/private.xml
