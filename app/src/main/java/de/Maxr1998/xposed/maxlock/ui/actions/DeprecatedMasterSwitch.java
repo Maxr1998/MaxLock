@@ -15,13 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.lib;
+package de.Maxr1998.xposed.maxlock.ui.actions;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity;
 
 public class DeprecatedMasterSwitch extends Activity {
     @Override

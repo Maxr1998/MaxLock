@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui;
+package de.Maxr1998.xposed.maxlock.ui.actions;
 
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
@@ -31,8 +31,9 @@ import android.widget.Toast;
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.ui.LockFragment;
+import de.Maxr1998.xposed.maxlock.ui.actions.widget.MasterSwitchWidget;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
-import de.Maxr1998.xposed.maxlock.widget.MasterSwitchWidget;
 
 @SuppressLint("CommitPrefEdits")
 public class MasterSwitchShortcutActivity extends FragmentActivity implements AuthenticationSucceededListener {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.tasker;
+package de.Maxr1998.xposed.maxlock.ui.actions.tasker;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;

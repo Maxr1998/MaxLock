@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.widget;
+package de.Maxr1998.xposed.maxlock.ui.actions.widget;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -32,7 +32,7 @@ import android.widget.RemoteViews;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity;
+import de.Maxr1998.xposed.maxlock.ui.actions.MasterSwitchShortcutActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class MasterSwitchWidget extends AppWidgetProvider {
