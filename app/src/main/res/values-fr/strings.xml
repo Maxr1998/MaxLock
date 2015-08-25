@@ -128,8 +128,8 @@
     <string name="dialog_button_report">Rapport</string>
     <string name="dialog_title_report_problem">Signaler un problème</string>
 
-    <string name="toggle_master_switch">Toggle MasterSwitch</string>
-    <string name="toggle_master_switch_deprecated">Activer-Désactiver le vérrou principale (Déconseillée)</string>
+    <string name="action_toggle_ms">Toggle MasterSwitch</string>
+    <string name="activity_label_toggle_ms_deprecated">Activer-Désactiver le vérrou principale (Déconseillée)</string>
     <string name="unlock_master_switch">Débloquer le Vérrou principale</string>
     <string name="toast_master_switch_off">Vérrou principale désactivé</string>
     <string name="toast_master_switch_on">Vérrou Principale ré-activé</string>

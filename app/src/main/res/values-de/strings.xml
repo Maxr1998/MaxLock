@@ -160,20 +160,20 @@
     <string name="dialog_text_fake_die_stopped">\"%1$s\" wurde beendet.</string>
     <string name="dialog_button_report">Bericht</string>
     <string name="dialog_title_report_problem">Problem melden</string>
-    <!-- MasterSwitch stuff -->
-    <string name="toggle_master_switch">MasterSwitch umschalten</string>
-    <string name="toggle_master_switch_deprecated">MasterSwitch umschalten (veraltet)</string>
+    <!-- Action stuff -->
+    <string name="activity_label_actions">MaxLock Aktionen</string>
+    <string name="action_configuration">Konfiguration:</string>
+    <string name="action_toggle_ms">MasterSwitch umschalten</string>
+    <string name="action_ms_on">MasterSwitch an</string>
+    <string name="action_ms_off">MasterSwitch aus</string>
+    <string name="action_imod_reset">I.Mod zurücksetzen</string>
+    <string name="tasker_imod_reset_summary">Alle Apps die durch I.Mod entsperrt bleiben sollten sperren</string>
+    <string name="tasker_button_apply">Speichern</string>
+    <string name="tasker_integration_disabled">Tasker Integration ist zur Zeit deaktiviert. Du kannst sie via \"MaxLock → Sperr-Optionen → Tasker Integration anschalten\" anschalten.</string>
+    <string name="activity_label_toggle_ms_deprecated">MasterSwitch umschalten (veraltet)</string>
     <string name="unlock_master_switch">Entsperre MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch aus</string>
     <string name="toast_master_switch_on">MasterSwitch an</string>
     <string name="toast_no_locking_types">Keine Sperrart festgelegt</string>
-    <!-- Tasker config stuff -->
-    <string name="tasker_configuration">Konfiguration:</string>
-    <string name="tasker_ms_on">MasterSwitch an</string>
-    <string name="tasker_ms_off">MasterSwitch aus</string>
-    <string name="tasker_imod_reset">I.Mod zurücksetzen</string>
-    <string name="tasker_imod_reset_summary">Alle Apps die durch I.Mod entsperrt bleiben sollten sperren</string>
-    <string name="tasker_button_apply">Speichern</string>
-    <string name="tasker_integration_disabled">Tasker Integration ist zur Zeit deaktiviert. Du kannst sie via \"MaxLock → Sperr-Optionen → Tasker Integration anschalten\" anschalten.</string>
 
 </resources>

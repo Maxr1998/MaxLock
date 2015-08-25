@@ -15,10 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui.actions.tasker;
+package de.Maxr1998.xposed.maxlock.ui.actions;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -31,27 +30,35 @@ import android.widget.RadioGroup;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 
-public class ConfigActivity extends AppCompatActivity {
+import static de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper.ACTION_EXTRA_KEY;
 
-    public static final String STATE_EXTRA_KEY = "de.Maxr1998.xposed.maxlock.extra.STRING_MESSAGE";
+public class ActionConfigActivity extends AppCompatActivity {
+
     private Intent result;
+    private boolean taskerMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         super.onCreate(savedInstanceState);
-
-        BundleScrubber.scrub(getIntent());
+        if (getCallingActivity() != null || !BundleScrubber.scrub(getIntent())) {
+            if (getCallingActivity().getPackageName().startsWith("net.dinglisch.android.taskerm") || getCallingActivity().getPackageName().startsWith("com.twofortyfouram.locale")) {
+                taskerMode = true;
+            }
+        } else {
+            finish();
+            return;
+        }
         final Bundle extra = getIntent().getBundleExtra("com.twofortyfouram.locale.intent.extra.BUNDLE");
-        BundleScrubber.scrub(extra);
+        if (BundleScrubber.scrub(extra)) {
+            finish();
+            return;
+        }
 
-        setContentView(R.layout.activity_tasker_config);
+        setContentView(R.layout.activity_action_config);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle(getString(R.string.app_name) + " Tasker Plugin");
-
-        if (!prefs.getBoolean(Common.TASKER_ENABLED, false)) {
+        setTitle(getString(R.string.app_name) + " Actions");
+        if (taskerMode && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.TASKER_ENABLED, false)) {
             findViewById(R.id.tasker_warning).setVisibility(View.VISIBLE);
             findViewById(R.id.tasker_config_main).setVisibility(View.GONE);
             return;
@@ -62,12 +69,25 @@ public class ConfigActivity extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                result = getResultIntent(options.getCheckedRadioButtonId());
+                int checked = options.getCheckedRadioButtonId();
+                result = new Intent();
+                if (taskerMode) {
+                    Bundle resultBundle = new Bundle();
+                    resultBundle.putInt(ACTION_EXTRA_KEY, checked);
+                    result.putExtra("com.twofortyfouram.locale.intent.extra.BUNDLE", resultBundle);
+                    result.putExtra("com.twofortyfouram.locale.intent.extra.BLURB", ((RadioButton) findViewById(checked)).getText().toString());
+                } else {
+                    Intent shortcut = new Intent(ActionConfigActivity.this, ActionActivity.class);
+                    shortcut.putExtra(ACTION_EXTRA_KEY, checked);
+                    result.putExtra(Intent.EXTRA_SHORTCUT_NAME, ((RadioButton) findViewById(checked)).getText().toString());
+                    result.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
+                    result.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
+                }
                 finish();
             }
         });
         if (savedInstanceState == null && extra != null) {
-            options.check(extra.getInt(STATE_EXTRA_KEY, -1));
+            options.check(extra.getInt(ACTION_EXTRA_KEY, -1));
         }
     }
 
@@ -77,14 +97,5 @@ public class ConfigActivity extends AppCompatActivity {
             setResult(RESULT_OK, result);
         } else setResult(RESULT_CANCELED);
         super.finish();
-    }
-
-    private Intent getResultIntent(int resultId) {
-        Intent resultIntent = new Intent();
-        Bundle resultBundle = new Bundle();
-        resultBundle.putInt(STATE_EXTRA_KEY, resultId);
-        resultIntent.putExtra("com.twofortyfouram.locale.intent.extra.BUNDLE", resultBundle);
-        resultIntent.putExtra("com.twofortyfouram.locale.intent.extra.BLURB", ((RadioButton) findViewById(resultId)).getText().toString());
-        return resultIntent;
     }
 }

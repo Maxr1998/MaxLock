@@ -159,17 +159,17 @@
     <string name="dialog_button_report">レポート</string>
     <string name="dialog_title_report_problem">問題のレポート</string>
     <!-- MasterSwitch stuff -->
-    <string name="toggle_master_switch">マスタースイッチの On/Off</string>
-    <string name="toggle_master_switch_deprecated">マスタースイッチの On/Off (非推奨)</string>
+    <string name="action_toggle_ms">マスタースイッチの On/Off</string>
+    <string name="activity_label_toggle_ms_deprecated">マスタースイッチの On/Off (非推奨)</string>
     <string name="unlock_master_switch">マスタースイッチを Off にします</string>
     <string name="toast_master_switch_off">マスタースイッチを Off にしました</string>
     <string name="toast_master_switch_on">マスタースイッチを On にしました</string>
     <string name="toast_no_locking_types">ロック方法が未設定です</string>
     <!-- Tasker config stuff -->
-    <string name="tasker_configuration">設定 :</string>
-    <string name="tasker_ms_on">マスタースイッチ On</string>
-    <string name="tasker_ms_off">マスタースイッチ Off</string>
-    <string name="tasker_imod_reset">Intika 拡張のリセット</string>
+    <string name="action_configuration">設定 :</string>
+    <string name="action_ms_on">マスタースイッチ On</string>
+    <string name="action_ms_off">マスタースイッチ Off</string>
+    <string name="action_imod_reset">Intika 拡張のリセット</string>
     <string name="tasker_imod_reset_summary">Intika 拡張でロック解除されたアプリをすべてロックします</string>
     <string name="tasker_button_apply">適用</string>
     <string name="tasker_integration_disabled">Tasker 機能が無効になっています。\"MaxLock → オプション → Tasker 機能の有効化\" で有効にしてください</string>

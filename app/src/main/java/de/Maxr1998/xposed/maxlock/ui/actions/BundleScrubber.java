@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui.actions.tasker;
+package de.Maxr1998.xposed.maxlock.ui.actions;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import android.os.Bundle;
  * Helper class to scrub Bundles of invalid extras. This is a workaround for an Android bug:
  * <http://code.google.com/p/android/issues/detail?id=16006>.
  */
-final class BundleScrubber {
+public final class BundleScrubber {
 
     /**
      * Scrubs Intents for private serializable subclasses in the Intent extras. If the Intent's extras contain
@@ -36,7 +36,6 @@ final class BundleScrubber {
      *               parameter may be null.
      * @return true if the Intent was scrubbed, false if the Intent was not modified.
      */
-    @SuppressWarnings("UnusedReturnValue")
     public static boolean scrub(final Intent intent) {
         return intent != null && scrub(intent.getExtras());
     }
@@ -65,7 +64,6 @@ final class BundleScrubber {
             bundle.clear();
             return true;
         }
-
         return false;
     }
 }

@@ -107,7 +107,7 @@
             android:theme="@style/TranslucentStatusBar" />
 
         <!-- MasterSwitch widget -->
-        <receiver android:name=".widget.MasterSwitchWidget">
+        <receiver android:name=".ui.actions.widget.MasterSwitchWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -118,26 +118,32 @@
 
         <!-- Shortcuts -->
         <activity
-            android:name=".ui.MasterSwitchShortcutActivity"
-            android:excludeFromRecents="true"
+            android:name=".ui.actions.ActionConfigActivity"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/toggle_master_switch"
+            android:label="@string/activity_label_actions"
             android:process=":MLExternal"
             android:taskAffinity=""
-            android:theme="@style/TranslucentStatusBar">
+            android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".lib.DeprecatedMasterSwitch"
+            android:name=".ui.actions.ActionActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/toggle_master_switch_deprecated"
+            android:label="@string/activity_label_actions"
+            android:process=":MLExternal"
+            android:taskAffinity=""
+            android:theme="@style/TranslucentStatusBar" />
+
+        <activity
+            android:name=".ui.actions.DeprecatedMasterSwitch"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/activity_label_toggle_ms_deprecated"
             android:process=":MLExternal"
             android:taskAffinity=""
             android:theme="@style/TranslucentStatusBar">
@@ -147,19 +153,8 @@
         </activity>
 
         <!-- Tasker -->
-        <activity
-            android:name=".tasker.ConfigActivity"
-            android:exported="true"
-            android:process=":MLExternal"
-            android:taskAffinity=""
-            android:theme="@style/AppTheme.Dark">
-            <intent-filter>
-                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
-            </intent-filter>
-        </activity>
-
         <receiver
-            android:name=".tasker.TaskActionReceiver"
+            android:name=".ui.actions.tasker.TaskActionReceiver"
             android:exported="true"
             android:process=":background"
             tools:ignore="ExportedReceiver">
@@ -183,7 +178,11 @@
             android:name="override_tinted_status_bar_defaults"
             android:value="true" />
 
-        <!-- Google Analytics -->
+        <!-- Google Play Services / Analytics -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true"
@@ -206,9 +205,6 @@
             </intent-filter>
         </receiver>
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

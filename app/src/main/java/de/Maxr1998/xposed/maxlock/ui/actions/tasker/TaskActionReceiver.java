@@ -21,51 +21,27 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.util.MLPreferences;
+import de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper;
+import de.Maxr1998.xposed.maxlock.ui.actions.BundleScrubber;
 
 public class TaskActionReceiver extends BroadcastReceiver {
 
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences prefsApps = MLPreferences.getPrefsApps(context);
-
-        if (!intent.getAction().equals("com.twofortyfouram.locale.intent.action.FIRE_SETTING") || !prefs.getBoolean(Common.TASKER_ENABLED, false)) {
+        if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.TASKER_ENABLED, false) ||
+                !intent.getAction().equals("com.twofortyfouram.locale.intent.action.FIRE_SETTING")
+                || BundleScrubber.scrub(intent)) {
             return;
         }
-        BundleScrubber.scrub(intent);
         final Bundle extra = intent.getBundleExtra("com.twofortyfouram.locale.intent.extra.BUNDLE");
-        BundleScrubber.scrub(extra);
-
-        switch (extra.getInt(ConfigActivity.STATE_EXTRA_KEY, 0)) {
-            case R.id.radio_toggle_ms:
-                prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, !prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)).commit();
-                Toast.makeText(context, prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) ? context.getString(R.string.toast_master_switch_on) : context.getString(R.string.toast_master_switch_off), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.radio_ms_on:
-                prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, true).commit();
-                Toast.makeText(context, context.getString(R.string.toast_master_switch_on), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.radio_ms_off:
-                prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, false).commit();
-                Toast.makeText(context, context.getString(R.string.toast_master_switch_off), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.radio_imod_reset:
-                clearImod();
-                break;
+        if (BundleScrubber.scrub(extra)) {
+            return;
         }
-    }
-
-    private void clearImod() {
-        Log.d("ML", "Stub!");
+        ActionsHelper.callAction(extra.getInt(ActionsHelper.ACTION_EXTRA_KEY, -1), context);
     }
 }

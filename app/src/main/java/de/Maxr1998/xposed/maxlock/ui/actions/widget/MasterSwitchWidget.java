@@ -32,7 +32,8 @@ import android.widget.RemoteViews;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.actions.MasterSwitchShortcutActivity;
+import de.Maxr1998.xposed.maxlock.ui.actions.ActionActivity;
+import de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class MasterSwitchWidget extends AppWidgetProvider {
@@ -40,9 +41,9 @@ public class MasterSwitchWidget extends AppWidgetProvider {
     @SuppressLint("WorldReadableFiles")
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Intent intent = new Intent(context, MasterSwitchShortcutActivity.class);
+        Intent intent = new Intent(context, ActionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("LaunchOnly", true);
+        intent.putExtra(ActionsHelper.ACTION_EXTRA_KEY, R.id.radio_toggle_ms);
         PendingIntent pending = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         int color = PreferenceManager.getDefaultSharedPreferences(context).getInt(Common.WIDGET_BACKGROUND_COLOR, Color.WHITE);
         boolean masterSwitchOn = MLPreferences.getPrefsApps(context).getBoolean(Common.MASTER_SWITCH_ON, true);

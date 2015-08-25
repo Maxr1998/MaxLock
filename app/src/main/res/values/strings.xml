@@ -160,20 +160,20 @@
     <string name="dialog_text_fake_die_stopped">Unfortunately, %1$s has stopped.</string>
     <string name="dialog_button_report">Report</string>
     <string name="dialog_title_report_problem">Report problem</string>
-    <!-- MasterSwitch stuff -->
-    <string name="toggle_master_switch">Toggle MasterSwitch</string>
-    <string name="toggle_master_switch_deprecated">Toggle MasterSwitch (Deprecated)</string>
+    <!-- Action stuff -->
+    <string name="activity_label_actions">MaxLock Actions</string>
+    <string name="action_configuration">Configuration:</string>
+    <string name="action_toggle_ms">Toggle MasterSwitch</string>
+    <string name="action_ms_on">MasterSwitch on</string>
+    <string name="action_ms_off">MasterSwitch off</string>
+    <string name="action_imod_reset">Reset I.Mod</string>
+    <string name="tasker_imod_reset_summary">Lock all apps which were previously unlocked with I.Mod</string>
+    <string name="tasker_button_apply">Apply</string>
+    <string name="tasker_integration_disabled">Tasker integration is currently disabled. You can enable it via \"MaxLock → Locking options → Enable Tasker integration\".</string>
+    <string name="activity_label_toggle_ms_deprecated">Toggle MasterSwitch (Deprecated)</string>
     <string name="unlock_master_switch">Unlock MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch disabled</string>
     <string name="toast_master_switch_on">MasterSwitch re-enabled</string>
     <string name="toast_no_locking_types">No locking type specified</string>
-    <!-- Tasker config stuff -->
-    <string name="tasker_configuration">Configuration:</string>
-    <string name="tasker_ms_on">MasterSwitch on</string>
-    <string name="tasker_ms_off">MasterSwitch off</string>
-    <string name="tasker_imod_reset">Reset I.Mod</string>
-    <string name="tasker_imod_reset_summary">Lock all apps which were previously unlocked with I.Mod</string>
-    <string name="tasker_button_apply">Apply</string>
-    <string name="tasker_integration_disabled">Tasker integration is currently disabled. You can enable it via \"MaxLock → Locking options → Enable Tasker integration\".</string>
 
 </resources>

@@ -3,7 +3,7 @@
 
     <string name="app_name">MaxLock</string>
     <string name="placeholder">占位符</string>
-	<string name="xposed_active">MaxLock未激活</string>
+    <string name="xposed_active">MaxLock未激活</string>
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
     <string name="toast_pro_required">使用此功能需要专业版本！</string>
     <string name="sb_no_locking_type">没有锁定特定类型</string>
@@ -86,7 +86,7 @@
     <string name="pref_view_logs">查看日志</string>
     <string name="menu_delete_log">删除日志</string>
     <string name="pref_category_other">其它</string>
-	<string name="pref_fake_unlock">假死直接解锁</string>
+    <string name="pref_fake_unlock">假死直接解锁</string>
     <string name="pref_fake_unlock_summary">当启用锁屏假死对话框中按下报告按钮后显示</string>
     <string name="pref_fake_crash_passphrase">假死输入</string>
     <string name="pref_fake_crash_passphrase_summary">用户需要在对话框中输入短语才能打开锁屏</string>
@@ -104,7 +104,7 @@
     <string name="pref_delay_input_perapp">PerApp延迟 - 重新锁定定时器</string>
     <string name="pref_delay_input_perapp_summary">输入一个数字指定延迟时间,值为分钟,锁定PerApp延迟</string>
     <string name="pref_delay_needpro">启用延迟重新锁定 - 专业版</string>
-	<string name="pref_reset_screen_off">在屏幕关闭后复位IMOD</string>
+    <string name="pref_reset_screen_off">在屏幕关闭后复位IMOD</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">选择应用</string>
     <string name="pref_choose_apps">选择应用</string>
@@ -158,17 +158,17 @@
     <string name="dialog_button_report">报告问题</string>
     <string name="dialog_title_report_problem">报告问题</string>
     <!-- MasterSwitch stuff -->
-    <string name="toggle_master_switch">切换总开关</string>
-    <string name="toggle_master_switch_deprecated">切换总开关(不推荐)</string>
+    <string name="action_toggle_ms">切换总开关</string>
+    <string name="activity_label_toggle_ms_deprecated">切换总开关(不推荐)</string>
     <string name="unlock_master_switch">打开总开关</string>
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关重新启用</string>
     <string name="toast_no_locking_types">没有指定锁定类型</string>
     <!-- Tasker config stuff -->
-    <string name="tasker_configuration">配置:</string>
-    <string name="tasker_ms_on">打开主开关</string>
-    <string name="tasker_ms_off">关闭主开关</string>
-    <string name="tasker_imod_reset">重设I.MoD</string>
+    <string name="action_configuration">配置:</string>
+    <string name="action_ms_on">打开主开关</string>
+    <string name="action_ms_off">关闭主开关</string>
+    <string name="action_imod_reset">重设I.MoD</string>
     <string name="tasker_imod_reset_summary">锁定所有应用之前打开I.MoD</string>
     <string name="tasker_button_apply">应用</string>
     <string name="tasker_integration_disabled">当前Tasker集成已禁用。您可以通过\"MaxLock→选项→启用Tasker集成\"来开启</string>

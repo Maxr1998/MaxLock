@@ -158,17 +158,17 @@
     <string name="dialog_button_report">回報</string>
     <string name="dialog_title_report_problem">回報問題</string>
     <!-- MasterSwitch stuff -->
-    <string name="toggle_master_switch">切換總開關</string>
-    <string name="toggle_master_switch_deprecated">切換總開關(不推薦)</string>
+    <string name="action_toggle_ms">切換總開關</string>
+    <string name="activity_label_toggle_ms_deprecated">切換總開關(不推薦)</string>
     <string name="unlock_master_switch">打開總開關</string>
     <string name="toast_master_switch_off">主開關已關閉</string>
     <string name="toast_master_switch_on">主開關重新啟用</string>
     <string name="toast_no_locking_types">沒有指定鎖定類型</string>
     <!-- Tasker config stuff -->
-    <string name="tasker_configuration">配置:</string>
-    <string name="tasker_ms_on">打開主開關</string>
-    <string name="tasker_ms_off">關閉主開關</string>
-    <string name="tasker_imod_reset">重設I.MoD</string>
+    <string name="action_configuration">配置:</string>
+    <string name="action_ms_on">打開主開關</string>
+    <string name="action_ms_off">關閉主開關</string>
+    <string name="action_imod_reset">重設I.MoD</string>
     <string name="tasker_imod_reset_summary">鎖定所有應用之前打開I.MoD</string>
     <string name="tasker_button_apply">應用</string>
     <string name="tasker_integration_disabled">當前Tasker集成已禁用。您可以通過\"MaxLock → 鎖定選項 → 啟用Tasker集成\".</string>

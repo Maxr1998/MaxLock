@@ -21,11 +21,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import de.Maxr1998.xposed.maxlock.R;
+
 public class DeprecatedMasterSwitch extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent i = new Intent(this, MasterSwitchShortcutActivity.class);
-        i.putExtra("LaunchOnly", true);
+        Intent i = new Intent(this, ActionActivity.class);
+        i.putExtra(ActionsHelper.ACTION_EXTRA_KEY, R.id.radio_toggle_ms);
         startActivity(i);
         finish();
         super.onCreate(savedInstanceState);
