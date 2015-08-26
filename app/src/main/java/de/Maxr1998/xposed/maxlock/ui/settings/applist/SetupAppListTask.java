@@ -22,6 +22,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -67,18 +68,18 @@ class SetupAppListTask extends AsyncTask<Void, Integer, List<Map<String, Object>
 
     @Override
     protected List<Map<String, Object>> doInBackground(Void... voids) {
+        PackageManager pm = mContext.getPackageManager();
         List<Map<String, Object>> mItemList = new ArrayList<>();
         for (ApplicationInfo info : mTempAppList) {
-            String pkgName = info.packageName;
-            if ((mContext.getPackageManager().getLaunchIntentForPackage(pkgName) != null && !pkgName.equals(Common.PKG_NAME)) || pkgName.equals("com.android.packageinstaller")) {
+            if ((pm.getLaunchIntentForPackage(info.packageName) != null && !info.packageName.equals(Common.PKG_NAME)) || info.packageName.equals("com.android.packageinstaller")) {
                 try {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("title", mContext.getPackageManager().getApplicationLabel(info));
-                    map.put("key", pkgName);
-                    map.put("icon", mContext.getPackageManager().getApplicationIcon(info));
+                    map.put("title", pm.getApplicationLabel(info));
+                    map.put("key", info.packageName);
+                    map.put("icon", pm.getApplicationIcon(info));
                     mItemList.add(map);
                 } catch (OutOfMemoryError o) {
-                    Log.e("MaxLock", "OutOfMemory while reading application icons!");
+                    Log.e("MaxLock", "Out of memory while filtering application data!", o);
                 }
             }
             mProgress++;
