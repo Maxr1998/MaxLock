@@ -105,6 +105,8 @@
     <string name="pref_delay_input_perapp">Per app Entsperrfrist Timer</string>
     <string name="pref_delay_input_perapp_summary">@string/pref_locking_delay_general_summary</string>
     <string name="pref_delay_needpro">Verzögertes Sperren - Pro Version</string>
+    <string name="pref_show_reset_notification">Zeige Benachrichtigung</string>
+    <string name="pref_show_reset_notification_summary">Zeige eine Benachrichtigung zum zurücksetzen des I.Mod Timers</string>
     <string name="pref_reset_screen_off">I.Mod automatisch zurücksetzen</string>
     <string name="pref_reset_screen_off_summary">I.Mod Timer beim Ausschalten des Displays zurücksetzen</string>
     <!-- Apps settings -->

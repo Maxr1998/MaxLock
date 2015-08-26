@@ -105,6 +105,8 @@
     <string name="pref_delay_input_perapp">Per app delayed re-lock timer</string>
     <string name="pref_delay_input_perapp_summary">Enter a number to specify the delay time value in minute for per app delayed re-lock</string>
     <string name="pref_delay_needpro">Delayed re-lock - Pro version</string>
+    <string name="pref_show_reset_notification">Show notification</string>
+    <string name="pref_show_reset_notification_summary">Show a notification to reset I.Mod timer</string>
     <string name="pref_reset_screen_off">Auto-reset I.Mod</string>
     <string name="pref_reset_screen_off_summary">Reset I.Mod Timer when turning screen off</string>
     <!-- Apps settings -->

@@ -20,7 +20,6 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -36,13 +35,13 @@ import android.widget.Toast;
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     private String packageName;
     private Intent original;
-    private SharedPreferences prefs;
     private boolean isInFocus = false, unlocked = false;
     private AlertDialog fakeDieDialog, reportDialog;
 
@@ -71,9 +70,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         packageName = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
         original = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
-        // Preferences
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         switch (mode) {
             case Common.MODE_DEFAULT:
                 defaultSetup();
@@ -82,11 +78,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 fakeDieSetup();
                 break;
         }
-    }
-
-    @Override
-    public void onAuthenticationSucceeded() {
-        openApp();
     }
 
     private void defaultSetup() {
@@ -115,7 +106,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 .setNeutralButton(R.string.dialog_button_report, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (prefs.getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
+                        if (PreferenceManager.getDefaultSharedPreferences(LockActivity.this).getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
                             fakeDieDialog.dismiss();
                             launchLockView();
                             finish();
@@ -130,7 +121,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
+                                            if (input.getText().toString().equals(PreferenceManager.getDefaultSharedPreferences(LockActivity.this).getString(Common.FAKE_DIE_INPUT, "start"))) {
                                                 reportDialog.dismiss();
                                                 launchLockView();
                                                 finish();
@@ -173,6 +164,12 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         fakeDieDialog.show();
     }
 
+    @Override
+    public void onAuthenticationSucceeded() {
+        NotificationHelper.postNotification(this);
+        openApp();
+    }
+
     private void openApp() {
         unlocked = true;
         try {
@@ -187,6 +184,11 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private void launchLockView() {
         Intent it = new Intent(this, LockActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -194,12 +196,6 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         it.putExtra(Common.INTENT_EXTRAS_INTENT, original);
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
         startActivity(it);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Log.d("ML", "Stub!");
-        super.onBackPressed();
     }
 
     @Override

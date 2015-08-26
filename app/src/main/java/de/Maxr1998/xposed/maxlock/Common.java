@@ -66,6 +66,12 @@ public abstract class Common {
     public static final String FAKE_DIE_INPUT = "fake_die_input";
     public static final String TASKER_ENABLED = "enable_tasker_integration";
 
+    public static final String IIMOD_OPTIONS = "intika_imod";
+
+    public static final String IMOD_DELAY_GLOBAL_ENABLED = "enable_delaygeneral";
+    public static final String IMOD_DELAY_APP_ENABLED = "enable_delayperapp";
+    public static final String IMOD_SHOW_RESET_NOTIFICATION = "imod_show_reset_notification";
+
     public static final String CHOOSE_APPS = "choose_apps";
 
     public static final String HIDE_APP_FROM_LAUNCHER = "hide_from_launcher";
@@ -96,10 +102,6 @@ public abstract class Common {
 
     public static final String PREFS_THEME = "theme";
 
-    // Intika I.MoD
-    public static final String IIMOD_OPTIONS = "intika_imod";
-    public static final String IMOD_DELAY_GLOBAL_ENABLED = "enable_delaygeneral";
-    public static final String IMOD_DELAY_APP_ENABLED = "enable_delayperapp";
 
     public static final String LOCK_ACTIVITY_MODE = "la_mode";
     public static final String MODE_DEFAULT = "default";
