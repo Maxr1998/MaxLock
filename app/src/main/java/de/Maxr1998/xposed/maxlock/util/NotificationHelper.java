@@ -35,7 +35,7 @@ public abstract class NotificationHelper {
 
     public static void postNotification(Context mContext) {
         NotificationManager nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (!MLPreferences.getPrefsApps(mContext).getBoolean(Common.IMOD_SHOW_RESET_NOTIFICATION, false)) {
+        if (!MLPreferences.getPrefsApps(mContext).getBoolean(Common.SHOW_IMOD_RESET_NOTIFICATION, false)) {
             nm.cancel(NOTIFICATION_ID);
             return;
         }

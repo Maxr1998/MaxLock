@@ -116,7 +116,7 @@ public abstract class Util {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (PREFS.getBoolean(Common.QUICK_UNLOCK, false)) {
+                if (PREFS.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
                     String val = input.getText().toString();
                     if (Util.shaHash(val).equals(password) || password.equals("")) {
                         dialog.dismiss();

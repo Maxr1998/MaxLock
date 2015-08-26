@@ -149,7 +149,7 @@ public class SettingsFragment extends MaxLockPreferenceFragment implements Billi
             prefs.edit().putBoolean(Common.ENABLE_LOGGING, prefs.getBoolean(Common.ENABLE_PRO, false)).apply();
             launchFragment(new LockingOptionsFragment(), true, this);
             return true;
-        } else if (preference == findPreference(Common.IIMOD_OPTIONS)) {
+        } else if (preference == findPreference(Common.IMOD_OPTIONS)) {
             launchFragment(new LockingIntikaFragment(), true, this);
             return true;
         } else if (preference == findPreference(Common.CHOOSE_APPS)) {
@@ -288,7 +288,7 @@ public class SettingsFragment extends MaxLockPreferenceFragment implements Billi
             title = getString(R.string.pref_screen_locking_ui);
             addPreferencesFromResource(R.xml.preferences_locking_ui);
 
-            Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.KC_SHOW_DIVIDERS), findPreference(Common.KC_TOUCH_VISIBLE)};
+            Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_KC_DIVIDERS), findPreference(Common.MAKE_KC_TOUCH_VISIBLE)};
             if (PREFS_THEME.contains(Common.THEME_PKG)) {
                 Preference themeManager = findPreference(Common.OPEN_THEME_MANAGER);
                 themeManager.setSummary(getString(R.string.pref_open_theme_manager_summary_applied) + PREFS_THEME.getString(Common.THEME_PKG, ""));
@@ -317,7 +317,7 @@ public class SettingsFragment extends MaxLockPreferenceFragment implements Billi
                     return true;
                 }
             });
-            Preference tabletMode = findPreference(Common.TABLET_MODE_OVERRIDE);
+            Preference tabletMode = findPreference(Common.OVERRIDE_TABLET_MODE);
             tabletMode.setSummary(String.format(getString(R.string.pref_use_tablet_mode_summary),
                     Build.MODEL, getResources().getBoolean(R.bool.tablet_mode_default) ? "tablet/phablet" : "phone",
                     (int) getResources().getDisplayMetrics().xdpi, Math.min(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)));
@@ -383,8 +383,8 @@ public class SettingsFragment extends MaxLockPreferenceFragment implements Billi
             getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
             addPreferencesFromResource(R.xml.preferences_locking_imod);
             //Intika I.MoD - Loading check pro
-            Preference iimod_enabled_g = findPreference(Common.IMOD_DELAY_GLOBAL_ENABLED);
-            Preference iimod_enabled_p = findPreference(Common.IMOD_DELAY_APP_ENABLED);
+            Preference iimod_enabled_g = findPreference(Common.ENABLE_IMOD_DELAY_GLOBAL);
+            Preference iimod_enabled_p = findPreference(Common.ENABLE_IMOD_DELAY_APP);
             iimod_enabled_g.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
             iimod_enabled_p.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
             if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {

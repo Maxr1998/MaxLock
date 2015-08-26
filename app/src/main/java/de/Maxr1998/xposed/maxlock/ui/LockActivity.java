@@ -125,7 +125,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
+                                            if (input.getText().toString().equals(prefs.getString(Common.FAKE_CRASH_INPUT, "start"))) {
                                                 reportDialog.dismiss();
                                                 launchLockView();
                                                 finish();

@@ -58,7 +58,7 @@ public class ActionConfigActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(getString(R.string.app_name) + " Actions");
-        if (taskerMode && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.TASKER_ENABLED, false)) {
+        if (taskerMode && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_TASKER, false)) {
             findViewById(R.id.tasker_warning).setVisibility(View.VISIBLE);
             findViewById(R.id.tasker_config_main).setVisibility(View.GONE);
             return;

@@ -33,7 +33,7 @@ public class TaskActionReceiver extends BroadcastReceiver {
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.TASKER_ENABLED, false) ||
+        if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.ENABLE_TASKER, false) ||
                 !intent.getAction().equals("com.twofortyfouram.locale.intent.action.FIRE_SETTING")
                 || BundleScrubber.scrub(intent)) {
             return;

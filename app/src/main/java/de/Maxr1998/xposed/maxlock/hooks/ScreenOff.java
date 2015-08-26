@@ -64,7 +64,7 @@ public class ScreenOff {
 
     public static void clear() throws Throwable {
         FileWriter fw = new FileWriter(Main.TEMPS_PATH);
-        fw.write("{\"TheAnswer\":\"42\"}");
+        fw.write("{}");
         fw.close();
     }
 }

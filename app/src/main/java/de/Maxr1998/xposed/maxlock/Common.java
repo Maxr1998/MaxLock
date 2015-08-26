@@ -47,15 +47,15 @@ public abstract class Common {
     public static final String BACKGROUND = "background";
     public static final String BACKGROUND_COLOR = "background_color";
     public static final String HIDE_STATUS_BAR = "hide_status_bar";
-    public static final String TABLET_MODE_OVERRIDE = "tablet_mode_override";
+    public static final String OVERRIDE_TABLET_MODE = "tablet_mode_override";
     public static final String INVERT_COLOR = "invert_color";
     public static final String HIDE_TITLE_BAR = "hide_title_bar";
     public static final String HIDE_INPUT_BAR = "hide_input_bar";
-    public static final String QUICK_UNLOCK = "quick_unlock";
-    public static final String KC_SHOW_DIVIDERS = "show_dividers";
-    public static final String KC_TOUCH_VISIBLE = "touch_visible";
-    public static final String PATTERN_SHOW_PATH = "show_path";
-    public static final String PATTERN_FEEDBACK = "haptic_feedback";
+    public static final String ENABLE_QUICK_UNLOCK = "quick_unlock";
+    public static final String SHOW_KC_DIVIDERS = "show_dividers";
+    public static final String MAKE_KC_TOUCH_VISIBLE = "touch_visible";
+    public static final String SHOW_PATTERN_PATH = "show_path";
+    public static final String ENABLE_PATTERN_FEEDBACK = "haptic_feedback";
 
     public static final String LOCKING_OPTIONS = "locking_options";
 
@@ -64,14 +64,14 @@ public abstract class Common {
     public static final String LOG_FILE = "log.txt";
     public static final String ENABLE_FAKE_CRASH_ALL_APPS = "fake_crash_all_apps";
     public static final String ENABLE_DIRECT_UNLOCK = "enable_direct_unlock";
-    public static final String FAKE_DIE_INPUT = "fake_die_input";
-    public static final String TASKER_ENABLED = "enable_tasker_integration";
+    public static final String FAKE_CRASH_INPUT = "fake_die_input";
+    public static final String ENABLE_TASKER = "enable_tasker_integration";
 
-    public static final String IIMOD_OPTIONS = "intika_imod";
+    public static final String IMOD_OPTIONS = "intika_imod";
 
-    public static final String IMOD_DELAY_GLOBAL_ENABLED = "enable_delaygeneral";
-    public static final String IMOD_DELAY_APP_ENABLED = "enable_delayperapp";
-    public static final String IMOD_SHOW_RESET_NOTIFICATION = "imod_show_reset_notification";
+    public static final String ENABLE_IMOD_DELAY_GLOBAL = "enable_delaygeneral";
+    public static final String ENABLE_IMOD_DELAY_APP = "enable_delayperapp";
+    public static final String SHOW_IMOD_RESET_NOTIFICATION = "imod_show_reset_notification";
 
     public static final String CHOOSE_APPS = "choose_apps";
 
