@@ -133,10 +133,11 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                             if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                                 reportDialog.dismiss();
                                                 launchLockView();
+                                                finish();
                                             } else {
                                                 Toast.makeText(LockActivity.this, "Thanks for your feedback", Toast.LENGTH_SHORT).show();
+                                                onBackPressed();
                                             }
-                                            finish();
                                         }
                                     })
                                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
