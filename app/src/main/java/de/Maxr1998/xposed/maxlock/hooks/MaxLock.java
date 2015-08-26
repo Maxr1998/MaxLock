@@ -18,6 +18,7 @@
 package de.Maxr1998.xposed.maxlock.hooks;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -33,6 +34,7 @@ public class MaxLock {
 
     public static void init(XC_LoadPackage.LoadPackageParam lPParam) {
         try {
+            XposedHelpers.setStaticBooleanField(findClass(PACKAGE_NAME + ".ui.SettingsActivity", lPParam.classLoader), "IS_ACTIVE", true);
             findAndHookMethod(PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "openApp", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
@@ -51,13 +53,13 @@ public class MaxLock {
                     put(getObjectField(param.thisObject, "packageName") + Apps.FLAG_CLOSE_APP);
                 }
             });
-            findAndHookMethod(PACKAGE_NAME + ".tasker.TaskActionReceiver", lPParam.classLoader, "clearImod", new XC_MethodHook() {
+            findAndHookMethod(PACKAGE_NAME + ".ui.actions.ActionsHelper", lPParam.classLoader, "clearImod", new XC_MethodReplacement() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                     ScreenOff.clear();
+                    return null;
                 }
             });
-            XposedHelpers.setStaticBooleanField(findClass(PACKAGE_NAME + ".ui.SettingsActivity", lPParam.classLoader), "IS_ACTIVE", true);
         } catch (Throwable t) {
             log(t);
         }
