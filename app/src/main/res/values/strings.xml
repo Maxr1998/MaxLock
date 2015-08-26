@@ -32,7 +32,7 @@
     <string name="pref_set_password">Set password</string>
     <string name="toast_password_inconsistent">Password is inconsistent!</string>
     <string name="toast_password_null">Password can not be empty!</string>
-    <string name="toast_password_changed">Password is changed!</string>
+    <string name="toast_password_changed">Password was changed!</string>
     <string name="toast_password_incorrect">Password incorrect!</string>
     <string name="dialog_text_password">Password: </string>
     <string name="dialog_text_re_password">Retype password: </string>
