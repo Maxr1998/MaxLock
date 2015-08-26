@@ -87,6 +87,8 @@
     <string name="menu_delete_log">Logs löschen</string>
     <string name="logs_empty_text">Keine Log-Einträge vorhanden</string>
     <string name="pref_category_other">Andere</string>
+    <string name="pref_fake_crash_all_apps">Vorgetäuschter Absturz alle Apps</string>
+    <string name="pref_fake_crash_all_apps_summary">Überschreibt Einstellung aus Anwendungsliste</string>
     <string name="pref_fake_unlock">Vorgetäuschter Absturz direkt entsperren</string>
     <string name="pref_fake_unlock_summary">Zeige Sperrbildschirm direkt nachdem \"Bericht\" geklickt wurde.</string>
     <string name="pref_fake_crash_passphrase">\"Vorgetäuschter Absturz\" Eingabe</string>

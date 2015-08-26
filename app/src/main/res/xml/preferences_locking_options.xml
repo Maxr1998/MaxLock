@@ -15,9 +15,9 @@
     <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
         <SwitchPreference
-            android:key="bla"
-            android:summary="BLA"
-            android:title="BLAAAAAA" />
+            android:key="fake_crash_all_apps"
+            android:summary="@string/pref_fake_crash_all_apps_summary"
+            android:title="@string/pref_fake_crash_all_apps" />
         <SwitchPreference
             android:defaultValue="false"
             android:disableDependentsState="true"

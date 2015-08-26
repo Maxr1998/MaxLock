@@ -62,6 +62,7 @@ public abstract class Common {
     public static final String ENABLE_LOGGING = "enable_logging";
     public static final String VIEW_LOGS = "view_logs";
     public static final String LOG_FILE = "log.txt";
+    public static final String ENABLE_FAKE_CRASH_ALL_APPS = "fake_crash_all_apps";
     public static final String ENABLE_DIRECT_UNLOCK = "enable_direct_unlock";
     public static final String FAKE_DIE_INPUT = "fake_die_input";
     public static final String TASKER_ENABLED = "enable_tasker_integration";

@@ -87,6 +87,8 @@
     <string name="menu_delete_log">Delete logs</string>
     <string name="logs_empty_text">There are no log entries</string>
     <string name="pref_category_other">Others</string>
+    <string name="pref_fake_crash_all_apps">Fake crash for all apps</string>
+    <string name="pref_fake_crash_all_apps_summary">This overrides the setting from the app list for all apps</string>
     <string name="pref_fake_unlock">Fake crash direct unlock</string>
     <string name="pref_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the <i>\"Unfortunately, X has stopped."</i> button on the \"App crashed…\" dialog</string>
     <string name="pref_fake_crash_passphrase">Fake crash passphrase</string>

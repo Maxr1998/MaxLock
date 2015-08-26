@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -44,13 +45,16 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     private Intent original;
     private boolean isInFocus = false, unlocked = false;
     private AlertDialog fakeDieDialog, reportDialog;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String mode = getIntent().getStringExtra(Common.LOCK_ACTIVITY_MODE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String mode = prefs.getBoolean(Common.ENABLE_FAKE_CRASH_ALL_APPS, false) && getIntent().getStringExtra("no_fake") == null ? Common.MODE_FAKE_DIE
+                : getIntent().getStringExtra(Common.LOCK_ACTIVITY_MODE);
         switch (mode) {
             case Common.MODE_DEFAULT:
-                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.HIDE_STATUS_BAR, false)) {
+                if (prefs.getBoolean(Common.HIDE_STATUS_BAR, false)) {
                     setTheme(R.style.TranslucentStatusBar_Full);
                 } else {
                     setTheme(R.style.TranslucentStatusBar);
@@ -106,14 +110,14 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                 .setNeutralButton(R.string.dialog_button_report, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (PreferenceManager.getDefaultSharedPreferences(LockActivity.this).getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
+                        if (prefs.getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
                             fakeDieDialog.dismiss();
                             launchLockView();
                             finish();
                         } else {
                             fakeDieDialog.dismiss();
                             final EditText input = new EditText(LockActivity.this);
-                            input.setMinLines(3);
+                            input.setMinLines(2);
                             input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                             AlertDialog.Builder reportDialogBuilder = new AlertDialog.Builder(LockActivity.this);
                             reportDialog = reportDialogBuilder.setView(input)
@@ -121,7 +125,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
                                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (input.getText().toString().equals(PreferenceManager.getDefaultSharedPreferences(LockActivity.this).getString(Common.FAKE_DIE_INPUT, "start"))) {
+                                            if (input.getText().toString().equals(prefs.getString(Common.FAKE_DIE_INPUT, "start"))) {
                                                 reportDialog.dismiss();
                                                 launchLockView();
                                                 finish();
@@ -195,6 +199,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_DEFAULT);
         it.putExtra(Common.INTENT_EXTRAS_INTENT, original);
         it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+        it.putExtra("no_fake", "");
         startActivity(it);
     }
 
@@ -214,7 +219,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
         if (!isInFocus) {
             Log.d("LockActivity", "Lost focus, finishing.");
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
+            if (prefs.getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
                 Util.logFailedAuthentication(this, packageName);
             }
             finish();
