@@ -85,17 +85,19 @@
     <string name="pref_view_logs">查看日誌</string>
     <string name="pref_screen_logs">日誌</string>
     <string name="menu_delete_log">刪除日誌</string>
-    <string name="logs_empty_text">沒有日誌條目</string>
+    <string name="logs_empty_text">沒有日誌記錄</string>
     <string name="pref_category_other">其它</string>
+    <string name="pref_fake_crash_all_apps">為所有應用程式假死</string>
+    <string name="pref_fake_crash_all_apps_summary">這將覆蓋所有的應用程式清單中的應用程式設定</string>
     <string name="pref_fake_unlock">假死直接解鎖</string>
-    <string name="pref_fake_unlock_summary">當啟用鎖屏假死對話方塊中按下報告按鈕後顯示</string>
+    <string name="pref_fake_unlock_summary">當啟用鎖屏假死對話框後按鈕上的\“應用程式已崩潰...\”直接顯示<i>\“不幸的是，X已經停止”</i></string>
     <string name="pref_fake_crash_passphrase">假死輸入</string>
     <string name="pref_fake_crash_passphrase_summary">用戶需要在對話框中輸入短語才能打開鎖屏</string>
     <string name="pref_enable_tasker">啟用Tasker集成</string>
-    <!-- I.MoD settings -->
-    <string name="pref_screen_locking_intika">Intika I.MoD</string>
-    <string name="pref_category_intika">Intika I.MoD - 寬限期 - 一般延遲</string>
-    <string name="pref_category_intika2">Intika I.MoD - 寬限期 - PerApp延遲</string>
+    <!-- I.Mod settings -->
+    <string name="pref_screen_locking_intika">Intika I.Mod</string>
+    <string name="pref_category_intika">Intika I.Mod - 寬限期 - 一般延遲</string>
+    <string name="pref_category_intika2">Intika I.Mod - 寬限期 - PerApp延遲</string>
     <string name="pref_locking_delay_general">啟用一般延遲-重新鎖定</string>
     <string name="pref_locking_delay_general_summary">避免到在一段時間內再次要求解鎖應用程式</string>
     <string name="pref_delay_input_general">一般延遲 - 重新鎖定定時器</string>
@@ -105,7 +107,10 @@
     <string name="pref_delay_input_perapp">PerApp延遲 - 重新鎖定計時器</string>
     <string name="pref_delay_input_perapp_summary">輸入一個數位指定延遲時間,值為分鐘,鎖定PerApp延遲</string>
     <string name="pref_delay_needpro">啟用延遲重新鎖定 - 專業版</string>
-    <string name="pref_reset_screen_off">在螢幕關閉後重置I.Mod</string>
+    <string name="pref_show_reset_notification">顯示通知</string>
+    <string name="pref_show_reset_notification_summary">顯示通知重置I.Mod計時器</string>
+    <string name="pref_reset_screen_off">自動重置I.Mod</string>
+    <string name="pref_reset_screen_off_summary">關閉屏幕時重置I.Mod計時器</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">選擇應用</string>
     <string name="pref_choose_apps">選擇應用</string>
@@ -155,24 +160,24 @@
     <string name="dialog_cb_never_again">不再顯示</string>
     <string name="dialog_button_donate">捐贈</string>
     <string name="dialog_button_rate">評分</string>
-    <!-- Fake die screen -->
+    <!-- Fake crash screen -->
     <string name="dialog_text_fake_die_stopped">非常抱歉,%1$s已停止。</string>
     <string name="dialog_button_report">回報</string>
     <string name="dialog_title_report_problem">回報問題</string>
-    <!-- MasterSwitch stuff -->
-    <string name="action_toggle_ms">切換總開關</string>
-    <string name="activity_label_toggle_ms_deprecated">切換總開關(不推薦)</string>
-    <string name="unlock_master_switch">打開總開關</string>
-    <string name="toast_master_switch_off">主開關已關閉</string>
-    <string name="toast_master_switch_on">主開關重新啟用</string>
-    <string name="toast_no_locking_types">沒有指定鎖定類型</string>
-    <!-- Tasker config stuff -->
+    <!-- Action stuff -->
+    <string name="activity_label_actions">MaxLock 動作</string>
     <string name="action_configuration">配置:</string>
+    <string name="action_toggle_ms">切換主開關</string>
     <string name="action_ms_on">打開主開關</string>
     <string name="action_ms_off">關閉主開關</string>
     <string name="action_imod_reset">重設I.MoD</string>
     <string name="tasker_imod_reset_summary">鎖定所有應用之前打開I.MoD</string>
     <string name="tasker_button_apply">應用</string>
     <string name="tasker_integration_disabled">當前Tasker集成已禁用。您可以通過\"MaxLock → 鎖定選項 → 啟用Tasker集成\".</string>
+    <string name="activity_label_toggle_ms_deprecated">切換主開關(不推薦)</string>
+    <string name="unlock_master_switch">打開主開關</string>
+    <string name="toast_master_switch_off">主開關已關閉</string>
+    <string name="toast_master_switch_on">主開關重新啟用</string>
+    <string name="toast_no_locking_types">沒有指定鎖定類型</string>
 
 </resources>
