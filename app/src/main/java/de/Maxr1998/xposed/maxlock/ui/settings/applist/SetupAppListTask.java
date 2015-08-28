@@ -70,13 +70,13 @@ class SetupAppListTask extends AsyncTask<Void, Integer, List<Map<String, Object>
     protected List<Map<String, Object>> doInBackground(Void... voids) {
         PackageManager pm = mContext.getPackageManager();
         List<Map<String, Object>> mItemList = new ArrayList<>();
-        for (ApplicationInfo info : mTempAppList) {
-            if ((pm.getLaunchIntentForPackage(info.packageName) != null && !info.packageName.equals(Common.PKG_NAME)) || info.packageName.equals("com.android.packageinstaller")) {
+        for (int i = 0; i < mTempAppList.size(); i++) {
+            if ((pm.getLaunchIntentForPackage(mTempAppList.get(i).packageName) != null && !mTempAppList.get(i).packageName.equals(Common.PKG_NAME)) || mTempAppList.get(i).packageName.equals("com.android.packageinstaller")) {
                 try {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("title", pm.getApplicationLabel(info));
-                    map.put("key", info.packageName);
-                    map.put("icon", pm.getApplicationIcon(info));
+                    map.put("title", pm.getApplicationLabel(mTempAppList.get(i)));
+                    map.put("key", mTempAppList.get(i).packageName);
+                    map.put("icon", pm.getApplicationIcon(mTempAppList.get(i)));
                     mItemList.add(map);
                 } catch (OutOfMemoryError o) {
                     Log.e("MaxLock", "Out of memory while filtering application data!", o);
