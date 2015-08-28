@@ -45,8 +45,6 @@ import java.util.List;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ThisApplication;
-import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
-import de.Maxr1998.xposed.maxlock.util.BillingHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class Startup extends AsyncTask<Boolean, Void, Void> {
@@ -98,7 +96,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
                             }
                             break;
                         case -1:
-                            BillingHelper.showDialog(((SettingsActivity) mContext).getBillingProcessor(), (Activity) mContext);
+
                             break;
                     }
                     prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
