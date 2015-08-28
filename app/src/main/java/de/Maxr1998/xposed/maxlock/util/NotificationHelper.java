@@ -48,7 +48,8 @@ public abstract class NotificationHelper {
                 .setContentText("")
                 .setSmallIcon(R.drawable.ic_close_white_24dp)
                 .setContentIntent(PendingIntent.getActivity(mContext.getApplicationContext(), 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT))
-                .setOngoing(true);
+                .setOngoing(true)
+                .setAutoCancel(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             builder.setShowWhen(false);
         }
