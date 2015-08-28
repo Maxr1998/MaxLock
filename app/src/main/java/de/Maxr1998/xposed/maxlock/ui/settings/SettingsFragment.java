@@ -48,8 +48,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.TransactionDetails;
 import com.haibison.android.lockpattern.LockPatternActivity;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -74,19 +72,13 @@ import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
-import de.Maxr1998.xposed.maxlock.util.BillingHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-
-public class SettingsFragment extends MaxLockPreferenceFragment implements BillingProcessor.IBillingHandler {
+public class SettingsFragment extends MaxLockPreferenceFragment {
     private static Preference UNINSTALL;
     private static SharedPreferences PREFS_THEME;
     private DevicePolicyManager devicePolicyManager;
     private ComponentName deviceAdmin;
-
-    private BillingProcessor getBp() {
-        return ((SettingsActivity) getActivity()).getBillingProcessor();
-    }
 
     @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
@@ -116,7 +108,7 @@ public class SettingsFragment extends MaxLockPreferenceFragment implements Billi
         SwitchPreference ep = (SwitchPreference) findPreference(Common.ENABLE_PRO);
         if (Util.isDevMode()) {
             title = getString(R.string.app_name) + " Indev";
-        } else if (BillingHelper.donated(getActivity().getApplicationContext(), getBp())) {
+        } else if (false) {
             title = getString(R.string.app_name_pro);
             prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
             ep.setEnabled(false);
@@ -172,7 +164,7 @@ public class SettingsFragment extends MaxLockPreferenceFragment implements Billi
             Util.showAbout(getActivity());
             return true;
         } else if (preference == findPreference(Common.DONATE)) {
-            BillingHelper.showDialog(getBp(), getActivity());
+
             return true;
         } else if (preference == findPreference(Common.UNINSTALL)) {
             if (!isDeviceAdminActive()) {
@@ -189,26 +181,6 @@ public class SettingsFragment extends MaxLockPreferenceFragment implements Billi
 
     private boolean isDeviceAdminActive() {
         return devicePolicyManager.isAdminActive(deviceAdmin);
-    }
-
-    @Override
-    public void onProductPurchased(String s, TransactionDetails transactionDetails) {
-        ((SettingsActivity) getActivity()).restart();
-    }
-
-    @Override
-    public void onBillingInitialized() {
-
-    }
-
-    @Override
-    public void onBillingError(int i, Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPurchaseHistoryRestored() {
-        setupPro();
     }
 
     public static class UninstallProtectionReceiver extends DeviceAdminReceiver {

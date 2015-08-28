@@ -36,8 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
-
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -47,7 +45,6 @@ import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 import de.Maxr1998.xposed.maxlock.ui.settings.WebsiteFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.MaxLockPreferenceFragment;
-import de.Maxr1998.xposed.maxlock.util.BillingHelper;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -60,7 +57,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
     private SettingsFragment mSettingsFragment;
-    private BillingProcessor billingProcessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +97,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
             lockFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment, TAG_LOCK_FRAGMENT).commit();
-        }
-        billingProcessor = new BillingProcessor(this, getString(R.string.license_key), mSettingsFragment);
-        if (BillingHelper.GooglePlayServiceAvailable(getApplicationContext())) {
-            billingProcessor.loadOwnedPurchasesFromGoogle();
         }
     }
 
@@ -206,16 +198,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !UNLOCKED) {
             Util.logFailedAuthentication(this, "Main App");
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (billingProcessor != null) billingProcessor.release();
-    }
-
-    public BillingProcessor getBillingProcessor() {
-        return billingProcessor;
     }
 
     public void restart() {
