@@ -194,7 +194,8 @@
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:process=":MLExternal" />
 
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
@@ -204,7 +205,9 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
-        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+        <service
+            android:name="com.google.android.gms.analytics.CampaignTrackingService"
+            android:process=":MLExternal" />
     </application>
 
 </manifest>
