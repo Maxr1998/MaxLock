@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:maxlock="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/pref_screen_locking_type">
@@ -16,5 +15,5 @@
             android:key="locking_type_pattern"
             android:title="@string/pref_locking_type_pattern" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference maxlock:topShadow="false" />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>

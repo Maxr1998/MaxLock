@@ -12,7 +12,7 @@
             android:key="view_logs"
             android:title="@string/pref_view_logs" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
         <SwitchPreference
             android:key="fake_crash_all_apps"
@@ -34,5 +34,5 @@
             android:key="enable_tasker_integration"
             android:title="@string/pref_enable_tasker" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference maxlock:topShadow="false" />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>

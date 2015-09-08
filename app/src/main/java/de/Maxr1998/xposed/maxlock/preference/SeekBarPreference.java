@@ -1,4 +1,4 @@
-package com.robobunny;
+package de.Maxr1998.xposed.maxlock.preference;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,6 +16,11 @@ import android.widget.TextView;
 
 import de.Maxr1998.xposed.maxlock.R;
 
+/**
+ * Preference class implementing a SeekBar to specify in values
+ *
+ * @author Robobunny, modified by Max Rumpf alias Maxr1998
+ */
 public class SeekBarPreference extends Preference implements OnSeekBarChangeListener {
 
     private static final String ANDROID_XMLNS = "http://schemas.android.com/apk/res/android";
@@ -108,7 +113,7 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
         }
 
         //if dependency is false from the beginning, disable the seek bar
-        if (!view.isEnabled()) {
+        if (!isEnabled()) {
             mSeekBar.setEnabled(false);
         }
         updateView(view);

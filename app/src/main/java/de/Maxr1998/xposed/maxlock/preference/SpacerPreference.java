@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.util;
+package de.Maxr1998.xposed.maxlock.preference;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -27,12 +27,17 @@ import android.view.ViewGroup;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 
-public class ShadowDummyPreference extends Preference {
+/**
+ * Preference spacer, to make preferences looking more grouped
+ *
+ * @author Max Rumpf alias Maxr1998
+ */
+public class SpacerPreference extends Preference {
 
     private final boolean end, dark;
 
     @SuppressLint("WorldReadableFiles")
-    public ShadowDummyPreference(Context context, AttributeSet attr) {
+    public SpacerPreference(Context context, AttributeSet attr) {
         super(context, attr);
         setLayoutResource(R.layout.shadow_dummy_preference);
         setEnabled(false);

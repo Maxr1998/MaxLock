@@ -8,7 +8,7 @@
             android:key="enable_delaygeneral"
             android:summary="@string/pref_locking_delay_general_summary"
             android:title="@string/pref_locking_delay_general" />
-        <com.robobunny.SeekBarPreference
+        <de.Maxr1998.xposed.maxlock.preference.SeekBarPreference
             android:defaultValue="600000"
             android:dependency="enable_delaygeneral"
             android:key="delay_inputgeneral"
@@ -20,14 +20,14 @@
             robobunny:min="60000"
             robobunny:unitsRight="" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_intika2">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enable_delayperapp"
             android:summary="@string/pref_locking_delay_perapp_summary"
             android:title="@string/pref_locking_delay_perapp" />
-        <com.robobunny.SeekBarPreference
+        <de.Maxr1998.xposed.maxlock.preference.SeekBarPreference
             android:defaultValue="600000"
             android:dependency="enable_delayperapp"
             android:key="delay_inputperapp"
@@ -39,7 +39,7 @@
             robobunny:min="60000"
             robobunny:unitsRight="" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
         <SwitchPreference
             android:key="imod_show_reset_notification"
@@ -50,5 +50,5 @@
             android:summary="@string/pref_reset_screen_off_summary"
             android:title="@string/pref_reset_screen_off" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference maxlock:topShadow="false" />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>

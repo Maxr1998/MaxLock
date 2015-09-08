@@ -29,7 +29,7 @@
             android:key="tablet_mode_override"
             android:title="@string/pref_use_tablet_mode" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_pin_and_knock_code">
         <SwitchPreference
             android:defaultValue="false"
@@ -46,14 +46,14 @@
             android:summary="@string/pref_hide_input_bar_summary"
             android:title="@string/pref_hide_input_bar" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_password_and_pin">
         <SwitchPreference
             android:defaultValue="false"
             android:key="quick_unlock"
             android:title="@string/pref_quick_unlock" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_knock_code_only">
         <SwitchPreference
             android:defaultValue="true"
@@ -64,7 +64,7 @@
             android:key="touch_visible"
             android:title="@string/pref_touch_visible" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_pattern_only">
         <SwitchPreference
             android:defaultValue="true"
@@ -75,5 +75,5 @@
             android:key="haptic_feedback"
             android:title="@string/pref_haptic_feedback" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.util.ShadowDummyPreference maxlock:topShadow="false" />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>
