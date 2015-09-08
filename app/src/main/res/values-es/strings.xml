@@ -169,7 +169,7 @@
     <string name="action_imod_reset">Resetear I.Mod</string>
     <string name="tasker_imod_reset_summary">Bloquear todas las aplicaciones que fueron previamente desboqueadas con I.Mod</string>
     <string name="tasker_button_apply">Aplicar</string>
-    <string name="tasker_integration_disabled" tools:ignore="Typos">La integración con Tasker está deshabilitada. Puedes habilitarla en via \"MaxLock → Opciones de bloqueo → Habilitar integración con Tasker\".</string>
+    <string name="tasker_integration_disabled" tools:ignore="Typos">La integración con Tasker está deshabilitada. Puedes habilitarla en \"MaxLock → Opciones de bloqueo → Habilitar integración con Tasker\".</string>
     <string name="activity_label_toggle_ms_deprecated">Alternar MasterSwitch (Deprecado)</string>
     <string name="unlock_master_switch">Deshabilitar MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch deshabilitado</string>
