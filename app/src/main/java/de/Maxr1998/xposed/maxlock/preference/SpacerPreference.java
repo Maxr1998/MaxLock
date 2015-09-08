@@ -39,7 +39,7 @@ public class SpacerPreference extends Preference {
     @SuppressLint("WorldReadableFiles")
     public SpacerPreference(Context context, AttributeSet attr) {
         super(context, attr);
-        setLayoutResource(R.layout.shadow_dummy_preference);
+        setLayoutResource(R.layout.spacer_preference);
         setEnabled(false);
         setSelectable(false);
         //noinspection deprecation
