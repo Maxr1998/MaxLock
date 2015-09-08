@@ -3,8 +3,6 @@
     <style name="AppTheme" parent="AppTheme.Base" />
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimary">@color/primary_red</item>
         <item name="colorPrimaryDark">@color/primary_red_dark</item>
         <item name="colorAccent">@color/accent</item>
@@ -12,20 +10,24 @@
         <item name="android:preferenceScreenStyle">@style/Preference</item>
         <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="windowActionModeOverlay">true</item>
+        <!-- To see copy and paste options over Toolbar -->
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <!-- Dark application theme. -->
     <style name="AppTheme.Dark" parent="AppTheme.Base.Dark" />
 
     <style name="AppTheme.Base.Dark" parent="Theme.AppCompat.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimary">@color/primary_red</item>
         <item name="colorPrimaryDark">@color/primary_red_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:preferenceStyle">@style/Preference</item>
         <item name="android:preferenceScreenStyle">@style/Preference</item>
         <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
+        <item name="windowActionModeOverlay">true</item>
+        <!-- To see copy and paste options over Toolbar -->
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="AppTheme.FirstStart" parent="AppTheme.Base" />
@@ -120,6 +122,4 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
-    <attr name="topShadow" format="boolean" />
 </resources>
