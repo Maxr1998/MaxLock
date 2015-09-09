@@ -33,7 +33,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
+import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheckedChangeListener {
@@ -51,7 +51,7 @@ public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheck
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_setup, container, false);
         prefsApps = MLPreferences.getPrefsApps(getActivity());
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
-        deviceAdmin = new ComponentName(getActivity(), SettingsFragment.UninstallProtectionReceiver.class);
+        deviceAdmin = new ComponentName(getActivity(), SettingsActivity.UninstallProtectionReceiver.class);
         CheckBox[] app_cbs = {
                 (CheckBox) rootView.findViewById(R.id.first_start_app_package),
                 (CheckBox) rootView.findViewById(R.id.first_start_app_settings),

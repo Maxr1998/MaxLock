@@ -6,7 +6,7 @@ Thanks to:
 - My friend @TechnoSparks for creating MaxLock Website and hosting it on a server, and much other support. Thank you :)
 - Intika for his I.Mod and other contributions
 ###Translators:###
-- @alexking99 for Taiwanese translation
+- @alexking99 for Traditional Chinese translation
 - @badkill for Spanish translation
 - @liveasx for Chinese translation
 - @mihahn for parts of the German translation

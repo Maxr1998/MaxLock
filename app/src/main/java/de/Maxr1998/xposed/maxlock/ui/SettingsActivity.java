@@ -19,6 +19,9 @@ package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.admin.DeviceAdminReceiver;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +34,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,10 +45,9 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
-import de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 import de.Maxr1998.xposed.maxlock.ui.settings.WebsiteFragment;
-import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -56,7 +59,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
     private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
-    private SettingsFragment mSettingsFragment;
+    public ComponentName deviceAdmin;
+    private MaxLockPreferenceFragment mSettingsFragment;
+    private DevicePolicyManager devicePolicyManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +80,17 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             return;
         }
 
+        devicePolicyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+        deviceAdmin = new ComponentName(this, UninstallProtectionReceiver.class);
+
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         if (!IS_ACTIVE) {
             findViewById(R.id.xposed_active).setVisibility(View.VISIBLE);
         }
 
-        mSettingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
+        mSettingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
             new Startup(this).execute(prefs.getBoolean(Common.FIRST_START, true));
             if (getSupportActionBar() != null) {
@@ -170,7 +177,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public void onAuthenticationSucceeded() {
         UNLOCKED = true;
         if (mSettingsFragment == null) {
-            mSettingsFragment = new SettingsFragment();
+            mSettingsFragment = MaxLockPreferenceFragment.Screen.MAIN.getScreen();
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, mSettingsFragment, TAG_SETTINGS_FRAGMENT).commit();
             if (getSupportActionBar() != null) {
                 getSupportActionBar().show();
@@ -188,6 +195,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     protected void onResume() {
         super.onResume();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            //noinspection deprecation
             StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(android.R.color.black), -3, this);
         }
     }
@@ -213,5 +221,22 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                         startActivity(intent);
                     }
                 }).create().show();
+    }
+
+    public DevicePolicyManager getDevicePolicyManager() {
+        return devicePolicyManager;
+    }
+
+    public boolean isDeviceAdminActive() {
+        return devicePolicyManager.isAdminActive(deviceAdmin);
+    }
+
+    public static class UninstallProtectionReceiver extends DeviceAdminReceiver {
+
+        @Override
+        public void onEnabled(Context context, Intent intent) {
+            super.onEnabled(context, intent);
+            Log.i("MaxLock Device Admin", "Device admin is now active!");
+        }
     }
 }
