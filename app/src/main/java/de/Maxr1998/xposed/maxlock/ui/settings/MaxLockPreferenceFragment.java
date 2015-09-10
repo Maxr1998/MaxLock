@@ -83,7 +83,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         screen = Screen.valueOf(getArguments().getString(Screen.KEY));
-        getActivity().setTitle(getString(screen.title != 0 ? screen.title : R.string.app_name));
+        setTitle();
         if (screen == Screen.MAIN) {
             setRetainInstance(true);
         }
@@ -152,6 +152,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onStart() {
         super.onStart();
+        setTitle();
         if (screen == Screen.MAIN && ((SettingsActivity) getActivity()).isDeviceAdminActive()) {
             Preference protectOrUninstall = findPreference(Common.UNINSTALL);
             protectOrUninstall.setTitle(R.string.pref_uninstall);
@@ -162,11 +163,15 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getString(screen.title != 0 ? screen.title : R.string.app_name));
+        setTitle();
         if (screen != Screen.MAIN) {
             //noinspection ConstantConditions
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void setTitle() {
+        getActivity().setTitle(getString(screen.title != 0 ? screen.title : R.string.app_name));
     }
 
     @Override
