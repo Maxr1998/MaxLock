@@ -104,7 +104,7 @@
     <string name="pref_category_about">A Propos</string>
     <string name="app_name_pro">MaxLock Pro</string>
     <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
-    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\nCliquer pour plus d\'informations</string>
+    <string name="pref_about_summary">Cliquer pour plus d\'informations</string>
     <string name="pref_donate_upgrade_pro">Faire un don pour mettre à niveau vers la version pro</string>
     <string name="pref_enable_pro">Activez la version pro</string>
     <string name="pref_enable_pro_summary">Cela permettra d\'activer les fonctionnalités de la version pro même si vous n\'avez pas acheté MaxLock Pro</string>

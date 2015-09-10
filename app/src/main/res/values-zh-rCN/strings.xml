@@ -137,7 +137,7 @@
     <string name="pref_category_about">关于</string>
     <string name="app_name_pro">MaxLock专业版</string>
     <string name="app_name_pseudo_pro">MaxLock伪专业版</string>
-    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\n点击这里查看更多信息</string>
+    <string name="pref_about_summary">点击这里查看更多信息</string>
     <string name="pref_donate_upgrade_pro">捐助后将升级为专业版</string>
     <string name="toast_no_network_connected">您目前没有连接到任何网络</string>
     <string name="pref_enable_pro">开启专业版</string>

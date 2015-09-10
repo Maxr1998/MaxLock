@@ -31,12 +31,8 @@ import android.view.View;
 import android.widget.CheckBox;
 
 import com.google.android.gms.analytics.HitBuilders;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
-import com.nispok.snackbar.enums.SnackbarType;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -108,13 +104,6 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
                     .setNeutralButton(R.string.dialog_button_rate, onClickListener)
                     .setNegativeButton(android.R.string.cancel, onClickListener);
         }
-        // SnackBar with alert
-        @SuppressWarnings("ConstantConditions")
-        boolean noLockType = prefs.getString(Common.LOCKING_TYPE, "").equals("");
-        boolean noPackages = !new File(Util.dataDir(mContext) + "shared_prefs" + File.separator + Common.PREFS_APPS + ".xml").exists();
-        snackBarContent = (noLockType ? mContext.getString(R.string.sb_no_locking_type) + " " : "") + (noPackages ? mContext.getString(R.string.sb_no_locked_apps) : "");
-        showSnackBar = noPackages || noLockType;
-        snackBarMultiLine = noLockType && noPackages;
         // Other
         Util.cleanUp(mContext);
 
@@ -152,13 +141,8 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         if (isFirstStart) {
             prefs.edit().putBoolean(Common.FIRST_START, false).apply();
         }
-
         if (showDialog) {
             builder.create().show();
-        }
-        if (showSnackBar) {
-            SnackbarManager.show(Snackbar.with(mContext).text(snackBarContent).type(snackBarMultiLine ? SnackbarType.MULTI_LINE : SnackbarType.SINGLE_LINE)
-                    .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE).swipeToDismiss(false));
         }
         System.out.println("Startup finished");
     }

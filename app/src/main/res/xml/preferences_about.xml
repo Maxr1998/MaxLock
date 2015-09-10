@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:maxlock="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/pref_screen_about">
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/maxlock_author"
+            android:title="@string/app_name"
+            maxlock:license="@string/license_maxlock" />
+    </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
+    <PreferenceCategory android:title="@string/pref_category_credits">
+        <Preference
+            android:summary="@string/credits_fmm_summary"
+            android:title="@string/credits_fmm" />
+        <Preference
+            android:summary="@string/credits_ts_summary"
+            android:title="@string/credits_ts" />
+        <Preference
+            android:summary="@string/credits_intika_summary"
+            android:title="@string/credits_intika" />
+    </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
+    <PreferenceCategory android:title="@string/pref_category_translations">
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_chinese_simple"
+            maxlock:language="zh-CN" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_chinese_traditional"
+            maxlock:language="zh-TW" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_french"
+            maxlock:language="fr" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_german"
+            maxlock:language="de" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_japanese"
+            maxlock:language="ja" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_persian"
+            maxlock:language="fa" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_spanish"
+            maxlock:language="es" />
+    </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
+    <PreferenceCategory android:title="@string/pref_category_licenses">
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/color_picker_preference_author"
+            android:title="@string/color_picker_preference_name"
+            maxlock:license="@string/license_color_picker_preference" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/android_lockpattern_author"
+            android:title="@string/android_lockpattern_name"
+            maxlock:license="@string/license_android_lockpattern" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/android_preference_fragment_compat_author"
+            android:title="@string/android_preference_fragment_compat_name"
+            maxlock:license="@string/license_android_preference_fragment_compat" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/android_support_library_author"
+            android:title="@string/android_support_library_name"
+            maxlock:license="@string/license_android_support_library" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/commons_io_author"
+            android:title="@string/commons_io_name"
+            maxlock:license="@string/license_commons_io" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/google_play_services_author"
+            android:title="@string/google_play_services_name"
+            maxlock:license="@string/license_google_play_services" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/guava_author"
+            android:title="@string/guava_name"
+            maxlock:license="@string/license_guava" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/recycler_view_fast_scroller_author"
+            android:title="@string/recycler_view_fast_scroller_name"
+            maxlock:license="@string/license_recycler_view_fast_scroller" />
+        <Preference
+            android:summary="@string/seek_bar_preference_author"
+            android:title="@string/seek_bar_preference_name" />
+        <Preference
+            android:summary="@string/status_bar_tint_api_author"
+            android:title="@string/status_bar_tint_api_name" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/xposed_bridge_author"
+            android:title="@string/xposed_bridge_name"
+            maxlock:license="@string/license_xposed_bridge" />
+    </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
+</PreferenceScreen>

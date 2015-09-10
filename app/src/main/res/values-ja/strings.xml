@@ -144,7 +144,7 @@
     <string name="pref_category_about">このアプリについて</string>
     <string name="app_name_pro">MaxLock プロ版</string>
     <string name="app_name_pseudo_pro">MaxLock 準プロ版</string>
-    <string name="pref_about_summary">コピーライト &#169; 2014&#8211;2015 by Maxr1998\nタップすると詳細情報を表示します</string>
+    <string name="pref_about_summary">タップすると詳細情報を表示します</string>
     <string name="pref_donate_upgrade_pro">プロ版にアップグレード (寄付)</string>
     <string name="toast_no_network_connected">現在、インターネットに接続できません</string>
     <string name="pref_enable_pro">プロ版の機能の有効化</string>

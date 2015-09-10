@@ -38,12 +38,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.commonsware.cwac.anddown.AndDown;
-import com.nispok.snackbar.SnackbarManager;
 
 import org.apache.commons.io.FileUtils;
 
@@ -55,7 +51,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -176,7 +171,6 @@ public abstract class Util {
                     if (app == null) {
                         PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, shaHash(v1)).apply();
                         PREFS.edit().putString(Common.LOCKING_TYPE, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).apply();
-                        SnackbarManager.dismiss();
                     } else {
                         PREFS_PER_APP.edit().putString(app, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
                     }
@@ -349,25 +343,6 @@ public abstract class Util {
         } else {
             PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PATTERN).putString(app + Common.APP_KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
         }
-    }
-
-    public static void showAbout(Context context) {
-        AlertDialog.Builder about = new AlertDialog.Builder(context);
-        WebView webView = new WebView(context);
-        String markdown = "";
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(context.getAssets().open("about.md")));
-            String line;
-            while ((line = br.readLine()) != null) {
-                markdown = markdown + line + "\n";
-            }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String html = new AndDown().markdownToHtml(markdown);
-        webView.loadData(html, "text/html; charset=UTF-8", null);
-        about.setView(webView).create().show();
     }
 
     public static boolean isDevMode() {

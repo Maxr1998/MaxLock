@@ -2,4 +2,7 @@
 <resources>
     <!-- Preferences -->
     <attr name="topShadow" format="boolean" />
+    <attr name="language" format="string" />
+    <attr name="license" format="reference" />
+    <attr name="url" format="string" />
 </resources>

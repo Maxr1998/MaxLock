@@ -90,7 +90,7 @@
     <string name="pref_fake_crash_all_apps">為所有應用程式假死</string>
     <string name="pref_fake_crash_all_apps_summary">這將覆蓋所有的應用程式清單中的應用程式設定</string>
     <string name="pref_fake_unlock">假死直接解鎖</string>
-    <string name="pref_fake_unlock_summary">當啟用鎖屏假死對話框後按鈕上的\“應用程式已崩潰...\”直接顯示<i>\“不幸的是，X已經停止”</i></string>
+    <string name="pref_fake_unlock_summary">當啟用鎖屏假死對話框後按鈕上的\“應用程式已崩潰…\”直接顯示<i>\“不幸的是，X已經停止”</i></string>
     <string name="pref_fake_crash_passphrase">假死輸入</string>
     <string name="pref_fake_crash_passphrase_summary">用戶需要在對話框中輸入短語才能打開鎖屏</string>
     <string name="pref_enable_tasker">啟用Tasker集成</string>
@@ -144,7 +144,7 @@
     <string name="pref_category_about">關於</string>
     <string name="app_name_pro">MaxLock專業版</string>
     <string name="app_name_pseudo_pro">MaxLock假專業版</string>
-    <string name="pref_about_summary">Copyright &#169; 2014&#8211;2015 by Maxr1998\n點擊這里查看更多資訊</string>
+    <string name="pref_about_summary">點擊這里查看更多資訊</string>
     <string name="pref_donate_upgrade_pro">捐贈可升級到專業版</string>
     <string name="toast_no_network_connected">您目前沒有連接到任何網絡</string>
     <string name="pref_enable_pro">開啟專業版</string>

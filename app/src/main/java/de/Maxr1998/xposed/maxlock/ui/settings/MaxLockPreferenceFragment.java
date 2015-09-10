@@ -46,7 +46,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
-import com.nispok.snackbar.SnackbarManager;
 
 import org.apache.commons.io.FileUtils;
 
@@ -87,9 +86,6 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         getActivity().setTitle(getString(screen.title != 0 ? screen.title : R.string.app_name));
         if (screen == Screen.MAIN) {
             setRetainInstance(true);
-        } else {
-            //noinspection ConstantConditions
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
         prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
@@ -164,6 +160,16 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(getString(screen.title != 0 ? screen.title : R.string.app_name));
+        if (screen != Screen.MAIN) {
+            //noinspection ConstantConditions
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         switch (screen) {
             case MAIN:
@@ -197,7 +203,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     ((SettingsActivity) getActivity()).restart();
                     return true;
                 } else if (preference == findPreference(Common.ABOUT)) {
-                    Util.showAbout(getActivity());
+                    launchFragment(Screen.ABOUT.getScreen(), true, this);
                     return true;
                 } else if (preference == findPreference(Common.DONATE)) {
 
@@ -227,7 +233,6 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     launchFragment(new PinSetupFragment(), false, this);
                     return true;
                 } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {
-                    SnackbarManager.dismiss();
                     launchFragment(new KnockCodeSetupFragment(), false, this);
                     return true;
                 } else if (preference == findPreference(Common.LOCKING_TYPE_PATTERN)) {
@@ -258,7 +263,6 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (screen == Screen.TYPE && requestCode == Util.PATTERN_CODE && resultCode == LockPatternActivity.RESULT_OK) {
             Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), null);
-            SnackbarManager.dismiss();
         } else if (screen == Screen.UI && requestCode == WALLPAPER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = null;
             if (data != null) {
@@ -289,7 +293,8 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         TYPE(R.string.pref_screen_locking_type, R.xml.preferences_locking_type),
         UI(R.string.pref_screen_locking_ui, R.xml.preferences_locking_ui),
         OPTIONS(R.string.pref_screen_locking_options, R.xml.preferences_locking_options),
-        IMOD(R.string.pref_screen_locking_intika, R.xml.preferences_locking_imod);
+        IMOD(R.string.pref_screen_locking_intika, R.xml.preferences_locking_imod),
+        ABOUT(R.string.pref_screen_about, R.xml.preferences_about);
 
         public static String KEY = "screen";
         private int title, preferenceXML;
