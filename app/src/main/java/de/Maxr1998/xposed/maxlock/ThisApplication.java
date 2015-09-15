@@ -22,6 +22,8 @@ import android.app.Application;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import de.Maxr1998.xposed.maxlock.util.Util;
+
 public class ThisApplication extends Application {
 
     private static Tracker tracker;
@@ -33,10 +35,10 @@ public class ThisApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //LeakCanary.install(this);
-        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-
-        tracker = analytics.newTracker(R.xml.app_tracker);
-        tracker.enableAdvertisingIdCollection(true);
+        if (!Util.isDevMode()) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            tracker = analytics.newTracker(R.xml.app_tracker);
+            tracker.enableAdvertisingIdCollection(true);
+        }
     }
 }
