@@ -1,12 +1,7 @@
 apply plugin: 'com.android.application'
 android {
     signingConfigs {
-        main {
-            storeFile file("../../../app_maxlock_key")
-            keyAlias 'MaxLock'
-            storePassword System.getenv("KSTOREPWD")
-            keyPassword System.getenv("KEYPWD")
-        }
+        main
     }
     compileSdkVersion 23
     buildToolsVersion '23'
@@ -35,6 +30,16 @@ android {
     lintOptions {
         abortOnError false
     }
+}
+
+def propFile = project.file("keyStore.properties")
+if (propFile.exists()) {
+    def props = new Properties()
+    props.load(new FileInputStream(propFile))
+    android.signingConfigs.main.storeFile project.file(props.keyStore)
+    android.signingConfigs.main.storePassword props.keyStorePassword
+    android.signingConfigs.main.keyAlias props.keyAlias
+    android.signingConfigs.main.keyPassword props.keyPassword
 }
 
 repositories {
