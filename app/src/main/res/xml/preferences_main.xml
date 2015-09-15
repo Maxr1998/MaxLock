@@ -6,19 +6,15 @@
         android:title="@string/pref_category_locking"
         tools:ignore="UnusedAttribute">
         <PreferenceScreen
-            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingTypeSettingsFragment"
             android:key="locking_type_settings"
             android:title="@string/pref_screen_locking_type" />
         <PreferenceScreen
-            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingUISettingsFragment"
             android:key="locking_ui_settings"
             android:title="@string/pref_screen_locking_ui" />
         <PreferenceScreen
-            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingOptionsFragment"
             android:key="locking_options"
             android:title="@string/pref_screen_locking_options" />
         <PreferenceScreen
-            android:fragment="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment$LockingIntikaFragment"
             android:key="intika_imod"
             android:title="@string/pref_screen_locking_intika" />
     </PreferenceCategory>
