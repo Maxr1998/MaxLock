@@ -21,7 +21,6 @@ import android.app.Application;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-//import com.squareup.leakcanary.LeakCanary;
 
 public class ThisApplication extends Application {
 
