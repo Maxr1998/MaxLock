@@ -144,7 +144,11 @@
     <string name="pref_category_about">關於</string>
     <string name="app_name_pro">MaxLock專業版</string>
     <string name="app_name_pseudo_pro">MaxLock假專業版</string>
-    <string name="pref_about_summary">點擊這里查看更多資訊</string>
+    <string name="pref_about_summary">點擊查看貢獻，使用的libs和許可證。</string>
+    <string name="pref_screen_about">@string/pref_category_about</string>
++   <string name="pref_category_credits">貢獻</string>
++   <string name="pref_category_translations">翻譯</string>
++   <string name="pref_category_licenses">許可證</string>
     <string name="pref_donate_upgrade_pro">捐贈可升級到專業版</string>
     <string name="toast_no_network_connected">您目前沒有連接到任何網絡</string>
     <string name="pref_enable_pro">開啟專業版</string>
