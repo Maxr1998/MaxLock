@@ -171,7 +171,8 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setTitle() {
-        getActivity().setTitle(getString(screen.title != 0 ? screen.title : R.string.app_name));
+        // If null, use default app name
+        getActivity().setTitle(getString(screen.title != 0 && screen.title != R.string.app_name ? screen.title : R.string.app_name));
     }
 
     @Override
