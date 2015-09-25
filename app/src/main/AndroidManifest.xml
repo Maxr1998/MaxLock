@@ -47,12 +47,10 @@
 
         <activity
             android:name=".ui.SettingsActivity"
-            android:enabled="true"
             android:label="@string/app_name" />
 
         <activity-alias
             android:name=".Main"
-            android:enabled="true"
             android:targetActivity=".ui.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,7 +60,6 @@
 
         <activity-alias
             android:name=".XposedMain"
-            android:enabled="true"
             android:targetActivity=".ui.SettingsActivity">
             <intent-filter>
                 <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
@@ -75,6 +72,10 @@
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
             android:screenOrientation="user"
             android:theme="@style/Alp.42447968.Theme.Dialog.Dark" />
+
+        <activity
+            android:name=".ui.DonateActivity"
+            android:label="@string/app_name" />
 
         <receiver
             android:name=".ui.SettingsActivity$UninstallProtectionReceiver"
@@ -194,8 +195,7 @@
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
-            android:exported="false"
-            android:process=":MLExternal" />
+            android:exported="false" />
 
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
@@ -205,9 +205,7 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
-        <service
-            android:name="com.google.android.gms.analytics.CampaignTrackingService"
-            android:process=":MLExternal" />
+        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
     </application>
 
 </manifest>
