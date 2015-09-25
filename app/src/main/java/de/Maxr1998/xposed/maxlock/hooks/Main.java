@@ -30,15 +30,15 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import static de.robv.android.xposed.XposedBridge.log;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
-    public static final String PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
+    public static final String MAXLOCK_PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
     @SuppressLint("SdCardPath")
-    public static final String TEMPS_PATH = "/data/data/" + PACKAGE_NAME + "/files/temps.json";
+    public static final String TEMPS_PATH = "/data/data/" + MAXLOCK_PACKAGE_NAME + "/files/temps.json";
     private static XSharedPreferences prefsApps;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         log("ML: Loaded Main class");
-        prefsApps = new XSharedPreferences(PACKAGE_NAME, "packages");
+        prefsApps = new XSharedPreferences(MAXLOCK_PACKAGE_NAME, "packages");
         prefsApps.makeWorldReadable();
     }
 
@@ -47,18 +47,26 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && lPParam.packageName.equals(ScreenOff.PACKAGE_NAME))
                 || (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && lPParam.packageName.equals(ScreenOff.PACKAGE_NAME_LEGACY))) {
             ScreenOff.init(prefsApps, lPParam);
+            return;
         }
 
         if (lPParam.packageName.equals(MaxLock.PACKAGE_NAME)) {
-            File tmp = new File(TEMPS_PATH);
-            boolean created = tmp.getParentFile().mkdirs() || tmp.createNewFile();
-            boolean rwSuccess = tmp.setReadable(true, false) && tmp.setWritable(true, false);
-            log(created ? "ML: Temp-file created.\n" : "" + (rwSuccess ? "ML: Permissions set." : "ML: Error settings permissions!"));
+            File tmpF = new File(TEMPS_PATH);
+            File historyF = new File(Apps.HISTORY_PATH);
+            boolean tCreated = tmpF.getParentFile().mkdirs() || tmpF.createNewFile();
+            boolean hCreated = historyF.getParentFile().mkdirs() || historyF.createNewFile();
+            boolean rwSuccess = tmpF.setReadable(true, false) && tmpF.setWritable(true, false) && historyF.setReadable(true, false) && historyF.setWritable(true, false);
+            if (tCreated) log("ML: Temp-file created.");
+            if (hCreated) log("ML: History created.");
+            log(rwSuccess ? "ML: Permissions set." : "ML: Error settings permissions!");
             MaxLock.init(lPParam);
+            return;
         }
 
         if (prefsApps.getBoolean(lPParam.packageName, false)) {
             Apps.init(prefsApps, lPParam);
+        } else {
+            Apps.initLogging(lPParam);
         }
     }
 }
