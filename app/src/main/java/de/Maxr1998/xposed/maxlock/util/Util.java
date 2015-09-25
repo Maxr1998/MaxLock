@@ -370,6 +370,6 @@ public abstract class Util {
         } else {
             throw new IllegalArgumentException("This object only takes views or contexts as argument!");
         }
-        return (int) c.getResources().getDisplayMetrics().density * dp;
+        return (int) (c.getResources().getDisplayMetrics().density * dp);
     }
 }
