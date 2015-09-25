@@ -73,7 +73,7 @@ public class Apps {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     Activity app = (Activity) param.thisObject;
                     log("MLaS|" + app.getClass().getName() + "||" + System.currentTimeMillis());
-                    if (System.currentTimeMillis() - get(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
+                    if (System.currentTimeMillis() - readFile(Main.TEMPS_PATH).optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
                         app.finish();
                         return;
                     }
@@ -97,7 +97,7 @@ public class Apps {
     }
 
     private static boolean pass(String packageName, String activityName, @NonNull XSharedPreferences prefs) throws Throwable {
-        addToHistory(packageName);
+        JSONArray history = addToHistory(packageName);
         // MasterSwitch disabled
         if (!prefs.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             return true;
@@ -106,32 +106,28 @@ public class Apps {
         if (!prefs.getBoolean(activityName, true)) {
             return true;
         }
+        // Activity got launched/closed
+        String[] historyArray = new String[]{history.optString(0), history.optString(1), history.optString(2)};
+        if (historyArray[0].equals(historyArray[1]) && !historyArray[2].equals(historyArray[0])) {
+            return true;
+        }
         // App unlocked
-        if (System.currentTimeMillis() - get(packageName + FLAG_TMP) <= 800) {
+        JSONObject temps = readFile(Main.TEMPS_PATH);
+        if (System.currentTimeMillis() - temps.optLong(packageName + FLAG_TMP) <= 800) {
             return true;
         }
         // I.Mod active
         boolean iModDelayGlobalEnabled = prefs.getBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false);
         boolean iModDelayAppEnabled = prefs.getBoolean(Common.ENABLE_IMOD_DELAY_APP, false);
-        long iModLastUnlockGlobal = get(IMOD_LAST_UNLOCK_GLOBAL);
-        long iModLastUnlockApp = get(packageName + FLAG_IMOD);
+        long iModLastUnlockGlobal = temps.optLong(IMOD_LAST_UNLOCK_GLOBAL);
+        long iModLastUnlockApp = temps.optLong(packageName + FLAG_IMOD);
 
-        if ((iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
+        return (iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
                 System.currentTimeMillis() - iModLastUnlockGlobal <=
                         prefs.getInt(IMOD_DELAY_GLOBAL, 600000)))
                 || iModDelayAppEnabled && (iModLastUnlockApp != 0 &&
                 System.currentTimeMillis() - iModLastUnlockApp <=
-                        prefs.getInt(IMOD_DELAY_APP, 600000))) {
-            return true;
-        }
-        // Activity got launched/closed
-        JSONObject jsonObject = readFile(HISTORY_PATH);
-        JSONArray array = jsonObject.optJSONArray(HISTORY_ARRAY_KEY);
-        if (array == null) {
-            array = new JSONArray();
-        }
-        String[] history = new String[]{array.optString(0), array.optString(1), array.optString(2)};
-        return history[0].equals(history[1]) && !history[2].equals(history[0]);
+                        prefs.getInt(IMOD_DELAY_APP, 600000));
     }
 
     public static void put(@NonNull String... arguments) throws Throwable {
@@ -140,10 +136,6 @@ public class Apps {
             jsonObject.put(s, System.currentTimeMillis());
         }
         writeFile(Main.TEMPS_PATH, jsonObject);
-    }
-
-    private static long get(@NonNull String argument) throws Throwable {
-        return readFile(Main.TEMPS_PATH).optLong(argument);
     }
 
     private static JSONObject readFile(String path) throws Throwable {
@@ -177,7 +169,7 @@ public class Apps {
         }
     }
 
-    private static void addToHistory(@NonNull String activity) throws Throwable {
+    private static JSONArray addToHistory(@NonNull String activity) throws Throwable {
         JSONObject jsonObject = readFile(HISTORY_PATH);
         JSONArray array = jsonObject.optJSONArray(HISTORY_ARRAY_KEY);
         if (array == null) {
@@ -188,5 +180,6 @@ public class Apps {
         array.put(0, activity);
         jsonObject.put(HISTORY_ARRAY_KEY, array);
         writeFile(HISTORY_PATH, jsonObject);
+        return array;
     }
 }
