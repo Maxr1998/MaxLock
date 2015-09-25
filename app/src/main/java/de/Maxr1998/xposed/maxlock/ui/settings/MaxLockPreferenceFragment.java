@@ -86,8 +86,8 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         super.onCreate(paramBundle);
         screen = Screen.valueOf(getArguments().getString(Screen.KEY));
         setTitle();
-        if (screen == Screen.MAIN) {
-            setRetainInstance(true);
+        if (screen == Screen.IMOD) {
+            getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
         }
         getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -95,6 +95,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(screen.preferenceXML);
         switch (screen) {
             case MAIN:
+                setRetainInstance(true);
                 findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
                 break;
             case TYPE:
@@ -138,15 +139,14 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }
                 break;
             case IMOD:
-                getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
                 //Intika I.Mod - Pro setup
-                Preference imod_enabled_g = findPreference(Common.ENABLE_IMOD_DELAY_GLOBAL);
-                Preference imod_enabled_p = findPreference(Common.ENABLE_IMOD_DELAY_APP);
-                imod_enabled_g.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
-                imod_enabled_p.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
+                Preference iModDelayGlobal = findPreference(Common.ENABLE_IMOD_DELAY_GLOBAL);
+                Preference iModDelayPerApp = findPreference(Common.ENABLE_IMOD_DELAY_APP);
+                iModDelayGlobal.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
+                iModDelayPerApp.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
                 if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
-                    imod_enabled_g.setTitle(R.string.pref_delay_needpro);
-                    imod_enabled_p.setTitle(R.string.pref_delay_needpro);
+                    iModDelayGlobal.setTitle(R.string.pref_delay_needpro);
+                    iModDelayPerApp.setTitle(R.string.pref_delay_needpro);
                 }
                 break;
         }
