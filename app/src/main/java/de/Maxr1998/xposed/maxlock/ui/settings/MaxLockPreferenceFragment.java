@@ -53,8 +53,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.ui.DonateActivity;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
@@ -88,16 +90,17 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             setRetainInstance(true);
         }
         getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
-        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
         addPreferencesFromResource(screen.preferenceXML);
         switch (screen) {
             case MAIN:
+                findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
                 break;
             case TYPE:
                 break;
             case UI:
-                Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_KC_DIVIDERS), findPreference(Common.MAKE_KC_TOUCH_VISIBLE)};
+                Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_KC_DIVIDER), findPreference(Common.MAKE_KC_TOUCH_VISIBLE)};
                 if (prefsTheme.contains(Common.THEME_PKG)) {
                     Preference themeManager = findPreference(Common.OPEN_THEME_MANAGER);
                     themeManager.setSummary(getString(R.string.pref_open_theme_manager_summary_applied) + prefsTheme.getString(Common.THEME_PKG, ""));
@@ -171,8 +174,23 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setTitle() {
-        // If null, use default app name
-        getActivity().setTitle(getString(screen.title != 0 && screen.title != R.string.app_name ? screen.title : R.string.app_name));
+        if (screen == Screen.MAIN) {
+            getActivity().setTitle(getName());
+        } else {
+            getActivity().setTitle(screen.title);
+        }
+    }
+
+    private StringBuilder getName() {
+        StringBuilder name = new StringBuilder(getString(R.string.app_name));
+        if (!Util.isDevMode()) {
+            if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
+                name.append(getString(prefs.getBoolean(Common.DONATED, false) ? R.string.name_pro : R.string.name_pseudo_pro));
+            }
+        } else {
+            name.append(" Indev");
+        }
+        return name;
     }
 
     @Override
@@ -212,7 +230,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     launchFragment(Screen.ABOUT.getScreen(), true, this);
                     return true;
                 } else if (preference == findPreference(Common.DONATE)) {
-
+                    getActivity().startActivity(new Intent(getActivity(), DonateActivity.class));
                     return true;
                 } else if (preference == findPreference(Common.UNINSTALL)) {
                     if (!((SettingsActivity) getActivity()).isDeviceAdminActive()) {

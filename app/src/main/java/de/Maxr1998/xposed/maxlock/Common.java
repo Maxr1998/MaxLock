@@ -52,7 +52,7 @@ public abstract class Common {
     public static final String HIDE_TITLE_BAR = "hide_title_bar";
     public static final String HIDE_INPUT_BAR = "hide_input_bar";
     public static final String ENABLE_QUICK_UNLOCK = "quick_unlock";
-    public static final String SHOW_KC_DIVIDERS = "show_dividers";
+    public static final String SHOW_KC_DIVIDER = "show_dividers";
     public static final String MAKE_KC_TOUCH_VISIBLE = "touch_visible";
     public static final String SHOW_PATTERN_PATH = "show_path";
     public static final String ENABLE_PATTERN_FEEDBACK = "haptic_feedback";
@@ -81,6 +81,7 @@ public abstract class Common {
 
     public static final String ABOUT = "about";
     public static final String DONATE = "donate_upgrade_pro";
+    public static final String DONATED = "donated";
     public static final String ENABLE_PRO = "enable_pro";
     public static final String UNINSTALL = "uninstall";
 

@@ -2,6 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">MaxLock</string>
+    <string name="name_pro"> Pro</string>
+    <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">Placeholder</string>
     <string name="xposed_active">MaxLock is not active</string>
     <string name="dialog_text_restart_required">MaxLock requires a restart for changes to take effect</string>
@@ -142,14 +144,16 @@
     <string name="pref_widget_background_color">Widget background color</string>
     <!-- About information -->
     <string name="pref_category_about">About</string>
-    <string name="app_name_pro">MaxLock Pro</string>
-    <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
     <string name="pref_about_summary">Click to see credits, used libs and license.</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_category_credits">Credits</string>
     <string name="pref_category_translations">Translations</string>
     <string name="pref_category_licenses">Licenses</string>
     <string name="pref_donate_upgrade_pro">Donate to upgrade to pro-version</string>
+    <string name="donate_status_donated">Donated.</string>
+    <string name="donate_status_not_donated">Consider donating to support further development. Thanks :)</string>
+    <string name="dialog_message_already_bought">You already own this donation option.
+        You can cancel and pick another product or purchase this one again with consuming (removing) the current purchase in before.\n\nConsume and repurchase?</string>
     <string name="toast_no_network_connected">You\'re currently not connected to any network</string>
     <string name="pref_enable_pro">Enable Pro</string>
     <string name="pref_enable_pro_summary">This will enable pro-features even if you haven\'t bought MaxLock Pro</string>

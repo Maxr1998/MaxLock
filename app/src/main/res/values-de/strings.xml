@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">MaxLock</string>
+    <string name="name_pro"> Pro</string>
+    <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">Platzhalter</string>
     <string name="xposed_active">MaxLock ist nicht aktiv</string>
     <string name="dialog_text_restart_required">MaxLock muss für die Übernahme der Änderungen neu gestartet werden</string>
@@ -142,14 +144,15 @@
     <string name="pref_widget_background_color">Widget Hintergrundfarbe</string>
     <!-- About information -->
     <string name="pref_category_about">Über</string>
-    <string name="app_name_pro">MaxLock Pro</string>
-    <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
     <string name="pref_about_summary">Anklicken, um Danksagung, verwendete Bibliotheken und Lizenzen zu sehen.</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_category_credits">Danksagung</string>
     <string name="pref_category_translations">Übersetzungen</string>
     <string name="pref_category_licenses">Lizenzen</string>
     <string name="pref_donate_upgrade_pro">Spenden, um auf Pro-Version upzugraden</string>
+    <string name="donate_status_donated">Gespendet.</string>
+    <string name="donate_status_not_donated">Ziehe in Erwägung zu spenden, um zukünftige Entwicklung zu untersützen. Vielen Dank :)</string>
+    <string name="dialog_message_already_bought">Du hast diese Spendeoption schon genutzt. Du kannst ein anderes Produkt wählen, oder das gewählte entfernen und neu kaufen.\n\nNeu kaufen?</string>
     <string name="toast_no_network_connected">Sie sind momentan mit keinem Netwerk verbunden</string>
     <string name="pref_enable_pro">Pro aktivieren</string>
     <string name="pref_enable_pro_summary">Alle weiteren Funktionen aktivieren, selbst wenn MaxLock Pro nicht gekauft wurde</string>
