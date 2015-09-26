@@ -281,6 +281,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     intent.launchUrl(getActivity(), Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
                     return true;
                 }
+                break;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
