@@ -26,31 +26,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.google.android.gms.analytics.HitBuilders;
+import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ThisApplication;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class Startup extends AsyncTask<Boolean, Void, Void> {
 
     private final Context mContext;
     private final SharedPreferences prefs;
-    // Outpur vars
-    private boolean showSnackBar;
-    private boolean snackBarMultiLine;
-    private String snackBarContent;
     private boolean showDialog;
     private AlertDialog.Builder builder;
     private boolean isFirstStart;
@@ -105,32 +101,25 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
                     .setNegativeButton(android.R.string.cancel, onClickListener);
         }
         // Other
-        Util.cleanUp(mContext);
-
-        List<String> list = new ArrayList<>();
+        if (!prefs.getString("migrated", "").equals("v5.3.2")) {
+            new File(Util.dataDir(mContext) + "shared_prefs/activities.xml").delete();
+            new File(Util.dataDir(mContext) + "shared_prefs/temps.xml").delete();
+            new File(Util.dataDir(mContext) + "shared_prefs/imod_temp_values").delete();
+            prefs.edit().putString("migrated", "v5.3.2").apply();
+        }
         try {
-            @SuppressLint("SdCardPath") BufferedReader br = new BufferedReader(new FileReader("/data/data/de.robv.android.xposed.installer/log/error.log"));
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.contains("MLaC|") || line.contains("MLiU|")) {
-                    list.add(line);
+            FileUtils.deleteDirectory(new File(Environment.getExternalStorageDirectory() + "/MaxLock_Backup/"));
+            File external = new File(Common.EXTERNAL_FILES_DIR);
+            for (File file : external.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String filename) {
+                    return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
                 }
+            })) {
+                FileUtils.forceDelete(file);
             }
-            br.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        for (int i = 0; i < list.size() - 1; i++) {
-            String[] a = list.get(i).split("\\|");
-            String[] b = list.get(i + 1).split("\\|");
-            if (a[0].endsWith("MLaC") && b[0].endsWith("MLiU") && a[1].equals(b[1]) && Long.parseLong(b[3]) - Long.parseLong(a[3]) < 400) {
-                ThisApplication.getTracker().send(new HitBuilders.EventBuilder()
-                        .setCategory("Launch Activities")
-                        .setAction("Unlock")
-                        .setLabel(a[1])
-                        .setValue(1)
-                        .build());
-            }
         }
         return null;
     }
@@ -144,6 +133,6 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         if (showDialog) {
             builder.create().show();
         }
-        System.out.println("Startup finished");
+        Log.i(Util.LOG_TAG, "Startup finished");
     }
 }

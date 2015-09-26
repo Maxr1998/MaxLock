@@ -41,8 +41,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -67,6 +65,10 @@ public abstract class Util {
 
     public static final int PATTERN_CODE = 48;
     public static final int PATTERN_CODE_APP = 5;
+    public static final String LOG_TAG = "MaxLock";
+    public static final String LOG_TAG_LOCKSCREEN = "ML-Lockscreen";
+    public static final String LOG_TAG_ADMIN = "ML-DeviceAdmin";
+    public static final String LOG_TAG_IAB = "ML-IAB";
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private static AuthenticationSucceededListener authenticationSucceededListener;
     private static Bitmap M_BITMAP;
@@ -302,23 +304,6 @@ public abstract class Util {
 
     public static String dataDir(Context context) {
         return context.getApplicationInfo().dataDir + File.separator;
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint({"WorldReadableFiles"})
-    public static void cleanUp(Context context) {
-        loadPrefs(context);
-        if (!PREFS.getString("migrated", "").equals("v5.3.2")) {
-            new File(dataDir(context) + "shared_prefs/activities.xml").delete();
-            new File(dataDir(context) + "shared_prefs/temps.xml").delete();
-            new File(dataDir(context) + "shared_prefs/imod_temp_values").delete();
-            try {
-                FileUtils.deleteDirectory(new File(Common.EXTERNAL_FILES_DIR + "/files"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            PREFS.edit().putString("migrated", "v5.3.2").apply();
-        }
     }
 
     public static int getPatternCode(int app) {

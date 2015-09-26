@@ -45,6 +45,8 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_IAB;
+
 public class DonateActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
 
     private static final String[] productIds = {
@@ -134,9 +136,9 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
                     b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Log.d("ML-iab", bp.listOwnedProducts().toString());
+                            Log.i(LOG_TAG_IAB, bp.listOwnedProducts().toString());
                             if (bp.consumePurchase(productIds[position])) {
-                                Log.d("ML-iab", bp.listOwnedProducts().toString());
+                                Log.i(LOG_TAG_IAB, bp.listOwnedProducts().toString());
                                 bp.purchase(DonateActivity.this, productIds[position]);
                             }
                         }
@@ -170,7 +172,7 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
     }
 
     private void reloadBilling() {
-        Log.d("ML-iab", "Loading…");
+        Log.i(LOG_TAG_IAB, "Loading…");
         if (bp.loadOwnedPurchasesFromGoogle()) {
             onPurchaseHistoryRestored();
         }
@@ -184,7 +186,7 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
     @Override
     public void onPurchaseHistoryRestored() {
         findViewById(android.R.id.progress).setVisibility(View.GONE);
-        Log.d("ML-iab", "Loaded.");
+        Log.i(LOG_TAG_IAB, "Loaded.");
         List<String> products = bp.listOwnedProducts();
         if (products.size() > 0) {
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Common.DONATED, true).commit();

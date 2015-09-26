@@ -39,6 +39,8 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_LOCKSCREEN;
+
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
     private String packageName;
@@ -218,7 +220,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
             reportDialog.dismiss();
         }
         if (!isInFocus) {
-            Log.d("LockActivity", "Lost focus, finishing.");
+            Log.i(LOG_TAG_LOCKSCREEN, "Lost focus, finishing.");
             if (prefs.getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
                 Util.logFailedAuthentication(this, packageName);
             }

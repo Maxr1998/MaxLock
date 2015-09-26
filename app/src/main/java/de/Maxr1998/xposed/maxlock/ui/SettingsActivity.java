@@ -51,6 +51,8 @@ import de.Maxr1998.xposed.maxlock.ui.settings.WebsiteFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
+
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
     private static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
@@ -236,7 +238,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         @Override
         public void onEnabled(Context context, Intent intent) {
             super.onEnabled(context, intent);
-            Log.i("MaxLock Device Admin", "Device admin is now active!");
+            Log.i(LOG_TAG_ADMIN, "Device admin is now active!");
         }
     }
 }
