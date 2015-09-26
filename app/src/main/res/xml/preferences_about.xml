@@ -13,6 +13,7 @@
             android:summary="@string/credits_fmm_summary"
             android:title="@string/credits_fmm" />
         <Preference
+            android:key="technosparks_profile"
             android:summary="@string/credits_ts_summary"
             android:title="@string/credits_ts" />
         <Preference

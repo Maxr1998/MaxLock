@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -38,6 +39,7 @@ import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.XmlRes;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.preference.PreferenceFragmentCompat;
@@ -74,7 +76,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         if (fromRoot) {
             from.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
-        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : fragment instanceof WebsiteFragment ? "WebsiteFragment" : null).addToBackStack(null).commit();
+        from.getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : null).addToBackStack(null).commit();
         if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
             from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
     }
@@ -271,6 +273,14 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     return true;
                 }
                 break;
+            case ABOUT:
+                if (preference == findPreference("technosparks_profile")) {
+                    @SuppressWarnings("deprecation") CustomTabsIntent intent = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
+                            .setShowTitle(true)
+                            .setToolbarColor(Color.parseColor("#6d993f")).build();
+                    intent.launchUrl(getActivity(), Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
+                    return true;
+                }
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }

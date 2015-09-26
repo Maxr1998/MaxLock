@@ -306,6 +306,17 @@ public abstract class Util {
         return context.getApplicationInfo().dataDir + File.separator;
     }
 
+    public static String getLanguageCode() {
+        String language = Locale.getDefault().getLanguage();
+        String country = Locale.getDefault().getCountry();
+        if (language.equals("")) {
+            return "en-GB";
+        }
+        if (!country.equals("")) {
+            return language + "-" + country;
+        } else return language;
+    }
+
     public static int getPatternCode(int app) {
         if (app == -1) {
             return PATTERN_CODE;

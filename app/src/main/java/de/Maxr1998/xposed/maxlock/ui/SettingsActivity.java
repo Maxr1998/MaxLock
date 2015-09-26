@@ -26,9 +26,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.customtabs.CustomTabsCallback;
+import android.support.customtabs.CustomTabsClient;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.customtabs.CustomTabsService;
+import android.support.customtabs.CustomTabsServiceConnection;
+import android.support.customtabs.CustomTabsSession;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +47,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import java.util.Collections;
+
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -47,7 +56,6 @@ import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
-import de.Maxr1998.xposed.maxlock.ui.settings.WebsiteFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -56,14 +64,16 @@ import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
     private static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
-    private static final String TAG_WEBSITE_FRAGMENT = "WebsiteFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
+    private static final Uri WEBSITE_URI = Uri.parse("http://maxlock.nfshost.com/?client=inapp&lang=" + Util.getLanguageCode());
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
     private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
     public ComponentName deviceAdmin;
     private MaxLockPreferenceFragment mSettingsFragment;
     private DevicePolicyManager devicePolicyManager;
+    private CustomTabsServiceConnection mConnection;
+    private CustomTabsSession mSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +117,22 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             lockFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment, TAG_LOCK_FRAGMENT).commit();
         }
+
+        mConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
+                customTabsClient.warmup(0);
+                mSession = customTabsClient.newSession(new CustomTabsCallback());
+                Bundle technosparksProfile = new Bundle();
+                technosparksProfile.putParcelable(CustomTabsService.KEY_URL, Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
+                mSession.mayLaunchUrl(WEBSITE_URI, null, Collections.singletonList(technosparksProfile));
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+            }
+        };
+        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", mConnection);
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -123,11 +149,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
             }
         });
-        Fragment website = getSupportFragmentManager().findFragmentByTag(TAG_WEBSITE_FRAGMENT);
         Fragment lockScreen = getSupportFragmentManager().findFragmentByTag(TAG_LOCK_FRAGMENT);
-        if (website != null && website.isVisible() && getSupportActionBar() != null && getSupportFragmentManager().findFragmentById(R.id.settings_fragment) == null) {
-            getSupportActionBar().hide();
-        } else if (getSupportActionBar() != null && !getSupportActionBar().isShowing() && (lockScreen == null || !lockScreen.isVisible())) {
+        if (getSupportActionBar() != null && !getSupportActionBar().isShowing() && (lockScreen == null || !lockScreen.isVisible())) {
             getSupportActionBar().show();
         }
         return super.onCreateOptionsMenu(menu);
@@ -145,7 +168,10 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_info:
-                MaxLockPreferenceFragment.launchFragment(new WebsiteFragment(), true, mSettingsFragment);
+                @SuppressWarnings("deprecation") CustomTabsIntent intent = new CustomTabsIntent.Builder(mSession)
+                        .setShowTitle(true)
+                        .setToolbarColor(getResources().getColor(R.color.primary_red)).build();
+                intent.launchUrl(this, WEBSITE_URI);
                 break;
             case android.R.id.home:
                 onBackPressed();
@@ -156,11 +182,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     @Override
     public void onBackPressed() {
-        Fragment website = getSupportFragmentManager().findFragmentByTag(TAG_WEBSITE_FRAGMENT);
-        if (website != null && website.isVisible()) {
-            if (((WebsiteFragment) website).back())
-                return;
-        }
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
@@ -210,6 +231,12 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        unbindService(mConnection);
+        super.onDestroy();
+    }
+
     public void restart() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_text_restart_required);
@@ -223,6 +250,10 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                         startActivity(intent);
                     }
                 }).create().show();
+    }
+
+    public CustomTabsSession getSession() {
+        return mSession;
     }
 
     public DevicePolicyManager getDevicePolicyManager() {
