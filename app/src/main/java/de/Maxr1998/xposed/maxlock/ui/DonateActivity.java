@@ -78,11 +78,17 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String licenseKey = getString(R.string.license_key);
-        if (BillingProcessor.isIabServiceAvailable(this) && !licenseKey.equals("DUMMY") && licenseKey.startsWith("M")) {
-            bp = new BillingProcessor(this, licenseKey, this);
-        }
         donationStatusText = (TextView) findViewById(R.id.donation_status);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String licenseKey = getString(R.string.license_key);
+                if (BillingProcessor.isIabServiceAvailable(DonateActivity.this) && !licenseKey.equals("DUMMY") && licenseKey.startsWith("M")) {
+                    bp = new BillingProcessor(DonateActivity.this, licenseKey, DonateActivity.this);
+                }
+            }
+        }).run();
+
     }
 
     @Override
