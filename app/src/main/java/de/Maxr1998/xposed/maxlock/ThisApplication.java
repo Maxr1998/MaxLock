@@ -22,6 +22,8 @@ import android.app.Application;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import java.io.File;
+
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class ThisApplication extends Application {
@@ -35,7 +37,7 @@ public class ThisApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (!Util.isDevMode()) {
+        if (!Util.isDevMode() && !new File(Common.EXTERNAL_FILES_DIR, "disable-ga").exists()) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             tracker = analytics.newTracker(R.xml.app_tracker);
             tracker.enableAdvertisingIdCollection(true);
