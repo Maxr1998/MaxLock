@@ -70,7 +70,6 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     private static final int WALLPAPER_REQUEST_CODE = 42;
     private SharedPreferences prefs;
-    private String title = null;
     private Screen screen;
 
     public static void launchFragment(@NonNull Fragment fragment, boolean fromRoot, @NonNull Fragment from) {
