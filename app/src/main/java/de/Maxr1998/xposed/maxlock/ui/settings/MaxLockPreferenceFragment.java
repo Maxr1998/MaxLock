@@ -69,8 +69,8 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     private static final int WALLPAPER_REQUEST_CODE = 42;
-    protected SharedPreferences prefs, prefsTheme;
-    protected String title = null;
+    private SharedPreferences prefs;
+    private String title = null;
     private Screen screen;
 
     public static void launchFragment(@NonNull Fragment fragment, boolean fromRoot, @NonNull Fragment from) {
@@ -90,13 +90,12 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         screen = Screen.valueOf(getArguments().getString(Screen.KEY));
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         setTitle();
         if (screen == Screen.IMOD) {
             getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
         }
         getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
         addPreferencesFromResource(screen.preferenceXML);
         switch (screen) {
             case MAIN:
@@ -106,6 +105,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case TYPE:
                 break;
             case UI:
+                SharedPreferences prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
                 Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_KC_DIVIDER), findPreference(Common.MAKE_KC_TOUCH_VISIBLE)};
                 if (prefsTheme.contains(Common.THEME_PKG)) {
                     Preference themeManager = findPreference(Common.OPEN_THEME_MANAGER);
