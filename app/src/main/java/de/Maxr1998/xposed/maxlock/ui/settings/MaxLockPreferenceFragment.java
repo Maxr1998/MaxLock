@@ -100,6 +100,12 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case MAIN:
                 setRetainInstance(true);
                 findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
+                Preference pro = findPreference(Common.ENABLE_PRO);
+                if (prefs.getBoolean(Common.DONATED, false)) {
+                    pro.setEnabled(false);
+                    pro.setSummary("");
+                    prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+                }
                 break;
             case TYPE:
                 break;
