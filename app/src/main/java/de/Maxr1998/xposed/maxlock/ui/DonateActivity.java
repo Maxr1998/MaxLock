@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -79,16 +80,16 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         donationStatusText = (TextView) findViewById(R.id.donation_status);
-        new Thread(new Runnable() {
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            public void run() {
+            protected Void doInBackground(Void... params) {
                 String licenseKey = getString(R.string.license_key);
                 if (BillingProcessor.isIabServiceAvailable(DonateActivity.this) && !licenseKey.equals("DUMMY") && licenseKey.startsWith("M")) {
                     bp = new BillingProcessor(DonateActivity.this, licenseKey, DonateActivity.this);
                 }
+                return null;
             }
-        }).run();
-
+        }.execute();
     }
 
     @Override
