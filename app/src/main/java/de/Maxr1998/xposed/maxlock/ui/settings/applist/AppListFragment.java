@@ -23,8 +23,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -56,7 +58,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -68,7 +69,7 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 
 public class AppListFragment extends Fragment {
 
-    private static List<Map<String, Object>> APP_LIST;
+    private static List<ApplicationInfo> APP_LIST = new ArrayList<>();
     private static SetupAppListTask TASK;
     private AppListAdapter mAdapter;
     private SharedPreferences prefs;
@@ -79,11 +80,11 @@ public class AppListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        prefs = getActivity().getSharedPreferences(Common.PREFS, Context.MODE_PRIVATE);
-        mAdapter = new AppListAdapter(AppListFragment.this, getActivity());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mAdapter = new AppListAdapter(AppListFragment.this, APP_LIST);
         // Generate list
-        if (APP_LIST == null && TASK == null) {
-            TASK = new SetupAppListTask(getActivity(), this);
+        if (APP_LIST.isEmpty() && TASK == null) {
+            TASK = new SetupAppListTask(this, APP_LIST, mAdapter);
             TASK.execute();
         }
     }
@@ -104,17 +105,7 @@ public class AppListFragment extends Fragment {
         recyclerView.addOnScrollListener(fastScroller.getOnScrollListener());
         SectionTitleIndicator scrollIndicator = (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
         fastScroller.setSectionIndicator(scrollIndicator);
-
-        if (APP_LIST != null) {
-            appListFinished(APP_LIST);
-        }
         return rootView;
-    }
-
-    public void appListFinished(List<Map<String, Object>> list) {
-        APP_LIST = list;
-        mAdapter.updateList(APP_LIST);
-        filter();
     }
 
     @Override
@@ -276,7 +267,7 @@ public class AppListFragment extends Fragment {
         item.setIcon(icon);
     }
 
-    private void filter() {
+    public void filter() {
         mAdapter.getFilter().filter(prefs.getString("app_list_filter", ""));
     }
 
@@ -284,7 +275,7 @@ public class AppListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (String.valueOf(requestCode).startsWith(String.valueOf(Util.PATTERN_CODE_APP))) {
             if (resultCode == LockPatternActivity.RESULT_OK) {
-                String app = (String) APP_LIST.get(Integer.parseInt(String.valueOf(requestCode).substring(1))).get("key");
+                String app = (String) APP_LIST.get(Integer.parseInt(String.valueOf(requestCode).substring(1))).loadLabel(getActivity().getPackageManager());
                 Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), app);
             }
         } else super.onActivityResult(requestCode, resultCode, data);

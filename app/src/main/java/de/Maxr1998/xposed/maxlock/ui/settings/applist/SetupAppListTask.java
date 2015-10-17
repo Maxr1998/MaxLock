@@ -24,33 +24,32 @@ import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 
-class SetupAppListTask extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
+class SetupAppListTask extends AsyncTask<Void, Integer, Void> {
 
     private final Context mContext;
     private final AppListFragment mFragment;
-    private int mProgress = 0;
+    private final List<ApplicationInfo> mAppList;
+    private final AppListAdapter mAdapter;
     private ProgressDialog mProgressDialog;
-    private List<ApplicationInfo> mTempAppList;
+    private List<ApplicationInfo> mAllApps;
 
-    public SetupAppListTask(Context c, AppListFragment a) {
-        mContext = c;
+    public SetupAppListTask(AppListFragment a, List<ApplicationInfo> list, AppListAdapter adapter) {
+        mContext = a.getActivity();
         mFragment = a;
+        mAppList = list;
+        mAdapter = adapter;
     }
 
     @Override
     protected void onPreExecute() {
-        mTempAppList = mContext.getPackageManager().getInstalledApplications(0);
+        mAllApps = mContext.getPackageManager().getInstalledApplications(0);
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -62,51 +61,50 @@ class SetupAppListTask extends AsyncTask<Void, Integer, List<Map<String, Object>
                 ((Activity) mContext).onBackPressed();
             }
         });
-        mProgressDialog.setMax(mTempAppList.size());
+        mProgressDialog.setMax(mAllApps.size());
         mProgressDialog.show();
     }
 
     @Override
-    protected List<Map<String, Object>> doInBackground(Void... voids) {
+    protected Void doInBackground(Void... voids) {
+        mAppList.clear();
         PackageManager pm = mContext.getPackageManager();
-        List<Map<String, Object>> mItemList = new ArrayList<>();
-        for (int i = 0; i < mTempAppList.size(); i++) {
-            if ((pm.getLaunchIntentForPackage(mTempAppList.get(i).packageName) != null && !mTempAppList.get(i).packageName.equals(Common.PKG_NAME)) || mTempAppList.get(i).packageName.equals("com.android.packageinstaller")) {
-                try {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("title", pm.getApplicationLabel(mTempAppList.get(i)));
-                    map.put("key", mTempAppList.get(i).packageName);
-                    map.put("icon", pm.getApplicationIcon(mTempAppList.get(i)));
-                    mItemList.add(map);
-                } catch (OutOfMemoryError o) {
-                    Log.e("MaxLock", "Out of memory while filtering application data!", o);
-                }
+        for (int i = 0; i < mAllApps.size(); i++) {
+            ApplicationInfo ai = mAllApps.get(i);
+            if ((pm.getLaunchIntentForPackage(ai.packageName) != null && !ai.packageName.equals(Common.PKG_NAME)) || ai.packageName.equals("com.android.packageinstaller")) {
+                mAppList.add(ai);
             }
-            mProgress++;
-            publishProgress(mProgress);
+            publishProgress(i + 1);
         }
-        System.gc();
-        Collections.sort(mItemList, new Comparator<Map<String, Object>>() {
+        Collections.sort(mAppList, new Comparator<ApplicationInfo>() {
             @Override
-            public int compare(Map<String, Object> lhs, Map<String, Object> rhs) {
-                String s1 = (String) lhs.get("title");
-                String s2 = (String) rhs.get("title");
+            public int compare(ApplicationInfo lhs, ApplicationInfo rhs) {
+                String s1 = lhs.loadLabel(mContext.getPackageManager()).toString();
+                String s2 = rhs.loadLabel(mContext.getPackageManager()).toString();
                 return s1.compareToIgnoreCase(s2);
             }
         });
-        return mItemList;
+        publishProgress(1);
+        mAdapter.getFilter().saveFilterList();
+        return null;
     }
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
-        if (mProgressDialog != null)
+        if (mProgressDialog != null) {
             mProgressDialog.setProgress(progress[0]);
+            if (progress[0] == mAllApps.size()) {
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setMax(1);
+            }
+        }
     }
 
     @Override
-    protected void onPostExecute(List<Map<String, Object>> list) {
-        super.onPostExecute(list);
+    protected void onPostExecute(Void v) {
+        super.onPostExecute(v);
+        mAdapter.notifyDataSetChanged();
+        mFragment.filter();
         mProgressDialog.dismiss();
-        mFragment.appListFinished(list);
     }
 }

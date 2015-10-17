@@ -24,8 +24,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,13 +50,13 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.common.collect.ImmutableList;
 import com.haibison.android.lockpattern.LockPatternActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -72,18 +72,17 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
     private final Fragment mFragment;
     private final Context mContext;
     private final SharedPreferences prefsApps, prefsKeysPerApp;
-    private final Filter mFilter;
-    private List<Map<String, Object>> oriItemList;
-    private List<Map<String, Object>> mItemList;
+    private final AppFilter mFilter;
+    private final List<ApplicationInfo> mItemList;
     private AlertDialog dialog;
 
-    public AppListAdapter(Fragment fragment, Context context) {
+    public AppListAdapter(Fragment fragment, List<ApplicationInfo> list) {
         mFragment = fragment;
-        mContext = context;
-        mItemList = new ArrayList<>();
+        mContext = fragment.getActivity();
+        mItemList = list;
         prefsApps = MLPreferences.getPrefsApps(mContext);
         prefsKeysPerApp = mContext.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
-        mFilter = new MyFilter();
+        mFilter = new AppFilter();
     }
 
     @Override
@@ -94,12 +93,13 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     @Override
     public void onBindViewHolder(final AppsListViewHolder hld, final int position) {
-        final String sTitle = (String) mItemList.get(position).get("title");
-        final String key = (String) mItemList.get(position).get("key");
-        final Drawable dIcon = (Drawable) mItemList.get(position).get("icon");
+        PackageManager pm = mContext.getPackageManager();
+        final String key = mItemList.get(position).packageName;
+        hld.tag = key;
+        hld.prefsApps = prefsApps;
 
-        hld.appName.setText(sTitle);
-        hld.appIcon.setImageDrawable(dIcon);
+        hld.appName.setText(mItemList.get(position).loadLabel(pm));
+        hld.appIcon.setImageDrawable(mItemList.get(position).loadIcon(pm));
 
         if (prefsApps.getBoolean(key, false)) {
             hld.toggle.setChecked(true);
@@ -108,18 +108,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
             hld.toggle.setChecked(false);
             hld.options.setVisibility(View.GONE);
         }
-
-        // Launch app when tapping icon
-        hld.appIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (key.equals("com.android.packageinstaller"))
-                    return;
-                Intent it = mContext.getPackageManager().getLaunchIntentForPackage(key);
-                it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(it);
-            }
-        });
 
         hld.options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +152,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                                     switch (i) {
                                         case 0:
                                             Util.setPassword(mContext, key);
-                                            break;
+                                            return;
                                         case 1:
                                             frag = new PinSetupFragment();
                                             break;
@@ -174,14 +162,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                                         case 3:
                                             Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, mContext, LockPatternActivity.class);
                                             mFragment.startActivityForResult(intent, Util.getPatternCode(position));
-                                            break;
+                                            return;
                                     }
-                                    if (i == 1 || i == 2) {
-                                        Bundle b = new Bundle(1);
-                                        b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
-                                        frag.setArguments(b);
-                                        ((SettingsActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).addToBackStack(null).commit();
-                                    }
+                                    Bundle b = new Bundle(1);
+                                    b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
+                                    frag.setArguments(b);
+                                    ((SettingsActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).addToBackStack(null).commit();
                                 }
                             }).show();
                         } else
@@ -192,7 +178,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                 // Finish dialog
                 dialog = new AlertDialog.Builder(mContext)
                         .setTitle(mContext.getString(R.string.dialog_title_settings))
-                        .setIcon(dIcon)
+                        .setIcon(mItemList.get(position).loadIcon(mContext.getPackageManager()))
                         .setView(checkBoxView)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -207,50 +193,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                         }).show();
             }
         });
-        // Turn lock on/off
-        hld.toggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToggleButton tb = (ToggleButton) v;
-                boolean value = tb.isChecked();
-                if (value) {
-                    prefsApps.edit()
-                            .putBoolean(key, true)
-                            .commit();
-                    AnimationSet anim = new AnimationSet(true);
-                    anim.addAnimation(AnimationUtils.loadAnimation(mContext, R.anim.appslist_settings_rotate));
-                    anim.addAnimation(AnimationUtils.loadAnimation(mContext, R.anim.appslist_settings_translate));
-                    hld.options.startAnimation(anim);
-                    hld.options.setVisibility(View.VISIBLE);
-                } else {
-                    prefsApps.edit().remove(key).commit();
-                    AnimationSet animOut = new AnimationSet(true);
-                    animOut.addAnimation(AnimationUtils.loadAnimation(mContext, R.anim.appslist_settings_rotate_out));
-                    animOut.addAnimation(AnimationUtils.loadAnimation(mContext, R.anim.appslist_settings_translate_out));
-                    animOut.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 0.0f);
-                            animation.setDuration(1);
-                            hld.options.startAnimation(animation);
-                            hld.options.setVisibility(View.GONE);
-                            hld.options.clearAnimation();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
-                    hld.options.startAnimation(animOut);
-                }
-            }
-        });
     }
 
     @Override
@@ -259,11 +201,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
     }
 
     private String nameAt(int position) {
-        return (String) mItemList.get(position != getItemCount() ? position : position - 1).get("title");
+        return mItemList.get(position < getItemCount() ? position : getItemCount() - 1).loadLabel(mContext.getPackageManager()).toString();
     }
 
-    public Filter getFilter() {
-        return mFilter;
+    @Override
+    public String[] getSections() {
+        return "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("");
     }
 
     @Override
@@ -277,15 +220,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         return 0;
     }
 
-    @Override
-    public String[] getSections() {
-        return "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("");
-    }
-
-    public void updateList(List<Map<String, Object>> newList) {
-        mItemList = newList;
-        oriItemList = mItemList;
-        notifyDataSetChanged();
+    public AppFilter getFilter() {
+        return mFilter;
     }
 
     public static class AppsListViewHolder extends RecyclerView.ViewHolder {
@@ -294,6 +230,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         public final TextView appName;
         public final ImageButton options;
         public final ToggleButton toggle;
+        String tag;
+        SharedPreferences prefsApps;
 
         public AppsListViewHolder(View itemView) {
             super(itemView);
@@ -301,6 +239,61 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
             appName = (TextView) itemView.findViewById(R.id.title);
             options = (ImageButton) itemView.findViewById(R.id.edit);
             toggle = (ToggleButton) itemView.findViewById(R.id.toggleLock);
+
+            // Launch app when tapping icon
+            appIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (tag.equals("com.android.packageinstaller"))
+                        return;
+                    Intent it = v.getContext().getPackageManager().getLaunchIntentForPackage(tag);
+                    it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    v.getContext().startActivity(it);
+                }
+            });
+
+            // Turn lock on/off
+            toggle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToggleButton tb = (ToggleButton) v;
+                    boolean value = tb.isChecked();
+                    if (value) {
+                        prefsApps.edit().putBoolean(tag, true).commit();
+                        AnimationSet anim = new AnimationSet(true);
+                        anim.addAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.appslist_settings_rotate));
+                        anim.addAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.appslist_settings_translate));
+                        options.startAnimation(anim);
+                        options.setVisibility(View.VISIBLE);
+                    } else {
+                        prefsApps.edit().remove(tag).commit();
+                        AnimationSet animOut = new AnimationSet(true);
+                        animOut.addAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.appslist_settings_rotate_out));
+                        animOut.addAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.appslist_settings_translate_out));
+                        animOut.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 0.0f);
+                                animation.setDuration(1);
+                                options.startAnimation(animation);
+                                options.setVisibility(View.GONE);
+                                options.clearAnimation();
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        options.startAnimation(animOut);
+                    }
+                }
+            });
         }
     }
 
@@ -360,32 +353,31 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         }
     }
 
-    private class MyFilter extends Filter {
+    class AppFilter extends Filter {
+
+        private List<ApplicationInfo> oriItemList;
 
         @SuppressLint("DefaultLocale")
         @Override
         protected FilterResults performFiltering(CharSequence filter) {
             final String search = filter.toString().toLowerCase();
-
             FilterResults results = new FilterResults();
-
             if (search.length() == 0) {
                 results.values = oriItemList;
                 results.count = oriItemList.size();
             } else {
-                List<Map<String, Object>> filteredList = new ArrayList<>();
-
-                for (Map<String, Object> app : oriItemList) {
+                List<ApplicationInfo> filteredList = new ArrayList<>();
+                for (int i = 0; i < oriItemList.size(); i++) {
                     boolean add = false;
                     switch (search) {
                         case "@*activated*":
-                            add = prefsApps.getBoolean((String) app.get("key"), false);
+                            add = prefsApps.getBoolean(oriItemList.get(i).packageName, false);
                             break;
                         case "@*deactivated*":
-                            add = !prefsApps.getBoolean((String) app.get("key"), false);
+                            add = !prefsApps.getBoolean(oriItemList.get(i).packageName, false);
                             break;
                         default:
-                            String title = ((String) app.get("title")).toLowerCase();
+                            String title = oriItemList.get(i).loadLabel(mContext.getPackageManager()).toString().toLowerCase();
                             if (title.startsWith(search)) {
                                 add = true;
                             }
@@ -405,7 +397,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                             break;
                     }
                     if (add) {
-                        filteredList.add(app);
+                        filteredList.add(oriItemList.get(i));
                     }
                 }
                 results.values = filteredList;
@@ -417,8 +409,13 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            mItemList = (List<Map<String, Object>>) results.values;
+            mItemList.clear();
+            mItemList.addAll((List<ApplicationInfo>) results.values);
             notifyDataSetChanged();
+        }
+
+        public void saveFilterList() {
+            oriItemList = ImmutableList.copyOf(mItemList);
         }
     }
 
