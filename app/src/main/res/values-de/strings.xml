@@ -146,6 +146,7 @@
     <string name="pref_category_about">Über</string>
     <string name="pref_about_summary">Anklicken, um Danksagung, verwendete Bibliotheken und Lizenzen zu sehen.</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
+    <string name="pref_visit_website">Besuche Maxr1998\'s Webseite</string>
     <string name="pref_category_credits">Danksagung</string>
     <string name="pref_category_translations">Übersetzungen</string>
     <string name="pref_category_licenses">Lizenzen</string>

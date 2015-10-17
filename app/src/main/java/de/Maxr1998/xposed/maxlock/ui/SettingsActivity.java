@@ -47,7 +47,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -65,7 +65,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     private static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
-    private static final Uri WEBSITE_URI = Uri.parse("http://maxlock.nfshost.com/?client=inapp&lang=" + Util.getLanguageCode());
+    private static final Uri WEBSITE_URI = Uri.parse("http://maxlock.maxr1998.de/?client=inapp&lang=" + Util.getLanguageCode());
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
     private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
@@ -123,9 +123,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
                 customTabsClient.warmup(0);
                 mSession = customTabsClient.newSession(new CustomTabsCallback());
+                Bundle maxr1998Website = new Bundle();
+                maxr1998Website.putParcelable(CustomTabsService.KEY_URL, Uri.parse("http://maxr1998.de/"));
                 Bundle technosparksProfile = new Bundle();
                 technosparksProfile.putParcelable(CustomTabsService.KEY_URL, Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
-                mSession.mayLaunchUrl(WEBSITE_URI, null, Collections.singletonList(technosparksProfile));
+                mSession.mayLaunchUrl(WEBSITE_URI, null, Arrays.asList(technosparksProfile, maxr1998Website));
             }
 
             @Override
@@ -170,7 +172,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             case R.id.toolbar_info:
                 @SuppressWarnings("deprecation") CustomTabsIntent intent = new CustomTabsIntent.Builder(mSession)
                         .setShowTitle(true)
-                        .setToolbarColor(getResources().getColor(R.color.primary_red)).build();
+                        .enableUrlBarHiding()
+                        .setToolbarColor(getResources().getColor(R.color.primary_red))
+                        .build();
                 intent.launchUrl(this, WEBSITE_URI);
                 break;
             case android.R.id.home:

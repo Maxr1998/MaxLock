@@ -282,10 +282,19 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }
                 break;
             case ABOUT:
-                if (preference == findPreference("technosparks_profile")) {
-                    @SuppressWarnings("deprecation") CustomTabsIntent intent = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
+                if (preference == findPreference(Common.VISIT_WEBSITE)) {
+                    CustomTabsIntent intent = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
                             .setShowTitle(true)
-                            .setToolbarColor(Color.parseColor("#6d993f")).build();
+                            .enableUrlBarHiding()
+                            .setToolbarColor(Color.parseColor("#ffc107"))
+                            .build();
+                    intent.launchUrl(getActivity(), Uri.parse("http://maxr1998.de/"));
+                } else if (preference == findPreference("technosparks_profile")) {
+                    CustomTabsIntent intent = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
+                            .setShowTitle(true)
+                            .enableUrlBarHiding()
+                            .setToolbarColor(Color.parseColor("#6d993f"))
+                            .build();
                     intent.launchUrl(getActivity(), Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
                     return true;
                 }

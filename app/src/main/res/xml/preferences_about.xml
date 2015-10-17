@@ -6,6 +6,9 @@
             android:summary="@string/maxlock_author"
             android:title="@string/app_name"
             maxlock:license="@string/license_maxlock" />
+        <Preference
+            android:key="visit_website"
+            android:title="@string/pref_visit_website" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_credits">
