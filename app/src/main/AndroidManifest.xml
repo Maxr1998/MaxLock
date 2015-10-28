@@ -92,11 +92,11 @@
             </intent-filter>
         </receiver>
 
-        <!-- Theming API -->
-        <service
+        <!-- Theming API || DISABLED -->
+        <!--<service
             android:name=".util.ThemeService"
             android:enabled="false"
-            android:exported="false" />
+            android:exported="false" />-->
 
         <!-- Lock screen -->
         <activity

@@ -17,144 +17,75 @@
 
 package de.Maxr1998.xposed.maxlock.util;
 
-import android.annotation.SuppressLint;
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.AssetManager;
-import android.os.Build;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import de.Maxr1998.xposed.maxlock.Common;
 
 public class ThemeService extends IntentService {
 
-    private static final String themeOrigFile = "theme.xml";
-    private static SharedPreferences PREFS_THEME;
-    private File themeFile;
-    private SharedPreferences prefs;
-
+    /*public static final String THEME_STORE_ASSET_NAME = "theme-store.json";
+    public static final String THEME_INSTALL_PATH = "theme/" + THEME_STORE_ASSET_NAME;
+    public static final String WALLPAPER_INSTALL_PATH = "theme/wallpaper.png";
+    private File mInstalledThemeFile;*/
 
     public ThemeService() {
         super("ThemeService");
     }
 
-    @SuppressLint("WorldReadableFiles")
-    private static void loadPrefs(Context context) {
-        if (PREFS_THEME == null)
-            //noinspection deprecation
-            PREFS_THEME = context.getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
-    }
-
-    public static ViewGroup.LayoutParams container(final View container, Context context, String lockingType) {
-        loadPrefs(context);
-        String containerMargin = "container_margin_";
-        int density = (int) context.getResources().getDisplayMetrics().density;
-        int left = PREFS_THEME.getInt(containerMargin + "left" + "_" + lockingType, 0) * density;
-        int right = PREFS_THEME.getInt(containerMargin + "right" + "_" + lockingType, 0) * density;
-        int top = PREFS_THEME.getInt(containerMargin + "top" + "_" + lockingType, 0) * density;
-        int bottom = PREFS_THEME.getInt(containerMargin + "bottom" + "_" + lockingType, 0) * density;
-
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(container.getLayoutParams());
-        layoutParams.setMargins(left, top, right, bottom);
-        layoutParams.weight = 1;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            layoutParams.setMarginStart(left);
-            layoutParams.setMarginEnd(right);
-        }
-        return layoutParams;
-    }
-
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("MaxLock/ThemeService", "Intent received");
-        themeFile = new File(Util.dataDir(this) + "shared_prefs" + File.separator + themeOrigFile);
-
-        int extra = intent.getIntExtra("extra", -1);
-        switch (extra) {
+        /*Log.d("MaxLock/ThemeService", "Intent received");
+        mInstalledThemeFile = new File(Util.dataDir(this) + THEME_INSTALL_PATH);
+        switch (intent.getIntExtra("extra", -1)) {
             case 1:
-                importTheme(intent.getStringExtra("package"));
+                installFrom(intent.getStringExtra("package"));
                 break;
             case 2:
-                clearUp();
+                uninstall();
                 break;
-        }
+        }*/
     }
 
-    @SuppressLint("WorldReadableFiles")
-    private void importTheme(String packageName) {
-        /**
-         * Preferences
-         */
-        prefs = getSharedPreferences(Common.PREFS, MODE_PRIVATE);
-        /**
-         * Files
-         */
+    /*@SuppressLint("WorldReadableFiles")
+    private void installFrom(String packageName) {
         AssetManager assets;
         try {
             assets = getPackageManager().getResourcesForApplication(packageName).getAssets();
+            // Copy file
+            InputStream themeStream = assets.open(THEME_STORE_ASSET_NAME);
+            FileUtils.copyInputStreamToFile(themeStream, mInstalledThemeFile);
 
-            // theme.xml file
-            InputStream themeStream = assets.open(themeOrigFile);
-            FileUtils.copyInputStreamToFile(themeStream, themeFile);
-            if (themeFile.length() < 10) {
-                Toast.makeText(this, "No theme.xml found, exiting...", Toast.LENGTH_SHORT).show();
-                //noinspection ResultOfMethodCallIgnored
-                themeFile.delete();
-                return;
-            }
-            getSharedPreferences(Common.PREFS_THEME, MODE_MULTI_PROCESS);
-            //noinspection deprecation
-            getSharedPreferences(Common.PREFS_THEME, MODE_WORLD_READABLE);
-
-            // background.png
-            String backgroundOrigFile = "background.png";
-            InputStream backgroundStream = assets.open(backgroundOrigFile);
-            File backgroundFile = new File(Util.dataDir(this) + "theme" + File.separator + backgroundOrigFile);
-            FileUtils.copyInputStreamToFile(backgroundStream, backgroundFile);
-            if (themeFile.length() < 10)
-                //noinspection ResultOfMethodCallIgnored
-                backgroundFile.delete();
-            else {
-                prefs.edit().putString(Common.BACKGROUND, "theme").apply();
+            // Extract wallpaper
+            JSONObject j = new JSONObject(FileUtils.readFileToString(mInstalledThemeFile));
+            if (!j.isNull("background_image")) {
+                byte[] decodedString = Base64.decode(j.getString("background_image"), Base64.URL_SAFE);
+                Bitmap wallpaper = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                FileOutputStream out = null;
+                try {
+                    out = new FileOutputStream(Util.dataDir(this) + WALLPAPER_INSTALL_PATH);
+                    wallpaper.compress(Bitmap.CompressFormat.PNG, 100, out);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (out != null) {
+                            out.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } catch (Exception e) {
+            uninstall();
             e.printStackTrace();
-            clearUp();
         }
     }
 
-    private void clearUp() {
-        /**
-         * Preferences
-         */
-        prefs = getSharedPreferences(Common.PREFS, MODE_PRIVATE);
-        prefs.edit()
-                .putString(Common.BACKGROUND, "wallpaper")
-                .apply();
-
-        /**
-         * Files
-         */
-        //noinspection ResultOfMethodCallIgnored
-        themeFile.delete();
-        getSharedPreferences("theme", MODE_MULTI_PROCESS);
-        File theme = new File(Util.dataDir(this) + "theme");
+    private void uninstall() {
         try {
-            FileUtils.deleteDirectory(theme);
+            FileUtils.deleteDirectory(new File(Util.dataDir(this) + "theme"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

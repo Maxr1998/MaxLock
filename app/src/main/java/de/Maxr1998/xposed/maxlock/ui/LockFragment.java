@@ -18,7 +18,6 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -38,6 +37,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.DimenRes;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -58,11 +58,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.util.ThemeService;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
@@ -77,7 +77,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             R.id.pin0, R.id.pin_ok
     );
     private AuthenticationSucceededListener authenticationSucceededListener;
-    private SharedPreferences prefs, prefsTheme;
+    private SharedPreferences prefs;
     private LockPatternView lockPatternView;
     private LockPatternView.OnPatternListener patternListener;
     private final Runnable mLockPatternViewReloader = new Runnable() {
@@ -88,23 +88,21 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         }
     };
     private ViewGroup rootView;
-    private TextView titleView;
-    private ImageButton mDeleteButton;
+    private TextView mInputTextView;
     private FrameLayout container;
     private String requestPkg;
     private int screenHeight, screenWidth, statusBarHeight, navBarHeight;
     private String password, lockingType;
     private StringBuilder key;
-    private TextView mInputText;
     private Bitmap kCCBackground;
     private RippleDrawable kCTouchLP;
     private int containerX, containerY;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            authenticationSucceededListener = (AuthenticationSucceededListener) activity;
+            authenticationSucceededListener = (AuthenticationSucceededListener) context;
         } catch (ClassCastException e) {
             throw new RuntimeException(getActivity().getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this fragment", e);
         }
@@ -119,8 +117,6 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         SharedPreferences prefsKey = getActivity().getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         SharedPreferences prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
-        //noinspection deprecation
-        prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
 
         // Strings
         requestPkg = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
@@ -133,20 +129,21 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
 
         // Constants
-        key = new StringBuilder(50);
+        key = new StringBuilder(password.length() + new Random().nextInt(32));
 
         Point size = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(size);
         screenWidth = size.x;
         screenHeight = size.y;
         try {
-            statusBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
-            navBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"));
+            statusBarHeight = getDimens(getResources().getIdentifier("status_bar_height", "dimen", "android"));
+            navBarHeight = getDimens(getResources().getIdentifier(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
             statusBarHeight = 0;
             navBarHeight = 0;
         }
+        //noinspection deprecation
         kCTouchColor.setColor(getResources().getColor(R.color.background_selected_on_transparent));
         kCTouchColor.setStrokeWidth(1);
         kCTouchColor.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -157,18 +154,42 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         // Views
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, mainContainer, false);
         ImageView background = (ImageView) rootView.findViewById(R.id.background);
-        titleView = (TextView) rootView.findViewById(R.id.title_view);
-        titleView.setOnLongClickListener(this);
-        View mInputView = rootView.findViewById(R.id.input_view);
-        mInputText = (TextView) mInputView;
-        mInputText.setText("");
+        TextView mTitleTextView = (TextView) rootView.findViewById(R.id.title_view);
+        View mInputBar = rootView.findViewById(R.id.input_bar);
+        mInputTextView = (TextView) rootView.findViewById(R.id.input_view);
         container = (FrameLayout) rootView.findViewById(R.id.container);
-        mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
-        mDeleteButton.setOnClickListener(this);
-        mDeleteButton.setOnLongClickListener(this);
+        ImageButton mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
 
-        // Dimens
-        if (getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.LockActivity") || getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.MasterSwitchShortcutActivity")) {
+        // Locking type view setup
+        switch (lockingType) {
+            case Common.PREF_VALUE_PASSWORD:
+            case Common.PREF_VALUE_PASS_PIN:
+                mTitleTextView.setVisibility(View.GONE);
+                mInputBar.setVisibility(View.GONE);
+                Util.askPassword(getActivity(), password, lockingType.equals(Common.PREF_VALUE_PASS_PIN));
+                break;
+            case Common.PREF_VALUE_PIN:
+                inflater.inflate(R.layout.pin_field, container);
+                setupPINLayout();
+                break;
+            case Common.PREF_VALUE_KNOCK_CODE:
+                setupKnockCodeLayout();
+                break;
+            case Common.PREF_VALUE_PATTERN:
+                mInputBar.setVisibility(View.GONE);
+                inflater.inflate(R.layout.pattern_field, container);
+                setupPatternLayout();
+                break;
+            default:
+                authenticationSucceededListener.onAuthenticationSucceeded();
+                return rootView;
+        }
+
+        // Background
+        background.setImageDrawable(Util.getBackground(getActivity(), screenWidth, screenHeight));
+
+        // Gaps for Status and Nav bar
+        if (!getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.SettingsActivity")) {
             View gapTop = rootView.findViewById(R.id.status_bar_gap);
             View gapBottom = rootView.findViewById(R.id.nav_bar_gap);
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -182,55 +203,54 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             }
             gapTop.getLayoutParams().height = statusBarHeight;
         }
-        // Background
-        background.setImageDrawable(Util.getBackground(getActivity(), screenWidth, screenHeight));
-        // Title
-        titleView.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));
-        titleView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
 
-        if (!lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && prefs.getBoolean(Common.TABLET_MODE_OVERRIDE, getResources().getBoolean(R.bool.tablet_mode_default))) {
+        // Title
+        if (mTitleTextView.getVisibility() == View.VISIBLE) {
+            mTitleTextView.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));
+            mTitleTextView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
+            mTitleTextView.setOnLongClickListener(this);
+        }
+
+        //Input
+        if (mInputBar.getVisibility() == View.VISIBLE) {
+            mInputTextView.setText("");
+            mDeleteButton.setOnClickListener(this);
+            mDeleteButton.setOnLongClickListener(this);
+        }
+
+        if (prefs.getBoolean(Common.HIDE_TITLE_BAR, false))
+            mTitleTextView.setVisibility(View.GONE);
+        if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false))
+            mInputBar.setVisibility(View.GONE);
+        if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
+            mTitleTextView.setTextColor(Color.BLACK);
+            mInputTextView.setTextColor(Color.BLACK);
+            mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
+        }
+
+        if (!lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && isTablet()) {
             // Header views
-            LinearLayout.LayoutParams title = new LinearLayout.LayoutParams(titleView.getLayoutParams());
-            title.setMargins(getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), getResources().getDimensionPixelSize(R.dimen.tablet_margin_bottom), getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), 0);
-            titleView.setLayoutParams(title);
+            LinearLayout.LayoutParams title = new LinearLayout.LayoutParams(mTitleTextView.getLayoutParams());
+            title.setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom), getDimens(R.dimen.tablet_margin_sides), 0);
+            mTitleTextView.setLayoutParams(title);
             LinearLayout.LayoutParams input = new LinearLayout.LayoutParams(rootView.findViewById(R.id.input_bar).getLayoutParams());
-            input.setMargins(getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), 0, getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), 0);
+            input.setMargins(getDimens(R.dimen.tablet_margin_sides), 0, getDimens(R.dimen.tablet_margin_sides), 0);
             rootView.findViewById(R.id.input_bar).setLayoutParams(input);
             // Container
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();
-            params.setMargins(getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), getResources().getDimensionPixelSize(R.dimen.tablet_margin_top),
-                    getResources().getDimensionPixelSize(R.dimen.tablet_margin_sides), getResources().getDimensionPixelSize(R.dimen.tablet_margin_bottom));
+            params.setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
+            params.setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
             container.setLayoutParams(params);
         }
-
-        personalizeUI();
-
-        switch (lockingType) {
-            case Common.PREF_VALUE_PASSWORD:
-            case Common.PREF_VALUE_PASS_PIN:
-                titleView.setVisibility(View.GONE);
-                rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-                Util.askPassword(getActivity(), password, lockingType.equals(Common.PREF_VALUE_PASS_PIN));
-                break;
-            case Common.PREF_VALUE_PIN:
-                inflater.inflate(R.layout.pin_field, container);
-                setupPINLayout();
-                break;
-            case Common.PREF_VALUE_KNOCK_CODE:
-                setupKnockCodeLayout();
-                break;
-            case Common.PREF_VALUE_PATTERN:
-                rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-                inflater.inflate(R.layout.pattern_field, container);
-                setupPatternLayout();
-                break;
-            default:
-                authenticationSucceededListener.onAuthenticationSucceeded();
-                break;
-        }
-        themeSetup();
-
         return rootView;
+    }
+
+    private int getDimens(@DimenRes int id) {
+        return getResources().getDimensionPixelSize(id);
+    }
+
+    private boolean isTablet() {
+        return prefs.getBoolean(Common.OVERRIDE_TABLET_MODE, getResources().getBoolean(R.bool.tablet_mode_default));
     }
 
     @Override
@@ -264,6 +284,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             pb.setOnClickListener(this);
             pb.setOnLongClickListener(this);
             if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
+                //noinspection deprecation
                 ((TextView) pb).setTextColor(getResources().getColor(android.R.color.black));
             }
         }
@@ -271,7 +292,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
-        if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             kCTouchLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.background_selected_on_transparent)), null, new ColorDrawable(Color.WHITE));
             container.setForeground(kCTouchLP);
             kCTouchLP.setState(new int[]{});
@@ -281,7 +302,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             @Override
             public boolean onTouch(View v, MotionEvent e) {
                 if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true)) {
+                    if (prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true)) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             kCTouchLP.setState(new int[]{android.R.attr.state_pressed});
                             kCTouchLP.setHotspot(e.getRawX(), e.getRawY());
@@ -293,7 +314,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                             container.invalidate();
                         }
                     }
-                    mInputText.append("\u2022");
+                    mInputTextView.append("\u2022");
 
                     // Center values
                     int viewCenterX = containerX + container.getWidth() / 2;
@@ -334,7 +355,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                     }
                     checkInput();
                 } else if (e.getActionMasked() == MotionEvent.ACTION_UP) {
-                    if (prefs.getBoolean(Common.KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    if (prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                         kCCBackground.eraseColor(Color.TRANSPARENT);
                         container.invalidate();
                     }
@@ -346,12 +367,12 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDisplayMetrics().density)));
         divider.setBackgroundColor(getResources().getColor(R.color.light_white));
         container.addView(divider);
-        if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true)) {
+        if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.SHOW_KC_DIVIDER, true)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 divider.setBackground(getResources().getDrawable(android.R.color.black));
             else
                 divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
-        } else if (!prefs.getBoolean(Common.KC_SHOW_DIVIDERS, true) || screenWidth > screenHeight) {
+        } else if (!prefs.getBoolean(Common.SHOW_KC_DIVIDER, true) || screenWidth > screenHeight) {
             divider.setVisibility(View.GONE);
         }
     }
@@ -392,7 +413,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 & Configuration.SCREENLAYOUT_SIZE_MASK) {
             case Configuration.SCREENLAYOUT_SIZE_LARGE:
             case Configuration.SCREENLAYOUT_SIZE_XLARGE: {
-                final int size = getResources().getDimensionPixelSize(com.haibison.android.lockpattern.R.dimen.alp_42447968_lockpatternview_size);
+                final int size = getDimens(com.haibison.android.lockpattern.R.dimen.alp_42447968_lockpatternview_size);
                 ViewGroup.LayoutParams lp = lockPatternView.getLayoutParams();
                 lp.width = size;
                 lp.height = size;
@@ -401,27 +422,8 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             }
         }
         lockPatternView.setOnPatternListener(patternListener);
-        lockPatternView.setInStealthMode(!prefs.getBoolean(Common.PATTERN_SHOW_PATH, true));
-        lockPatternView.setTactileFeedbackEnabled(prefs.getBoolean(Common.PATTERN_FEEDBACK, true));
-    }
-
-    private void personalizeUI() {
-        if (prefsTheme.getBoolean(Common.HIDE_TITLE_BAR, prefs.getBoolean(Common.HIDE_TITLE_BAR, false)))
-            titleView.setVisibility(View.GONE);
-        if (prefsTheme.getBoolean(Common.HIDE_INPUT_BAR, prefs.getBoolean(Common.HIDE_INPUT_BAR, false)))
-            rootView.findViewById(R.id.input_bar).setVisibility(View.GONE);
-        if (prefsTheme.getBoolean(Common.INVERT_COLOR, prefs.getBoolean(Common.INVERT_COLOR, false))) {
-            titleView.setTextColor(getResources().getColor(android.R.color.black));
-            mInputText.setTextColor(getResources().getColor(android.R.color.black));
-            mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
-        }
-    }
-
-    private void themeSetup() {
-        if (!prefsTheme.contains(Common.THEME_PKG))
-            return;
-        container.setLayoutParams(ThemeService.container(container, getActivity(), lockingType));
-
+        lockPatternView.setInStealthMode(!prefs.getBoolean(Common.SHOW_PATTERN_PATH, true));
+        lockPatternView.setTactileFeedbackEnabled(prefs.getBoolean(Common.ENABLE_PATTERN_FEEDBACK, true));
     }
 
     @Override
@@ -433,8 +435,8 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             }
             String t = ((TextView) view).getText().toString();
             key.append(t);
-            mInputText.append(t);
-            if (prefs.getBoolean(Common.QUICK_UNLOCK, false)) {
+            mInputTextView.append(t);
+            if (prefs.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
                 checkInput();
             }
             return;
@@ -444,8 +446,8 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             case R.id.delete_input:
                 if (key.length() > 0) {
                     key.deleteCharAt(key.length() - 1);
-                    if (mInputText.length() > 0) {
-                        mInputText.setText(mInputText.getText().subSequence(0, mInputText.getText().length() - 1));
+                    if (mInputTextView.length() > 0) {
+                        mInputTextView.setText(mInputTextView.getText().subSequence(0, mInputTextView.getText().length() - 1));
                     }
                     if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && knockCodeX.size() > 0) {
                         knockCodeX.remove(knockCodeX.size() - 1);
@@ -464,7 +466,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 return true;
             default:
                 key.setLength(0);
-                mInputText.setText("");
+                mInputTextView.setText("");
                 if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
                     knockCodeX.clear();
                     knockCodeY.clear();
