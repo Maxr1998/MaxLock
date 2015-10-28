@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <include
+        domain="root"
+        path="background" />
+    <include
+        domain="database"
+        path="google_analytics_v4.db" />
+    <include
+        domain="file"
+        path="gaClientId" />
+    <include
+        domain="file"
+        path="gaClientIdData" />
+    <include
+        domain="sharedpref"
+        path="de.Maxr1998.xposed.maxlock_preferences" />
+    <include
+        domain="sharedpref"
+        path="keys" />
+    <include
+        domain="sharedpref"
+        path="packages" />
+    <include
+        domain="sharedpref"
+        path="per_app_settings" />
+    <include
+        domain="external"
+        path="MaxLock" />
+</full-backup-content>
