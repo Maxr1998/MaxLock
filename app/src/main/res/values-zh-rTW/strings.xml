@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">MaxLock</string>
+    <string name="name_pro"> Pro</string>
+    <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">佔位符</string>
     <string name="xposed_active">MaxLock尚未激活</string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
@@ -142,14 +144,12 @@
     <string name="pref_widget_background_color">小部件背景顏色</string>
     <!-- About information -->
     <string name="pref_category_about">關於</string>
-    <string name="app_name_pro">MaxLock專業版</string>
-    <string name="app_name_pseudo_pro">MaxLock假專業版</string>
     <string name="pref_about_summary">點擊查看貢獻，使用的libs和許可證。</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
-    <string name="pref_visit_website">訪問Maxr1998網站/string>
-+   <string name="pref_category_credits">致謝</string>
-+   <string name="pref_category_translations">翻譯</string>
-+   <string name="pref_category_licenses">許可證</string>
+    <string name="pref_visit_website">訪問Maxr1998網站</string>
+    <string name="pref_category_credits">致謝</string>
+    <string name="pref_category_translations">翻譯</string>
+    <string name="pref_category_licenses">許可證</string>
     <string name="pref_donate_upgrade_pro">捐贈可升級到專業版</string>
     <string name="donate_status_donated">已捐贈。</string>
     <string name="donate_status_not_donated">考慮捐贈，以支持進一步發展。感謝：）</string>
