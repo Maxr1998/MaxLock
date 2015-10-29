@@ -288,6 +288,9 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 ((TextView) pb).setTextColor(getResources().getColor(android.R.color.black));
             }
         }
+        if (prefs.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
+            rootView.findViewById(R.id.pin_ok).setVisibility(View.INVISIBLE);
+        }
     }
 
     @SuppressWarnings("deprecation")
