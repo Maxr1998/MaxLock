@@ -10,10 +10,9 @@
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
         android:drawableLeft="@mipmap/ic_launcher"
         android:drawablePadding="20dp"
         android:drawableStart="@mipmap/ic_launcher"
@@ -25,10 +24,13 @@
     <LinearLayout
         android:id="@+id/input_bar"
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="64dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
 
         <Space
-            android:layout_width="72dp"
+            android:layout_width="64dp"
             android:layout_height="match_parent" />
 
         <TextView
@@ -37,14 +39,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:clickable="false"
             android:gravity="center"
             android:inputType="textPassword"
             tools:ignore="TextViewEdits" />
 
         <ImageButton
             android:id="@+id/delete_input"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:background="@drawable/selectable_background"
             android:contentDescription="delete"
             android:src="@drawable/ic_delete_white_36dp"
