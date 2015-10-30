@@ -6,7 +6,7 @@
     android:background="@color/first_start_page2"
     android:clipChildren="false"
     android:orientation="vertical"
-    tools:context="de.Maxr1998.xposed.maxlock.ui.FirstStart.fragments.FragmentInformation">
+    tools:context="de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentInformation">
 
     <View
         android:layout_width="match_parent"

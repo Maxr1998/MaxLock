@@ -7,6 +7,6 @@
     <integer name="ga_sessionTimeout">300</integer>
     <screenName name="de.Maxr1998.xposed.maxlock.ui.SettingsActivity">Settings</screenName>
     <screenName name="de.Maxr1998.xposed.maxlock.ui.LockActivity">Lock screen</screenName>
-    <sceenName name="de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity">First start
+    <sceenName name="de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity">First start
     </sceenName>
 </resources>

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui.FirstStart.fragments;
+package de.Maxr1998.xposed.maxlock.ui.firstStart.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

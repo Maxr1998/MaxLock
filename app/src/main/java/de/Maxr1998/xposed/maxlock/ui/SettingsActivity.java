@@ -53,7 +53,7 @@ import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
-import de.Maxr1998.xposed.maxlock.ui.FirstStart.FirstStartActivity;
+import de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;

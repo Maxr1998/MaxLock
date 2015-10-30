@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui.FirstStart;
+package de.Maxr1998.xposed.maxlock.ui.firstStart;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,10 +30,10 @@ import android.view.View;
 import android.widget.Button;
 
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.FirstStart.fragments.FragmentAppSetup;
-import de.Maxr1998.xposed.maxlock.ui.FirstStart.fragments.FragmentInformation;
-import de.Maxr1998.xposed.maxlock.ui.FirstStart.fragments.FragmentWelcome;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
+import de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentAppSetup;
+import de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentInformation;
+import de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentWelcome;
 
 public class FirstStartActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 

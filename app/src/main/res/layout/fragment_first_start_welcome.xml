@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/first_start_page1"
     android:orientation="vertical"
-    tools:context="de.Maxr1998.xposed.maxlock.ui.FirstStart.fragments.FragmentWelcome">
+    tools:context="de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentWelcome">
 
     <View
         android:layout_width="match_parent"

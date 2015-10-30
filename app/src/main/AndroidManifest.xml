@@ -43,7 +43,7 @@
 
         <!-- Main app -->
         <activity
-            android:name=".ui.FirstStart.FirstStartActivity"
+            android:name=".ui.firstStart.FirstStartActivity"
             android:theme="@style/AppTheme.FirstStart" />
 
         <activity
