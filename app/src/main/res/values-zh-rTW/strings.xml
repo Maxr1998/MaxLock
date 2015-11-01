@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">MaxLock</string>
-    <string name="name_pro"> Pro</string>
-    <string name="name_pseudo_pro"> PseudoPro</string>
+    <string name="name_pro">專業版</string>
+    <string name="name_pseudo_pro">MaxLock偽專業版</string>
     <string name="placeholder">佔位符</string>
     <string name="xposed_active">MaxLock尚未激活</string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
