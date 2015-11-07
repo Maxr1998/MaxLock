@@ -45,6 +45,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.preference.PreferenceFragmentCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
@@ -307,8 +308,9 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getListView().setPadding(0, 0, 0, 0);
         //noinspection deprecation
-        getListView().setOverscrollFooter(new ColorDrawable(getListView().getContext().getResources().getColor(
-                !prefs.getBoolean(Common.USE_DARK_STYLE, false) ? R.color.default_window_background : R.color.default_window_background_dark)));
+        TypedValue windowBackground = new TypedValue();
+        getListView().getContext().getTheme().resolveAttribute(R.attr.windowBackground, windowBackground, true);
+        getListView().setOverscrollFooter(new ColorDrawable(windowBackground.data));
     }
 
     @Override

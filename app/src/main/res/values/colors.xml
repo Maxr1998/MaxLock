@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="transparent">#0000</color>
-    <color name="text_color_white">#dd000000</color>
     <color name="light_white">#55ffffff</color>
-    <color name="divider">#e5e5e5</color>
 
     <!-- App colors -->
     <color name="primary_red">#e51c23</color>
     <color name="primary_red_dark">#d01716</color>
     <color name="accent">#ff9100</color>
-    <color name="divider_white">#e0e0e0</color>
-    <color name="background_selected_on_white">#eeeeee</color>
-    <color name="background_selected_on_transparent">#40ffffff</color>
+    <color name="default_window_background">#fff1f1f1</color>
+    <color name="default_window_background_dark">#505050</color>
+    <color name="divider_light">#1f000000</color>
+    <color name="divider_dark">#1fffffff</color>
+    <color name="legacy_highlight_light">#1e000000</color>
+    <color name="legacy_highlight_dark">#33ffffff</color>
 
     <color name="first_start_page1">@color/accent</color>
     <color name="first_start_page2">#ffd600</color>
     <color name="first_start_page3">#ff3d00</color>
-
-    <color name="default_window_background">#fff1f1f1</color>
-    <color name="default_window_background_dark">#505050</color>
 </resources>

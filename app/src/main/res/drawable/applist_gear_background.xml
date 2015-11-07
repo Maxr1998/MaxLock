@@ -5,5 +5,5 @@
             <solid android:color="#ccc" />
         </shape>
     </item>
-    <item android:drawable="@color/transparent" />
+    <item android:drawable="@android:color/transparent" />
 </selector>

@@ -24,7 +24,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 
 /**
@@ -34,7 +33,7 @@ import de.Maxr1998.xposed.maxlock.R;
  */
 public class SpacerPreference extends Preference {
 
-    private final boolean end, dark;
+    private final boolean end;
 
     @SuppressLint("WorldReadableFiles")
     public SpacerPreference(Context context, AttributeSet attr) {
@@ -43,16 +42,12 @@ public class SpacerPreference extends Preference {
         setEnabled(false);
         setSelectable(false);
         //noinspection deprecation
-        dark = context.getSharedPreferences(Common.PREFS, Context.MODE_WORLD_READABLE).getBoolean(Common.USE_DARK_STYLE, false);
         end = !context.obtainStyledAttributes(attr, new int[]{R.attr.topShadow}).getBoolean(0, true);
     }
 
     @Override
     public View getView(View convertView, ViewGroup parent) {
         View v = super.getView(convertView, parent);
-        if (dark) {
-            v.setBackgroundColor(v.getResources().getColor(R.color.default_window_background_dark));
-        }
         if (end) {
             v.findViewById(R.id.top_shadow).setVisibility(View.INVISIBLE);
         }

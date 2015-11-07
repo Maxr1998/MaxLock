@@ -16,7 +16,7 @@
         <!--suppress AndroidUnknownAttribute -->
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             alphaSlider="false"
-            android:defaultValue="@color/accent"
+            android:defaultValue="?colorAccent"
             android:enabled="false"
             android:key="background_color"
             android:title="@string/pref_custom_color" />

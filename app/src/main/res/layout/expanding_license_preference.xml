@@ -25,7 +25,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/background_selected_on_white"
+        android:background="@color/legacy_highlight_dark"
         android:fontFamily="sans-serif"
         android:padding="8dp"
         android:textSize="12sp"

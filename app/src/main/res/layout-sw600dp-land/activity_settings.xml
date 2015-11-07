@@ -18,16 +18,15 @@
 
             <fragment
                 android:id="@+id/settings_fragment"
-                android:name="de.Maxr1998.xposed.maxlock.ui.settings.SettingsFragment"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 tools:ignore="InconsistentLayout" />
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:background="@color/divider_white" />
+                android:background="?dividerColor" />
 
             <FrameLayout
                 android:id="@+id/frame_container"

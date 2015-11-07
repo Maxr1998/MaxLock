@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <!-- UI -->
+    <attr name="windowBackground" format="color" />
+    <attr name="highlightDrawable" format="reference" />
+    <attr name="dividerColor" format="color" />
     <!-- Preferences -->
     <attr name="topShadow" format="boolean" />
     <attr name="language" format="string" />

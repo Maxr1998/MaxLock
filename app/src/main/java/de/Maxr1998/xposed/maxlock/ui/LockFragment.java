@@ -144,7 +144,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             navBarHeight = 0;
         }
         //noinspection deprecation
-        kCTouchColor.setColor(getResources().getColor(R.color.background_selected_on_transparent));
+        kCTouchColor.setColor(getResources().getColor(R.color.legacy_highlight_dark));
         kCTouchColor.setStrokeWidth(1);
         kCTouchColor.setStyle(Paint.Style.FILL_AND_STROKE);
     }
@@ -296,7 +296,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
         if (prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            kCTouchLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.background_selected_on_transparent)), null, new ColorDrawable(Color.WHITE));
+            kCTouchLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.legacy_highlight_dark)), null, new ColorDrawable(Color.WHITE));
             container.setForeground(kCTouchLP);
             kCTouchLP.setState(new int[]{});
         }
@@ -311,7 +311,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                             kCTouchLP.setHotspot(e.getRawX(), e.getRawY());
                         } else {
                             kCTouchColor.setShader(new RadialGradient(e.getRawX() - containerX, e.getRawY() - containerY, 200,
-                                    getResources().getColor(R.color.background_selected_on_transparent), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                                    getResources().getColor(R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
                             Canvas c = new Canvas(kCCBackground);
                             c.drawCircle(e.getRawX() - containerX, e.getRawY() - containerY, 100, kCTouchColor);
                             container.invalidate();
@@ -368,7 +368,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         });
         View divider = new View(getActivity());
         divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDisplayMetrics().density)));
-        divider.setBackgroundColor(getResources().getColor(R.color.light_white));
+        divider.setBackgroundColor(getResources().getColor(R.color.divider_dark));
         container.addView(divider);
         if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.SHOW_KC_DIVIDER, true)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)

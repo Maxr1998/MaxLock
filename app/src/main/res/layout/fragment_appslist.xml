@@ -24,8 +24,8 @@
         android:layout_alignParentRight="true"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        custom:rfs_barColor="@color/divider_white"
-        custom:rfs_handleColor="@color/accent" />
+        custom:rfs_barColor="?dividerColor"
+        custom:rfs_handleColor="?colorAccent" />
 
     <de.Maxr1998.xposed.maxlock.ui.settings.applist.Indicator
         android:id="@+id/fast_scroller_section_title_indicator"
@@ -33,6 +33,6 @@
         android:layout_height="@dimen/list_item_height"
         android:layout_toLeftOf="@id/fast_scroller"
         android:layout_toStartOf="@id/fast_scroller"
-        custom:rfs_backgroundColor="@color/accent"
+        custom:rfs_backgroundColor="?colorAccent"
         custom:rfs_textColor="@android:color/white" />
 </RelativeLayout>
