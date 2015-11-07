@@ -31,3 +31,5 @@ app/src/main/res/values-v15/private.xml
 # KeyStore + Passwords
 app/sMaxr1998_key.jks
 app/keyStore.properties
+thememanager/sMaxr1998_key.jks
+thememanager/keyStore.properties

@@ -4,7 +4,7 @@ android {
         main
     }
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 15
@@ -66,8 +66,8 @@ dependencies {
     compile 'com.android.support:palette-v7:23.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.android.support:support-v4:23.1.0'
-    compile 'com.google.android.gms:play-services-base:7.8.0'
-    compile 'com.google.android.gms:play-services-analytics:7.8.0'
+    compile 'com.google.android.gms:play-services-base:8.3.0'
+    compile 'com.google.android.gms:play-services-analytics:8.3.0'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
     provided files('lib/XposedBridgeApi-20150213.jar')
