@@ -100,7 +100,6 @@ public abstract class Common {
     public static final String PREF_VALUE_PATTERN = "pattern";
 
     // Preference files //
-    public static final String PREFS = "de.Maxr1998.xposed.maxlock_preferences";
     public static final String PREFS_KEY = "keys";
     public static final String PREFS_APPS = "packages";
     public static final String PREFS_KEYS_PER_APP = "per_app_settings";
