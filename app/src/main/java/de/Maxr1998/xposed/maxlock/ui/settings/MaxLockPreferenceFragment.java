@@ -33,6 +33,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
@@ -106,6 +107,17 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     pro.setEnabled(false);
                     pro.setSummary("");
                     prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+                }
+                SwitchPreference useDark = (SwitchPreference) findPreference(Common.USE_DARK_STYLE);
+                if (useDark.isChecked()) {
+                    SwitchPreference amoledBlack = new SwitchPreference(useDark.getContext());
+                    amoledBlack.setKey(Common.USE_AMOLED_BLACK);
+                    amoledBlack.setTitle(R.string.pref_use_amoled_black);
+                    amoledBlack.setSummary(R.string.pref_use_amoled_black_summary);
+                    amoledBlack.setOrder(useDark.getOrder() + 1);
+                    ((PreferenceCategory) findPreference(Common.CATEGORY_APPLICATION_UI)).addPreference(amoledBlack);
+                    amoledBlack.setDependency(Common.USE_DARK_STYLE);
+                    findPreference(Common.WIDGET_BACKGROUND_COLOR).setOrder(amoledBlack.getOrder() + 1);
                 }
                 break;
             case TYPE:
@@ -234,7 +246,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
                         getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                     }
-                } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.ENABLE_PRO)) {
+                } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.USE_AMOLED_BLACK) || preference == findPreference(Common.ENABLE_PRO)) {
                     ((SettingsActivity) getActivity()).restart();
                     return true;
                 } else if (preference == findPreference(Common.ABOUT)) {

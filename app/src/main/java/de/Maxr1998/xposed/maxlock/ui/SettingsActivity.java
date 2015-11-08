@@ -77,15 +77,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Preferences
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean(Common.USE_DARK_STYLE, false)) {
-            setTheme(R.style.AppTheme_Dark);
-        } else {
-            setTheme(R.style.AppTheme);
-        }
+        Util.setTheme(this);
         super.onCreate(savedInstanceState);
-
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getInt(FirstStartActivity.FIRST_START_LAST_VERSION_KEY, 0) != FirstStartActivity.FIRST_START_LATEST_VERSION) {
             startActivity(new Intent(this, FirstStartActivity.class));
             finish();

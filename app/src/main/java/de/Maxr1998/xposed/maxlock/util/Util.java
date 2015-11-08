@@ -18,6 +18,7 @@
 package de.Maxr1998.xposed.maxlock.util;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -80,6 +81,19 @@ public abstract class Util {
         PREFS = PreferenceManager.getDefaultSharedPreferences(context);
         PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
+    }
+
+    public static void setTheme(Activity a) {
+        loadPrefs(a);
+        if (!PREFS.getBoolean(Common.USE_DARK_STYLE, false)) {
+            a.setTheme(R.style.AppTheme);
+        } else {
+            if (!PREFS.getBoolean(Common.USE_AMOLED_BLACK, false)) {
+                a.setTheme(R.style.AppTheme_Dark);
+            } else {
+                a.setTheme(R.style.AppTheme_Dark_AMOLED);
+            }
+        }
     }
 
     @SuppressLint("InlinedApi")

@@ -75,8 +75,10 @@ public abstract class Common {
 
     public static final String CHOOSE_APPS = "choose_apps";
 
+    public static final String CATEGORY_APPLICATION_UI = "cat_app_ui";
     public static final String HIDE_APP_FROM_LAUNCHER = "hide_from_launcher";
     public static final String USE_DARK_STYLE = "use_dark_style";
+    public static final String USE_AMOLED_BLACK = "use_amoled_black";
     public static final String WIDGET_BACKGROUND_COLOR = "widget_background_color";
 
     public static final String ABOUT = "about";

@@ -141,6 +141,8 @@
     <string name="pref_hide_from_launcher">Verstecke App im Launcher</string>
     <string name="reboot_required">Ein Neustart könnte erforderlich sein um die Änderungen anzuwenden</string>
     <string name="pref_use_dark_style">Dunkles Design benutzen</string>
+    <string name="pref_use_amoled_black">Für AMOLED optimieren</string>
+    <string name="pref_use_amoled_black_summary">Komplett schwarzen Hintergrund fürs dunkle Design verwenden, um bei AMOLED Displays Energie zu sparen</string>
     <string name="pref_widget_background_color">Widget Hintergrundfarbe</string>
     <!-- About information -->
     <string name="pref_category_about">Über</string>

@@ -19,7 +19,6 @@ package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,13 +66,7 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Preferences
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean(Common.USE_DARK_STYLE, false)) {
-            setTheme(R.style.AppTheme_Dark);
-        } else {
-            setTheme(R.style.AppTheme);
-        }
+        Util.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

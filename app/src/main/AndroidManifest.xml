@@ -124,8 +124,7 @@
             android:exported="true"
             android:label="@string/activity_label_actions"
             android:process=":MLExternal"
-            android:taskAffinity=""
-            android:theme="@style/AppTheme.Dark">
+            android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />

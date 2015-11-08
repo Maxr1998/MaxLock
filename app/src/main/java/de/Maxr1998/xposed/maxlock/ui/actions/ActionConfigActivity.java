@@ -29,6 +29,7 @@ import android.widget.RadioGroup;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper.ACTION_EXTRA_KEY;
 
@@ -39,6 +40,7 @@ public class ActionConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Util.setTheme(this);
         super.onCreate(savedInstanceState);
         if (getCallingActivity() != null || !BundleScrubber.scrub(getIntent())) {
             if (getCallingActivity().getPackageName().startsWith("net.dinglisch.android.taskerm") || getCallingActivity().getPackageName().startsWith("com.twofortyfouram.locale")) {
