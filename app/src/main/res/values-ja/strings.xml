@@ -2,8 +2,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">MaxLock</string>
+    <string name="name_pro"> プロ版</string>
+    <string name="name_pseudo_pro"> 準プロ版</string>
     <string name="placeholder">Placeholder</string>
-    <string name="xposed_active">MaxLock は有効化されていません</string>
+    <string name="xposed_active">MaxLock は動作していません</string>
     <string name="dialog_text_restart_required">変更を適用にするには MaxLock の再起動が必要です</string>
     <string name="toast_pro_required">この機能を使用するにはプロ版が必要です!</string>
     <string name="sb_no_locking_type">ロック方法が未設定です.</string>
@@ -90,22 +92,22 @@
     <string name="pref_fake_crash_all_apps">アプリ強制終了の偽装</string>
     <string name="pref_fake_crash_all_apps_summary">アプリ強制終了の偽装をすべてのアプリで有効にします</string>
     <string name="pref_fake_unlock">偽装ダイアログの直接解除</string>
-    <string name="pref_fake_unlock_summary">アプリ強制終了の偽装ダイアログで、レポートボタンをタップするとロック画面へ直ぐに移行するようにします</string>
+    <string name="pref_fake_unlock_summary">アプリ強制終了の偽装ダイアログでレポートボタンをタップしたら直ぐにロック画面へ移行するようにします</string>
     <string name="pref_fake_crash_passphrase">偽装ダイアログへの入力文字列</string>
     <string name="pref_fake_crash_passphrase_summary">アプリ強制終了の偽装ダイアログからロック画面へ移行するための入力文字列を設定します</string>
     <string name="pref_enable_tasker">Tasker 機能の有効化</string>
     <!-- I.Mod settings -->
     <string name="pref_screen_locking_intika">Intika 拡張</string>
     <string name="pref_category_intika">Intika 拡張 - 猶予時間 - すべてのアプリ</string>
-    <string name="pref_category_intika2">Intika 拡張 - 猶予時間 - アプリ個別</string>
+    <string name="pref_category_intika2">Intika 拡張 - 猶予時間 - 個々のアプリ</string>
     <string name="pref_locking_delay_general">すべてのアプリで再ロック猶予</string>
-    <string name="pref_locking_delay_general_summary">ひとつのアプリでロックを解除したら、すべてのアプリで一定時間は解除を再要求しないようにします</string>
+    <string name="pref_locking_delay_general_summary">あるアプリでロックを解除したら、すべてのアプリについて再ロックを指定時間猶予します</string>
     <string name="pref_delay_input_general">再ロックの猶予時間</string>
-    <string name="pref_delay_input_general_summary">アプリの再ロックまでの猶予時間(分)を設定してください</string>
-    <string name="pref_locking_delay_perapp">アプリ個別で再ロック猶予</string>
-    <string name="pref_locking_delay_perapp_summary">あるアプリでロックを解除したら、そのアプリで一定時間は解除を再要求しないようにします</string>
+    <string name="pref_delay_input_general_summary">アプリの再ロックの猶予時間(分)を設定してください</string>
+    <string name="pref_locking_delay_perapp">個々のアプリで再ロック猶予</string>
+    <string name="pref_locking_delay_perapp_summary">あるアプリでロックを解除したら、他のアプリのロック状態にかかわらず、そのアプリについて再ロックを指定時間猶予します</string>
     <string name="pref_delay_input_perapp">再ロックの猶予時間</string>
-    <string name="pref_delay_input_perapp_summary">アプリの再ロックまでの猶予時間(分)を設定してください</string>
+    <string name="pref_delay_input_perapp_summary">アプリの再ロックの猶予時間(分)を設定してください</string>
     <string name="pref_delay_needpro">再ロックの猶予 - プロ版</string>
     <string name="pref_show_reset_notification">通知領域からリセット</string>
     <string name="pref_show_reset_notification_summary">猶予タイマーのリセットスイッチを通知領域に表示します</string>
@@ -139,13 +141,22 @@
     <string name="pref_hide_from_launcher">アプリアイコンの非表示</string>
     <string name="reboot_required">変更を適用するには端末の再起動が必要かもしれません</string>
     <string name="pref_use_dark_style">暗色スタイル</string>
+    <string name="pref_use_amoled_black">AMOLED ブラック</string>
+    <string name="pref_use_amoled_black_summary">AMOLED ディスプレイでバッテリーを節約するために背景を完全に黒色にします</string>
     <string name="pref_widget_background_color">ウィジェットの背景色</string>
     <!-- About information -->
     <string name="pref_category_about">このアプリについて</string>
-    <string name="app_name_pro">MaxLock プロ版</string>
-    <string name="app_name_pseudo_pro">MaxLock 準プロ版</string>
     <string name="pref_about_summary">タップすると詳細情報を表示します</string>
+    <string name="pref_screen_about">@string/pref_category_about</string>
+    <string name="pref_visit_website">Maxr1998 のウェブサイト</string>
+    <string name="pref_category_credits">著作権</string>
+    <string name="pref_category_translations">翻訳</string>
+    <string name="pref_category_licenses">ライセンス</string>
     <string name="pref_donate_upgrade_pro">プロ版にアップグレード (寄付)</string>
+    <string name="donate_status_donated">寄付済み</string>
+    <string name="donate_status_not_donated">継続的な開発を支援するために寄付をお願いします。ありがとう :)</string>
+    <string name="dialog_message_already_bought">すでに寄付していただきましたが、現在の購入を取り消して再度購入することでさらに寄付していただけます。\n\n購入を取り消して再購入しますか?</string>
+
     <string name="toast_no_network_connected">現在、インターネットに接続できません</string>
     <string name="pref_enable_pro">プロ版の機能の有効化</string>
     <string name="pref_enable_pro_summary">MaxLock に寄付していなくてもプロ版の機能を有効にします</string>
