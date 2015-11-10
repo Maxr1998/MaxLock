@@ -63,7 +63,7 @@ public class ScreenOff {
     }
 
     public static void clear() throws Throwable {
-        FileWriter fw = new FileWriter(Main.TEMPS_PATH);
+        FileWriter fw = new FileWriter(Apps.TEMPS_PATH);
         fw.write("{}");
         fw.close();
     }

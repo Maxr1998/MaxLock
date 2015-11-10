@@ -50,6 +50,8 @@ public class Apps {
     public static final String IMOD_DELAY_GLOBAL = "delay_inputgeneral";
     public static final String IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer";
     @SuppressLint("SdCardPath")
+    public static final String TEMPS_PATH = "/data/data/" + Main.MAXLOCK_PACKAGE_NAME + "/files/temps.json";
+    @SuppressLint("SdCardPath")
     public static final String HISTORY_PATH = "/data/data/" + Main.MAXLOCK_PACKAGE_NAME + "/files/history.json";
     public static final String HISTORY_ARRAY_KEY = "history";
 
@@ -73,7 +75,7 @@ public class Apps {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     Activity app = (Activity) param.thisObject;
                     log("MLaS|" + app.getClass().getName() + "||" + System.currentTimeMillis());
-                    if (System.currentTimeMillis() - readFile(Main.TEMPS_PATH).optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
+                    if (System.currentTimeMillis() - readFile(TEMPS_PATH).optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
                         app.finish();
                         return;
                     }
@@ -112,7 +114,7 @@ public class Apps {
             return true;
         }
         // App unlocked
-        JSONObject temps = readFile(Main.TEMPS_PATH);
+        JSONObject temps = readFile(TEMPS_PATH);
         if (System.currentTimeMillis() - temps.optLong(packageName + FLAG_TMP) <= 800) {
             return true;
         }
@@ -131,11 +133,11 @@ public class Apps {
     }
 
     public static void put(@NonNull String... arguments) throws Throwable {
-        JSONObject jsonObject = readFile(Main.TEMPS_PATH);
+        JSONObject jsonObject = readFile(TEMPS_PATH);
         for (String s : arguments) {
             jsonObject.put(s, System.currentTimeMillis());
         }
-        writeFile(Main.TEMPS_PATH, jsonObject);
+        writeFile(TEMPS_PATH, jsonObject);
     }
 
     private static JSONObject readFile(String path) throws Throwable {

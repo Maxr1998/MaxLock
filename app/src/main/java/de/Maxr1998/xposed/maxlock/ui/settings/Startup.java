@@ -56,12 +56,35 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressLint({"SetWorldReadable", "SetWorldWritable"})
     @Override
     protected Void doInBackground(Boolean... firstStart) {
         isFirstStart = firstStart[0];
         if (isFirstStart) {
             prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
         }
+
+        // Create ML Files
+        File tmpF = new File(mContext.getFilesDir(), "temps.json");
+        File historyF = new File(mContext.getFilesDir(), "history.json");
+        try {
+            if (tmpF.getParentFile().mkdirs() || tmpF.createNewFile()) {
+                Log.i(Util.LOG_TAG_STARTUP, "Temp-file created.");
+            }
+            if (historyF.getParentFile().mkdirs() || historyF.createNewFile()) {
+                Log.i(Util.LOG_TAG_STARTUP, "History created.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        tmpF.setReadable(true, false);
+        tmpF.setWritable(true, false);
+        tmpF.setExecutable(true, false);
+        historyF.setReadable(true, false);
+        historyF.setWritable(true, false);
+        historyF.setExecutable(true, false);
+
         // Pro setup
         if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
             prefs.edit().putBoolean(Common.ENABLE_LOGGING, false).apply();

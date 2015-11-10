@@ -17,10 +17,7 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
-
-import java.io.File;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -31,8 +28,6 @@ import static de.robv.android.xposed.XposedBridge.log;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public static final String MAXLOCK_PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
-    @SuppressLint("SdCardPath")
-    public static final String TEMPS_PATH = "/data/data/" + MAXLOCK_PACKAGE_NAME + "/files/temps.json";
     private static XSharedPreferences prefsApps;
 
     @Override
@@ -51,18 +46,10 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         }
 
         if (lPParam.packageName.equals(MaxLock.PACKAGE_NAME)) {
-            File tmpF = new File(TEMPS_PATH);
-            File historyF = new File(Apps.HISTORY_PATH);
-            boolean tCreated = tmpF.getParentFile().mkdirs() || tmpF.createNewFile();
-            boolean hCreated = historyF.getParentFile().mkdirs() || historyF.createNewFile();
-            boolean rwSuccess = tmpF.setReadable(true, false) && tmpF.setWritable(true, false) && historyF.setReadable(true, false) && historyF.setWritable(true, false);
-            if (tCreated) log("ML: Temp-file created.");
-            if (hCreated) log("ML: History created.");
-            log(rwSuccess ? "ML: Permissions set." : "ML: Error settings permissions!");
             MaxLock.init(lPParam);
-            return;
         }
 
+        prefsApps.reload();
         if (prefsApps.getBoolean(lPParam.packageName, false)) {
             Apps.init(prefsApps, lPParam);
         } else {

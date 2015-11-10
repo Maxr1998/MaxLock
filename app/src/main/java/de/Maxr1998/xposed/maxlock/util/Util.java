@@ -67,6 +67,7 @@ public abstract class Util {
     public static final int PATTERN_CODE = 48;
     public static final int PATTERN_CODE_APP = 5;
     public static final String LOG_TAG = "MaxLock";
+    public static final String LOG_TAG_STARTUP = "ML-Startup";
     public static final String LOG_TAG_LOCKSCREEN = "ML-Lockscreen";
     public static final String LOG_TAG_ADMIN = "ML-DeviceAdmin";
     public static final String LOG_TAG_IAB = "ML-IAB";
