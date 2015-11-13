@@ -3,7 +3,7 @@
 
     <string name="app_name">MaxLock</string>
     <string name="name_pro">專業版</string>
-    <string name="name_pseudo_pro">MaxLock偽專業版</string>
+    <string name="name_pseudo_pro">偽專業版</string>
     <string name="placeholder">佔位符</string>
     <string name="xposed_active">MaxLock尚未激活</string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
@@ -141,6 +141,8 @@
     <string name="pref_hide_from_launcher">桌面隱藏應用圖標</string>
     <string name="reboot_required">可能需要重新啟動以應用更改</string>
     <string name="pref_use_dark_style">使用黑暗風格</string>
+    <string name="pref_use_amoled_black">使用 AMOLED 黑</string>
+    <string name="pref_use_amoled_black_summary">在黑暗主題中使用全黑背景，在使用 AMOLED 顯示時導致低耗</string>
     <string name="pref_widget_background_color">小部件背景顏色</string>
     <!-- About information -->
     <string name="pref_category_about">關於</string>
