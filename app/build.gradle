@@ -9,8 +9,8 @@ android {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 36
-        versionName "5.3.2"
+        versionCode 37
+        versionName "6.0"
     }
     buildTypes {
         release {
