@@ -231,7 +231,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     @Override
     protected void onDestroy() {
-        unbindService(mConnection);
+        if (mConnection != null) {
+            unbindService(mConnection);
+        }
         super.onDestroy();
     }
 

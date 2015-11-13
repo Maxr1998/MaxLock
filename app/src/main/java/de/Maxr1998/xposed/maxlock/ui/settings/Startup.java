@@ -133,13 +133,16 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         try {
             FileUtils.deleteDirectory(new File(Environment.getExternalStorageDirectory() + "/MaxLock_Backup/"));
             File external = new File(Common.EXTERNAL_FILES_DIR);
-            for (File file : external.listFiles(new FilenameFilter() {
+            File[] listExternal = external.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
                     return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
                 }
-            })) {
-                FileUtils.forceDelete(file);
+            });
+            if (listExternal != null) {
+                for (File file : listExternal) {
+                    FileUtils.forceDelete(file);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
