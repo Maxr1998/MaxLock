@@ -51,7 +51,7 @@
             android:layout_height="64dp"
             android:background="@drawable/highlight_light"
             android:contentDescription="delete"
-            android:src="@drawable/ic_delete_white_36dp"
+            android:src="@drawable/ic_delete_36dp"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </LinearLayout>

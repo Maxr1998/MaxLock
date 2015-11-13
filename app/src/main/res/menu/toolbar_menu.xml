@@ -4,7 +4,7 @@
     <group android:id="@+id/menu_group_default">
         <item
             android:id="@+id/toolbar_info"
-            android:icon="@drawable/ic_info_white_24dp"
+            android:icon="@drawable/ic_info_24dp"
             android:title="@string/pref_category_about"
             app:showAsAction="ifRoom" />
         <item

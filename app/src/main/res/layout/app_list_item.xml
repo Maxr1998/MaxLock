@@ -42,9 +42,7 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/applist_gear_background"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_settings_black_36dp"
-        android:tint="?attr/colorAccent"
-        android:tintMode="src_atop" />
+        android:src="@drawable/ic_settings_36dp" />
 
     <ToggleButton
         android:id="@+id/toggleLock"

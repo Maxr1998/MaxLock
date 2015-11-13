@@ -46,7 +46,7 @@ public abstract class NotificationHelper {
         Notification.Builder builder = new Notification.Builder(mContext)
                 .setContentTitle(mContext.getString(R.string.action_imod_reset))
                 .setContentText("")
-                .setSmallIcon(R.drawable.ic_close_white_24dp)
+                .setSmallIcon(R.drawable.ic_apps_24dp)
                 .setContentIntent(PendingIntent.getActivity(mContext.getApplicationContext(), 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                 .setOngoing(true)
                 .setAutoCancel(true);

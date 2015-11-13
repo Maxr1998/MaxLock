@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/toolbar_search"
-        android:icon="@drawable/ic_search_black_24dp"
+        android:icon="@drawable/ic_search_24dp"
         android:title="@string/menu_search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
     <group android:id="@+id/menu_group_hide_on_search">
         <item
             android:id="@+id/toolbar_filter_activated"
-            android:icon="@drawable/ic_apps_white_24dp"
+            android:icon="@drawable/ic_apps_24dp"
             android:title=""
             app:showAsAction="always"
             tools:ignore="AlwaysShowAction" />

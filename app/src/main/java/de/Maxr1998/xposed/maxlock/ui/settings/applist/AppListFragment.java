@@ -255,13 +255,13 @@ public class AppListFragment extends Fragment {
             return;
         }
         String filter = prefs.getString("app_list_filter", "");
-        Drawable icon = getResources().getDrawable(R.drawable.ic_apps_white_24dp);
+        Drawable icon = getResources().getDrawable(R.drawable.ic_apps_24dp);
         switch (filter) {
             case "@*activated*":
-                icon = getResources().getDrawable(R.drawable.ic_check_white_24dp);
+                icon = getResources().getDrawable(R.drawable.ic_checked_24dp);
                 break;
             case "@*deactivated*":
-                icon = getResources().getDrawable(R.drawable.ic_close_white_24dp);
+                icon = getResources().getDrawable(R.drawable.ic_unchecked_24dp);
                 break;
         }
         item.setIcon(icon);

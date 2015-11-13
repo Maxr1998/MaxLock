@@ -15,7 +15,8 @@
         android:contentDescription="expand"
         android:padding="12dp"
         android:scaleType="center"
-        android:src="@drawable/ic_expand_more_black_24dp"
+        android:src="@drawable/ic_expand_more_24dp"
+        android:tint="?android:textColorPrimary"
         tools:ignore="HardcodedText" />
 
     <TextView

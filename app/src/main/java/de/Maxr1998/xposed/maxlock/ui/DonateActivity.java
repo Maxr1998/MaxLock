@@ -58,8 +58,8 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
     private static final int[] productIcons = {
             R.drawable.ic_coke_48dp,
             R.drawable.ic_beer_48dp,
-            R.drawable.ic_favorite_red_small_48dp,
-            R.drawable.ic_favorite_red_48dp
+            R.drawable.ic_favorite_36dp,
+            R.drawable.ic_favorite_48dp
     };
     private BillingProcessor bp;
     private TextView donationStatusText;

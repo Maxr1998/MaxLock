@@ -45,8 +45,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/button_next_content_description"
-                android:drawableEnd="@drawable/ic_chevron_right_white_24dp"
-                android:drawableRight="@drawable/ic_chevron_right_white_24dp" />
+                android:drawableEnd="@drawable/ic_chevron_right_24dp"
+                android:drawableRight="@drawable/ic_chevron_right_24dp" />
 
             <Button
                 android:id="@+id/done_button"
