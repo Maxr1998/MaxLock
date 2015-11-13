@@ -2,6 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">MaxLock</string>
+    <string name="name_pro"> Pro</string>
+    <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">Placeholder</string>
     <string name="xposed_active">MaxLock no está activo</string>
     <string name="dialog_text_restart_required">MaxLock requiere un reinicio para que los cambios tengan efecto</string>
@@ -87,6 +89,8 @@
     <string name="menu_delete_log">Borrar logs</string>
     <string name="logs_empty_text">No hay entradas de log</string>
     <string name="pref_category_other">Otros</string>
+    <string name="pref_fake_crash_all_apps">Cuelgue falso para todas las aplicaciones</string>
+    <string name="pref_fake_crash_all_apps_summary">Esto anula la configuración de la lista de aplicaciones para todas las aplicaciones</string>
     <string name="pref_fake_unlock">Desbloquear directamente al apretar Reportar</string>
     <string name="pref_fake_unlock_summary">Al activarlo, la pantalla de bloqueo aparecerá luego de apretar el botón <i>\"Lamentablemente, X se ha detenido."</i></string>
     <string name="pref_fake_crash_passphrase">Palabra clave del cuelgue falso</string>
@@ -105,6 +109,8 @@
     <string name="pref_delay_input_perapp">Temporizador del retraso de rebloqueo por aplicación</string>
     <string name="pref_delay_input_perapp_summary">Ingrese un número para especificar el tiempo de retraso en minutos para el rebloqueo por aplicación</string>
     <string name="pref_delay_needpro">Retraso de rebloqueo - versión Pro</string>
+    <string name="pref_show_reset_notification">Mostrar notificación</string>
+    <string name="pref_show_reset_notification_summary">Mostrar una notificación para resetear el temporizador I.Mod</string>
     <string name="pref_reset_screen_off">Reseteo automático de I.Mod</string>
     <string name="pref_reset_screen_off_summary">Resetear automáticamente el temporizador I.Mod cuando se apaga la pantalla</string>
     <!-- Apps settings -->
@@ -135,13 +141,22 @@
     <string name="pref_hide_from_launcher">Ocultar aplicación del launcher</string>
     <string name="reboot_required">Puede ser necesario un reinicio para aplicar los cambios</string>
     <string name="pref_use_dark_style">Usar estilo oscuro</string>
+    <string name="pref_use_amoled_black">Usar el negro de las pantallas AMOLED</string>
+    <string name="pref_use_amoled_black_summary">Usar un fondo negro completo en el estilo oscuro, resultando en bajo consumo de energía en las pantallas AMOLED</string>
     <string name="pref_widget_background_color">Color de fondo del widget</string>
     <!-- About information -->
     <string name="pref_category_about">Acerca de</string>
-    <string name="app_name_pro">MaxLock Pro</string>
-    <string name="app_name_pseudo_pro">MaxLock PseudoPro</string>
-    <string name="pref_about_summary">Click to see credits, used libs and license.</string>
+    <string name="pref_about_summary">Pulsar para ver los creditos, librerias usadas y licencia.</string>
+    <string name="pref_screen_about">@string/pref_category_about</string>
+    <string name="pref_visit_website">Visitar la web de Maxr1998</string>
+    <string name="pref_category_credits">Creditos</string>
+    <string name="pref_category_translations">Traducciones</string>
+    <string name="pref_category_licenses">Licencias</string>
     <string name="pref_donate_upgrade_pro">Donar para actualizar a la versión Pro</string>
+    <string name="donate_status_donated">Donado.</string>
+    <string name="donate_status_not_donated">Considera donar para apoyar el desarrollo. Gracias :)</string>
+    <string name="dialog_message_already_bought">Ya tienes esta opción de donación.
+        Puedes cancelar y elegir otro producto o comprar este nuevamente consumiéndolo previamente.\n\nConsumir y comprar nuevamente?</string>
     <string name="toast_no_network_connected">Actualmente no estás conectado a ninguna red</string>
     <string name="pref_enable_pro">Activar Pro</string>
     <string name="pref_enable_pro_summary">Esto habilitará las características Pro incluso si no has comprado la versión Pro</string>
@@ -175,5 +190,5 @@
     <string name="toast_master_switch_off">MasterSwitch deshabilitado</string>
     <string name="toast_master_switch_on">MasterSwitch habilitado</string>
     <string name="toast_no_locking_types">No se especificó un tipo de bloqueo</string>
-
+    
 </resources>
