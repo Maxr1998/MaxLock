@@ -208,6 +208,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         StringBuilder name = new StringBuilder(getString(R.string.app_name));
         if (!Util.isDevMode()) {
             if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
+                name.append(" ");
                 name.append(getString(prefs.getBoolean(Common.DONATED, false) ? R.string.name_pro : R.string.name_pseudo_pro));
             }
         } else {
