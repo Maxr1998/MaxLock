@@ -260,17 +260,13 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                     boolean value = tb.isChecked();
                     if (value) {
                         prefsApps.edit().putBoolean(tag, true).commit();
-                        AnimationSet anim = new AnimationSet(true);
-                        anim.addAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.appslist_settings_rotate));
-                        anim.addAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.appslist_settings_translate));
-                        options.startAnimation(anim);
+                        AnimationSet in = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings);
+                        options.startAnimation(in);
                         options.setVisibility(View.VISIBLE);
                     } else {
                         prefsApps.edit().remove(tag).commit();
-                        AnimationSet animOut = new AnimationSet(true);
-                        animOut.addAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.appslist_settings_rotate_out));
-                        animOut.addAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.appslist_settings_translate_out));
-                        animOut.setAnimationListener(new Animation.AnimationListener() {
+                        AnimationSet out = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings_out);
+                        out.setAnimationListener(new Animation.AnimationListener() {
                             @Override
                             public void onAnimationStart(Animation animation) {
 
@@ -290,7 +286,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
                             }
                         });
-                        options.startAnimation(animOut);
+                        options.startAnimation(out);
                     }
                 }
             });
