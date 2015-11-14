@@ -70,6 +70,10 @@
             android:title="@string/commons_io_name"
             maxlock:license="@string/license_commons_io" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/android_support_library_author"
+            android:title="@string/fingerprint_icon_name"
+            maxlock:license="@string/license_android_support_library" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
             android:summary="@string/google_play_services_author"
             android:title="@string/google_play_services_name"
             maxlock:license="@string/license_google_play_services" />

@@ -21,6 +21,7 @@
 
     <uses-sdk tools:overrideLibrary="xyz.danoz.recyclerviewfastscroller" />
 
+    <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT" />
     <!-- For wallpaper on Samsung devices -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- For backups -->

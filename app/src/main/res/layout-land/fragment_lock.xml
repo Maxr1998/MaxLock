@@ -30,11 +30,24 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <include
-                layout="@layout/header_view"
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1">
+
+                <include layout="@layout/header_view" />
+
+                <ImageView
+                    android:id="@+id/fingerprint_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="36dp"
+                    android:clickable="false"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
 
             <FrameLayout
                 android:id="@+id/container"

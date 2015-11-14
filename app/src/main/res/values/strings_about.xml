@@ -112,6 +112,8 @@
  * limitations under the License.\n
  */</string>
 
+    <string name="fingerprint_icon_name">Fingerprint icons and animations</string>
+
     <string name="google_play_services_name">Google Play Services</string>
     <string name="google_play_services_author">by Google</string>
     <string name="license_google_play_services">/*\n

@@ -18,6 +18,7 @@
 package de.Maxr1998.xposed.maxlock.ui;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -31,14 +32,19 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.DimenRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.support.v4.os.CancellationSignal;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -77,6 +83,8 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             R.id.pin0, R.id.pin_ok
     );
     private AuthenticationSucceededListener authenticationSucceededListener;
+    private FingerprintManagerCompat mFingerprintManager;
+    private CancellationSignal mCancelFingerprint;
     private SharedPreferences prefs;
     private LockPatternView lockPatternView;
     private LockPatternView.OnPatternListener patternListener;
@@ -90,6 +98,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     private ViewGroup rootView;
     private TextView mInputTextView;
     private FrameLayout container;
+    private ImageView mFingerprintIndicator;
     private String requestPkg;
     private int screenHeight, screenWidth, statusBarHeight, navBarHeight;
     private String password, lockingType;
@@ -127,6 +136,29 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
         lockingType = prefsPerApp.getString(requestPkg, prefs.getString(Common.LOCKING_TYPE, ""));
 
+        // Fingerprint authentication
+        mFingerprintManager = FingerprintManagerCompat.from(getActivity());
+        if (mFingerprintManager.isHardwareDetected() && mFingerprintManager.hasEnrolledFingerprints()) {
+            mCancelFingerprint = new CancellationSignal();
+            mFingerprintManager.authenticate(null, 0, mCancelFingerprint, new FingerprintManagerCompat.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
+                    handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation);
+                    authenticationSucceededListener.onAuthenticationSucceeded();
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_fp_to_error_state_animation);
+                    mFingerprintIndicator.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation);
+                        }
+                    }, 1500);
+                }
+            }, null);
+        }
 
         // Constants
         key = new StringBuilder(password.length() + new Random().nextInt(32));
@@ -157,8 +189,9 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         TextView mTitleTextView = (TextView) rootView.findViewById(R.id.title_view);
         View mInputBar = rootView.findViewById(R.id.input_bar);
         mInputTextView = (TextView) rootView.findViewById(R.id.input_view);
-        container = (FrameLayout) rootView.findViewById(R.id.container);
         ImageButton mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
+        container = (FrameLayout) rootView.findViewById(R.id.container);
+        mFingerprintIndicator = (ImageView) rootView.findViewById(R.id.fingerprint_indicator);
 
         // Locking type view setup
         switch (lockingType) {
@@ -242,15 +275,12 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             params.setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
             container.setLayoutParams(params);
         }
+
+        if (mFingerprintManager.isHardwareDetected() && mFingerprintManager.hasEnrolledFingerprints()) {
+            mFingerprintIndicator.setVisibility(View.VISIBLE);
+            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_on_animation);
+        }
         return rootView;
-    }
-
-    private int getDimens(@DimenRes int id) {
-        return getResources().getDimensionPixelSize(id);
-    }
-
-    private boolean isTablet() {
-        return prefs.getBoolean(Common.OVERRIDE_TABLET_MODE, getResources().getBoolean(R.bool.tablet_mode_default));
     }
 
     @Override
@@ -276,6 +306,25 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 containerY = loc[1];
             }
         });
+    }
+
+    private int getDimens(@DimenRes int id) {
+        return getResources().getDimensionPixelSize(id);
+    }
+
+    private boolean isTablet() {
+        return prefs.getBoolean(Common.OVERRIDE_TABLET_MODE, getResources().getBoolean(R.bool.tablet_mode_default));
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void handleFingerprintIndicator(@DrawableRes int id) {
+        if (mFingerprintIndicator != null) {
+            Drawable fp = getActivity().getDrawable(id);
+            if (fp instanceof AnimatedVectorDrawable) {
+                mFingerprintIndicator.setImageDrawable(fp);
+                ((AnimatedVectorDrawable) fp).start();
+            }
+        }
     }
 
     private void setupPINLayout() {
@@ -485,5 +534,13 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mCancelFingerprint != null) {
+            mCancelFingerprint.cancel();
+        }
     }
 }
