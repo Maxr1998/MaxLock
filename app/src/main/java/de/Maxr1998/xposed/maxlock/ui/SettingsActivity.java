@@ -37,6 +37,7 @@ import android.support.customtabs.CustomTabsService;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -199,7 +200,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         UNLOCKED = true;
         if (mSettingsFragment == null) {
             mSettingsFragment = MaxLockPreferenceFragment.Screen.MAIN.getScreen();
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, mSettingsFragment, TAG_SETTINGS_FRAGMENT).commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out);
+            ft.replace(R.id.frame_container, mSettingsFragment, TAG_SETTINGS_FRAGMENT).commit();
             if (getSupportActionBar() != null) {
                 getSupportActionBar().show();
             }
