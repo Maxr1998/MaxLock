@@ -275,7 +275,7 @@ public class AppListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (String.valueOf(requestCode).startsWith(String.valueOf(Util.PATTERN_CODE_APP))) {
             if (resultCode == LockPatternActivity.RESULT_OK) {
-                String app = (String) APP_LIST.get(Integer.parseInt(String.valueOf(requestCode).substring(1))).loadLabel(getActivity().getPackageManager());
+                String app = APP_LIST.get(Integer.parseInt(String.valueOf(requestCode).substring(1))).packageName;
                 Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), app);
             }
         } else super.onActivityResult(requestCode, resultCode, data);
