@@ -18,7 +18,6 @@
 package de.Maxr1998.xposed.maxlock.ui.settings.applist;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +29,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -405,9 +405,11 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            mItemList.clear();
-            mItemList.addAll((List<ApplicationInfo>) results.values);
-            notifyDataSetChanged();
+            if (mItemList != null && results != null) {
+                mItemList.clear();
+                mItemList.addAll((List<ApplicationInfo>) results.values);
+                notifyDataSetChanged();
+            }
         }
 
         public void saveFilterList() {
