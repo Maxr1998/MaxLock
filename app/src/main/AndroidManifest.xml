@@ -49,10 +49,12 @@
 
         <activity
             android:name=".ui.SettingsActivity"
+            android:exported="true"
             android:label="@string/app_name" />
 
         <activity-alias
             android:name=".Main"
+            android:exported="true"
             android:targetActivity=".ui.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,8 +66,8 @@
             android:name=".XposedMain"
             android:targetActivity=".ui.SettingsActivity">
             <intent-filter>
-                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
             </intent-filter>
         </activity-alias>
 
@@ -105,7 +107,6 @@
             android:name=".ui.LockActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:process=":MLLock"
             android:taskAffinity=""
             android:theme="@style/TranslucentStatusBar" />
 
@@ -124,7 +125,6 @@
             android:name=".ui.actions.ActionConfigActivity"
             android:exported="true"
             android:label="@string/activity_label_actions"
-            android:process=":MLExternal"
             android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
@@ -137,7 +137,6 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/activity_label_actions"
-            android:process=":MLExternal"
             android:taskAffinity=""
             android:theme="@style/TranslucentStatusBar" />
 
@@ -146,7 +145,6 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/activity_label_toggle_ms_deprecated"
-            android:process=":MLExternal"
             android:taskAffinity=""
             android:theme="@style/TranslucentStatusBar">
             <intent-filter>
