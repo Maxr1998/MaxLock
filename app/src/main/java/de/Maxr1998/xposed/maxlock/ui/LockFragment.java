@@ -45,12 +45,20 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.text.format.DateUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -71,21 +79,26 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-public class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
+public final class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
-    private final ArrayList<Float> knockCodeX = new ArrayList<>();
-    private final ArrayList<Float> knockCodeY = new ArrayList<>();
-    private final Paint kCTouchColor = new Paint();
     private final List<Integer> pinButtonIds = Arrays.asList(
             R.id.pin1, R.id.pin2, R.id.pin3,
             R.id.pin4, R.id.pin5, R.id.pin6,
             R.id.pin7, R.id.pin8, R.id.pin9,
             R.id.pin0, R.id.pin_ok
     );
-    private AuthenticationSucceededListener authenticationSucceededListener;
-    private FingerprintManagerCompat mFingerprintManager;
-    private CancellationSignal mCancelFingerprint;
     private SharedPreferences prefs;
+    private String mRequestPkgName, mPassword, mLockingType;
+    private StringBuilder mCurrentKey;
+    private AuthenticationSucceededListener authenticationSucceededListener;
+    private FingerprintHelper mFingerprintHelper;
+    private ViewGroup rootView, mInputBar;
+    private TextView mInputTextView;
+    private FrameLayout container;
+    private ImageView mFingerprintIndicator;
+    private int screenHeight, screenWidth, statusBarHeight, navBarHeight;
+
+    private KnockCodeHolder mKnockCodeHolder;
     private LockPatternView lockPatternView;
     private LockPatternView.OnPatternListener patternListener;
     private final Runnable mLockPatternViewReloader = new Runnable() {
@@ -95,17 +108,6 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             patternListener.onPatternCleared();
         }
     };
-    private ViewGroup rootView;
-    private TextView mInputTextView;
-    private FrameLayout container;
-    private ImageView mFingerprintIndicator;
-    private String requestPkg;
-    private int screenHeight, screenWidth, statusBarHeight, navBarHeight;
-    private String password, lockingType;
-    private StringBuilder key;
-    private Bitmap kCCBackground;
-    private RippleDrawable kCTouchLP;
-    private int containerX, containerY;
 
     @Override
     public void onAttach(Context context) {
@@ -128,41 +130,17 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         SharedPreferences prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
 
         // Strings
-        requestPkg = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
+        mRequestPkgName = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
 
-        if (prefsPerApp.contains(requestPkg))
-            password = prefsPerApp.getString(requestPkg + Common.APP_KEY_PREFERENCE, null);
-        else password = prefsKey.getString(Common.KEY_PREFERENCE, "");
+        if (prefsPerApp.contains(mRequestPkgName))
+            mPassword = prefsPerApp.getString(mRequestPkgName + Common.APP_KEY_PREFERENCE, null);
+        else mPassword = prefsKey.getString(Common.KEY_PREFERENCE, "");
 
-        lockingType = prefsPerApp.getString(requestPkg, prefs.getString(Common.LOCKING_TYPE, ""));
+        mLockingType = prefsPerApp.getString(mRequestPkgName, prefs.getString(Common.LOCKING_TYPE, ""));
+        mCurrentKey = new StringBuilder(mPassword.length() + new Random().nextInt(8));
+        mFingerprintHelper = new FingerprintHelper();
 
-        // Fingerprint authentication
-        mFingerprintManager = FingerprintManagerCompat.from(getActivity());
-        if (mFingerprintManager.isHardwareDetected() && mFingerprintManager.hasEnrolledFingerprints()) {
-            mCancelFingerprint = new CancellationSignal();
-            mFingerprintManager.authenticate(null, 0, mCancelFingerprint, new FingerprintManagerCompat.AuthenticationCallback() {
-                @Override
-                public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-                    handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation);
-                    authenticationSucceededListener.onAuthenticationSucceeded();
-                }
-
-                @Override
-                public void onAuthenticationFailed() {
-                    handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_fp_to_error_state_animation);
-                    mFingerprintIndicator.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation);
-                        }
-                    }, 1500);
-                }
-            }, null);
-        }
-
-        // Constants
-        key = new StringBuilder(password.length() + new Random().nextInt(32));
-
+        // Dimensions
         Point size = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(size);
         screenWidth = size.x;
@@ -175,10 +153,6 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             statusBarHeight = 0;
             navBarHeight = 0;
         }
-        //noinspection deprecation
-        kCTouchColor.setColor(getResources().getColor(R.color.legacy_highlight_dark));
-        kCTouchColor.setStrokeWidth(1);
-        kCTouchColor.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
     @Override
@@ -187,36 +161,11 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lock, mainContainer, false);
         ImageView background = (ImageView) rootView.findViewById(R.id.background);
         TextView mTitleTextView = (TextView) rootView.findViewById(R.id.title_view);
-        View mInputBar = rootView.findViewById(R.id.input_bar);
+        mInputBar = (ViewGroup) rootView.findViewById(R.id.input_bar);
         mInputTextView = (TextView) rootView.findViewById(R.id.input_view);
         ImageButton mDeleteButton = (ImageButton) rootView.findViewById(R.id.delete_input);
         container = (FrameLayout) rootView.findViewById(R.id.container);
         mFingerprintIndicator = (ImageView) rootView.findViewById(R.id.fingerprint_indicator);
-
-        // Locking type view setup
-        switch (lockingType) {
-            case Common.PREF_VALUE_PASSWORD:
-            case Common.PREF_VALUE_PASS_PIN:
-                mTitleTextView.setVisibility(View.GONE);
-                mInputBar.setVisibility(View.GONE);
-                Util.askPassword(getActivity(), password, lockingType.equals(Common.PREF_VALUE_PASS_PIN));
-                break;
-            case Common.PREF_VALUE_PIN:
-                inflater.inflate(R.layout.pin_field, container);
-                setupPINLayout();
-                break;
-            case Common.PREF_VALUE_KNOCK_CODE:
-                setupKnockCodeLayout();
-                break;
-            case Common.PREF_VALUE_PATTERN:
-                mInputBar.setVisibility(View.GONE);
-                inflater.inflate(R.layout.pattern_field, container);
-                setupPatternLayout();
-                break;
-            default:
-                authenticationSucceededListener.onAuthenticationSucceeded();
-                return rootView;
-        }
 
         // Background
         background.setImageDrawable(Util.getBackground(getActivity(), screenWidth, screenHeight));
@@ -237,48 +186,67 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
             gapTop.getLayoutParams().height = statusBarHeight;
         }
 
+        // Fingerprint Indicator
+        if (mFingerprintHelper.supported) {
+            mFingerprintIndicator.setVisibility(View.VISIBLE);
+            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_on_animation);
+        }
+
+        // Locking type view setup
+        switch (mLockingType) {
+            case Common.PREF_VALUE_PASSWORD:
+            case Common.PREF_VALUE_PASS_PIN:
+                mDeleteButton.setVisibility(View.GONE);
+                setupPassword();
+                break;
+            case Common.PREF_VALUE_PIN:
+                inflater.inflate(R.layout.pin_field, container);
+                setupPINLayout();
+                break;
+            case Common.PREF_VALUE_KNOCK_CODE:
+                mKnockCodeHolder = new KnockCodeHolder();
+                setupKnockCodeLayout();
+                break;
+            case Common.PREF_VALUE_PATTERN:
+                mInputBar.setVisibility(View.GONE);
+                inflater.inflate(R.layout.pattern_field, container);
+                setupPatternLayout();
+                break;
+            default:
+                authenticationSucceededListener.onAuthenticationSucceeded();
+                return rootView;
+        }
+
         // Title
-        if (mTitleTextView.getVisibility() == View.VISIBLE) {
-            mTitleTextView.setText(Util.getApplicationNameFromPackage(requestPkg, getActivity()));
-            mTitleTextView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(requestPkg, getActivity()), null, null, null);
+        if (prefs.getBoolean(Common.HIDE_TITLE_BAR, false)) {
+            mTitleTextView.setVisibility(View.GONE);
+        } else {
+            mTitleTextView.setText(Util.getApplicationNameFromPackage(mRequestPkgName, getActivity()));
+            mTitleTextView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(mRequestPkgName, getActivity()), null, null, null);
             mTitleTextView.setOnLongClickListener(this);
         }
 
         //Input
-        if (mInputBar.getVisibility() == View.VISIBLE) {
+        if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false)) {
+            mInputBar.setVisibility(View.GONE);
+        } else {
             mInputTextView.setText("");
             mDeleteButton.setOnClickListener(this);
             mDeleteButton.setOnLongClickListener(this);
         }
 
-        if (prefs.getBoolean(Common.HIDE_TITLE_BAR, false))
-            mTitleTextView.setVisibility(View.GONE);
-        if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false))
-            mInputBar.setVisibility(View.GONE);
         if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
             mTitleTextView.setTextColor(Color.BLACK);
             mInputTextView.setTextColor(Color.BLACK);
             mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
         }
 
-        if (!lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && isTablet()) {
+        if (!mLockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && isTablet()) {
             // Header views
-            LinearLayout.LayoutParams title = new LinearLayout.LayoutParams(mTitleTextView.getLayoutParams());
-            title.setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom), getDimens(R.dimen.tablet_margin_sides), 0);
-            mTitleTextView.setLayoutParams(title);
-            LinearLayout.LayoutParams input = new LinearLayout.LayoutParams(rootView.findViewById(R.id.input_bar).getLayoutParams());
-            input.setMargins(getDimens(R.dimen.tablet_margin_sides), 0, getDimens(R.dimen.tablet_margin_sides), 0);
-            rootView.findViewById(R.id.input_bar).setLayoutParams(input);
+            ((LinearLayout.LayoutParams) mTitleTextView.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom), getDimens(R.dimen.tablet_margin_sides), 0);
+            ((LinearLayout.LayoutParams) mInputBar.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), 0, getDimens(R.dimen.tablet_margin_sides), 0);
             // Container
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();
-            params.setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
-            params.setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
-            container.setLayoutParams(params);
-        }
-
-        if (mFingerprintManager.isHardwareDetected() && mFingerprintManager.hasEnrolledFingerprints()) {
-            mFingerprintIndicator.setVisibility(View.VISIBLE);
-            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_on_animation);
+            ((LinearLayout.LayoutParams) container.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
         }
         return rootView;
     }
@@ -286,26 +254,31 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @SuppressLint("NewApi")
-            @SuppressWarnings("deprecation")
-            @Override
-            public void onGlobalLayout() {
-                kCCBackground = Bitmap.createBitmap(container.getWidth(), container.getHeight(), Bitmap.Config.ARGB_8888);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
-                    container.setBackgroundDrawable(new BitmapDrawable(getResources(), kCCBackground));
-                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    container.setBackground(new BitmapDrawable(getResources(), kCCBackground));
-                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        if (mKnockCodeHolder != null) {
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @SuppressLint("NewApi")
+                @SuppressWarnings("deprecation")
+                @Override
+                public void onGlobalLayout() {
+                    // Remove layout listener
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+
+                    // Center values
+                    int[] loc = new int[2];
+                    container.getLocationOnScreen(loc);
+                    mKnockCodeHolder.containerX = loc[0];
+                    mKnockCodeHolder.containerY = loc[1];
+
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                        mKnockCodeHolder.setHighlightLegacy();
+                    }
                 }
-                // Center values
-                int[] loc = new int[2];
-                container.getLocationOnScreen(loc);
-                containerX = loc[0];
-                containerY = loc[1];
-            }
-        });
+            });
+        }
     }
 
     private int getDimens(@DimenRes int id) {
@@ -318,13 +291,75 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void handleFingerprintIndicator(@DrawableRes int id) {
-        if (mFingerprintIndicator != null) {
+        if (getActivity() != null) {
             Drawable fp = getActivity().getDrawable(id);
             if (fp instanceof AnimatedVectorDrawable) {
                 mFingerprintIndicator.setImageDrawable(fp);
                 ((AnimatedVectorDrawable) fp).start();
             }
         }
+    }
+
+    private void setupPassword() {
+        mInputBar.removeAllViews();
+        mInputTextView = new EditText(mInputBar.getContext());
+        LinearLayout.LayoutParams mInputTextParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mInputTextParams.weight = 1;
+        mInputTextView.setLayoutParams(mInputTextParams);
+        mInputTextView.setSingleLine();
+        if (mLockingType.equals(Common.PREF_VALUE_PASS_PIN)) {
+            mInputTextView.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        } else {
+            mInputTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        }
+        mInputTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (checkInput()) {
+                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                        //noinspection ConstantConditions
+                        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    } else {
+                        v.setText("");
+                        mCurrentKey.setLength(0);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        mInputTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mCurrentKey = new StringBuilder(editable.toString());
+                if (prefs.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
+                    if (checkInput()) {
+                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                        //noinspection ConstantConditions
+                        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    }
+                }
+            }
+        });
+        mInputBar.addView(mInputTextView);
+        int dp16 = Util.dpToPx(getActivity(), 16);
+        ((LinearLayout.LayoutParams) mInputBar.getLayoutParams()).setMargins(dp16, 0, dp16, 0);
+        // Move fingerprint icon next to input
+        ((ViewGroup) mFingerprintIndicator.getParent()).removeView(mFingerprintIndicator);
+
+        mInputBar.addView(mFingerprintIndicator);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     private void setupPINLayout() {
@@ -344,88 +379,78 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
     @SuppressWarnings("deprecation")
     private void setupKnockCodeLayout() {
-        if (prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            kCTouchLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.legacy_highlight_dark)), null, new ColorDrawable(Color.WHITE));
-            container.setForeground(kCTouchLP);
-            kCTouchLP.setState(new int[]{});
-        }
+        assert mKnockCodeHolder != null;
         container.setOnLongClickListener(this);
         container.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent e) {
                 if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    if (prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true)) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            kCTouchLP.setState(new int[]{android.R.attr.state_pressed});
-                            kCTouchLP.setHotspot(e.getRawX(), e.getRawY());
-                        } else {
-                            kCTouchColor.setShader(new RadialGradient(e.getRawX() - containerX, e.getRawY() - containerY, 200,
-                                    getResources().getColor(R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
-                            Canvas c = new Canvas(kCCBackground);
-                            c.drawCircle(e.getRawX() - containerX, e.getRawY() - containerY, 100, kCTouchColor);
-                            container.invalidate();
-                        }
-                    }
                     mInputTextView.append("\u2022");
 
+                    if (mKnockCodeHolder.mTouchHighlightVisible) {
+                        mKnockCodeHolder.onNewHighlight(e.getRawX(), e.getRawY());
+                    }
+
                     // Center values
-                    int viewCenterX = containerX + container.getWidth() / 2;
-                    int viewCenterY = containerY + container.getHeight() / 2;
+                    int viewCenterX = mKnockCodeHolder.containerX + container.getWidth() / 2;
+                    int viewCenterY = mKnockCodeHolder.containerY + container.getHeight() / 2;
 
                     // Track touch positions
-                    knockCodeX.add(e.getRawX());
-                    knockCodeY.add(e.getRawY());
-                    if (knockCodeX.size() != knockCodeY.size()) {
+                    mKnockCodeHolder.knockCodeX.add(e.getRawX());
+                    mKnockCodeHolder.knockCodeY.add(e.getRawY());
+                    if (mKnockCodeHolder.knockCodeX.size() != mKnockCodeHolder.knockCodeY.size()) {
                         throw new RuntimeException("The amount of the X and Y coordinates doesn't match!");
                     }
 
                     // Calculate center
                     float centerX;
-                    float differenceX = Collections.max(knockCodeX) - Collections.min(knockCodeX);
+                    float differenceX = Collections.max(mKnockCodeHolder.knockCodeX) - Collections.min(mKnockCodeHolder.knockCodeX);
                     if (differenceX > 50) {
-                        centerX = Collections.min(knockCodeX) + differenceX / 2;
+                        centerX = Collections.min(mKnockCodeHolder.knockCodeX) + differenceX / 2;
                     } else centerX = viewCenterX;
 
                     float centerY;
-                    float differenceY = Collections.max(knockCodeY) - Collections.min(knockCodeY);
+                    float differenceY = Collections.max(mKnockCodeHolder.knockCodeY) - Collections.min(mKnockCodeHolder.knockCodeY);
                     if (differenceY > 50) {
-                        centerY = Collections.min(knockCodeY) + differenceY / 2;
+                        centerY = Collections.min(mKnockCodeHolder.knockCodeY) + differenceY / 2;
                     } else centerY = viewCenterY;
 
                     // Calculate key
-                    key.setLength(0);
-                    for (int i = 0; i < knockCodeX.size(); i++) {
-                        float x = knockCodeX.get(i), y = knockCodeY.get(i);
+                    mCurrentKey.setLength(0);
+                    for (int i = 0; i < mKnockCodeHolder.knockCodeX.size(); i++) {
+                        float x = mKnockCodeHolder.knockCodeX.get(i), y = mKnockCodeHolder.knockCodeY.get(i);
                         if (x < centerX && y < centerY)
-                            key.append("1");
+                            mCurrentKey.append("1");
                         else if (x > centerX && y < centerY)
-                            key.append("2");
+                            mCurrentKey.append("2");
                         else if (x < centerX && y > centerY)
-                            key.append("3");
+                            mCurrentKey.append("3");
                         else if (x > centerX && y > centerY)
-                            key.append("4");
+                            mCurrentKey.append("4");
                     }
                     checkInput();
                 } else if (e.getActionMasked() == MotionEvent.ACTION_UP) {
                     if (prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                        kCCBackground.eraseColor(Color.TRANSPARENT);
+                        mKnockCodeHolder.highlightLegacy.eraseColor(Color.TRANSPARENT);
                         container.invalidate();
                     }
                 }
                 return false;
             }
         });
-        View divider = new View(getActivity());
-        divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDisplayMetrics().density)));
-        divider.setBackgroundColor(getResources().getColor(R.color.divider_dark));
-        container.addView(divider);
-        if (prefs.getBoolean(Common.INVERT_COLOR, false) && prefs.getBoolean(Common.SHOW_KC_DIVIDER, true)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                divider.setBackground(getResources().getDrawable(android.R.color.black));
-            else
-                divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
-        } else if (!prefs.getBoolean(Common.SHOW_KC_DIVIDER, true) || screenWidth > screenHeight) {
-            divider.setVisibility(View.GONE);
+        if (prefs.getBoolean(Common.SHOW_KC_DIVIDER, true) && screenWidth < screenHeight) {
+            View divider = new View(getActivity());
+            divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDisplayMetrics().density)));
+            if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    divider.setBackground(getResources().getDrawable(android.R.color.black));
+                } else {
+                    divider.setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
+                }
+            } else {
+                divider.setBackgroundColor(getResources().getColor(R.color.divider_dark));
+            }
+            container.addView(divider);
         }
     }
 
@@ -452,8 +477,8 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
             @Override
             public void onPatternDetected(List<LockPatternView.Cell> pattern) {
-                key.setLength(0);
-                key.append(pattern);
+                mCurrentKey.setLength(0);
+                mCurrentKey.append(pattern);
                 if (!checkInput()) {
                     lockPatternView.setDisplayMode(LockPatternView.DisplayMode.Wrong);
                     lockPatternView.postDelayed(mLockPatternViewReloader, DateUtils.SECOND_IN_MILLIS);
@@ -486,7 +511,7 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
                 return;
             }
             String t = ((TextView) view).getText().toString();
-            key.append(t);
+            mCurrentKey.append(t);
             mInputTextView.append(t);
             if (prefs.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
                 checkInput();
@@ -496,14 +521,13 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
 
         switch (view.getId()) {
             case R.id.delete_input:
-                if (key.length() > 0) {
-                    key.deleteCharAt(key.length() - 1);
+                if (mCurrentKey.length() > 0) {
+                    mCurrentKey.deleteCharAt(mCurrentKey.length() - 1);
                     if (mInputTextView.length() > 0) {
                         mInputTextView.setText(mInputTextView.getText().subSequence(0, mInputTextView.getText().length() - 1));
                     }
-                    if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && knockCodeX.size() > 0) {
-                        knockCodeX.remove(knockCodeX.size() - 1);
-                        knockCodeY.remove(knockCodeY.size() - 1);
+                    if (mKnockCodeHolder != null) {
+                        mKnockCodeHolder.clear(false);
                     }
                 }
                 break;
@@ -514,22 +538,21 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     public boolean onLongClick(View view) {
         switch (view.getId()) {
             case R.id.title_view:
-                Toast.makeText(getActivity(), getArguments().getString("activityName"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getArguments().getString("activityName", getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
                 return true;
             default:
-                key.setLength(0);
+                mCurrentKey.setLength(0);
                 mInputTextView.setText("");
-                if (lockingType.equals(Common.PREF_VALUE_KNOCK_CODE)) {
-                    knockCodeX.clear();
-                    knockCodeY.clear();
+                if (mKnockCodeHolder != null) {
+                    mKnockCodeHolder.clear(true);
                 }
                 return true;
         }
     }
 
     private boolean checkInput() {
-        if (Util.shaHash(key.toString()).equals(password) || password.equals("")) {
-            key.trimToSize();
+        if (Util.shaHash(mCurrentKey.toString()).equals(mPassword) || mPassword.equals("")) {
+            mFingerprintHelper.cancel();
             authenticationSucceededListener.onAuthenticationSucceeded();
             return true;
         }
@@ -537,10 +560,138 @@ public class LockFragment extends Fragment implements View.OnClickListener, View
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mCancelFingerprint != null) {
-            mCancelFingerprint.cancel();
+    public void onResume() {
+        super.onResume();
+        mFingerprintHelper.authenticate();
+    }
+
+    @Override
+    public void onPause() {
+        mFingerprintHelper.cancel();
+        super.onPause();
+    }
+
+    private final class KnockCodeHolder {
+        private final ArrayList<Float> knockCodeX;
+        private final ArrayList<Float> knockCodeY;
+        private final Paint touchColorLegacy;
+        private final boolean mTouchHighlightVisible;
+        private final RippleDrawable highlightLP;
+        private int containerX, containerY;
+        private Bitmap highlightLegacy;
+
+        public KnockCodeHolder() {
+            knockCodeX = new ArrayList<>();
+            knockCodeY = new ArrayList<>();
+
+            mTouchHighlightVisible = prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true);
+            if (mTouchHighlightVisible) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    //noinspection deprecation
+                    highlightLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.legacy_highlight_dark)), null, new ColorDrawable(Color.WHITE));
+                    container.setForeground(highlightLP);
+                    highlightLP.setState(new int[]{});
+
+                    // Destroy others
+                    touchColorLegacy = null;
+                } else {
+                    touchColorLegacy = new Paint();
+                    //noinspection deprecation
+                    touchColorLegacy.setColor(getResources().getColor(R.color.legacy_highlight_dark));
+                    touchColorLegacy.setStrokeWidth(1);
+                    touchColorLegacy.setStyle(Paint.Style.FILL_AND_STROKE);
+
+                    // Destroy others
+                    highlightLP = null;
+                }
+            } else {
+                // Destroy others
+                highlightLP = null;
+                touchColorLegacy = null;
+            }
+        }
+
+        public void setHighlightLegacy() {
+            highlightLegacy = Bitmap.createBitmap(container.getWidth(), container.getHeight(), Bitmap.Config.ARGB_8888);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                //noinspection deprecation
+                container.setBackgroundDrawable(new BitmapDrawable(getResources(), highlightLegacy));
+            } else {
+                container.setBackground(new BitmapDrawable(getResources(), highlightLegacy));
+            }
+        }
+
+        public void onNewHighlight(float x, float y) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                highlightLP.setState(new int[]{android.R.attr.state_pressed});
+                highlightLP.setHotspot(x, y);
+            } else {
+                //noinspection deprecation
+                touchColorLegacy.setShader(new RadialGradient(x - containerX, y - containerY, 200,
+                        getResources().getColor(R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                Canvas c = new Canvas(highlightLegacy);
+                c.drawCircle(x - containerX, y - containerY, 100, touchColorLegacy);
+                container.invalidate();
+            }
+        }
+
+        public void clear(boolean full) {
+            if (full) {
+                knockCodeX.clear();
+                knockCodeY.clear();
+            } else if (knockCodeX.size() > 0) {
+                knockCodeX.remove(knockCodeX.size() - 1);
+                knockCodeY.remove(knockCodeY.size() - 1);
+            }
+        }
+    }
+
+    private final class FingerprintHelper {
+        private final boolean supported;
+        private final FingerprintManagerCompat mFingerprintManager;
+        private CancellationSignal mCancelFingerprint;
+        private FingerprintManagerCompat.AuthenticationCallback mFPAuthenticationCallback;
+
+        public FingerprintHelper() {
+            mFingerprintManager = FingerprintManagerCompat.from(getActivity());
+            supported = mFingerprintManager.isHardwareDetected() && mFingerprintManager.hasEnrolledFingerprints();
+            if (!supported) {
+                return;
+            }
+            mFPAuthenticationCallback = new FingerprintManagerCompat.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
+                    handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation);
+                    authenticationSucceededListener.onAuthenticationSucceeded();
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_fp_to_error_state_animation);
+                    mFingerprintIndicator.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation);
+                        }
+                    }, 1500);
+                }
+            };
+            mCancelFingerprint = new CancellationSignal();
+        }
+
+        public void authenticate() {
+            if (supported) {
+                if (mCancelFingerprint.isCanceled()) {
+                    mCancelFingerprint = new CancellationSignal();
+                }
+                mFingerprintManager.authenticate(null, 0, mCancelFingerprint, mFPAuthenticationCallback, null);
+            }
+        }
+
+        public void cancel() {
+            if (mCancelFingerprint != null) {
+                mCancelFingerprint.cancel();
+            }
         }
     }
 }

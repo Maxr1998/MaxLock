@@ -32,13 +32,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -95,63 +91,6 @@ public abstract class Util {
                 a.setTheme(R.style.AppTheme_Dark_AMOLED);
             }
         }
-    }
-
-    @SuppressLint("InlinedApi")
-    public static void askPassword(final Context context, final String password, boolean numbers) {
-        try {
-            authenticationSucceededListener = (AuthenticationSucceededListener) context;
-        } catch (ClassCastException e) {
-            throw new RuntimeException(context.getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this fragment", e);
-        }
-        loadPrefs(context);
-        @SuppressLint("InflateParams")
-        final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_ask_password, null);
-        final EditText input = (EditText) dialogView.findViewById(R.id.ent_password);
-        final AlertDialog dialog = new AlertDialog.Builder(context)
-                .setCancelable(false)
-                .setTitle(R.string.pref_locking_type_password)
-                .setView(dialogView)
-                .setPositiveButton(android.R.string.ok, null)
-                .create();
-        if (numbers) {
-            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        }
-        input.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (PREFS.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
-                    String val = input.getText().toString();
-                    if (Util.shaHash(val).equals(password) || password.equals("")) {
-                        dialog.dismiss();
-                        authenticationSucceededListener.onAuthenticationSucceeded();
-                    }
-                }
-            }
-        });
-        dialog.show();
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String val = input.getText().toString();
-                if (Util.shaHash(val).equals(password) || password.equals("")) {
-                    authenticationSucceededListener.onAuthenticationSucceeded();
-                    dialog.dismiss();
-                } else {
-                    input.setText("");
-                    Toast.makeText(context, R.string.toast_password_incorrect, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     public static void setPassword(final Context context, final String app) {
