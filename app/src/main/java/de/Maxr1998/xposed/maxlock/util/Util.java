@@ -74,10 +74,32 @@ public abstract class Util {
     private static ApplicationInfo REQUEST_PKG_INFO;
     private static PackageManager PM;
 
+    // Prefs
     private static void loadPrefs(Context context) {
         PREFS = PreferenceManager.getDefaultSharedPreferences(context);
         PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
         PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
+    }
+
+    // UI
+
+    /**
+     * This method calculates a size in pixels from a given dp value.
+     *
+     * @param o  Object of either View or Context
+     * @param dp Value to convert to pixels
+     * @return Calculated Pixels
+     */
+    public static int dpToPx(@NonNull Object o, int dp) {
+        Context c;
+        if (o instanceof View) {
+            c = ((View) o).getContext();
+        } else if (o instanceof Context) {
+            c = (Context) o;
+        } else {
+            throw new IllegalArgumentException("This object only takes views or contexts as argument!");
+        }
+        return (int) (c.getResources().getDisplayMetrics().density * dp);
     }
 
     public static void setTheme(Activity a) {
@@ -90,6 +112,98 @@ public abstract class Util {
             } else {
                 a.setTheme(R.style.AppTheme_Dark_AMOLED);
             }
+        }
+    }
+
+    public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
+        loadPrefs(context);
+        String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
+        switch (backgroundType) {
+            case "theme":
+                InputStream backgroundStream;
+                try {
+                    File backgroundFile = new File(dataDir(context) + "theme/background.png");
+                    if (backgroundFile.exists()) {
+                        backgroundStream = new FileInputStream(backgroundFile);
+                        M_BITMAP = BitmapFactory.decodeStream(backgroundStream);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "custom":
+                InputStream inputStream;
+                try {
+                    inputStream = new FileInputStream(new File(dataDir(context) + "background/image"));
+                    M_BITMAP = BitmapFactory.decodeStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "color":
+                M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+                M_BITMAP.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
+                break;
+            default:
+                Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
+                if (wallpaper == null) {
+                    M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+                    M_BITMAP.eraseColor(context.getResources().getColor(R.color.accent));
+                } else {
+                    M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
+                }
+                break;
+        }
+        return new BitmapDrawable(context.getResources(), M_BITMAP);
+    }
+
+    // Lock
+    public static String shaHash(String toHash) { // from: [ http://stackoverflow.com/a/11978976 ]. Thanks very much!
+        String hash = null;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = toHash.getBytes("UTF-8");
+            digest.update(bytes, 0, bytes.length);
+            bytes = digest.digest();
+
+            hash = bytesToHex(bytes);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return hash;
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
+    public static void receiveAndSetPattern(Context context, char[] pattern, String app) {
+        loadPrefs(context);
+        StringBuilder patternKey = new StringBuilder();
+        for (char x : pattern) {
+            patternKey.append(x);
+        }
+        if (app == null) {
+            PREFS.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PATTERN).apply();
+            PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
+        } else {
+            PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PATTERN).putString(app + Common.APP_KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
+        }
+    }
+
+    public static int getPatternCode(int app) {
+        if (app == -1) {
+            return PATTERN_CODE;
+        } else {
+            int code = Integer.valueOf(String.valueOf(PATTERN_CODE_APP) + String.valueOf(app));
+            System.out.println(code);
+            return code;
         }
     }
 
@@ -156,29 +270,9 @@ public abstract class Util {
         }
     }
 
-    public static String shaHash(String toHash) { // from: [ http://stackoverflow.com/a/11978976 ]. Thanks very much!
-        String hash = null;
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] bytes = toHash.getBytes("UTF-8");
-            digest.update(bytes, 0, bytes.length);
-            bytes = digest.digest();
-
-            hash = bytesToHex(bytes);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return hash;
-    }
-
-    private static String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
+    // Packages
+    public static String dataDir(Context context) {
+        return context.getApplicationInfo().dataDir + File.separator;
     }
 
     public static String getApplicationNameFromPackage(String packageName, Context context) {
@@ -206,60 +300,6 @@ public abstract class Util {
                         context.getDrawable(R.mipmap.ic_launcher));
     }
 
-    /*public static int getTextColor(Context context) {
-        if (Integer.valueOf(M_COLOR) == null) {
-            Palette p = Palette.generate(getBackground(context));
-            M_COLOR = p.getVibrantSwatch().getTitleTextColor();
-        }
-        return M_COLOR;
-    }*/
-
-    public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
-        loadPrefs(context);
-        String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
-        switch (backgroundType) {
-            case "theme":
-                InputStream backgroundStream;
-                try {
-                    File backgroundFile = new File(dataDir(context) + "theme/background.png");
-                    if (backgroundFile.exists()) {
-                        backgroundStream = new FileInputStream(backgroundFile);
-                        M_BITMAP = BitmapFactory.decodeStream(backgroundStream);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "custom":
-                InputStream inputStream;
-                try {
-                    inputStream = new FileInputStream(new File(dataDir(context) + "background/image"));
-                    M_BITMAP = BitmapFactory.decodeStream(inputStream);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "color":
-                M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                M_BITMAP.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
-                break;
-            default:
-                Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
-                if (wallpaper == null) {
-                    M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                    M_BITMAP.eraseColor(context.getResources().getColor(R.color.accent));
-                } else {
-                    M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
-                }
-                break;
-        }
-        return new BitmapDrawable(context.getResources(), M_BITMAP);
-    }
-
-    public static String dataDir(Context context) {
-        return context.getApplicationInfo().dataDir + File.separator;
-    }
-
     public static String getLanguageCode() {
         String language = Locale.getDefault().getLanguage();
         String country = Locale.getDefault().getCountry();
@@ -271,30 +311,6 @@ public abstract class Util {
         } else return language;
     }
 
-    public static int getPatternCode(int app) {
-        if (app == -1) {
-            return PATTERN_CODE;
-        } else {
-            int code = Integer.valueOf(String.valueOf(PATTERN_CODE_APP) + String.valueOf(app));
-            System.out.println(code);
-            return code;
-        }
-    }
-
-    public static void receiveAndSetPattern(Context context, char[] pattern, String app) {
-        loadPrefs(context);
-        StringBuilder patternKey = new StringBuilder();
-        for (char x : pattern) {
-            patternKey.append(x);
-        }
-        if (app == null) {
-            PREFS.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PATTERN).apply();
-            PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
-        } else {
-            PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PATTERN).putString(app + Common.APP_KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
-        }
-    }
-
     public static boolean isDevMode() {
         try {
             BufferedReader r = new BufferedReader(new FileReader(Common.EXTERNAL_FILES_DIR + "dev_mode.key"));
@@ -302,24 +318,5 @@ public abstract class Util {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    /**
-     * This method calculates a size in pixels from a given dp value.
-     *
-     * @param o  Object of either View or Context
-     * @param dp Value to convert to pixels
-     * @return Calculated Pixels
-     */
-    public static int dpToPx(@NonNull Object o, int dp) {
-        Context c;
-        if (o instanceof View) {
-            c = ((View) o).getContext();
-        } else if (o instanceof Context) {
-            c = (Context) o;
-        } else {
-            throw new IllegalArgumentException("This object only takes views or contexts as argument!");
-        }
-        return (int) (c.getResources().getDisplayMetrics().density * dp);
     }
 }
