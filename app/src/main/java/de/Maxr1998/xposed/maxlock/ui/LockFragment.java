@@ -62,6 +62,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -245,7 +246,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
             ((LinearLayout.LayoutParams) mTitleTextView.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom), getDimens(R.dimen.tablet_margin_sides), 0);
             ((LinearLayout.LayoutParams) mInputBar.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), 0, getDimens(R.dimen.tablet_margin_sides), 0);
             // Container
-            ((LinearLayout.LayoutParams) container.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
+            ((RelativeLayout.LayoutParams) container.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
         }
         return rootView;
     }
