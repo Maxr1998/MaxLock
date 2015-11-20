@@ -35,6 +35,8 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -113,6 +115,13 @@ public abstract class Util {
                 a.setTheme(R.style.AppTheme_Dark_AMOLED);
             }
         }
+    }
+
+    public static void hideKeyboardFromWindow(Activity a, View v) {
+        a.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        //noinspection ConstantConditions
+        ((InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {

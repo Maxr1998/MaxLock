@@ -57,7 +57,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -317,10 +316,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (checkInput()) {
-                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-                        //noinspection ConstantConditions
-                        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                        Util.hideKeyboardFromWindow(getActivity(), getView());
                     } else {
                         v.setText("");
                         mCurrentKey.setLength(0);
@@ -344,10 +340,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
                 mCurrentKey = new StringBuilder(editable.toString());
                 if (prefs.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
                     if (checkInput()) {
-                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-                        //noinspection ConstantConditions
-                        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                        Util.hideKeyboardFromWindow(getActivity(), getView());
                     }
                 }
             }
@@ -661,6 +654,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
             mFPAuthenticationCallback = new FingerprintManagerCompat.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
+                    Util.hideKeyboardFromWindow(getActivity(), getView());
                     handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation);
                     authenticationSucceededListener.onAuthenticationSucceeded();
                 }
