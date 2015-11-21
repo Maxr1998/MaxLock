@@ -17,12 +17,12 @@
 
 package de.Maxr1998.xposed.maxlock.util;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -34,7 +34,7 @@ public abstract class NotificationHelper {
     public static final int NOTIFICATION_ID = 0x130D;
 
     public static void postNotification(Context mContext) {
-        NotificationManager nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManagerCompat nm = NotificationManagerCompat.from(mContext);
         if (!MLPreferences.getPrefsApps(mContext).getBoolean(Common.SHOW_IMOD_RESET_NOTIFICATION, false)) {
             nm.cancel(NOTIFICATION_ID);
             return;
@@ -43,7 +43,7 @@ public abstract class NotificationHelper {
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notifyIntent.putExtra(ActionsHelper.ACTION_EXTRA_KEY, R.id.radio_imod_reset);
 
-        Notification.Builder builder = new Notification.Builder(mContext)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
                 .setContentTitle(mContext.getString(R.string.action_imod_reset))
                 .setContentText("")
                 .setSmallIcon(R.drawable.ic_apps_24dp)
@@ -55,8 +55,8 @@ public abstract class NotificationHelper {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //noinspection deprecation
-            builder.setPriority(Notification.PRIORITY_MIN)
-                    .setCategory(Notification.CATEGORY_STATUS)
+            builder.setPriority(NotificationCompat.PRIORITY_MIN)
+                    .setCategory(NotificationCompat.CATEGORY_STATUS)
                     .setColor(mContext.getResources().getColor(R.color.accent));
         }
         //noinspection deprecation
