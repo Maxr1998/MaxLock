@@ -36,27 +36,36 @@ public class ScreenOff {
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
 
     public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
-        boolean isMiui;
-        try {
-            XposedHelpers.findClass("com.android.keyguard.MiuiKeyguardViewMediator", lPParam.classLoader);
-            log("ML: Recognized MIUI device.");
-            isMiui = true;
-        } catch (XposedHelpers.ClassNotFoundError e) {
-            isMiui = false;
+        String hookedClass;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            hookedClass = "com.android.systemui.keyguard.KeyguardViewMediator";
+        } else {
+            try {
+                XposedHelpers.findClass("com.android.keyguard.MiuiKeyguardViewMediator", lPParam.classLoader);
+                hookedClass = "com.android.keyguard.MiuiKeyguardViewMediator";
+                log("ML: Recognized MIUI device.");
+            } catch (XposedHelpers.ClassNotFoundError e) {
+                hookedClass = "com.android.keyguard.KeyguardViewMediator";
+            }
+        }
+        final XC_MethodHook hook = new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                prefsApps.reload();
+                if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
+                    clear();
+                    log("ML: Screen turned off, locked apps.");
+                }
+            }
+        };
+        Object[] paramsAndHook;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            paramsAndHook = new Object[]{hook};
+        } else {
+            paramsAndHook = new Object[]{int.class, hook};
         }
         try {
-            findAndHookMethod(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? "com.android.systemui.keyguard.KeyguardViewMediator" :
-                            isMiui ? "com.android.keyguard.MiuiKeyguardViewMediator" : "com.android.keyguard.KeyguardViewMediator",
-                    lPParam.classLoader, "onScreenTurnedOff", int.class, new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            prefsApps.reload();
-                            if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
-                                clear();
-                                log("ML: Screen turned off, locked apps.");
-                            }
-                        }
-                    });
+            findAndHookMethod(hookedClass, lPParam.classLoader, "onScreenTurnedOff", paramsAndHook);
         } catch (Throwable t) {
             log(t);
         }
