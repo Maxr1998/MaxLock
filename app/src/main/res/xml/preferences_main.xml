@@ -37,12 +37,6 @@
             android:defaultValue="false"
             android:key="use_dark_style"
             android:title="@string/pref_use_dark_style" />
-        <!--suppress AndroidUnknownAttribute -->
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
-            alphaSlider="true"
-            android:defaultValue="@android:color/white"
-            android:key="widget_background_color"
-            android:title="@string/pref_widget_background_color" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_about">

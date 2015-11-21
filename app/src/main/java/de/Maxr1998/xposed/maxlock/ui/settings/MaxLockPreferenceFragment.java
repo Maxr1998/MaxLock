@@ -118,7 +118,6 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     amoledBlack.setOrder(useDark.getOrder() + 1);
                     ((PreferenceCategory) findPreference(Common.CATEGORY_APPLICATION_UI)).addPreference(amoledBlack);
                     amoledBlack.setDependency(Common.USE_DARK_STYLE);
-                    findPreference(Common.WIDGET_BACKGROUND_COLOR).setOrder(amoledBlack.getOrder() + 1);
                 }
                 break;
             case TYPE:

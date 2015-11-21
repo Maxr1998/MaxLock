@@ -40,7 +40,7 @@ public class ActionActivity extends AppCompatActivity implements AuthenticationS
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefsApps = MLPreferences.getPrefsApps(this);
         mode = getIntent().getIntExtra(ActionsHelper.ACTION_EXTRA_KEY, -1);
-        if (mode == R.id.radio_ms_off || (mode == R.id.radio_toggle_ms && prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true))) {
+        if ((mode == ActionsHelper.ACTION_MASTER_SWITCH_OFF || mode == ActionsHelper.ACTION_TOGGLE_MASTER_SWITCH) && prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_lock);
             Fragment frag = new LockFragment();
@@ -69,12 +69,15 @@ public class ActionActivity extends AppCompatActivity implements AuthenticationS
 
     private void fireIntentAndFinish() {
         // Update MasterSwitch Widget if existent
-        if (mode == R.id.radio_toggle_ms || mode == R.id.radio_ms_on || mode == R.id.radio_ms_off) {
-            Intent intent = new Intent(this, MasterSwitchWidget.class);
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MasterSwitchWidget.class));
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-            sendBroadcast(intent);
+        switch (mode) {
+            case ActionsHelper.ACTION_TOGGLE_MASTER_SWITCH:
+            case ActionsHelper.ACTION_MASTER_SWITCH_ON:
+            case ActionsHelper.ACTION_MASTER_SWITCH_OFF:
+                Intent intent = new Intent(this, MasterSwitchWidget.class);
+                intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MasterSwitchWidget.class));
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                sendBroadcast(intent);
         }
         finish();
     }

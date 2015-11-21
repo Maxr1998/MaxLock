@@ -32,6 +32,7 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper.ACTION_EXTRA_KEY;
+import static de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper.getKey;
 
 public class ActionConfigActivity extends AppCompatActivity {
 
@@ -75,12 +76,12 @@ public class ActionConfigActivity extends AppCompatActivity {
                 result = new Intent();
                 if (taskerMode) {
                     Bundle resultBundle = new Bundle();
-                    resultBundle.putInt(ACTION_EXTRA_KEY, checked);
+                    resultBundle.putInt(ACTION_EXTRA_KEY, ActionsHelper.getKey(checked));
                     result.putExtra("com.twofortyfouram.locale.intent.extra.BUNDLE", resultBundle);
                     result.putExtra("com.twofortyfouram.locale.intent.extra.BLURB", ((RadioButton) findViewById(checked)).getText().toString());
                 } else {
                     Intent shortcut = new Intent(ActionConfigActivity.this, ActionActivity.class);
-                    shortcut.putExtra(ACTION_EXTRA_KEY, checked);
+                    shortcut.putExtra(ACTION_EXTRA_KEY, getKey(checked));
                     result.putExtra(Intent.EXTRA_SHORTCUT_NAME, ((RadioButton) findViewById(checked)).getText().toString());
                     result.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
                     result.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
@@ -88,9 +89,6 @@ public class ActionConfigActivity extends AppCompatActivity {
                 finish();
             }
         });
-        if (savedInstanceState == null && extra != null) {
-            options.check(extra.getInt(ACTION_EXTRA_KEY, -1));
-        }
     }
 
     @Override

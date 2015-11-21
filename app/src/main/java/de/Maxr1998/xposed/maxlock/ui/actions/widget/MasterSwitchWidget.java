@@ -23,11 +23,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.View;
 import android.widget.RemoteViews;
 
 import de.Maxr1998.xposed.maxlock.Common;
@@ -43,29 +38,14 @@ public class MasterSwitchWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Intent intent = new Intent(context, ActionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ActionsHelper.ACTION_EXTRA_KEY, R.id.radio_toggle_ms);
-        PendingIntent pending = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        int color = PreferenceManager.getDefaultSharedPreferences(context).getInt(Common.WIDGET_BACKGROUND_COLOR, Color.WHITE);
+        intent.putExtra(ActionsHelper.ACTION_EXTRA_KEY, ActionsHelper.ACTION_TOGGLE_MASTER_SWITCH);
+        PendingIntent pending = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         boolean masterSwitchOn = MLPreferences.getPrefsApps(context).getBoolean(Common.MASTER_SWITCH_ON, true);
 
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
-            views.setInt(R.id.widget, "setBackgroundColor", color);
-            views.setImageViewResource(R.id.widget_master_switch_icon, masterSwitchOn ? R.drawable.ic_widget_on_72dp : R.drawable.ic_widget_off_72dp);
-            views.setOnClickPendingIntent(R.id.widget, pending);
-            appWidgetManager.updateAppWidget(appWidgetId, views);
-        }
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
-    }
-
-    @Override
-    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.master_switch_widget);
-            views.setViewVisibility(R.id.widget_app_name, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH) < 160 ? View.GONE : View.VISIBLE);
-            views.setViewVisibility(R.id.widget_title, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH) > 200 &&
-                    newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) > 100
-                    ? View.VISIBLE : View.GONE);
+            views.setImageViewResource(R.id.widget_master_switch_icon, masterSwitchOn ? R.drawable.ic_lock_48dp : R.drawable.ic_lock_open_48dp);
+            views.setOnClickPendingIntent(R.id.widget_background, pending);
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
