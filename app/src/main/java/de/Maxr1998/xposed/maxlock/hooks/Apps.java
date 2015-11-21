@@ -86,8 +86,10 @@ public class Apps {
                     }
                     Intent it = new Intent();
                     it.setComponent(new ComponentName(Main.MAXLOCK_PACKAGE_NAME, Main.MAXLOCK_PACKAGE_NAME + ".ui.LockActivity"));
-                    it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    it.putExtra(Common.LOCK_ACTIVITY_MODE, prefsApps.getBoolean(lPParam.packageName + "_fake", false) ? Common.MODE_FAKE_DIE : Common.MODE_DEFAULT);
+                    it.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    if (prefsApps.getBoolean(lPParam.packageName + "_fake", false)) {
+                        it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH);
+                    }
                     it.putExtra(Common.INTENT_EXTRAS_INTENT, app.getIntent());
                     it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, lPParam.packageName);
                     app.startActivity(it);

@@ -40,7 +40,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
         <!-- Main app -->
         <activity
@@ -85,7 +85,8 @@
             android:name=".ui.SettingsActivity$UninstallProtectionReceiver"
             android:description="@string/device_admin_description"
             android:label="@string/app_name"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            android:permission="android.permission.BIND_DEVICE_ADMIN"
+            tools:ignore="ManifestResource">
             <meta-data
                 android:name="android.app.device_admin"
                 android:resource="@xml/device_admin" />
@@ -107,6 +108,7 @@
             android:name=".ui.LockActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:noHistory="true"
             android:taskAffinity=""
             android:theme="@style/TranslucentStatusBar" />
 

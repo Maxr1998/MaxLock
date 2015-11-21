@@ -109,8 +109,8 @@ public abstract class Common {
     public static final String PREFS_THEME = "theme";
 
     public static final String LOCK_ACTIVITY_MODE = "la_mode";
-    public static final String MODE_DEFAULT = "default";
-    public static final String MODE_FAKE_DIE = "fake-die";
+    public static final String MODE_FAKE_CRASH = "fake-crash";
+    public static final String MODE_UNLOCK = "force-unlock";
 
     public static final String EXTERNAL_FILES_DIR = Environment.getExternalStorageDirectory() + "/MaxLock/";
     public static final String BACKUP_DIR = EXTERNAL_FILES_DIR + "Backup/";

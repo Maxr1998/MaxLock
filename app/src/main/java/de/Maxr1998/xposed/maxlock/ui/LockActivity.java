@@ -52,37 +52,29 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String mode = prefs.getBoolean(Common.ENABLE_FAKE_CRASH_ALL_APPS, false) && getIntent().getStringExtra("no_fake") == null ? Common.MODE_FAKE_DIE
-                : getIntent().getStringExtra(Common.LOCK_ACTIVITY_MODE);
-        switch (mode) {
-            case Common.MODE_DEFAULT:
-                if (prefs.getBoolean(Common.HIDE_STATUS_BAR, false)) {
-                    setTheme(R.style.TranslucentStatusBar_Full);
-                } else {
-                    setTheme(R.style.TranslucentStatusBar);
-                }
-                break;
-            case Common.MODE_FAKE_DIE:
-                setTheme(R.style.FakeDieDialog);
-                getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                break;
-            default:
-                super.onCreate(savedInstanceState);
-                onBackPressed();
-                return;
+        final String lockActivityMode = getIntent().getStringExtra(Common.LOCK_ACTIVITY_MODE);
+        final boolean fakeCrash = (lockActivityMode != null && lockActivityMode.equals(Common.MODE_FAKE_CRASH)) ||
+                (prefs.getBoolean(Common.ENABLE_FAKE_CRASH_ALL_APPS, false) && (lockActivityMode == null || !lockActivityMode.equals(Common.MODE_UNLOCK)));
+
+        if (!fakeCrash) {
+            if (prefs.getBoolean(Common.HIDE_STATUS_BAR, false)) {
+                setTheme(R.style.TranslucentStatusBar_Full);
+            } else {
+                setTheme(R.style.TranslucentStatusBar);
+            }
+        } else {
+            setTheme(R.style.FakeDieDialog);
+            getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
         super.onCreate(savedInstanceState);
         // Intent extras
         packageName = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
         original = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
 
-        switch (mode) {
-            case Common.MODE_DEFAULT:
-                defaultSetup();
-                break;
-            case Common.MODE_FAKE_DIE:
-                fakeDieSetup();
-                break;
+        if (!fakeCrash) {
+            defaultSetup();
+        } else {
+            fakeDieSetup();
         }
     }
 
@@ -190,19 +182,18 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
     }
 
+    private void launchLockView() {
+        Intent it = new Intent(this, LockActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_UNLOCK);
+        it.putExtra(Common.INTENT_EXTRAS_INTENT, original);
+        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+        startActivity(it);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-    }
-
-    private void launchLockView() {
-        Intent it = new Intent(this, LockActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_DEFAULT);
-        it.putExtra(Common.INTENT_EXTRAS_INTENT, original);
-        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        it.putExtra("no_fake", "");
-        startActivity(it);
     }
 
     @Override
