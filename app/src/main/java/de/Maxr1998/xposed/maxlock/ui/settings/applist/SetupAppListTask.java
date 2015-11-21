@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.BuildConfig;
 
 class SetupAppListTask extends AsyncTask<Void, Integer, Void> {
 
@@ -71,7 +71,7 @@ class SetupAppListTask extends AsyncTask<Void, Integer, Void> {
         PackageManager pm = mContext.getPackageManager();
         for (int i = 0; i < mAllApps.size(); i++) {
             ApplicationInfo ai = mAllApps.get(i);
-            if ((pm.getLaunchIntentForPackage(ai.packageName) != null && !ai.packageName.equals(Common.PKG_NAME)) || ai.packageName.equals("com.android.packageinstaller")) {
+            if ((pm.getLaunchIntentForPackage(ai.packageName) != null && !ai.packageName.equals(BuildConfig.APPLICATION_ID)) || ai.packageName.equals("com.android.packageinstaller")) {
                 mAppList.add(ai);
             }
             publishProgress(i + 1);
