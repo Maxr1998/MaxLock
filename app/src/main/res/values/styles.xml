@@ -11,6 +11,9 @@
         <item name="highlightDrawable">@drawable/highlight_light</item>
         <item name="dividerColor">@color/divider_light</item>
         <item name="android:preferenceStyle">@style/Preference</item>
+        <item name="android:checkBoxPreferenceStyle">@style/Preference.SwitchView</item>
+        <item name="android:dialogPreferenceStyle">@style/Preference</item>
+        <item name="android:editTextPreferenceStyle">@style/Preference</item>
         <item name="android:preferenceScreenStyle">@style/Preference</item>
         <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
         <item name="android:windowBackground">@android:color/white</item>
@@ -31,6 +34,9 @@
         <item name="highlightDrawable">@drawable/highlight_dark</item>
         <item name="dividerColor">@color/divider_dark</item>
         <item name="android:preferenceStyle">@style/Preference</item>
+        <item name="android:checkBoxPreferenceStyle">@style/Preference.SwitchView</item>
+        <item name="android:dialogPreferenceStyle">@style/Preference</item>
+        <item name="android:editTextPreferenceStyle">@style/Preference</item>
         <item name="android:preferenceScreenStyle">@style/Preference</item>
         <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
         <item name="windowActionModeOverlay">true</item>
@@ -91,6 +97,10 @@
 
     <style name="Preference">
         <item name="android:layout">@layout/preference</item>
+    </style>
+
+    <style name="Preference.SwitchView">
+        <item name="android:widgetLayout">@layout/preference_switch_view</item>
     </style>
 
     <style name="Preference.Category">

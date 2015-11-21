@@ -6,7 +6,11 @@
     android:clipToPadding="false"
     android:gravity="center_vertical"
     android:minHeight="?listPreferredItemHeightSmall"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingEnd="16dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="16dp"
+    android:paddingStart="0dp">
 
     <LinearLayout
         android:layout_width="0dp"

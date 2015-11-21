@@ -31,12 +31,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.preference.SwitchPreference;
+import android.preference.TwoStatePreference;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.XmlRes;
@@ -108,9 +109,9 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     pro.setSummary("");
                     prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
                 }
-                SwitchPreference useDark = (SwitchPreference) findPreference(Common.USE_DARK_STYLE);
+                TwoStatePreference useDark = (TwoStatePreference) findPreference(Common.USE_DARK_STYLE);
                 if (useDark.isChecked()) {
-                    SwitchPreference amoledBlack = new SwitchPreference(useDark.getContext());
+                    CheckBoxPreference amoledBlack = new CheckBoxPreference(useDark.getContext());
                     amoledBlack.setKey(Common.USE_AMOLED_BLACK);
                     amoledBlack.setTitle(R.string.pref_use_amoled_black);
                     amoledBlack.setSummary(R.string.pref_use_amoled_black_summary);
@@ -238,7 +239,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     launchFragment(new AppListFragment(), true, this);
                     return true;
                 } else if (preference == findPreference(Common.HIDE_APP_FROM_LAUNCHER)) {
-                    SwitchPreference hideApp = (SwitchPreference) preference;
+                    TwoStatePreference hideApp = (TwoStatePreference) preference;
                     if (hideApp.isChecked()) {
                         Toast.makeText(getActivity(), R.string.reboot_required, Toast.LENGTH_SHORT).show();
                         ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");

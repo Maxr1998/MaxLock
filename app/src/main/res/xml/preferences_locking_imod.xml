@@ -3,7 +3,7 @@
     xmlns:maxlock="http://schemas.android.com/apk/res-auto"
     xmlns:robobunny="http://robobunny.com">
     <PreferenceCategory android:title="@string/pref_category_intika">
-        <SwitchPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_delaygeneral"
             android:summary="@string/pref_locking_delay_general_summary"
@@ -22,7 +22,7 @@
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_intika2">
-        <SwitchPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_delayperapp"
             android:summary="@string/pref_locking_delay_perapp_summary"
@@ -41,11 +41,11 @@
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="imod_show_reset_notification"
             android:summary="@string/pref_show_reset_notification_summary"
             android:title="@string/pref_show_reset_notification" />
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="reset_imod_screen_off"
             android:summary="@string/pref_reset_screen_off_summary"
             android:title="@string/pref_reset_screen_off" />

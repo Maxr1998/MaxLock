@@ -29,11 +29,11 @@
     <PreferenceCategory
         android:key="cat_app_ui"
         android:title="@string/pref_category_ui">
-        <SwitchPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="hide_from_launcher"
             android:title="@string/pref_hide_from_launcher" />
-        <SwitchPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="use_dark_style"
             android:title="@string/pref_use_dark_style" />
@@ -53,7 +53,7 @@
         <Preference
             android:key="donate_upgrade_pro"
             android:title="@string/pref_donate_upgrade_pro" />
-        <SwitchPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_pro"
             android:summary="@string/pref_enable_pro_summary"
