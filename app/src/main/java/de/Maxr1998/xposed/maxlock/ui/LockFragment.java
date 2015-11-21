@@ -72,7 +72,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -132,12 +131,12 @@ public final class LockFragment extends Fragment implements View.OnClickListener
         // Strings
         mRequestPkgName = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
 
-        if (prefsPerApp.contains(mRequestPkgName))
+        if (prefsPerApp.contains(mRequestPkgName)) {
             mPassword = prefsPerApp.getString(mRequestPkgName + Common.APP_KEY_PREFERENCE, null);
-        else mPassword = prefsKey.getString(Common.KEY_PREFERENCE, "");
+        } else mPassword = prefsKey.getString(Common.KEY_PREFERENCE, "");
 
         mLockingType = prefsPerApp.getString(mRequestPkgName, prefs.getString(Common.LOCKING_TYPE, ""));
-        mCurrentKey = new StringBuilder(mPassword.length() + new Random().nextInt(8));
+        mCurrentKey = new StringBuilder(mPassword.length() + 4);
         mFingerprintHelper = new FingerprintHelper();
 
         // Dimensions
@@ -171,7 +170,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
         background.setImageDrawable(Util.getBackground(getActivity(), screenWidth, screenHeight));
 
         // Gaps for Status and Nav bar
-        if (!getActivity().getClass().getName().equals("de.Maxr1998.xposed.maxlock.ui.SettingsActivity")) {
+        if (!getActivity().getClass().getName().equals(SettingsActivity.class.getName())) {
             View gapTop = rootView.findViewById(R.id.status_bar_gap);
             View gapBottom = rootView.findViewById(R.id.nav_bar_gap);
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -186,18 +185,11 @@ public final class LockFragment extends Fragment implements View.OnClickListener
             gapTop.getLayoutParams().height = statusBarHeight;
         }
 
-        // Fingerprint Indicator
-        if (mFingerprintHelper.supported) {
-            mFingerprintIndicator.setVisibility(View.VISIBLE);
-            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_on_animation);
-        }
-
         // Locking type view setup
         switch (mLockingType) {
             case Common.PREF_VALUE_PASSWORD:
             case Common.PREF_VALUE_PASS_PIN:
-                mDeleteButton.setVisibility(View.GONE);
-                setupPassword();
+                setupPasswordLayout();
                 break;
             case Common.PREF_VALUE_PIN:
                 inflater.inflate(R.layout.pin_field, container);
@@ -227,18 +219,14 @@ public final class LockFragment extends Fragment implements View.OnClickListener
         }
 
         //Input
-        if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false)) {
-            mInputBar.setVisibility(View.GONE);
-        } else {
-            mInputTextView.setText("");
-            mDeleteButton.setOnClickListener(this);
-            mDeleteButton.setOnLongClickListener(this);
-        }
-
-        if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
-            mTitleTextView.setTextColor(Color.BLACK);
-            mInputTextView.setTextColor(Color.BLACK);
-            mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
+        if (!mLockingType.equals(Common.PREF_VALUE_PASSWORD) && !mLockingType.equals(Common.PREF_VALUE_PASS_PIN)) {
+            if (prefs.getBoolean(Common.HIDE_INPUT_BAR, false)) {
+                mInputBar.setVisibility(View.GONE);
+            } else {
+                mInputTextView.setText("");
+                mDeleteButton.setOnClickListener(this);
+                mDeleteButton.setOnLongClickListener(this);
+            }
         }
 
         if (!mLockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && isTablet()) {
@@ -247,6 +235,18 @@ public final class LockFragment extends Fragment implements View.OnClickListener
             ((LinearLayout.LayoutParams) mInputBar.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), 0, getDimens(R.dimen.tablet_margin_sides), 0);
             // Container
             ((RelativeLayout.LayoutParams) container.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
+        }
+
+        // Fingerprint Indicator
+        if (mFingerprintHelper.supported) {
+            mFingerprintIndicator.setVisibility(View.VISIBLE);
+            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_on_animation);
+        }
+
+        if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
+            mTitleTextView.setTextColor(Color.BLACK);
+            mInputTextView.setTextColor(Color.BLACK);
+            mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
         }
         return rootView;
     }
@@ -300,7 +300,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void setupPassword() {
+    private void setupPasswordLayout() {
         mInputBar.removeAllViews();
         mInputTextView = new EditText(mInputBar.getContext());
         LinearLayout.LayoutParams mInputTextParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
