@@ -19,13 +19,19 @@ package de.Maxr1998.xposed.maxlock.hooks;
 
 import android.os.Build;
 
-import java.io.FileWriter;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+import static de.Maxr1998.xposed.maxlock.hooks.Apps.CLOSE_OBJECT_KEY;
+import static de.Maxr1998.xposed.maxlock.hooks.Apps.HISTORY_ARRAY_KEY;
+import static de.Maxr1998.xposed.maxlock.hooks.Apps.getDefault;
+import static de.Maxr1998.xposed.maxlock.hooks.Apps.readFile;
+import static de.Maxr1998.xposed.maxlock.hooks.Apps.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
@@ -53,8 +59,10 @@ public class ScreenOff {
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 prefsApps.reload();
                 if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
-                    clear();
+                    writeFile(getDefault());
                     log("ML: Screen turned off, locked apps.");
+                } else {
+                    writeFile(readFile().put(HISTORY_ARRAY_KEY, new JSONArray()).put(CLOSE_OBJECT_KEY, new JSONObject()));
                 }
             }
         };
@@ -69,11 +77,5 @@ public class ScreenOff {
         } catch (Throwable t) {
             log(t);
         }
-    }
-
-    public static void clear() throws Throwable {
-        FileWriter fw = new FileWriter(Apps.TEMPS_PATH);
-        fw.write("{}");
-        fw.close();
     }
 }

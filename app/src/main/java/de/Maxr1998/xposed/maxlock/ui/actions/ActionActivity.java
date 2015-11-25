@@ -45,7 +45,7 @@ public class ActionActivity extends AppCompatActivity implements AuthenticationS
             setContentView(R.layout.activity_lock);
             Fragment frag = new LockFragment();
             Bundle b = new Bundle(1);
-            b.putString(Common.INTENT_EXTRAS_PKG_NAME, getString(R.string.unlock_master_switch));
+            b.putStringArray(Common.INTENT_EXTRAS_NAMES, new String[]{getString(R.string.unlock_master_switch), getClass().getName()});
             frag.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
         } else {

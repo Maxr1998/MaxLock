@@ -39,15 +39,12 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_LOCKSCREEN;
-
 public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
 
-    private String packageName;
-    private Intent original;
-    private boolean isInFocus = false, unlocked = false;
-    private AlertDialog fakeDieDialog, reportDialog;
     private SharedPreferences prefs;
+    private String[] names;
+    private boolean unlocked = false;
+    private AlertDialog fakeDieDialog, reportDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +65,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         }
         super.onCreate(savedInstanceState);
         // Intent extras
-        packageName = getIntent().getStringExtra(Common.INTENT_EXTRAS_PKG_NAME);
-        original = getIntent().getParcelableExtra(Common.INTENT_EXTRAS_INTENT);
+        names = getIntent().getStringArrayExtra(Common.INTENT_EXTRAS_NAMES);
 
         if (!fakeCrash) {
             defaultSetup();
@@ -83,8 +79,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         setContentView(R.layout.activity_lock);
         Fragment frag = new LockFragment();
         Bundle b = new Bundle(1);
-        b.putString(Common.INTENT_EXTRAS_PKG_NAME, packageName);
-        b.putString("activityName", original.getComponent().getClassName());
+        b.putStringArray(Common.INTENT_EXTRAS_NAMES, names);
         frag.setArguments(b);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
     }
@@ -93,7 +88,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         PackageManager pm = getPackageManager();
         ApplicationInfo requestPkgInfo;
         try {
-            requestPkgInfo = pm.getApplicationInfo(packageName, 0);
+            requestPkgInfo = pm.getApplicationInfo(names[0], 0);
         } catch (PackageManager.NameNotFoundException e) {
             requestPkgInfo = null;
         }
@@ -162,44 +157,25 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         fakeDieDialog.show();
     }
 
-    @Override
-    public void onAuthenticationSucceeded() {
-        NotificationHelper.postNotification(this);
-        openApp();
-    }
-
-    private void openApp() {
-        unlocked = true;
-        try {
-            original.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(original);
-        } catch (Exception e) {
-            Intent intent_option = getPackageManager().getLaunchIntentForPackage(packageName);
-            intent_option.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent_option);
-        } finally {
-            finish();
-        }
-    }
-
     private void launchLockView() {
         Intent it = new Intent(this, LockActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_UNLOCK);
-        it.putExtra(Common.INTENT_EXTRAS_INTENT, original);
-        it.putExtra(Common.INTENT_EXTRAS_PKG_NAME, packageName);
+        it.putExtra(Common.INTENT_EXTRAS_NAMES, names);
         startActivity(it);
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void onAuthenticationSucceeded() {
+        unlocked = true;
+        NotificationHelper.postNotification(this);
+        finish();
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        isInFocus = hasFocus;
+    public void onBackPressed() {
+        Log.d("Xposed", "ML: Pressed back.");
+        super.onBackPressed();
     }
 
     @Override
@@ -210,12 +186,13 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         } else if (reportDialog != null) {
             reportDialog.dismiss();
         }
-        if (!isInFocus) {
-            Log.i(LOG_TAG_LOCKSCREEN, "Lost focus, finishing.");
-            if (prefs.getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
-                Util.logFailedAuthentication(this, packageName);
-            }
-            finish();
+    }
+
+    @Override
+    protected void onStop() {
+        if (prefs.getBoolean(Common.ENABLE_LOGGING, false) && !unlocked) {
+            Util.logFailedAuthentication(this, names[0]);
         }
+        super.onStop();
     }
 }

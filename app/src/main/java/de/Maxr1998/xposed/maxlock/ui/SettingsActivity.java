@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             }
             Fragment lockFragment = new LockFragment();
             Bundle b = new Bundle(1);
-            b.putString(Common.INTENT_EXTRAS_PKG_NAME, getApplicationContext().getPackageName());
+            b.putStringArray(Common.INTENT_EXTRAS_NAMES, new String[]{getApplicationContext().getPackageName(), getClass().getName()});
             lockFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment, TAG_LOCK_FRAGMENT).commit();
         }

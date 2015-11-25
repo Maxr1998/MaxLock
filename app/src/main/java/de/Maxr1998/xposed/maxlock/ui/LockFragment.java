@@ -87,7 +87,8 @@ public final class LockFragment extends Fragment implements View.OnClickListener
             R.id.pin0, R.id.pin_ok
     );
     private SharedPreferences prefs;
-    private String mRequestPkgName, mPassword, mLockingType;
+    private String[] mNames;
+    private String mPassword, mLockingType;
     private StringBuilder mCurrentKey;
     private AuthenticationSucceededListener authenticationSucceededListener;
     private FingerprintHelper mFingerprintHelper;
@@ -129,13 +130,16 @@ public final class LockFragment extends Fragment implements View.OnClickListener
         SharedPreferences prefsPerApp = getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
 
         // Strings
-        mRequestPkgName = getArguments().getString(Common.INTENT_EXTRAS_PKG_NAME);
+        mNames = getArguments().getStringArray(Common.INTENT_EXTRAS_NAMES);
+        if (mNames == null) {
+            mNames = new String[]{"", ""};
+        }
 
-        if (prefsPerApp.contains(mRequestPkgName)) {
-            mPassword = prefsPerApp.getString(mRequestPkgName + Common.APP_KEY_PREFERENCE, null);
+        if (prefsPerApp.contains(mNames[0])) {
+            mPassword = prefsPerApp.getString(mNames[0] + Common.APP_KEY_PREFERENCE, null);
         } else mPassword = prefsKey.getString(Common.KEY_PREFERENCE, "");
 
-        mLockingType = prefsPerApp.getString(mRequestPkgName, prefs.getString(Common.LOCKING_TYPE, ""));
+        mLockingType = prefsPerApp.getString(mNames[0], prefs.getString(Common.LOCKING_TYPE, ""));
         mCurrentKey = new StringBuilder(mPassword.length() + 4);
         mFingerprintHelper = new FingerprintHelper();
 
@@ -213,8 +217,8 @@ public final class LockFragment extends Fragment implements View.OnClickListener
         if (prefs.getBoolean(Common.HIDE_TITLE_BAR, false)) {
             mTitleTextView.setVisibility(View.GONE);
         } else {
-            mTitleTextView.setText(Util.getApplicationNameFromPackage(mRequestPkgName, getActivity()));
-            mTitleTextView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(mRequestPkgName, getActivity()), null, null, null);
+            mTitleTextView.setText(Util.getApplicationNameFromPackage(mNames[0], getActivity()));
+            mTitleTextView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(mNames[0], getActivity()), null, null, null);
             mTitleTextView.setOnLongClickListener(this);
         }
 
@@ -532,7 +536,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
     public boolean onLongClick(View view) {
         switch (view.getId()) {
             case R.id.title_view:
-                Toast.makeText(getActivity(), getArguments().getString("activityName", getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), mNames[1], Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 mCurrentKey.setLength(0);

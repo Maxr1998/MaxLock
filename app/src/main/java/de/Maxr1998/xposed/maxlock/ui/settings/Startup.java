@@ -67,21 +67,14 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
         }
 
         // Create ML Files
-        File tmpF = new File(mContext.getFilesDir(), "temps.json");
         File historyF = new File(mContext.getFilesDir(), "history.json");
         try {
-            if (tmpF.getParentFile().mkdirs() || tmpF.createNewFile()) {
-                Log.i(Util.LOG_TAG_STARTUP, "Temp-file created.");
-            }
             if (historyF.getParentFile().mkdirs() || historyF.createNewFile()) {
                 Log.i(Util.LOG_TAG_STARTUP, "History created.");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        tmpF.setReadable(true, false);
-        tmpF.setWritable(true, false);
-        tmpF.setExecutable(true, false);
         historyF.setReadable(true, false);
         historyF.setWritable(true, false);
         historyF.setExecutable(true, false);
@@ -125,28 +118,29 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
                     .setNegativeButton(android.R.string.cancel, onClickListener);
         }
         // Other
-        if (!prefs.getString("migrated", "").equals("v5.3.2")) {
+        if (!prefs.getString("migrated", "").equals("v6.1")) {
+            new File(mContext.getFilesDir(), "temps.json").delete();
             new File(Util.dataDir(mContext) + "shared_prefs/activities.xml").delete();
             new File(Util.dataDir(mContext) + "shared_prefs/temps.xml").delete();
             new File(Util.dataDir(mContext) + "shared_prefs/imod_temp_values").delete();
-            prefs.edit().putString("migrated", "v5.3.2").apply();
-        }
-        try {
-            FileUtils.deleteDirectory(new File(Environment.getExternalStorageDirectory() + "/MaxLock_Backup/"));
-            File external = new File(Common.EXTERNAL_FILES_DIR);
-            File[] listExternal = external.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String filename) {
-                    return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
+            try {
+                FileUtils.deleteDirectory(new File(Environment.getExternalStorageDirectory() + "/MaxLock_Backup/"));
+                File external = new File(Common.EXTERNAL_FILES_DIR);
+                File[] listExternal = external.listFiles(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String filename) {
+                        return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
+                    }
+                });
+                if (listExternal != null) {
+                    for (File file : listExternal) {
+                        FileUtils.forceDelete(file);
+                    }
                 }
-            });
-            if (listExternal != null) {
-                for (File file : listExternal) {
-                    FileUtils.forceDelete(file);
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            prefs.edit().putString("migrated", "v6.1").apply();
         }
         return null;
     }
