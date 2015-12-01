@@ -16,7 +16,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -29,11 +28,11 @@
         android:orientation="horizontal">
 
         <fragment
-            android:id="@+id/settings_fragment"
+            android:id="@+id/multi_pane_settings_fragment"
+            android:name="de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:ignore="InconsistentLayout" />
+            android:layout_weight="1" />
 
         <View
             android:layout_width="1px"

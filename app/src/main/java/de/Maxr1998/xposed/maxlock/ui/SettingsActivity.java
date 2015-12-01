@@ -100,12 +100,14 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         mSettingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
             new Startup(this).execute(prefs.getBoolean(Common.FIRST_START, true));
+            // Hide Action bar and fragment
             if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
             }
-            if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null) {
-                getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+            if (getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment) != null) {
+                getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment)).commit();
             }
+            // Show lockscreen
             Fragment lockFragment = new LockFragment();
             Bundle b = new Bundle(1);
             b.putStringArray(Common.INTENT_EXTRAS_NAMES, new String[]{getApplicationContext().getPackageName(), getClass().getName()});
@@ -186,8 +188,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 //noinspection ConstantConditions
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                if (getSupportFragmentManager().findFragmentById(R.id.settings_fragment) != null) {
-                    getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+                if (getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment) != null) {
+                    getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment)).commit();
                 }
             }
         } else {

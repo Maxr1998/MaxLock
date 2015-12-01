@@ -82,8 +82,8 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         FragmentTransaction ft = from.getFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_pop_in, R.anim.fragment_pop_out);
         ft.replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : null).addToBackStack(null).commit();
-        if (from.getFragmentManager().findFragmentById(R.id.settings_fragment) != null)
-            from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.settings_fragment)).commit();
+        if (from.getFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment) != null)
+            from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment)).commit();
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -91,7 +91,11 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
-        screen = Screen.valueOf(getArguments().getString(Screen.KEY));
+        if (getArguments() != null) {
+            screen = Screen.valueOf(getArguments().getString(Screen.KEY, Screen.MAIN.toString()));
+        } else {
+            screen = Screen.MAIN;
+        }
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         setTitle();
         if (screen == Screen.IMOD) {
