@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/fs_lock_content_description"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_widget_on_72dp"
+            android:src="@drawable/ic_lock_on_72dp"
             android:visibility="gone" />
     </RelativeLayout>
 
