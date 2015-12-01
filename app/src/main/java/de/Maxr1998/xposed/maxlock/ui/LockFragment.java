@@ -353,10 +353,12 @@ public final class LockFragment extends Fragment implements View.OnClickListener
         mInputBar.addView(mInputTextView);
         int dp16 = Util.dpToPx(getActivity(), 16);
         ((LinearLayout.LayoutParams) mInputBar.getLayoutParams()).setMargins(dp16, 0, dp16, 0);
-        // Move fingerprint icon next to input
-        ((ViewGroup) mFingerprintIndicator.getParent()).removeView(mFingerprintIndicator);
 
-        mInputBar.addView(mFingerprintIndicator);
+        // Move fingerprint icon next to input
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ((ViewGroup) mFingerprintIndicator.getParent()).removeView(mFingerprintIndicator);
+            mInputBar.addView(mFingerprintIndicator);
+        }
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
@@ -372,6 +374,16 @@ public final class LockFragment extends Fragment implements View.OnClickListener
         }
         if (prefs.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
             rootView.findViewById(R.id.pin_ok).setVisibility(View.INVISIBLE);
+        }
+
+        // Move fingerprint icon to empty field
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ((ViewGroup) mFingerprintIndicator.getParent()).removeView(mFingerprintIndicator);
+            ((ViewGroup) rootView.findViewById(android.R.id.empty)).addView(mFingerprintIndicator);
+            RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) mFingerprintIndicator.getLayoutParams());
+            params.bottomMargin = 0;
+            params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT);
         }
     }
 
