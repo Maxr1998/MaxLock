@@ -11,11 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:contentDescription="expand"
         android:padding="12dp"
         android:scaleType="center"
         android:src="@drawable/ic_expand_more_24dp"
+        android:tint="?android:textColorPrimary"
         tools:ignore="HardcodedText" />
 
     <TextView
