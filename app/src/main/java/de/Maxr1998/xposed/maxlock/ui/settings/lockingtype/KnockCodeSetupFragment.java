@@ -124,7 +124,7 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
                 knockButton = true;
                 break;
             case R.id.button_cancel:
-                getFragmentManager().popBackStack();
+                getActivity().onBackPressed();
                 break;
             case R.id.button_positive:
                 handleStage();
@@ -172,7 +172,6 @@ public class KnockCodeSetupFragment extends Fragment implements View.OnClickList
             } else {
                 Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.toast_password_inconsistent), Toast.LENGTH_SHORT).show();
             }
-            getFragmentManager().popBackStack();
             getActivity().onBackPressed();
         }
     }

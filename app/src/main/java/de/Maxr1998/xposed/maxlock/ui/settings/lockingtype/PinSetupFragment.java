@@ -31,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -120,13 +119,14 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button_positive) {
-            handleStage();
-        } else if (view.getId() == R.id.button_cancel) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mSetupPinInput.getWindowToken(), 0);
-            getFragmentManager().popBackStack();
+        switch (view.getId()) {
+            case R.id.button_positive:
+                handleStage();
+                break;
+            case R.id.button_cancel:
+                Util.hideKeyboardFromWindow(getActivity(), getView());
+                getActivity().onBackPressed();
+                break;
         }
     }
 
@@ -166,10 +166,8 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
             } else {
                 Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.toast_password_inconsistent), Toast.LENGTH_SHORT).show();
             }
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mSetupPinInput.getWindowToken(), 0);
-            getFragmentManager().popBackStack();
+            Util.hideKeyboardFromWindow(getActivity(), getView());
+            getActivity().onBackPressed();
         }
     }
 }
