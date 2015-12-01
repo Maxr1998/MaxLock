@@ -45,6 +45,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -57,7 +58,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -306,7 +306,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
 
     private void setupPasswordLayout() {
         mInputBar.removeAllViews();
-        mInputTextView = new EditText(mInputBar.getContext());
+        mInputTextView = new AppCompatEditText(mInputBar.getContext());
         LinearLayout.LayoutParams mInputTextParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         mInputTextParams.weight = 1;
         mInputTextView.setLayoutParams(mInputTextParams);
