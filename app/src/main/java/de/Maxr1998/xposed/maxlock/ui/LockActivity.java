@@ -174,7 +174,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
     @Override
     public void onBackPressed() {
-        Log.d("Xposed", "ML: Pressed back.");
+        Log.d(Util.LOG_TAG_LOCKSCREEN, "Pressed back.");
         super.onBackPressed();
     }
 
