@@ -190,5 +190,5 @@
     <string name="toast_master_switch_off">MasterSwitch deshabilitado</string>
     <string name="toast_master_switch_on">MasterSwitch habilitado</string>
     <string name="toast_no_locking_types">No se especificó un tipo de bloqueo</string>
-    
+
 </resources>
