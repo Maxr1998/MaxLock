@@ -672,7 +672,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
                         public void run() {
                             handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation);
                         }
-                    }, 1500);
+                    }, 800);
                 }
             };
             mCancelFingerprint = new CancellationSignal();
