@@ -56,7 +56,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 
@@ -70,7 +69,6 @@ public abstract class Util {
     public static final String LOG_TAG_ADMIN = "ML-DeviceAdmin";
     public static final String LOG_TAG_IAB = "ML-IAB";
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-    private static AuthenticationSucceededListener authenticationSucceededListener;
     private static Bitmap M_BITMAP;
     private static SharedPreferences PREFS, PREFS_KEY, PREFS_PER_APP;
     private static ApplicationInfo REQUEST_PKG_INFO;
