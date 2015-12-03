@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">MaxLock</string>
+    <string name="name_pro"> Pro</string>
+    <string name="name_pseudo_pro"> PseudoPro</string>
+    <string name="placeholder">Segnaposto</string>
+    <string name="xposed_active">MaxLock non è attivo</string>
+    <string name="dialog_text_restart_required">MaxLock deve essere riavviato affinchè le modifiche abbiano effetto</string>
+    <string name="toast_pro_required">È richiesta la versione Pro per utilizzare questa funzione!</string>
+    <string name="sb_no_locking_type">Nessun tipo di blocco specificato</string>
+    <string name="sb_no_locked_apps">Nessuna app selezionata per il blocco</string>
+    <!-- First start screens-->
+    <string name="button_skip">SALTA</string>
+    <string name="button_next_content_description">successivo</string>
+    <string name="button_done">ESEGUITO</string>
+    <string name="fs_welcome_maxlock">MaxLock ti dà il benvenuto!</string>
+    <string name="fs_maxlock_description">MaxLock proteggerà le tue app dall\'accesso non autorizzato</string>
+    <string name="fs_phone_content_description">Telefono</string>
+    <string name="fs_lock_content_description">Metti il lucchetto al telefono</string>
+    <string name="fs_app_package_installer">Pacchetto di installazione</string>
+    <string name="fs_app_settings">Impostazioni</string>
+    <string name="fs_app_xposed_installer">Programma di installazione di Xposed</string>
+    <string name="fs_recommended_apps">Abilita ulteriore protezione bloccando queste app</string>
+    <string name="fs_recommended_apps_summary">Dovresti spuntare tutte queste app per assicurarti che MaxLock non possa essere disattivato o disinstallato</string>
+    <!-- Locking type settings -->
+    <string name="pref_category_locking">Blocco</string>
+    <string name="pref_screen_locking_type">Tipo di blocco</string>
+    <string name="pref_locking_type_password">Password</string>
+    <string name="pref_locking_type_pin">PIN</string>
+    <string name="pref_locking_type_knockcode">Codice di tocchi</string>
+    <string name="pref_locking_type_pattern">Schema</string>
+
+    <string name="pref_set_password">Imposta una password</string>
+    <string name="toast_password_inconsistent">La password è incoerente!</string>
+    <string name="toast_password_null">Il campo password non può essere vuoto!</string>
+    <string name="toast_password_changed">La password è stata cambiata!</string>
+    <string name="toast_password_incorrect">La password è scorretta!</string>
+    <string name="dialog_text_password">Password: </string>
+    <string name="dialog_text_re_password">Digita nuovamente la password:</string>
+
+    <string name="choose_pin">Scegli il tuo PIN</string>
+    <string name="pin_too_short">Il PIN deve essere almeno di 4 cifre </string>
+    <string name="continue_done">Tocca "Continua" dopo aver terminato</string>
+    <string name="confirm_pin">Conferma il tuo PIN</string>
+    <string name="button_continue">Continua</string>
+
+    <string name="choose_knock_code">Scegli il tuo codice di tocchi</string>
+    <string name="knock_code_too_short">Il codice di tocchi deve essere almeno di 4 tocchi</string>
+    <string name="confirm_knock_code">Conferma il tuo codice di tocchi</string>
+    <!-- Locking UI settings -->
+    <string name="pref_screen_locking_ui">Blocca-schermo UI</string>
+    <string name="pref_open_theme_manager">Apri la gestione dei temi</string>
+    <string name="pref_open_theme_manager_summary_none">Nessun tema applicato</string>
+    <string name="pref_open_theme_manager_summary_applied">Applicato:</string>
+    <string name="pref_summary_overridden_by_theme">(Reimpostato dal tema)</string>
+    <string name="pref_background">Immagine di sfondo</string>
+    <string-array name="background_types">
+        <item>Sfondi</item>
+        <item>@string/pref_custom_color</item>
+        <item>Immagine personalizzata…</item>
+        <!--<item>Sfondo del tema</item>-->
+    </string-array>
+    <string name="pref_custom_color">Colore personalizzato</string>
+    <string name="pref_hide_status_bar">Nascondi la barra di stato/Schermo intero</string>
+    <string name="pref_use_tablet_mode">Utilizza la modalità tablet</string>
+    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">Questo %1$s è stato rilevato come %2$s dispositivo a causa di un dpi di %3$d e di un display di larghezza di %4$d pixel.</string>
+    <string name="pref_category_pin_and_knock_code">PIN e codice di tocchi</string>
+    <string name="pref_invert_color">Inverti i colori degli elementi della UI</string>
+    <string name="pref_invert_color_summary">Questo imposta a nero il colore del testo e dei divisori</string>
+    <string name="pref_hide_title_bar">Nascondi la barra del titolo</string>
+    <string name="pref_hide_input_bar">Nascondi la barra di inserimento</string>
+    <string name="pref_hide_input_bar_summary">Questo nasconde anche il pulsante "Cancella"!</string>
+    <string name="pref_category_password_and_pin">Password e PIN</string>
+    <string name="pref_quick_unlock">Sblocco rapido</string>
+    <string name="pref_category_knock_code_only">Solo codice di tocchi</string>
+    <string name="pref_show_dividers">Mostra i divisori</string>
+    <string name="pref_touch_visible">Rendi visibili i tocchi</string>
+    <string name="pref_category_pattern_only">Solo schema</string>
+    <string name="pref_show_path">Mostra il percorso</string>
+    <string name="pref_haptic_feedback">Vibra mentre disegni</string>
+    <!-- Locking options settings -->
+    <string name="pref_screen_locking_options">Opzioni di blocco</string>
+    <string name="pref_category_logging">Registrazioni</string>
+    <string name="pref_enable_logging">Abilita registrazioni</string>
+    <string name="pref_enable_logging_summary">Registrazione fallita/tentativi di sblocco incompleti</string>
+    <string name="pref_view_logs">Visualizza registrazioni</string>
+    <string name="pref_screen_logs">Registrazioni</string>
+    <string name="menu_delete_log">Elimina registrazioni</string>
+    <string name="logs_empty_text">Non esistono voci di registrazione</string>
+    <string name="pref_category_other">Altro</string>
+    <string name="pref_fake_crash_all_apps">Falsa chiusura per tutte le app</string>
+    <string name="pref_fake_crash_all_apps_summary">Questo sovrascrive le impostazioni dalla lista delle app per tutte le app</string>
+    <string name="pref_fake_unlock">Sblocca direttamente con una falsa chiusura</string>
+    <string name="pref_fake_unlock_summary">Quando abilitato, il blocca-schermo viene visualizzato direttamente dopo aver premuto il <i>\"Sfortunatamente, X si è fermato."</i> pulsante sulla \"App bloccata…\" finestra di dialogo</string>
+    <string name="pref_fake_crash_passphrase">Frase segreta di falsa chiusura</string>
+    <string name="pref_fake_crash_passphrase_summary">La frase che l\'utente deve inserire nella finestra di dialogo per rimuovere il blocca-schermo</string>
+    <string name="pref_enable_tasker">Abilita integrazione nel Tasker</string>
+    <!-- I.Mod settings -->
+    <string name="pref_screen_locking_intika">Intika I.Mod</string>
+    <string name="pref_category_intika">Intika I.Mod - Periodo di grazia - Globale</string>
+    <string name="pref_category_intika2">Intika I.Mod - Periodo di grazia - per app</string>
+    <string name="pref_locking_delay_general">Ritardo globale di nuovo blocco</string>
+    <string name="pref_locking_delay_general_summary">Impedisci la richiesta di un nuovo sblocco entro un certo periodo di tempo per tutte le app bloccate</string>
+    <string name="pref_delay_input_general">Timer di ritardo globale di nuovo blocco</string>
+    <string name="pref_delay_input_general_summary">Inserisci un numero per specificare il ritardo di tempo in minuti per il ritardo globale di nuovo blocco</string>
+    <string name="pref_locking_delay_perapp">Ritardo di nuovo blocco per app</string>
+    <string name="pref_locking_delay_perapp_summary">Impedisci la richiesta di un nuovo sblocco entro un certo periodo di tempo per ogni app separatamente senza considerare le altre app protette</string>
+    <string name="pref_delay_input_perapp">Timer di ritardo di nuovo blocco per app</string>
+    <string name="pref_delay_input_perapp_summary">Inserisci un numero per specificare il ritardo di tempo in minuti per ogni app con ritardo di nuovo blocco</string>
+    <string name="pref_delay_needpro">Ritardo di nuovo blocco - versione Pro</string>
+    <string name="pref_show_reset_notification">Mostra notifiche</string>
+    <string name="pref_show_reset_notification_summary">Mostra una notifica per reimpostare il timer I.Mod</string>
+    <string name="pref_reset_screen_off">Auto-reimposta I.Mod</string>
+    <string name="pref_reset_screen_off_summary">Reimposta il timer I.Mod quando lo schermo si spegne</string>
+    <!-- Apps settings -->
+    <string name="pref_category_apps">Scegli le app</string>
+    <string name="pref_choose_apps">Scegli le app</string>
+    <string name="pref_choose_apps_summary">Scegli le app da bloccare</string>
+    <string name="pref_screen_apps">Apps</string>
+
+    <string name="menu_backup_list">Elenco di backup</string>
+    <string name="menu_restore_list">Elenco di ripristino</string>
+    <string name="menu_clear_list">Azzera elenco</string>
+    <string name="toast_no_files_to_backup">Nessun file trovato da salvare</string>
+    <string name="toast_backup_restore_exception">Si è verificato un errore\Per favore, contatta lo sviluppatore!</string>
+    <string name="toast_backup_success">Backup completato con successo</string>
+    <string name="dialog_text_restore_list">Questo sostituirà le impostazioni attuali con quelle salvate nel backup!</string>
+    <string name="toast_no_files_to_restore">Nessun file trovato da ripristinare</string>
+    <string name="toast_restore_success">Backup ripristinato con successo!</string>
+    <string name="menu_search">Cerca</string>
+    <string name="toggle_lock_on">On</string>
+    <string name="toggle_lock_off">Off</string>
+    <string name="dialog_title_settings">Impostazioni</string>
+    <string name="dialog_text_fake_crash">Falsa chiusura</string>
+    <string name="dialog_text_custom_password">Password personalizzata</string>
+    <string name="dialog_button_exclude_activities">Attività</string>
+    <string name="dialog_title_exclude_activities">Escludi "Attività" dal blocco</string>
+    <!-- UI settings -->
+    <string name="pref_category_ui">Impostazioni UI</string>
+    <string name="pref_hide_from_launcher">Nascondi l\'app dal launcher</string>
+    <string name="reboot_required">Un riavvio può essere richiesto per l\'applicazione delle modifiche</string>
+    <string name="pref_use_dark_style">Utilizza lo stile scuro</string>
+    <string name="pref_use_amoled_black">Utilizza il nero AMOLED</string>
+    <string name="pref_use_amoled_black_summary">Utilizza uno sfondo completamente nero nel tema scuro, che determina un basso consumo energetico per gli schermi AMOLED</string>
+    <string name="pref_widget_background_color">Colore dello sfondo del widget</string>
+    <!-- About information -->
+    <string name="pref_category_about">Chi siamo</string>
+    <string name="pref_about_summary">Fai click per dare un\'occhiata ai crediti, alle librerie utilizzate e alla licenza</string>
+    <string name="pref_screen_about">@string/pref_category_about</string>
+    <string name="pref_visit_website">Visita il sito internet di Maxr1998</string>
+    <string name="pref_category_credits">Crediti</string>
+    <string name="pref_category_translations">Traduzioni</string>
+    <string name="pref_category_licenses">Licenze</string>
+    <string name="pref_donate_upgrade_pro">Fai una donazione per aggiornare alla versione Pro</string>
+    <string name="donate_status_donated">Donazione effettuata</string>
+    <string name="donate_status_not_donated">Prendi in considerazione l\'idea di donare per sostenere ulteriori sviluppi. Grazie mille :)</string>
+	<string name="dialog_message_already_bought">Ti sei già assicurato l\'opzione della donazione.
+        Puoi annullarla e scegliere un altro prodotto oppure acquistare nuovamente questo rinunciando (rimuovendo) prima l\'acquisto attualmente presente.\n\nRinunci e acquisti nuovamente?</string>
+    <string name="toast_no_network_connected">Non sei attualmente connesso ad alcuna rete</string>
+    <string name="pref_enable_pro">Abilita la versione Pro</string>
+    <string name="pref_enable_pro_summary">Questo abiliterà le funzioni Pro anche se non hai acquistato MaxLock Pro</string>
+    <string name="pref_prevent_uninstall">Proteggi l\'app dalla disinstallazione</string>
+	<string name="pref_prevent_uninstall_summary">Fai acquisire a MaxLock le autorizzazioni di amministratore del dispositivo, ne risulterà che l\'app non possa più essere disinstallata.
+        Dovrai allora disinstallare quest\'app da qui oppure dovrai disattivare queste autorizzazioni da \"Impostazioni → Sicurezza → Amministratori del dispositivo\" e quindi disinstallarla</string>
+    <string name="pref_uninstall">Disinstalla</string>
+    <string name="device_admin_description">Proteggi MaxLock dalla disinstallazione e disattivazione</string>
+    <!-- External stuff -->
+    <string name="dialog_like_app">Ti piace l\'app?</string>
+    <string name="dialog_like_app_text">Se è così, per favore scrivi una recensione sul Play Store e prendi anche in considerazione l\'idea di donare :)</string>
+    <string name="dialog_cb_never_again">Non mostrare più questo messaggio</string>
+    <string name="dialog_button_donate">Dona</string>
+    <string name="dialog_button_rate">Valuta</string>
+    <!-- Fake crash screen -->
+    <string name="dialog_text_fake_die_stopped">Sfortunatamente, %1$s si è fermato.</string>
+    <string name="dialog_button_report">Rapporto</string>
+    <string name="dialog_title_report_problem">Segnala un problema</string>
+    <!-- Action stuff -->
+    <string name="activity_label_actions">Azioni di MaxLock</string>
+    <string name="action_configuration">Configurazione:</string>
+    <string name="action_toggle_ms">Attiva/Disattiva Interruttore principale</string>
+    <string name="action_ms_on">Interruttore principale ON</string>
+    <string name="action_ms_off">Interruttore principale OFF</string>
+    <string name="action_imod_reset">Reimposta I.Mod</string>
+    <string name="tasker_imod_reset_summary">Blocca tutte le app che erano precedentemente sbloccate con I.Mod</string>
+    <string name="tasker_button_apply">Applica</string>
+    <string name="tasker_integration_disabled">L\'integrazione nel Tasker è attualmente disabilitata. Puoi abilitarla attraverso \"MaxLock → Opzioni di blocco → Abilita integrazione nel Tasker\".</string>
+    <string name="activity_label_toggle_ms_deprecated">Attiva/Disattiva Interruttore principale (Sconsigliato)</string>
+    <string name="unlock_master_switch">Sblocca Interruttore principale</string>
+    <string name="toast_master_switch_off">Interruttore principale disabilitato</string>
+    <string name="toast_master_switch_on">Interruttore principale riabilitato</string>
+    <string name="toast_no_locking_types">Nessun tipo di blocco specificato</string>
+
+</resources>
