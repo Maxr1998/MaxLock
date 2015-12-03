@@ -67,7 +67,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
         // Intent extras
         names = getIntent().getStringArrayExtra(Common.INTENT_EXTRAS_NAMES);
         if (names == null) {
-            names = new String[2];
+            names = new String[]{"", ""};
             Toast.makeText(this, "There was an error in the LockActivity, did you reboot after update?", Toast.LENGTH_LONG).show();
         }
 
