@@ -120,6 +120,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
                 customTabsClient.warmup(0);
                 mSession = customTabsClient.newSession(new CustomTabsCallback());
+                if (mSession == null) {
+                    return;
+                }
                 Bundle maxr1998Website = new Bundle();
                 maxr1998Website.putParcelable(CustomTabsService.KEY_URL, Uri.parse("http://maxr1998.de/"));
                 Bundle technosparksProfile = new Bundle();
