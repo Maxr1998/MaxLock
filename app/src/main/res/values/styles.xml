@@ -13,7 +13,7 @@
         <item name="android:preferenceStyle">@style/Preference</item>
         <item name="android:checkBoxPreferenceStyle">@style/Preference.SwitchView</item>
         <item name="android:dialogPreferenceStyle">@style/Preference</item>
-        <item name="android:editTextPreferenceStyle">@style/Preference</item>
+        <item name="android:editTextPreferenceStyle">@style/Preference.EditTextDialog</item>
         <item name="android:preferenceScreenStyle">@style/Preference</item>
         <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
         <item name="android:windowBackground">@android:color/white</item>
@@ -36,7 +36,7 @@
         <item name="android:preferenceStyle">@style/Preference</item>
         <item name="android:checkBoxPreferenceStyle">@style/Preference.SwitchView</item>
         <item name="android:dialogPreferenceStyle">@style/Preference</item>
-        <item name="android:editTextPreferenceStyle">@style/Preference</item>
+        <item name="android:editTextPreferenceStyle">@style/Preference.EditTextDialog</item>
         <item name="android:preferenceScreenStyle">@style/Preference</item>
         <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
         <item name="windowActionModeOverlay">true</item>
@@ -97,6 +97,12 @@
 
     <style name="Preference">
         <item name="android:layout">@layout/preference</item>
+    </style>
+
+    <style name="Preference.EditTextDialog">
+        <item name="android:positiveButtonText">@android:string/ok</item>
+        <item name="android:negativeButtonText">@android:string/cancel</item>
+        <item name="android:dialogLayout">@layout/edit_text_preference</item>
     </style>
 
     <style name="Preference.SwitchView">
