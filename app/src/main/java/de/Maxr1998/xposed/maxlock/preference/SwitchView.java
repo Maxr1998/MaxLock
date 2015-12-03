@@ -37,6 +37,6 @@ public class SwitchView extends SwitchCompat {
 
     @Override
     public boolean isShown() {
-        return getVisibility() == VISIBLE;
+        return getVisibility() == VISIBLE && getParent() != null;
     }
 }

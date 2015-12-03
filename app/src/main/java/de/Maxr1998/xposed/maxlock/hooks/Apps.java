@@ -165,7 +165,7 @@ public class Apps {
             reader.close();
             try {
                 history = new JSONObject(json);
-            } catch (JSONException e) {
+            } catch (JSONException | NullPointerException e) {
                 return getDefault();
             }
             if (!(history.has(HISTORY_ARRAY_KEY) && history.has(IMOD_OBJECT_KEY) && history.has(CLOSE_OBJECT_KEY))) {
