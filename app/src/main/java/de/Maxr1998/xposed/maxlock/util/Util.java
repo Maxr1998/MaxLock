@@ -31,6 +31,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,6 +146,10 @@ public abstract class Util {
                     M_BITMAP = BitmapFactory.decodeStream(inputStream);
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (OutOfMemoryError e) {
+                    M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+                    M_BITMAP.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
+                    Toast.makeText(context, "Error loading background, is it to big?", Toast.LENGTH_LONG).show();
                 }
                 break;
             case "color":
@@ -155,7 +160,7 @@ public abstract class Util {
                 Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
                 if (wallpaper == null) {
                     M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                    M_BITMAP.eraseColor(context.getResources().getColor(R.color.accent));
+                    M_BITMAP.eraseColor(ContextCompat.getColor(context, R.color.accent));
                 } else {
                     M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
                 }
