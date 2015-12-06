@@ -92,7 +92,7 @@
     <string name="pref_fake_crash_all_apps">Falsa chiusura per tutte le app</string>
     <string name="pref_fake_crash_all_apps_summary">Questo sovrascrive le impostazioni dalla lista delle app per tutte le app</string>
     <string name="pref_fake_unlock">Sblocca direttamente con una falsa chiusura</string>
-    <string name="pref_fake_unlock_summary">Quando abilitato, il blocca-schermo viene visualizzato direttamente dopo aver premuto il <i>\"Sfortunatamente, X si è fermato."</i> pulsante sulla \"App bloccata…\" finestra di dialogo</string>
+    <string name="pref_fake_unlock_summary">Quando abilitato, il blocca-schermo viene visualizzato direttamente dopo aver premuto il pulsante <i>\"Sfortunatamente, X si è fermato."</i>, nella finestra di dialogo della app bloccata</string>
     <string name="pref_fake_crash_passphrase">Frase segreta di falsa chiusura</string>
     <string name="pref_fake_crash_passphrase_summary">La frase che l\'utente deve inserire nella finestra di dialogo per rimuovere il blocca-schermo</string>
     <string name="pref_enable_tasker">Abilita integrazione nel Tasker</string>
