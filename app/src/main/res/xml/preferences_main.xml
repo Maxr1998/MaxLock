@@ -56,6 +56,9 @@
             android:key="uninstall"
             android:summary="@string/pref_prevent_uninstall_summary"
             android:title="@string/pref_prevent_uninstall" />
+        <Preference
+            android:key="send_feedback"
+            android:title="@string/pref_send_feedback" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>

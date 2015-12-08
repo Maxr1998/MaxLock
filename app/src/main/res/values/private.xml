@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="license_key" translateable="false" tools:ignore="MissingTranslation">DUMMY</string>
+    <string name="dev_email" translateable="false" tools:ignore="MissingTranslation">email@example.com</string>
 </resources>

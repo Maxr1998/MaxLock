@@ -33,6 +33,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -54,6 +57,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -313,6 +318,32 @@ public abstract class Util {
             return Util.shaHash(r.readLine()).toLowerCase().equals("08b49da56ef8f5bf0aa51c64d5e683ba3e7599bd6e2e3906e584fca14cb95f82");
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    /**
+     * Compresses files from a directory into a zip file.
+     *
+     * @param directory the directory to compress
+     * @param stream    the ZipOutputStream to write the files to
+     * @throws IOException
+     */
+    public static void writeDirectoryToZip(File directory, ZipOutputStream stream) throws IOException {
+        writeDirectoryToZip(directory, stream, directory);
+    }
+
+    private static void writeDirectoryToZip(File d, ZipOutputStream s, File t) throws IOException {
+        for (File f : d.listFiles()) {
+            if (f.isDirectory()) {
+                writeDirectoryToZip(f, s, t);
+                continue;
+            }
+            String path = f.getAbsolutePath().replace(t.getAbsolutePath(), "");
+            Log.d(LOG_TAG, path);
+            ZipEntry entry = new ZipEntry(path);
+            s.putNextEntry(entry);
+            FileUtils.copyFile(f, s);
+            s.closeEntry();
         }
     }
 }

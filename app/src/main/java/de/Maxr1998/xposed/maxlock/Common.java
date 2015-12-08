@@ -85,6 +85,7 @@ public abstract class Common {
     public static final String DONATED = "donated";
     public static final String ENABLE_PRO = "enable_pro";
     public static final String UNINSTALL = "uninstall";
+    public static final String SEND_FEEDBACK = "send_feedback";
 
     public static final String MASTER_SWITCH_ON = "master_switch_on";
     public static final String KEY_PREFERENCE = "key";

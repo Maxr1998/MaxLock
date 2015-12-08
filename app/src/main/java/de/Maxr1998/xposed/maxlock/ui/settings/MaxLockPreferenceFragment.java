@@ -53,11 +53,15 @@ import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.zip.ZipOutputStream;
 
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -277,6 +281,41 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
                             getActivity().startActivity(uninstall);
+                        }
+                        return true;
+                    case Common.SEND_FEEDBACK:
+                        File tempDirectory = new File(getActivity().getCacheDir(), "feedback-cache");
+                        try {
+                            // Obtain data
+                            // Settings
+                            FileUtils.copyDirectoryToDirectory(new File(Util.dataDir(getActivity()), "shared_prefs"), tempDirectory);
+                            // Logs
+                            FileUtils.copyFileToDirectory(getActivity().getFileStreamPath("history.json"), tempDirectory);
+                            Process process = Runtime.getRuntime().exec("logcat -d");
+                            FileUtils.copyInputStreamToFile(process.getInputStream(), new File(tempDirectory, "logcat.txt"));
+                            FileUtils.copyFileToDirectory(new File(getActivity().getPackageManager()
+                                    .getApplicationInfo("de.robv.android.xposed.installer", 0).dataDir + "/log", "error.log"), tempDirectory);
+                            File zipFile = new File(getActivity().getCacheDir(), "report.zip");
+                            ZipOutputStream stream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
+                            Util.writeDirectoryToZip(tempDirectory, stream);
+                            stream.close();
+                            FileUtils.deleteQuietly(tempDirectory);
+                            File external = new File(Common.EXTERNAL_FILES_DIR, zipFile.getName());
+                            FileUtils.deleteQuietly(external);
+                            FileUtils.moveFile(zipFile, external);
+                            FileUtils.deleteQuietly(zipFile);
+
+                            // Send email
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.dev_email)});
+                            intent.putExtra(Intent.EXTRA_SUBJECT, "MaxLock bug/feature request");
+                            intent.putExtra(Intent.EXTRA_TEXT, "describe your problem here");
+                            Uri uri = Uri.fromFile(external);
+                            intent.putExtra(Intent.EXTRA_STREAM, uri);
+                            startActivity(Intent.createChooser(intent, "Send email..."));
+                        } catch (IOException | PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
                         }
                         return true;
                 }

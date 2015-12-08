@@ -165,6 +165,7 @@
         You then have to uninstall this app either from here or deactivate admin from \"Settings → Security → Device administrators\" and then uninstall</string>
     <string name="pref_uninstall">Uninstall</string>
     <string name="device_admin_description">Protect MaxLock from being uninstalled and disabled</string>
+    <string name="pref_send_feedback">Send feedback / Report a bug</string>
     <!-- External stuff -->
     <string name="dialog_like_app">Do you love the app?</string>
     <string name="dialog_like_app_text">If you do, please leave a review in Play Store and also consider donating :)</string>
