@@ -72,12 +72,12 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
             if (historyF.getParentFile().mkdirs() || historyF.createNewFile()) {
                 Log.i(Util.LOG_TAG_STARTUP, "History created.");
             }
+            historyF.setReadable(true, false);
+            historyF.setWritable(true, false);
+            historyF.setExecutable(true, false);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        historyF.setReadable(true, false);
-        historyF.setWritable(true, false);
-        historyF.setExecutable(true, false);
 
         // Pro setup
         if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
@@ -117,30 +117,35 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
                     .setNeutralButton(R.string.dialog_button_rate, onClickListener)
                     .setNegativeButton(android.R.string.cancel, onClickListener);
         }
-        // Other
-        if (!prefs.getString("migrated", "").equals("v6.1")) {
-            new File(mContext.getFilesDir(), "temps.json").delete();
-            new File(Util.dataDir(mContext) + "shared_prefs/activities.xml").delete();
-            new File(Util.dataDir(mContext) + "shared_prefs/temps.xml").delete();
-            new File(Util.dataDir(mContext) + "shared_prefs/imod_temp_values").delete();
-            try {
-                FileUtils.deleteDirectory(new File(Environment.getExternalStorageDirectory() + "/MaxLock_Backup/"));
-                File external = new File(Common.EXTERNAL_FILES_DIR);
-                File[] listExternal = external.listFiles(new FilenameFilter() {
-                    @Override
-                    public boolean accept(File dir, String filename) {
-                        return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
-                    }
-                });
-                if (listExternal != null) {
-                    for (File file : listExternal) {
-                        FileUtils.forceDelete(file);
-                    }
+        // Clean up
+        if (!prefs.getString("migrated", "").equals("b40")) {
+            File backgroundFolder = new File(Util.dataDir(mContext), "background");
+            if (backgroundFolder.exists()) {
+                try {
+                    FileUtils.copyFile(new File(backgroundFolder, "image"), mContext.openFileOutput("background", 0));
+                    FileUtils.deleteQuietly(backgroundFolder);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            prefs.edit().putString("migrated", "v6.1").apply();
+            FileUtils.deleteQuietly(new File(mContext.getFilesDir(), "temps.json"));
+            FileUtils.deleteQuietly(new File(Util.dataDir(mContext) + "shared_prefs/activities.xml"));
+            FileUtils.deleteQuietly(new File(Util.dataDir(mContext) + "shared_prefs/temps.xml"));
+            FileUtils.deleteQuietly(new File(Util.dataDir(mContext) + "shared_prefs/imod_temp_values.xml"));
+            FileUtils.deleteQuietly(new File(Environment.getExternalStorageDirectory() + "/MaxLock_Backup/"));
+            File external = new File(Common.EXTERNAL_FILES_DIR);
+            File[] listExternal = external.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String filename) {
+                    return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
+                }
+            });
+            if (listExternal != null) {
+                for (File file : listExternal) {
+                    FileUtils.deleteQuietly(file);
+                }
+            }
+            prefs.edit().putString("migrated", "b40").apply();
         }
         return null;
     }

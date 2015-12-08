@@ -44,11 +44,9 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -127,29 +125,15 @@ public abstract class Util {
         loadPrefs(context);
         String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
         switch (backgroundType) {
-            case "theme":
-                InputStream backgroundStream;
-                try {
-                    File backgroundFile = new File(dataDir(context) + "theme/background.png");
-                    if (backgroundFile.exists()) {
-                        backgroundStream = new FileInputStream(backgroundFile);
-                        M_BITMAP = BitmapFactory.decodeStream(backgroundStream);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
             case "custom":
-                InputStream inputStream;
                 try {
-                    inputStream = new FileInputStream(new File(dataDir(context) + "background/image"));
-                    M_BITMAP = BitmapFactory.decodeStream(inputStream);
+                    M_BITMAP = BitmapFactory.decodeStream(context.openFileInput("background"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (OutOfMemoryError e) {
                     M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
                     M_BITMAP.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
-                    Toast.makeText(context, "Error loading background, is it to big?", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Error loading background image, is it to big?", Toast.LENGTH_LONG).show();
                 }
                 break;
             case "color":

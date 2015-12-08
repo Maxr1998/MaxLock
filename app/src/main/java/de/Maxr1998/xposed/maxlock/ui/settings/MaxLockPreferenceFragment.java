@@ -53,9 +53,9 @@ import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
-import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -350,17 +350,13 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             if (uri == null) {
                 throw new NullPointerException();
             }
-            InputStream inputStream;
             try {
-                inputStream = getActivity().getContentResolver().openInputStream(uri);
-                File destination = new File(getActivity().getApplicationInfo().dataDir + File.separator + "background" + File.separator + "image");
-                if (destination.exists()) {
-                    //noinspection ResultOfMethodCallIgnored
-                    destination.delete();
-                }
-                assert inputStream != null;
-                FileUtils.copyInputStreamToFile(inputStream, destination);
-                inputStream.close();
+                InputStream input = getActivity().getContentResolver().openInputStream(uri);
+                FileOutputStream destination = getActivity().openFileOutput("background", 0);
+                assert input != null;
+                IOUtils.copy(input, destination);
+                input.close();
+                destination.close();
             } catch (IOException | AssertionError e) {
                 e.printStackTrace();
             }
