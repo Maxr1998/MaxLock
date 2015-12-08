@@ -164,6 +164,7 @@
         Die App muss dann entweder von hier deinstalliert oder über \"Einstellungen → Sicherheit → Geräteadministratoren\" erst deaktiviert und dann deinstalliert werden</string>
     <string name="pref_uninstall">Deinstallieren</string>
     <string name="device_admin_description">Schütze MaxLock vor Deinstallation und Deaktivierung</string>
+    <string name="pref_send_feedback">Feedback senden / Fehler melden</string>
     <!-- External stuff -->
     <string name="dialog_like_app">Magst du die App?</string>
     <string name="dialog_like_app_text">Wenn ja, hinterlasse bitte eine Bewertung im Play Store und ziehe in Erwägung zu spenden :)</string>
