@@ -225,96 +225,104 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         switch (screen) {
             case MAIN:
-                if (preference == findPreference(Common.LOCKING_TYPE_SETTINGS)) {
-                    launchFragment(Screen.TYPE.getScreen(), true, this);
-                    return true;
-                } else if (preference == findPreference(Common.LOCKING_UI_SETTINGS)) {
-                    launchFragment(Screen.UI.getScreen(), true, this);
-                    return true;
-                } else if (preference == findPreference(Common.LOCKING_OPTIONS)) {
-                    prefs.edit().putBoolean(Common.ENABLE_LOGGING, prefs.getBoolean(Common.ENABLE_PRO, false)).apply();
-                    launchFragment(Screen.OPTIONS.getScreen(), true, this);
-                    return true;
-                } else if (preference == findPreference(Common.IMOD_OPTIONS)) {
-                    launchFragment(Screen.IMOD.getScreen(), true, this);
-                    return true;
-                } else if (preference == findPreference(Common.CHOOSE_APPS)) {
-                    launchFragment(new AppListFragment(), true, this);
-                    return true;
-                } else if (preference == findPreference(Common.HIDE_APP_FROM_LAUNCHER)) {
-                    TwoStatePreference hideApp = (TwoStatePreference) preference;
-                    if (hideApp.isChecked()) {
-                        Toast.makeText(getActivity(), R.string.reboot_required, Toast.LENGTH_SHORT).show();
-                        ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
-                        getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                    } else {
-                        ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
-                        getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                    }
-                } else if (preference == findPreference(Common.USE_DARK_STYLE) || preference == findPreference(Common.USE_AMOLED_BLACK) || preference == findPreference(Common.ENABLE_PRO)) {
-                    ((SettingsActivity) getActivity()).restart();
-                    return true;
-                } else if (preference == findPreference(Common.ABOUT)) {
-                    launchFragment(Screen.ABOUT.getScreen(), true, this);
-                    return true;
-                } else if (preference == findPreference(Common.DONATE)) {
-                    getActivity().startActivity(new Intent(getActivity(), DonateActivity.class));
-                    return true;
-                } else if (preference == findPreference(Common.UNINSTALL)) {
-                    if (!((SettingsActivity) getActivity()).isDeviceAdminActive()) {
-                        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-                        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, ((SettingsActivity) getActivity()).deviceAdmin);
-                        startActivity(intent);
-                    } else {
-                        ((SettingsActivity) getActivity()).getDevicePolicyManager().removeActiveAdmin(((SettingsActivity) getActivity()).deviceAdmin);
-                        preference.setTitle(R.string.pref_prevent_uninstall);
-                        preference.setSummary(R.string.pref_prevent_uninstall_summary);
-                        Intent uninstall = new Intent(Intent.ACTION_DELETE);
-                        uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
-                        getActivity().startActivity(uninstall);
-                    }
-                    return true;
+                switch (preference.getKey()) {
+                    case Common.LOCKING_TYPE_SETTINGS:
+                        launchFragment(Screen.TYPE.getScreen(), true, this);
+                        return true;
+                    case Common.LOCKING_UI_SETTINGS:
+                        launchFragment(Screen.UI.getScreen(), true, this);
+                        return true;
+                    case Common.LOCKING_OPTIONS:
+                        prefs.edit().putBoolean(Common.ENABLE_LOGGING, prefs.getBoolean(Common.ENABLE_PRO, false)).apply();
+                        launchFragment(Screen.OPTIONS.getScreen(), true, this);
+                        return true;
+                    case Common.IMOD_OPTIONS:
+                        launchFragment(Screen.IMOD.getScreen(), true, this);
+                        return true;
+                    case Common.CHOOSE_APPS:
+                        launchFragment(new AppListFragment(), true, this);
+                        return true;
+                    case Common.HIDE_APP_FROM_LAUNCHER:
+                        TwoStatePreference hideApp = (TwoStatePreference) preference;
+                        if (hideApp.isChecked()) {
+                            Toast.makeText(getActivity(), R.string.reboot_required, Toast.LENGTH_SHORT).show();
+                            ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
+                            getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                        } else {
+                            ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
+                            getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                        }
+                        return true;
+                    case Common.USE_DARK_STYLE:
+                    case Common.USE_AMOLED_BLACK:
+                    case Common.ENABLE_PRO:
+                        ((SettingsActivity) getActivity()).restart();
+                        return true;
+                    case Common.ABOUT:
+                        launchFragment(Screen.ABOUT.getScreen(), true, this);
+                        return true;
+                    case Common.DONATE:
+                        getActivity().startActivity(new Intent(getActivity(), DonateActivity.class));
+                        return true;
+                    case Common.UNINSTALL:
+                        if (!((SettingsActivity) getActivity()).isDeviceAdminActive()) {
+                            Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, ((SettingsActivity) getActivity()).deviceAdmin);
+                            startActivity(intent);
+                        } else {
+                            ((SettingsActivity) getActivity()).getDevicePolicyManager().removeActiveAdmin(((SettingsActivity) getActivity()).deviceAdmin);
+                            preference.setTitle(R.string.pref_prevent_uninstall);
+                            preference.setSummary(R.string.pref_prevent_uninstall_summary);
+                            Intent uninstall = new Intent(Intent.ACTION_DELETE);
+                            uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
+                            getActivity().startActivity(uninstall);
+                        }
+                        return true;
                 }
                 break;
             case TYPE:
-                if (preference == findPreference(Common.LOCKING_TYPE_PASSWORD)) {
-                    Util.setPassword(getActivity(), null);
-                    return true;
-                } else if (preference == findPreference(Common.LOCKING_TYPE_PIN)) {
-                    launchFragment(new PinSetupFragment(), false, this);
-                    return true;
-                } else if (preference == findPreference(Common.LOCKING_TYPE_KNOCK_CODE)) {
-                    launchFragment(new KnockCodeSetupFragment(), false, this);
-                    return true;
-                } else if (preference == findPreference(Common.LOCKING_TYPE_PATTERN)) {
-                    Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, getActivity(), LockPatternActivity.class);
-                    startActivityForResult(intent, Util.getPatternCode(-1));
-                    return true;
+                switch (preference.getKey()) {
+                    case Common.LOCKING_TYPE_PASSWORD:
+                        Util.setPassword(getActivity(), null);
+                        return true;
+                    case Common.LOCKING_TYPE_PIN:
+                        launchFragment(new PinSetupFragment(), false, this);
+                        return true;
+                    case Common.LOCKING_TYPE_KNOCK_CODE:
+                        launchFragment(new KnockCodeSetupFragment(), false, this);
+                        return true;
+                    case Common.LOCKING_TYPE_PATTERN:
+                        Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, getActivity(), LockPatternActivity.class);
+                        startActivityForResult(intent, Util.getPatternCode(-1));
+                        return true;
                 }
                 break;
             case OPTIONS:
-                if (preference == findPreference(Common.VIEW_LOGS)) {
-                    launchFragment(new LogViewerFragment(), false, this);
-                    return true;
+                switch (preference.getKey()) {
+                    case Common.VIEW_LOGS:
+                        launchFragment(new LogViewerFragment(), false, this);
+                        return true;
                 }
                 break;
             case ABOUT:
-                if (preference == findPreference(Common.VISIT_WEBSITE)) {
-                    CustomTabsIntent intent = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
-                            .setShowTitle(true)
-                            .enableUrlBarHiding()
-                            .setToolbarColor(Color.parseColor("#ffc107"))
-                            .build();
-                    intent.launchUrl(getActivity(), Uri.parse("http://maxr1998.de/"));
-                } else if (preference == findPreference("technosparks_profile")) {
-                    CustomTabsIntent intent = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
-                            .setShowTitle(true)
-                            .enableUrlBarHiding()
-                            .setToolbarColor(Color.parseColor("#6d993f"))
-                            .build();
-                    intent.launchUrl(getActivity(), Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
-                    return true;
+                switch (preference.getKey()) {
+                    case Common.VISIT_WEBSITE:
+                        CustomTabsIntent devWebsite = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
+                                .setShowTitle(true)
+                                .enableUrlBarHiding()
+                                .setToolbarColor(Color.parseColor("#ffc107"))
+                                .build();
+                        devWebsite.launchUrl(getActivity(), Uri.parse("http://maxr1998.de/"));
+                        return true;
+                    case "technosparks_profile":
+                        CustomTabsIntent greenwapWebsite = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
+                                .setShowTitle(true)
+                                .enableUrlBarHiding()
+                                .setToolbarColor(Color.parseColor("#6d993f"))
+                                .build();
+                        greenwapWebsite.launchUrl(getActivity(), Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
+                        return true;
                 }
                 break;
         }
