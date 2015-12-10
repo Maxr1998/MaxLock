@@ -227,6 +227,9 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        if (preference.getKey() == null) {
+            return false;
+        }
         switch (screen) {
             case MAIN:
                 switch (preference.getKey()) {
