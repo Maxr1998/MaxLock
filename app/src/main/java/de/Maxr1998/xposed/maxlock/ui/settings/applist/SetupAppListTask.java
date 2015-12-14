@@ -71,7 +71,7 @@ class SetupAppListTask extends AsyncTask<Void, Integer, Void> {
         PackageManager pm = mContext.getPackageManager();
         for (int i = 0; i < mAllApps.size(); i++) {
             ApplicationInfo ai = mAllApps.get(i);
-            if ((pm.getLaunchIntentForPackage(ai.packageName) != null && !ai.packageName.equals(BuildConfig.APPLICATION_ID)) || ai.packageName.equals("com.android.packageinstaller")) {
+            if ((pm.getLaunchIntentForPackage(ai.packageName) != null && !ai.packageName.equals(BuildConfig.APPLICATION_ID)) || ai.packageName.matches("com.(google.)?android.packageinstaller")) {
                 mAppList.add(ai);
             }
             publishProgress(i + 1);
