@@ -15,10 +15,11 @@
     <TextView
         android:id="@+id/xposed_active"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:gravity="center"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"
         android:text="@string/xposed_active"
         android:textColor="@android:color/white"
         android:textSize="16sp"
