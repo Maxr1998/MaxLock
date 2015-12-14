@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -46,6 +47,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.preference.PreferenceFragmentCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
@@ -309,13 +311,21 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             FileUtils.moveFile(zipFile, external);
                             FileUtils.deleteQuietly(zipFile);
                             // Send email
-                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            final Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("text/plain");
                             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.dev_email)});
                             intent.putExtra(Intent.EXTRA_SUBJECT, "MaxLock feedback/bug-report");
                             Uri uri = Uri.fromFile(external);
                             intent.putExtra(Intent.EXTRA_STREAM, uri);
-                            startActivity(Intent.createChooser(intent, "Send email..."));
+                            AlertDialog send = new AlertDialog.Builder(getActivity())
+                                    .setMessage(R.string.dialog_message_bugreport_finished_select_email)
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            startActivity(Intent.createChooser(intent, getString(R.string.share_menu_title_send_email)));
+                                        }
+                                    }).create();
+                            send.show();
                         } catch (IOException | PackageManager.NameNotFoundException e) {
                             e.printStackTrace();
                         }

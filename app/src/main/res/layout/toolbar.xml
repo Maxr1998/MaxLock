@@ -20,7 +20,7 @@
         android:elevation="4dp"
         android:gravity="center_horizontal"
         android:paddingBottom="8dp"
-        android:text="@string/xposed_active"
+        android:text="@string/maxlock_inactive"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold|italic"

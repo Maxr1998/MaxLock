@@ -94,7 +94,18 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (!IS_ACTIVE) {
-            findViewById(R.id.xposed_active).setVisibility(View.VISIBLE);
+            View maxlockActive = findViewById(R.id.xposed_active);
+            maxlockActive.setVisibility(View.VISIBLE);
+            maxlockActive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog help = new AlertDialog.Builder(SettingsActivity.this)
+                            .setTitle(R.string.maxlock_inactive)
+                            .setMessage(R.string.dialog_message_not_active)
+                            .create();
+                    help.show();
+                }
+            });
         }
 
         mSettingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);

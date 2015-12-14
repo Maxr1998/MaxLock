@@ -5,7 +5,7 @@
     <string name="name_pro"> プロ版</string>
     <string name="name_pseudo_pro"> 準プロ版</string>
     <string name="placeholder">Placeholder</string>
-    <string name="xposed_active">MaxLock は動作していません</string>
+    <string name="maxlock_inactive">MaxLock は動作していません</string>
     <string name="dialog_text_restart_required">変更を適用にするには MaxLock の再起動が必要です</string>
     <string name="toast_pro_required">この機能を使用するにはプロ版が必要です!</string>
     <string name="sb_no_locking_type">ロック方法が未設定です.</string>

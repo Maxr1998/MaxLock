@@ -5,7 +5,12 @@
     <string name="name_pro"> Pro</string>
     <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">Placeholder</string>
-    <string name="xposed_active">MaxLock is not active</string>
+    <string name="maxlock_inactive">MaxLock is not active</string>
+    <string name="dialog_message_not_active">MaxLock could not hook the Android System methods needed for it to work. This may have several reasons:\n
+    &#x2022; <i>Xposed Framework is not installed</i>\n
+    &#x2022; <i>Xposed is installed and active, but you didn\'t enable MaxLock in Xposed installer (\"Modules\" tab) or didn\'t reboot afterwards.</i>\n
+    &#x2022; <i>Xposed Framework got disabled by Xposed safemode. Look at the Xposed Thread on XDA for further information.</i>\n
+    &#x2022; <i>MaxLock may have encountered a crash. You should send me a bugreport from the bottom of this screen then.</i></string>
     <string name="dialog_text_restart_required">MaxLock requires a restart for changes to take effect</string>
     <string name="toast_pro_required">Pro-version is required to use this feature!</string>
     <string name="sb_no_locking_type">No locking type specified.</string>
@@ -166,6 +171,9 @@
     <string name="pref_uninstall">Uninstall</string>
     <string name="device_admin_description">Protect MaxLock from being uninstalled and disabled</string>
     <string name="pref_send_feedback">Send feedback / Report a bug</string>
+    <string name="dialog_message_bugreport_finished_select_email">Logs and device info exported. Now select your favorite email application to send the logs to me.\n\n
+    <i>NOTE: No private information were collected.</i></string>
+    <string name="share_menu_title_send_email">Send email with…</string>
     <!-- External stuff -->
     <string name="dialog_like_app">Do you love the app?</string>
     <string name="dialog_like_app_text">If you do, please leave a review in Play Store and also consider donating :)</string>

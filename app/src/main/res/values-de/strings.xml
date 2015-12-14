@@ -5,7 +5,12 @@
     <string name="name_pro"> Pro</string>
     <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">Platzhalter</string>
-    <string name="xposed_active">MaxLock ist nicht aktiv</string>
+    <string name="maxlock_inactive">MaxLock ist nicht aktiv</string>
+        <string name="dialog_message_not_active">MaxLock konnte nicht sich nicht in das System einhängen. Dafür gibt es verschiedene Gründe:\n
+    &#x2022; <i>Xposed Framework nicht installiert</i>\n
+    &#x2022; <i>Xposed ist installiert und aktiv, aber du hast MaxLock nicht im Xposed Installer aktiviert (\"Module\" Tab) oder nach Aktivierung nicht neu gestartet.</i>\n
+    &#x2022; <i>Xposed wurde über den Xposed safemode deaktiviert. Schau in den Xposed Thread auf XDA für nähere Informationen.</i>\n
+    &#x2022; <i>MaxLock ist beim Start in Xposed abgestürzt. Sende mir bitte einen Fehlerbericht über den Eintrag ganz unten.</i></string>
     <string name="dialog_text_restart_required">MaxLock muss für die Übernahme der Änderungen neu gestartet werden</string>
     <string name="toast_pro_required">Die Pro-Version wird für diese Funktion benötigt</string>
     <string name="sb_no_locking_type">Keine Sperrart festgelegt.</string>
@@ -165,6 +170,9 @@
     <string name="pref_uninstall">Deinstallieren</string>
     <string name="device_admin_description">Schütze MaxLock vor Deinstallation und Deaktivierung</string>
     <string name="pref_send_feedback">Feedback senden / Fehler melden</string>
+        <string name="dialog_message_bugreport_finished_select_email">Logs und Geräteinformationen exportiert. Wähle jetzt deine bevorzugte E-Mail Anwendung, um mir die Logs zu senden.\n\n
+    <i>BEMERKUNG: Es wurden keine privaten Informationen gesammelt.</i></string>
+    <string name="share_menu_title_send_email">Sende E-Mail via…</string>
     <!-- External stuff -->
     <string name="dialog_like_app">Magst du die App?</string>
     <string name="dialog_like_app_text">Wenn ja, hinterlasse bitte eine Bewertung im Play Store und ziehe in Erwägung zu spenden :)</string>

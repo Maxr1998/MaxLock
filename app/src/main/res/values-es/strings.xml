@@ -5,7 +5,7 @@
     <string name="name_pro"> Pro</string>
     <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">Placeholder</string>
-    <string name="xposed_active">MaxLock no está activo</string>
+    <string name="maxlock_inactive">MaxLock no está activo</string>
     <string name="dialog_text_restart_required">MaxLock requiere un reinicio para que los cambios tengan efecto</string>
     <string name="toast_pro_required">Es necesaria la versión Pro para utilizar esta funcionalidad!</string>
     <string name="sb_no_locking_type">No se especificó un tipo de bloqueo.</string>
