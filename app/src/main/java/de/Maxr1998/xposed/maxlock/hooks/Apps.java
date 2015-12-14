@@ -28,7 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -160,7 +159,7 @@ public class Apps {
     public static JSONObject readFile() throws Throwable {
         JSONObject history;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(HISTORY_PATH));
+            BufferedReader reader = new BufferedReader(new FileReader(HISTORY_PATH), 50);
             String json = reader.readLine();
             reader.close();
             try {
@@ -184,7 +183,7 @@ public class Apps {
             if (!JSONFile.exists()) {
                 throw new FileNotFoundException("File could not be written, as it doesn't exist.");
             }
-            BufferedWriter bw = new BufferedWriter(new FileWriter(HISTORY_PATH));
+            FileWriter bw = new FileWriter(HISTORY_PATH);
             bw.write(history.toString());
             bw.close();
         } catch (IOException e) {
