@@ -78,6 +78,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     private static final int WALLPAPER_REQUEST_CODE = 42;
+    private static final int BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE = 100;
     private SharedPreferences prefs;
     private Screen screen;
 
@@ -306,26 +307,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             Util.writeDirectoryToZip(tempDirectory, stream);
                             stream.close();
                             FileUtils.deleteQuietly(tempDirectory);
-                            File external = new File(Common.EXTERNAL_FILES_DIR, zipFile.getName());
-                            FileUtils.deleteQuietly(external);
-                            FileUtils.moveFile(zipFile, external);
-                            FileUtils.deleteQuietly(zipFile);
-                            // Send email
-                            final Intent intent = new Intent(Intent.ACTION_SEND);
-                            intent.setType("text/plain");
-                            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.dev_email)});
-                            intent.putExtra(Intent.EXTRA_SUBJECT, "MaxLock feedback/bug-report");
-                            Uri uri = Uri.fromFile(external);
-                            intent.putExtra(Intent.EXTRA_STREAM, uri);
-                            AlertDialog send = new AlertDialog.Builder(getActivity())
-                                    .setMessage(R.string.dialog_message_bugreport_finished_select_email)
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            startActivity(Intent.createChooser(intent, getString(R.string.share_menu_title_send_email)));
-                                        }
-                                    }).create();
-                            send.show();
+                            Util.checkForStoragePermission(this, BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE, R.string.dialog_storage_permission_bug_report);
                         } catch (IOException | PackageManager.NameNotFoundException e) {
                             e.printStackTrace();
                         }
@@ -411,6 +393,41 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             } catch (IOException | AssertionError e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    File zipFile = new File(getActivity().getCacheDir(), "report.zip");
+                    File external = new File(Common.EXTERNAL_FILES_DIR, zipFile.getName());
+                    FileUtils.deleteQuietly(external);
+
+                    // Move files and send email
+                    final Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.dev_email)});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "MaxLock feedback/bug-report");
+                    try {
+                        FileUtils.moveFile(zipFile, external);
+                        FileUtils.deleteQuietly(zipFile);
+                        Uri uri = Uri.fromFile(external);
+                        intent.putExtra(Intent.EXTRA_STREAM, uri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    new AlertDialog.Builder(getActivity())
+                            .setMessage(R.string.dialog_message_bugreport_finished_select_email)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startActivity(Intent.createChooser(intent, getString(R.string.share_menu_title_send_email)));
+                                }
+                            }).create().show();
+                }
+                break;
         }
     }
 

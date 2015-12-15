@@ -26,6 +26,7 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -69,6 +70,8 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 
 public class AppListFragment extends Fragment {
 
+    private static final int BACKUP_STORAGE_PERMISSION_REQUEST_CODE = 101;
+    private static final int RESTORE_STORAGE_PERMISSION_REQUEST_CODE = 102;
     private static List<ApplicationInfo> APP_LIST = new ArrayList<>();
     private static SetupAppListTask TASK;
     private AppListAdapter mAdapter;
@@ -143,99 +146,50 @@ public class AppListFragment extends Fragment {
         filterIcon(menu.findItem(R.id.toolbar_filter_activated));
     }
 
-    @SuppressLint({"WorldReadableFiles", "CommitPrefEdits"})
+    @SuppressLint("CommitPrefEdits")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (prefs.getBoolean(Common.ENABLE_PRO, false) || item.getItemId() == R.id.toolbar_filter_activated) {
-            final String prefsAppsName = Common.PREFS_APPS + ".xml";
-            final String prefsPerAppName = Common.PREFS_KEYS_PER_APP + ".xml";
-            final File prefsAppsFile = new File(Util.dataDir(getActivity()) + "shared_prefs/" + prefsAppsName);
-            final File prefsPerAppFile = new File(Util.dataDir(getActivity()) + "shared_prefs/" + prefsPerAppName);
-
-            switch (item.getItemId()) {
-                case android.R.id.home:
-                    //noinspection ConstantConditions
-                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                    return false;
-                case R.id.toolbar_backup_list:
-                    String currentBackupDirPath = Common.BACKUP_DIR + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.getDefault())
-                            .format(new Date(System.currentTimeMillis())) + File.separator;
-                    backupFile(prefsAppsFile, new File(currentBackupDirPath));
-                    backupFile(prefsPerAppFile, new File(currentBackupDirPath));
-                    if (new File(currentBackupDirPath).exists() && new File(currentBackupDirPath + prefsAppsName).exists())
-                        Toast.makeText(getActivity(), R.string.toast_backup_success, Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.toolbar_restore_list:
-                    List<String> list = new ArrayList<>(Arrays.asList(new File(Common.BACKUP_DIR).list()));
-                    restoreAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
-                    AlertDialog restoreDialog = new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.dialog_text_restore_list)
-                            .setAdapter(restoreAdapter, new DialogInterface.OnClickListener() {
-                                @SuppressLint("InlinedApi")
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    File restorePackagesFile = new File(Common.BACKUP_DIR + restoreAdapter.getItem(i) + File.separator + prefsAppsName);
-                                    File restorePerAppFile = new File(Common.BACKUP_DIR + restoreAdapter.getItem(i) + File.separator + prefsPerAppName);
-                                    try {
-                                        if (restorePackagesFile.exists()) {
-                                            //noinspection ResultOfMethodCallIgnored
-                                            prefsAppsFile.delete();
-                                            FileUtils.copyFile(restorePackagesFile, prefsAppsFile);
-                                        }
-                                        if (restorePerAppFile.exists()) {
-                                            //noinspection ResultOfMethodCallIgnored
-                                            prefsPerAppFile.delete();
-                                            FileUtils.copyFile(restorePerAppFile, prefsPerAppFile);
-                                        }
-                                    } catch (IOException e) {
-                                        Toast.makeText(getActivity(), R.string.toast_no_files_to_restore, Toast.LENGTH_SHORT).show();
-                                    }
-                                    getActivity().getSharedPreferences(Common.PREFS_APPS, Context.MODE_MULTI_PROCESS);
-                                    getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_MULTI_PROCESS);
-                                    Toast.makeText(getActivity(), R.string.toast_restore_success, Toast.LENGTH_SHORT).show();
-                                    ((SettingsActivity) getActivity()).restart();
-                                }
-                            }).setNegativeButton(android.R.string.cancel, null).show();
-                    restoreDialog.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            try {
-                                FileUtils.deleteDirectory(new File(Common.BACKUP_DIR + restoreAdapter.getItem(i)));
-                                restoreAdapter.remove(restoreAdapter.getItem(i));
-                                restoreAdapter.notifyDataSetChanged();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                return false;
-                            }
-                            return true;
-                        }
-                    });
-                    return true;
-                case R.id.toolbar_clear_list:
-                    MLPreferences.getPrefsApps(getActivity()).edit().clear().commit();
-                    getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE).edit().clear().commit();
-                    ((SettingsActivity) getActivity()).restart();
-                    return true;
-                case R.id.toolbar_filter_activated:
-                    String appListFilter = prefs.getString("app_list_filter", "");
-                    switch (appListFilter) {
-                        case "@*activated*":
-                            prefs.edit().putString("app_list_filter", "@*deactivated*").commit();
-                            break;
-                        case "@*deactivated*":
-                            prefs.edit().putString("app_list_filter", "").commit();
-                            break;
-                        default:
-                            prefs.edit().putString("app_list_filter", "@*activated*").commit();
-                            break;
-                    }
-                    filterIcon(item);
-                    filter();
-                    return true;
-            }
-        } else
-            Toast.makeText(getActivity(), R.string.toast_pro_required, Toast.LENGTH_SHORT).show();
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                return Util.hideKeyboardFromWindow(getActivity(), getView());
+            case R.id.toolbar_backup_list:
+                if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
+                    Util.checkForStoragePermission(this, BACKUP_STORAGE_PERMISSION_REQUEST_CODE, R.string.dialog_storage_permission_backup_restore);
+                } else {
+                    Toast.makeText(getActivity(), R.string.toast_pro_required, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.toolbar_restore_list:
+                if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
+                    Util.checkForStoragePermission(this, RESTORE_STORAGE_PERMISSION_REQUEST_CODE, R.string.dialog_storage_permission_backup_restore);
+                } else {
+                    Toast.makeText(getActivity(), R.string.toast_pro_required, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.toolbar_clear_list:
+                MLPreferences.getPrefsApps(getActivity()).edit().clear().commit();
+                getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE).edit().clear().commit();
+                ((SettingsActivity) getActivity()).restart();
+                return true;
+            case R.id.toolbar_filter_activated:
+                String appListFilter = prefs.getString("app_list_filter", "");
+                switch (appListFilter) {
+                    case "@*activated*":
+                        prefs.edit().putString("app_list_filter", "@*deactivated*").apply();
+                        break;
+                    case "@*deactivated*":
+                        prefs.edit().putString("app_list_filter", "").apply();
+                        break;
+                    default:
+                        prefs.edit().putString("app_list_filter", "@*activated*").apply();
+                        break;
+                }
+                filterIcon(item);
+                filter();
+                return true;
+            default:
+                return false;
+        }
     }
 
     private void backupFile(File file, File directory) {
@@ -246,6 +200,74 @@ public class AppListFragment extends Fragment {
         } catch (IOException e) {
             Toast.makeText(getActivity(), R.string.toast_backup_restore_exception, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length == 0) {
+            return;
+        }
+        final String prefsAppsName = Common.PREFS_APPS + ".xml";
+        final String prefsPerAppName = Common.PREFS_KEYS_PER_APP + ".xml";
+        final File prefsAppsFile = new File(Util.dataDir(getActivity()) + "shared_prefs/" + prefsAppsName);
+        final File prefsPerAppFile = new File(Util.dataDir(getActivity()) + "shared_prefs/" + prefsPerAppName);
+        switch (requestCode) {
+            case BACKUP_STORAGE_PERMISSION_REQUEST_CODE:
+                String currentBackupDirPath = Common.BACKUP_DIR + new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.getDefault())
+                        .format(new Date(System.currentTimeMillis())) + File.separator;
+                backupFile(prefsAppsFile, new File(currentBackupDirPath));
+                backupFile(prefsPerAppFile, new File(currentBackupDirPath));
+                if (new File(currentBackupDirPath).exists() && new File(currentBackupDirPath + prefsAppsName).exists())
+                    Toast.makeText(getActivity(), R.string.toast_backup_success, Toast.LENGTH_SHORT).show();
+                break;
+            case RESTORE_STORAGE_PERMISSION_REQUEST_CODE:
+                List<String> list = new ArrayList<>(Arrays.asList(new File(Common.BACKUP_DIR).list()));
+                restoreAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
+                AlertDialog restoreDialog = new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.dialog_text_restore_list)
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .setAdapter(restoreAdapter, new DialogInterface.OnClickListener() {
+                            @SuppressWarnings("deprecation")
+                            @SuppressLint("InlinedApi")
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                File restorePackagesFile = new File(Common.BACKUP_DIR + restoreAdapter.getItem(i) + File.separator + prefsAppsName);
+                                File restorePerAppFile = new File(Common.BACKUP_DIR + restoreAdapter.getItem(i) + File.separator + prefsPerAppName);
+                                try {
+                                    if (restorePackagesFile.exists()) {
+                                        FileUtils.deleteQuietly(prefsAppsFile);
+                                        FileUtils.copyFile(restorePackagesFile, prefsAppsFile);
+                                    }
+                                    if (restorePerAppFile.exists()) {
+                                        FileUtils.deleteQuietly(prefsPerAppFile);
+                                        FileUtils.copyFile(restorePerAppFile, prefsPerAppFile);
+                                    }
+                                } catch (IOException e) {
+                                    Toast.makeText(getActivity(), R.string.toast_no_files_to_restore, Toast.LENGTH_SHORT).show();
+                                }
+                                getActivity().getSharedPreferences(Common.PREFS_APPS, Context.MODE_MULTI_PROCESS);
+                                getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_MULTI_PROCESS);
+                                Toast.makeText(getActivity(), R.string.toast_restore_success, Toast.LENGTH_SHORT).show();
+                                ((SettingsActivity) getActivity()).restart();
+                            }
+                        })
+                        .show();
+                restoreDialog.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        try {
+                            FileUtils.deleteDirectory(new File(Common.BACKUP_DIR + restoreAdapter.getItem(i)));
+                            restoreAdapter.remove(restoreAdapter.getItem(i));
+                            restoreAdapter.notifyDataSetChanged();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+                break;
         }
     }
 

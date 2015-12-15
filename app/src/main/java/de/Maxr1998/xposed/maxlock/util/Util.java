@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -29,11 +30,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +66,8 @@ import java.util.zip.ZipOutputStream;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public abstract class Util {
 
@@ -119,11 +125,37 @@ public abstract class Util {
         }
     }
 
-    public static void hideKeyboardFromWindow(Activity a, View v) {
+    /**
+     * Hide keyboard from window
+     *
+     * @param a Activity to call from
+     * @param v View where keyboard is attached
+     * @return true if keyboard got hidden, false if the keyboard wasn't visible before
+     */
+    public static boolean hideKeyboardFromWindow(Activity a, View v) {
+        ResultReceiver result = new ResultReceiver(null) {
+            private int i = -1;
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                i = resultCode;
+            }
+
+            @Override
+            public int describeContents() {
+                return i;
+            }
+        };
         a.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //noinspection ConstantConditions
         ((InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(v.getWindowToken(), 0);
+                .hideSoftInputFromWindow(v.getWindowToken(), 0, result);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return result.describeContents() == InputMethodManager.RESULT_HIDDEN;
     }
 
     public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
@@ -276,6 +308,23 @@ public abstract class Util {
         return context.getApplicationInfo().dataDir + File.separator;
     }
 
+    public static void checkForStoragePermission(final Fragment fragment, final int code, @StringRes int description) {
+        if (ContextCompat.checkSelfPermission(fragment.getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            new AlertDialog.Builder(fragment.getActivity())
+                    .setMessage(description)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            fragment.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, code);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
+        } else {
+            fragment.onRequestPermissionsResult(code, new String[]{WRITE_EXTERNAL_STORAGE}, new int[]{PackageManager.PERMISSION_GRANTED});
+        }
+    }
+
     public static String getApplicationNameFromPackage(String packageName, Context context) {
         PM = context.getApplicationContext().getPackageManager();
         try {
@@ -339,7 +388,6 @@ public abstract class Util {
                 continue;
             }
             String path = f.getAbsolutePath().replace(t.getAbsolutePath(), "");
-            Log.d(LOG_TAG, path);
             ZipEntry entry = new ZipEntry(path);
             s.putNextEntry(entry);
             FileUtils.copyFile(f, s);

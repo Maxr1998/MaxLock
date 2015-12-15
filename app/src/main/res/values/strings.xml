@@ -127,6 +127,7 @@
     <string name="menu_backup_list">Backup list</string>
     <string name="menu_restore_list">Restore list</string>
     <string name="menu_clear_list">Clear list</string>
+    <string name="dialog_storage_permission_backup_restore">MaxLock needs to access your external storage to read/write the backup files. Proceed?</string>
     <string name="toast_no_files_to_backup">No files found to backup</string>
     <string name="toast_backup_restore_exception">There was an error.\nPlease contact developer!</string>
     <string name="toast_backup_success">Backup successfully completed</string>
@@ -171,6 +172,7 @@
     <string name="pref_uninstall">Uninstall</string>
     <string name="device_admin_description">Protect MaxLock from being uninstalled and disabled</string>
     <string name="pref_send_feedback">Send feedback / Report a bug</string>
+    <string name="dialog_storage_permission_bug_report">MaxLock needs to access your external storage to save logs and device info. Proceed?</string>
     <string name="dialog_message_bugreport_finished_select_email">Logs and device info exported. Now select your favorite email application to send the logs to me.\n\n
     <i>NOTE: No private information were collected.</i></string>
     <string name="share_menu_title_send_email">Send email with…</string>
