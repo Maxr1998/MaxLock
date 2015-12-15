@@ -6,6 +6,11 @@
     <string name="name_pseudo_pro">偽專業版</string>
     <string name="placeholder">佔位符</string>
     <string name="maxlock_inactive">MaxLock尚未激活</string>
+    <string name="dialog_message_not_active">MaxLock不能掛鉤，它的運作所需Android系統的方法。這可能有幾方面的原因：\n
+    &#x2022; <i>未安裝Xposed框架</i>\n
+    &#x2022; <i>Xposed安裝並激活，但你未在Xposed啟用MaxLock (\"模組\" 選項) 之後需要重啟手機</i>\n
+    &#x2022; <i>Xposed安全模式禁用了Xposed框架。可以上XDA了解更多Xposed信息。</i>\n
+    &#x2022; <i>MaxLock可能遇到崩潰。在屏幕的底部你可以發送錯誤報告給我。</i></string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
     <string name="toast_pro_required">使用此功能需要專業版！</string>
     <string name="sb_no_locking_type">沒有鎖定特定類型</string>
@@ -165,6 +170,10 @@
         移除此應用程式您必須在\"設定 → 安全 → 裝置管理員\"這裡或停用管理員許可權,然後移除</string>
     <string name="pref_uninstall">移除</string>
     <string name="device_admin_description">保護MaxLock防止被移除和禁用</string>
+    <string name="pref_send_feedback">發送反饋/錯誤報告</string>
+    <string name="dialog_message_bugreport_finished_select_email">匯出日誌和設備資訊。現在選擇你最喜愛的電子郵件應用程式來發送日誌給我。\n\n
+    <i>注意：沒有收集私隱資訊。</i></string>
+    <string name="share_menu_title_send_email">發送電子郵件…</string>
     <!-- External stuff -->
     <string name="dialog_like_app">你喜歡這個應用程式嗎？</string>
     <string name="dialog_like_app_text">如果您這樣做,請在Play Store留下您的評論或考慮捐贈 :)</string>
