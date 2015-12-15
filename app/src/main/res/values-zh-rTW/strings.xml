@@ -10,7 +10,7 @@
     &#x2022; <i>未安裝Xposed框架</i>\n
     &#x2022; <i>Xposed安裝並激活，但你未在Xposed啟用MaxLock (\"模組\" 選項) 之後需要重啟手機</i>\n
     &#x2022; <i>Xposed安全模式禁用了Xposed框架。可以上XDA了解更多Xposed信息。</i>\n
-    &#x2022; <i>MaxLock可能遇到崩潰。在屏幕的底部你可以發送錯誤報告給我。</i></string>
+    &#x2022; <i>MaxLock可能遇到崩潰。你可以在屏幕的底部發送報告錯誤給我。</i></string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
     <string name="toast_pro_required">使用此功能需要專業版！</string>
     <string name="sb_no_locking_type">沒有鎖定特定類型</string>
