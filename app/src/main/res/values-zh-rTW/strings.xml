@@ -69,7 +69,7 @@
     <string name="pref_custom_color">自定義顏色</string>
     <string name="pref_hide_status_bar">隱藏狀態欄/全屏</string>
     <string name="pref_use_tablet_mode">使用平板模式</string>
-    <string name="pref_use_tablet_mode_summary">%1$s發現了這個%2$s裝置由於dpi%3$d和顯示的寬度為%4$d像素</string>
+    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">檢測到%1$s這個%2$s裝置的dpi為%3$d和顯示的寬度為%4$d像素</string>
     <string name="pref_category_pin_and_knock_code">PIN和Knock code</string>
     <string name="pref_invert_color">轉換用戶界面顏色</string>
     <string name="pref_invert_color_summary">設置這個文本和分隔器的顏色為黑色</string>
@@ -94,8 +94,8 @@
     <string name="menu_delete_log">刪除日誌</string>
     <string name="logs_empty_text">沒有日誌記錄</string>
     <string name="pref_category_other">其它</string>
-    <string name="pref_fake_crash_all_apps">為所有應用程式假死</string>
-    <string name="pref_fake_crash_all_apps_summary">這將覆蓋所有的應用程式清單中的應用程式設定</string>
+    <string name="pref_fake_crash_all_apps">假死所有應用</string>
+    <string name="pref_fake_crash_all_apps_summary">這將覆蓋從應用清單中的所有應用設定</string>
     <string name="pref_fake_unlock">假死直接解鎖</string>
     <string name="pref_fake_unlock_summary">當啟用鎖屏假死對話框後按鈕上的\“應用程式已崩潰…\”直接顯示<i>\“不幸的是，X已經停止”</i></string>
     <string name="pref_fake_crash_passphrase">假死輸入</string>
@@ -103,21 +103,21 @@
     <string name="pref_enable_tasker">啟用Tasker集成</string>
     <!-- I.Mod settings -->
     <string name="pref_screen_locking_intika">Intika I.Mod</string>
-    <string name="pref_category_intika">Intika I.Mod - 寬限期 - 一般延遲</string>
-    <string name="pref_category_intika2">Intika I.Mod - 寬限期 - PerApp延遲</string>
-    <string name="pref_locking_delay_general">啟用一般延遲-重新鎖定</string>
+    <string name="pref_category_intika">Intika I.Mod - 寬限期 - 全局</string>
+    <string name="pref_category_intika2">Intika I.Mod - 寬限期 - 每個應用</string>
+    <string name="pref_locking_delay_general">全局延遲重新鎖定</string>
     <string name="pref_locking_delay_general_summary">避免到在一段時間內再次要求解鎖應用程式</string>
-    <string name="pref_delay_input_general">一般延遲 - 重新鎖定定時器</string>
-    <string name="pref_delay_input_general_summary">輸入一個數位指定延遲時間,值為分鐘,鎖定一般延遲</string>
-    <string name="pref_locking_delay_perapp">啟用PerApp延遲 - 重新鎖定</string>
-    <string name="pref_locking_delay_perapp_summary">防止要求在一定時間內為每一個應用程式再次解鎖,分開而不管其他受保護的應用程式</string>
-    <string name="pref_delay_input_perapp">PerApp延遲 - 重新鎖定定時器</string>
-    <string name="pref_delay_input_perapp_summary">輸入一個數位指定延遲時間,值為分鐘,鎖定PerApp延遲</string>
-    <string name="pref_delay_needpro">啟用延遲重新鎖定 - 專業版</string>
+    <string name="pref_delay_input_general">全局延遲重新鎖定計時器</string>
+    <string name="pref_delay_input_general_summary">給全局延遲輸入一個數字指定延遲時間,值為分鐘</string>
+    <string name="pref_locking_delay_perapp">每個應用延遲重新鎖定</string>
+    <string name="pref_locking_delay_perapp_summary">防止要求在一定時間內為每個應用程式再次解鎖,分開而不管其他受保護的應用</string>
+    <string name="pref_delay_input_perapp">每個應用重新鎖定計時器</string>
+    <string name="pref_delay_input_perapp_summary">給每個應用重新鎖定輸入一個數字指定延遲時間,值為分鐘</string>
+    <string name="pref_delay_needpro">延遲重新鎖定 - 專業版</string>
     <string name="pref_show_reset_notification">顯示通知</string>
-    <string name="pref_show_reset_notification_summary">顯示通知重置I.Mod定時器</string>
+    <string name="pref_show_reset_notification_summary">在重置I.Mod計時器時顯示一個通知</string>
     <string name="pref_reset_screen_off">自動重置I.Mod</string>
-    <string name="pref_reset_screen_off_summary">關閉屏幕時重置I.Mod定時器</string>
+    <string name="pref_reset_screen_off_summary">關閉屏幕時重置I.Mod計時器</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">選擇應用</string>
     <string name="pref_choose_apps">選擇應用</string>
@@ -130,7 +130,7 @@
     <string name="toast_no_files_to_backup">沒有找到備份文件</string>
     <string name="toast_backup_restore_exception">出現錯誤。\n請聯繫開發者！</string>
     <string name="toast_backup_success">成功完成備份</string>
-    <string name="dialog_text_restore_list">這將從備份替換當前設置 ！</string>
+    <string name="dialog_text_restore_list">這將從備份替換當前設定 ！</string>
     <string name="toast_no_files_to_restore">沒有找到恢復文件</string>
     <string name="toast_restore_success">成功恢復備份！</string>
     <string name="menu_search">搜索</string>
@@ -146,12 +146,12 @@
     <string name="pref_hide_from_launcher">桌面隱藏應用圖標</string>
     <string name="reboot_required">可能需要重新啟動以應用更改</string>
     <string name="pref_use_dark_style">使用黑暗風格</string>
-    <string name="pref_use_amoled_black">使用 AMOLED 黑</string>
-    <string name="pref_use_amoled_black_summary">在黑暗主題中使用全黑背景，在使用 AMOLED 顯示時導致低耗</string>
+    <string name="pref_use_amoled_black">使用黑純AMOLED</string>
+    <string name="pref_use_amoled_black_summary">低能耗AMOLED顯示屏可使用黑色主題作為一個純黑背景</string>
     <string name="pref_widget_background_color">小部件背景顏色</string>
     <!-- About information -->
     <string name="pref_category_about">關於</string>
-    <string name="pref_about_summary">點擊查看貢獻，使用的libs和許可證。</string>
+    <string name="pref_about_summary">點擊查看貢獻，使用的庫和許可證。</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_visit_website">訪問Maxr1998網站</string>
     <string name="pref_category_credits">致謝</string>
@@ -166,11 +166,11 @@
     <string name="pref_enable_pro">開啟專業版</string>
     <string name="pref_enable_pro_summary">這將開啟專業版功能，即使您沒有購買</string>
     <string name="pref_prevent_uninstall">防止應用程式被移除</string>
-    <string name="pref_prevent_uninstall_summary">MaxLock在裝置管理員權限打勾應用程式將無法移除。
-        移除此應用程式您必須在\"設定 → 安全 → 裝置管理員\"這裡或停用管理員許可權,然後移除</string>
+    <string name="pref_prevent_uninstall_summary">MaxLock在裝置管理員權限打勾，應用程式將無法移除。
+        移除此應用程式您必須在\"設定 → 安全 → 裝置管理員\"這裡或停用管理員權限，然後移除</string>
     <string name="pref_uninstall">移除</string>
     <string name="device_admin_description">保護MaxLock防止被移除和禁用</string>
-    <string name="pref_send_feedback">發送反饋/錯誤報告</string>
+    <string name="pref_send_feedback">發送反饋/報告錯誤</string>
     <string name="dialog_message_bugreport_finished_select_email">匯出日誌和設備資訊。現在選擇你最喜愛的電子郵件應用程式來發送日誌給我。\n\n
     <i>注意：沒有收集私隱資訊。</i></string>
     <string name="share_menu_title_send_email">發送電子郵件…</string>
@@ -185,19 +185,19 @@
     <string name="dialog_button_report">回報</string>
     <string name="dialog_title_report_problem">回報問題</string>
     <!-- Action stuff -->
-    <string name="activity_label_actions">MaxLock 動作</string>
+    <string name="activity_label_actions">MaxLock操作</string>
     <string name="action_configuration">配置:</string>
     <string name="action_toggle_ms">切換主開關</string>
     <string name="action_ms_on">打開主開關</string>
     <string name="action_ms_off">關閉主開關</string>
-    <string name="action_imod_reset">重設I.MoD</string>
+    <string name="action_imod_reset">重置I.MoD</string>
     <string name="tasker_imod_reset_summary">鎖定所有應用之前打開I.MoD</string>
     <string name="tasker_button_apply">應用</string>
     <string name="tasker_integration_disabled">當前Tasker集成已禁用。您可以通過\"MaxLock → 鎖定選項 → 啟用Tasker集成\".</string>
-    <string name="activity_label_toggle_ms_deprecated">切換主開關(不推薦)</string>
-    <string name="unlock_master_switch">打開主開關</string>
+    <string name="activity_label_toggle_ms_deprecated">切換主開關(已取消)</string>
+    <string name="unlock_master_switch">解鎖主開關</string>
     <string name="toast_master_switch_off">主開關已關閉</string>
-    <string name="toast_master_switch_on">主開關重新啟用</string>
+    <string name="toast_master_switch_on">主開關已重新啟用</string>
     <string name="toast_no_locking_types">沒有指定鎖定類型</string>
 
 </resources>
