@@ -23,13 +23,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.actions.ActionActivity;
 import de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper;
 
-public abstract class NotificationHelper {
+public final class NotificationHelper {
 
     public static final int NOTIFICATION_ID = 0x130D;
 
@@ -54,12 +55,10 @@ public abstract class NotificationHelper {
             builder.setShowWhen(false);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //noinspection deprecation
             builder.setPriority(NotificationCompat.PRIORITY_MIN)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)
-                    .setColor(mContext.getResources().getColor(R.color.accent));
+                    .setColor(ContextCompat.getColor(mContext, R.color.accent));
         }
-        //noinspection deprecation
-        nm.notify(NOTIFICATION_ID, builder.getNotification());
+        nm.notify(NOTIFICATION_ID, builder.build());
     }
 }

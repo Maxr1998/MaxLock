@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -43,6 +42,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 import android.support.v7.widget.AppCompatEditText;
@@ -368,8 +368,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
             pb.setOnClickListener(this);
             pb.setOnLongClickListener(this);
             if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
-                //noinspection deprecation
-                ((TextView) pb).setTextColor(getResources().getColor(android.R.color.black));
+                ((TextView) pb).setTextColor(Color.BLACK);
             }
         }
         if (prefs.getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
@@ -597,8 +596,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
             mTouchHighlightVisible = prefs.getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true);
             if (mTouchHighlightVisible) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    //noinspection deprecation
-                    highlightLP = new RippleDrawable(ColorStateList.valueOf(getResources().getColor(R.color.legacy_highlight_dark)), null, new ColorDrawable(Color.WHITE));
+                    highlightLP = new RippleDrawable(ContextCompat.getColorStateList(getActivity(), R.color.legacy_highlight_dark), null, new ColorDrawable(Color.WHITE));
                     container.setForeground(highlightLP);
                     highlightLP.setState(new int[]{});
 
@@ -606,8 +604,7 @@ public final class LockFragment extends Fragment implements View.OnClickListener
                     touchColorLegacy = null;
                 } else {
                     touchColorLegacy = new Paint();
-                    //noinspection deprecation
-                    touchColorLegacy.setColor(getResources().getColor(R.color.legacy_highlight_dark));
+                    touchColorLegacy.setColor(ContextCompat.getColor(getActivity(), R.color.legacy_highlight_dark));
                     touchColorLegacy.setStrokeWidth(1);
                     touchColorLegacy.setStyle(Paint.Style.FILL_AND_STROKE);
 
@@ -636,9 +633,8 @@ public final class LockFragment extends Fragment implements View.OnClickListener
                 highlightLP.setState(new int[]{android.R.attr.state_pressed});
                 highlightLP.setHotspot(x, y);
             } else {
-                //noinspection deprecation
                 touchColorLegacy.setShader(new RadialGradient(x - containerX, y - containerY, 200,
-                        getResources().getColor(R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                        ContextCompat.getColor(getActivity(), R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
                 Canvas c = new Canvas(highlightLegacy);
                 c.drawCircle(x - containerX, y - containerY, 100, touchColorLegacy);
                 container.invalidate();

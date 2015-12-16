@@ -365,7 +365,6 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getListView().setPadding(0, 0, 0, 0);
-        //noinspection deprecation
         TypedValue windowBackground = new TypedValue();
         getListView().getContext().getTheme().resolveAttribute(R.attr.windowBackground, windowBackground, true);
         getListView().setOverscrollFooter(new ColorDrawable(windowBackground.data));

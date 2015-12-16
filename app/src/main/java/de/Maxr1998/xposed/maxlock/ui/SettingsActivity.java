@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -187,12 +189,13 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                         .setToolbarColor(getResources().getColor(R.color.primary_red))
                         .build();
                 intent.launchUrl(this, WEBSITE_URI);
-                break;
+                return true;
             case android.R.id.home:
                 onBackPressed();
-                break;
+                return false;
+            default:
+                return false;
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -234,9 +237,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            //noinspection deprecation
-            StatusBarTintApi.sendColorChangeIntent(getResources().getColor(R.color.primary_red_dark), -3, getResources().getColor(android.R.color.black), -3, this);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            StatusBarTintApi.sendColorChangeIntent(ContextCompat.getColor(this, R.color.primary_red_dark), -3, Color.BLACK, -3, this);
         }
     }
 

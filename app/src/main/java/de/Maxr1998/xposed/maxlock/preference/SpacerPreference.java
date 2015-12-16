@@ -41,7 +41,6 @@ public class SpacerPreference extends Preference {
         setLayoutResource(R.layout.spacer_preference);
         setEnabled(false);
         setSelectable(false);
-        //noinspection deprecation
         end = !context.obtainStyledAttributes(attr, new int[]{R.attr.topShadow}).getBoolean(0, true);
     }
 
