@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">MaxLock</string>
-	<string name="name_pro"> 专业版</string>
-	<string name="name_pseudo_pro">伪专业版</string>
+    <string name="name_pro"> 专业版</string>
+    <string name="name_pseudo_pro">伪专业版</string>
     <string name="placeholder">占位符</string>
     <string name="maxlock_inactive">MaxLock未激活</string>
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
@@ -22,7 +22,7 @@
     <string name="fs_app_settings">设置</string>
     <string name="fs_app_xposed_installer">Xposed安装器</string>
     <string name="fs_recommended_apps">通过锁定这些应用能进一步保护</string>
-    <string name="fs_recommended_apps_summary">您应该勾选这些应用，以确保MaxLock不能被禁用或卸载</string>	
+    <string name="fs_recommended_apps_summary">您应该勾选这些应用，以确保MaxLock不能被禁用或卸载</string>
     <!-- Locking type settings -->
     <string name="pref_category_locking">锁定设置</string>
     <string name="pref_screen_locking_type">锁定类型</string>
@@ -85,11 +85,11 @@
     <string name="pref_enable_logging">开启日志记录</string>
     <string name="pref_enable_logging_summary">登录失败/未解锁的尝试</string>
     <string name="pref_view_logs">查看日志</string>
-	<string name="pref_screen_logs">日志</string>
+    <string name="pref_screen_logs">日志</string>
     <string name="menu_delete_log">删除日志</string>
-	<string name="logs_empty_text">没有日志记录</string>
+    <string name="logs_empty_text">没有日志记录</string>
     <string name="pref_category_other">其它</string>
-	<string name="pref_fake_crash_all_apps">假死所有应用</string>
+    <string name="pref_fake_crash_all_apps">假死所有应用</string>
     <string name="pref_fake_crash_all_apps_summary">这将会覆盖从应用列表中的所有应用设置</string>
     <string name="pref_fake_unlock">假死直接解锁</string>
     <string name="pref_fake_unlock_summary">当启用锁屏假死对话框中按下报告按钮后显示</string>
@@ -109,7 +109,7 @@
     <string name="pref_delay_input_perapp">每个应用重新锁定计时器</string>
     <string name="pref_delay_input_perapp_summary">输入一个数字指定延迟时间,值为分钟,重新锁定每个应用</string>
     <string name="pref_delay_needpro">延迟重新锁定 - 专业版</string>
-	<string name="pref_show_reset_notification">显示通知</string>
+    <string name="pref_show_reset_notification">显示通知</string>
     <string name="pref_show_reset_notification_summary">在I.Mod计时器复位时显示一个通知</string>
     <string name="pref_reset_screen_off">自动复位I.Mod</string>
     <string name="pref_reset_screen_off_summary">在关闭屏幕时复位I.Mod计时器</string>
@@ -117,7 +117,7 @@
     <string name="pref_category_apps">选择应用</string>
     <string name="pref_choose_apps">选择应用</string>
     <string name="pref_choose_apps_summary">选择需要锁定的应用</string>
-	<string name="pref_screen_apps">应用</string>
+    <string name="pref_screen_apps">应用</string>
 
     <string name="menu_backup_list">备份列表</string>
     <string name="menu_restore_list">恢复列表</string>
@@ -141,15 +141,15 @@
     <string name="pref_hide_from_launcher">隐藏桌面图标</string>
     <string name="reboot_required">可能需要重新启动以应用更改</string>
     <string name="pref_use_dark_style">使用黑色风格</string>
-	<string name="pref_use_amoled_black">使用纯黑AMOLED</string>
+    <string name="pref_use_amoled_black">使用纯黑AMOLED</string>
     <string name="pref_use_amoled_black_summary">低能耗AMOLED显示屏可使用黑色主题作为一个纯黑背景</string>
     <string name="pref_widget_background_color">小部件背景颜色</string>
     <!-- About information -->
     <string name="pref_category_about">关于</string>
     <string name="pref_about_summary">点击这里查看致谢,使用的库和许可证!</string>
-	<string name="pref_screen_about">@string/pref_category_about</string>
-	<string name="pref_visit_website">访问Maxr1998网站</string>
-	<string name="pref_category_credits">致谢</string>
+    <string name="pref_screen_about">@string/pref_category_about</string>
+    <string name="pref_visit_website">访问Maxr1998网站</string>
+    <string name="pref_category_credits">致谢</string>
     <string name="pref_category_translations">翻译人员</string>
     <string name="pref_category_licenses">许可证</string>
     <string name="pref_donate_upgrade_pro">捐赠后将升级为专业版</string>
@@ -191,5 +191,5 @@
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关已重新启用</string>
     <string name="toast_no_locking_types">没有指定锁定类型</string>
-	
+
 </resources>
