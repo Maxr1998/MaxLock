@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">MaxLock</string>
+	<string name="name_pro"> 专业版</string>
+	<string name="name_pseudo_pro">伪专业版</string>
     <string name="placeholder">占位符</string>
     <string name="maxlock_inactive">MaxLock未激活</string>
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
@@ -20,11 +22,10 @@
     <string name="fs_app_settings">设置</string>
     <string name="fs_app_xposed_installer">Xposed安装器</string>
     <string name="fs_recommended_apps">通过锁定这些应用能进一步保护</string>
-    <string name="fs_recommended_apps_summary">您应该勾选这些应用，以确保MaxLock不能被禁用或卸载</string>
-    <!-- Main screen -->
+    <string name="fs_recommended_apps_summary">您应该勾选这些应用，以确保MaxLock不能被禁用或卸载</string>	
+    <!-- Locking type settings -->
     <string name="pref_category_locking">锁定设置</string>
     <string name="pref_screen_locking_type">锁定类型</string>
-    <!-- Locking type settings -->
     <string name="pref_locking_type_password">密码</string>
     <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">轻敲代码</string>
@@ -63,10 +64,10 @@
     <string name="pref_custom_color">自定义颜色</string>
     <string name="pref_hide_status_bar">隐藏状态栏/全屏</string>
     <string name="pref_use_tablet_mode">使用平板模式</string>
-    <string name="pref_use_tablet_mode_summary">%1$s发现了这个%2$s设备由于dpi%3$d和显示的宽度为%4$d像素</string>
+    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">检测到%1$s这个%2$s设备的dpi为%3$d,显示宽度为%4$d像素</string>
     <string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
     <string name="pref_invert_color">转换用户界面颜色</string>
-    <string name="pref_invert_color_summary">设置这个文本和分隔器的颜色为黑色</string>
+    <string name="pref_invert_color_summary">设置文本和分隔器的颜色为黑色</string>
     <string name="pref_hide_title_bar">隐藏标题栏</string>
     <string name="pref_hide_input_bar">隐藏输入栏</string>
     <string name="pref_hide_input_bar_summary">隐藏清除按钮!</string>
@@ -84,39 +85,47 @@
     <string name="pref_enable_logging">开启日志记录</string>
     <string name="pref_enable_logging_summary">登录失败/未解锁的尝试</string>
     <string name="pref_view_logs">查看日志</string>
+	<string name="pref_screen_logs">日志</string>
     <string name="menu_delete_log">删除日志</string>
+	<string name="logs_empty_text">没有日志记录</string>
     <string name="pref_category_other">其它</string>
+	<string name="pref_fake_crash_all_apps">假死所有应用</string>
+    <string name="pref_fake_crash_all_apps_summary">这将会覆盖从应用列表中的所有应用设置</string>
     <string name="pref_fake_unlock">假死直接解锁</string>
     <string name="pref_fake_unlock_summary">当启用锁屏假死对话框中按下报告按钮后显示</string>
     <string name="pref_fake_crash_passphrase">假死输入</string>
     <string name="pref_fake_crash_passphrase_summary">用户需要在对话框中输入短语才能打开锁屏</string>
     <string name="pref_enable_tasker">启用Tasker集成</string>
-    <!-- I.MoD settings -->
-    <string name="pref_screen_locking_intika">Intika I.MoD</string>
-    <string name="pref_category_intika">Intika I.MoD - 宽限期 - 一般延迟</string>
-    <string name="pref_category_intika2">Intika I.MoD - 宽限期 - PerApp延迟</string>
-    <string name="pref_locking_delay_general">启用一般延迟-重新锁定</string>
+    <!-- I.Mod settings -->
+    <string name="pref_screen_locking_intika">Intika I.Mod</string>
+    <string name="pref_category_intika">Intika I.Mod - 宽限期 - 全局应用</string>
+    <string name="pref_category_intika2">Intika I.Mod - 宽限期 - 每个应用</string>
+    <string name="pref_locking_delay_general">全局延迟重新锁定</string>
     <string name="pref_locking_delay_general_summary">避免在一段时间内再次要求解锁应用</string>
-    <string name="pref_delay_input_general">一般延迟 - 重新锁定定时器</string>
-    <string name="pref_delay_input_general_summary">输入一个数字指定延迟时间,值为分钟,锁定一般延迟</string>
-    <string name="pref_locking_delay_perapp">启用PerApp延迟 - 重新锁定</string>
-    <string name="pref_locking_delay_perapp_summary">防止要求在一定时间内为每一个应用程序再次解锁,分开而不管其他受保护的应用程序</string>
-    <string name="pref_delay_input_perapp">PerApp延迟 - 重新锁定定时器</string>
-    <string name="pref_delay_input_perapp_summary">输入一个数字指定延迟时间,值为分钟,锁定PerApp延迟</string>
-    <string name="pref_delay_needpro">启用延迟重新锁定 - 专业版</string>
-    <string name="pref_reset_screen_off">在屏幕关闭后复位IMOD</string>
+    <string name="pref_delay_input_general">全局延迟重新锁定计时器</string>
+    <string name="pref_delay_input_general_summary">给全局锁定输入一个数字指定延迟时间,值为分钟</string>
+    <string name="pref_locking_delay_perapp">每个应用延迟重新锁定</string>
+    <string name="pref_locking_delay_perapp_summary">防止在一定时间内为每个应用再次解锁,分开而不管其它受保护的应用</string>
+    <string name="pref_delay_input_perapp">每个应用重新锁定计时器</string>
+    <string name="pref_delay_input_perapp_summary">输入一个数字指定延迟时间,值为分钟,重新锁定每个应用</string>
+    <string name="pref_delay_needpro">延迟重新锁定 - 专业版</string>
+	<string name="pref_show_reset_notification">显示通知</string>
+    <string name="pref_show_reset_notification_summary">在I.Mod计时器复位时显示一个通知</string>
+    <string name="pref_reset_screen_off">自动复位I.Mod</string>
+    <string name="pref_reset_screen_off_summary">在关闭屏幕时复位I.Mod计时器</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">选择应用</string>
     <string name="pref_choose_apps">选择应用</string>
-    <string name="pref_choose_apps_summary">选择需要锁定的应用程序</string>
+    <string name="pref_choose_apps_summary">选择需要锁定的应用</string>
+	<string name="pref_screen_apps">应用</string>
 
     <string name="menu_backup_list">备份列表</string>
     <string name="menu_restore_list">恢复列表</string>
     <string name="menu_clear_list">清除列表</string>
-    <string name="toast_no_files_to_backup">没有备份文件</string>
-    <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者！</string>
+    <string name="toast_no_files_to_backup">未找到备份文件</string>
+    <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者!</string>
     <string name="toast_backup_success">备份成功</string>
-    <string name="dialog_text_restore_list">这将从备份替换当前设置！</string>
+    <string name="dialog_text_restore_list">这将从备份文件替换当前设置!</string>
     <string name="toast_no_files_to_restore">未找到恢复文件</string>
     <string name="toast_restore_success">恢复成功</string>
     <string name="menu_search">搜索</string>
@@ -129,48 +138,58 @@
     <string name="dialog_title_exclude_activities">排除锁定活动</string>
     <!-- UI settings -->
     <string name="pref_category_ui">界面设置</string>
-    <string name="pref_hide_from_launcher">桌面隐藏应用图标</string>
+    <string name="pref_hide_from_launcher">隐藏桌面图标</string>
     <string name="reboot_required">可能需要重新启动以应用更改</string>
     <string name="pref_use_dark_style">使用黑色风格</string>
+	<string name="pref_use_amoled_black">使用纯黑AMOLED</string>
+    <string name="pref_use_amoled_black_summary">低能耗AMOLED显示屏可使用黑色主题作为一个纯黑背景</string>
     <string name="pref_widget_background_color">小部件背景颜色</string>
     <!-- About information -->
     <string name="pref_category_about">关于</string>
-    <string name="app_name_pro">MaxLock专业版</string>
-    <string name="app_name_pseudo_pro">MaxLock伪专业版</string>
-    <string name="pref_about_summary">点击这里查看更多信息</string>
-    <string name="pref_donate_upgrade_pro">捐助后将升级为专业版</string>
+    <string name="pref_about_summary">点击这里查看致谢,使用的库和许可证!</string>
+	<string name="pref_screen_about">@string/pref_category_about</string>
+	<string name="pref_visit_website">访问Maxr1998网站</string>
+	<string name="pref_category_credits">致谢</string>
+    <string name="pref_category_translations">翻译人员</string>
+    <string name="pref_category_licenses">许可证</string>
+    <string name="pref_donate_upgrade_pro">捐赠后将升级为专业版</string>
+    <string name="donate_status_donated">已捐赠</string>
+    <string name="donate_status_not_donated">考虑捐赠以支持进一步开发, 谢谢:）</string>
+    <string name="dialog_message_already_bought">你已经拥有这个捐赠选项
+		您可以取消和选择其它产品或再次消费(删除)目前的购买,再次购买一个,\n\n消费和回购?</string>
     <string name="toast_no_network_connected">您目前没有连接到任何网络</string>
     <string name="pref_enable_pro">开启专业版</string>
-    <string name="pref_enable_pro_summary">这将开启专业版功能,即使您没有购买</string>
+    <string name="pref_enable_pro_summary">即使您没有购买也可以使用专业版功能</string>
     <string name="pref_prevent_uninstall">保护应用程序被卸载</string>
-    <string name="pref_prevent_uninstall_summary">MaxLock在设备管理器权限打勾应用程序将无法卸载
-	卸载这个程序您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
+    <string name="pref_prevent_uninstall_summary">MaxLock在设备管理器权限打勾,应用程序将无法卸载
+		卸载这个应用您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
     <string name="pref_uninstall">卸载</string>
     <string name="device_admin_description">保护MaxLock防止被卸载和禁用</string>
+    <string name="pref_send_feedback">发送反馈/报告错误</string>
     <!-- External stuff -->
     <string name="dialog_like_app">您喜欢这个应用吗?</string>
-    <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠 :)</string>
+    <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠:)</string>
     <string name="dialog_cb_never_again">不再显示</string>
-    <string name="dialog_button_donate">捐助</string>
+    <string name="dialog_button_donate">捐赠</string>
     <string name="dialog_button_rate">评分</string>
-    <!-- Fake die screen -->
+    <!-- Fake crash screen -->
     <string name="dialog_text_fake_die_stopped">非常抱歉,%1$s已停止</string>
     <string name="dialog_button_report">报告问题</string>
     <string name="dialog_title_report_problem">报告问题</string>
-    <!-- MasterSwitch stuff -->
-    <string name="action_toggle_ms">切换总开关</string>
-    <string name="activity_label_toggle_ms_deprecated">切换总开关(不推荐)</string>
-    <string name="unlock_master_switch">打开总开关</string>
-    <string name="toast_master_switch_off">主开关已关闭</string>
-    <string name="toast_master_switch_on">主开关重新启用</string>
-    <string name="toast_no_locking_types">没有指定锁定类型</string>
-    <!-- Tasker config stuff -->
+    <!-- Action stuff -->
+    <string name="activity_label_actions">MaxLock操作</string>
     <string name="action_configuration">配置:</string>
+    <string name="action_toggle_ms">切换主开关</string>
     <string name="action_ms_on">打开主开关</string>
     <string name="action_ms_off">关闭主开关</string>
-    <string name="action_imod_reset">重设I.MoD</string>
+    <string name="action_imod_reset">复位I.Mod</string>
     <string name="tasker_imod_reset_summary">锁定所有应用之前打开I.MoD</string>
     <string name="tasker_button_apply">应用</string>
-    <string name="tasker_integration_disabled">当前Tasker集成已禁用。您可以通过\"MaxLock→选项→启用Tasker集成\"来开启</string>
-
+    <string name="tasker_integration_disabled">当前Tasker集成已禁用,您可以通过\"MaxLock→锁定设置→启用Tasker集成\"来开启</string>
+    <string name="activity_label_toggle_ms_deprecated">切换总开关(已取消时)</string>
+    <string name="unlock_master_switch">解锁主开关</string>
+    <string name="toast_master_switch_off">主开关已关闭</string>
+    <string name="toast_master_switch_on">主开关已重新启用</string>
+    <string name="toast_no_locking_types">没有指定锁定类型</string>
+	
 </resources>
