@@ -23,13 +23,11 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
@@ -79,10 +77,7 @@ public abstract class Util {
     public static final String LOG_TAG_ADMIN = "ML-DeviceAdmin";
     public static final String LOG_TAG_IAB = "ML-IAB";
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-    private static Bitmap M_BITMAP;
     private static SharedPreferences PREFS, PREFS_KEY, PREFS_PER_APP;
-    private static ApplicationInfo REQUEST_PKG_INFO;
-    private static PackageManager PM;
 
     // Prefs
     private static void loadPrefs(Context context) {
@@ -161,33 +156,32 @@ public abstract class Util {
     public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
         loadPrefs(context);
         String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
+        Bitmap bitmap;
         switch (backgroundType) {
             case "custom":
                 try {
-                    M_BITMAP = BitmapFactory.decodeStream(context.openFileInput("background"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (OutOfMemoryError e) {
-                    M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                    M_BITMAP.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
-                    Toast.makeText(context, "Error loading background image, is it to big?", Toast.LENGTH_LONG).show();
+                    bitmap = BitmapFactory.decodeStream(context.openFileInput("background"));
+                } catch (IOException | OutOfMemoryError e) {
+                    bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+                    bitmap.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
+                    Toast.makeText(context, "Error loading background image, " + (e instanceof IOException ? ", IOException." : "is it to big?"), Toast.LENGTH_LONG).show();
                 }
                 break;
             case "color":
-                M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                M_BITMAP.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
+                bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+                bitmap.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
                 break;
             default:
                 Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
                 if (wallpaper == null) {
-                    M_BITMAP = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                    M_BITMAP.eraseColor(ContextCompat.getColor(context, R.color.accent));
+                    bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+                    bitmap.eraseColor(ContextCompat.getColor(context, R.color.accent));
                 } else {
-                    M_BITMAP = ((BitmapDrawable) wallpaper).getBitmap();
+                    bitmap = ((BitmapDrawable) wallpaper).getBitmap();
                 }
                 break;
         }
-        return new BitmapDrawable(context.getResources(), M_BITMAP);
+        return new BitmapDrawable(context.getResources(), bitmap);
     }
 
     // Lock
@@ -326,28 +320,25 @@ public abstract class Util {
     }
 
     public static String getApplicationNameFromPackage(String packageName, Context context) {
-        PM = context.getApplicationContext().getPackageManager();
+        PackageManager packageManager = context.getPackageManager();
         try {
-            REQUEST_PKG_INFO = PM.getApplicationInfo(packageName, 0);
+            CharSequence label = packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, 0));
+            if (label != null) {
+                return label.toString();
+            } else {
+                return "(error)";
+            }
         } catch (PackageManager.NameNotFoundException e) {
-            REQUEST_PKG_INFO = null;
+            return "(error)";
         }
-        return (String) (REQUEST_PKG_INFO != null ? PM.getApplicationLabel(REQUEST_PKG_INFO) : packageName);
     }
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     public static Drawable getApplicationIconFromPackage(String packageName, Context context) {
-        PM = context.getApplicationContext().getPackageManager();
         try {
-            REQUEST_PKG_INFO = PM.getApplicationInfo(packageName, 0);
+            return context.getPackageManager().getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
-            REQUEST_PKG_INFO = null;
+            return ContextCompat.getDrawable(context, R.mipmap.ic_launcher);
         }
-        return REQUEST_PKG_INFO != null ? PM.getApplicationIcon(REQUEST_PKG_INFO) :
-                (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ?
-                        context.getResources().getDrawable(R.mipmap.ic_launcher) :
-                        context.getDrawable(R.mipmap.ic_launcher));
     }
 
     public static String getLanguageCode() {
