@@ -127,6 +127,7 @@
     <string name="menu_backup_list">備份列表</string>
     <string name="menu_restore_list">恢復列表</string>
     <string name="menu_clear_list">清除列表</string>
+    <string name="dialog_storage_permission_backup_restore">MaxLock 需要訪問外部儲存裝置來讀取/寫入備份檔案。是否繼續？</string>
     <string name="toast_no_files_to_backup">沒有找到備份文件</string>
     <string name="toast_backup_restore_exception">出現錯誤。\n請聯繫開發者！</string>
     <string name="toast_backup_success">成功完成備份</string>
@@ -171,6 +172,7 @@
     <string name="pref_uninstall">移除</string>
     <string name="device_admin_description">保護MaxLock防止被移除和禁用</string>
     <string name="pref_send_feedback">發送反饋/報告錯誤</string>
+    <string name="dialog_storage_permission_bug_report">MaxLock 需要訪問外部儲存裝置來保存記錄和裝置信息。是否繼續？</string>
     <string name="dialog_message_bugreport_finished_select_email">匯出日誌和設備資訊。現在選擇你最喜愛的電子郵件應用程式來發送日誌給我。\n\n
     <i>注意：沒有收集私隱資訊。</i></string>
     <string name="share_menu_title_send_email">發送電子郵件…</string>
