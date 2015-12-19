@@ -405,11 +405,11 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (mItemList != null && results != null) {
-                mItemList.clear();
+            mItemList.clear();
+            if (results.values != null) {
                 mItemList.addAll((List<ApplicationInfo>) results.values);
-                notifyDataSetChanged();
             }
+            notifyDataSetChanged();
         }
 
         public void saveFilterList() {
