@@ -43,12 +43,13 @@ public abstract class Common {
     public static final String OPEN_THEME_MANAGER = "open_theme_manager";
     public static final String BACKGROUND = "background";
     public static final String BACKGROUND_COLOR = "background_color";
-    public static final String HIDE_STATUS_BAR = "hide_status_bar";
     public static final String OVERRIDE_TABLET_MODE = "tablet_mode_override";
+    public static final String HIDE_STATUS_BAR = "hide_status_bar";
     public static final String INVERT_COLOR = "invert_color";
     public static final String HIDE_TITLE_BAR = "hide_title_bar";
-    public static final String HIDE_INPUT_BAR = "hide_input_bar";
     public static final String ENABLE_QUICK_UNLOCK = "quick_unlock";
+    public static final String SHUFFLE_PIN = "shuffle_pin";
+    public static final String HIDE_INPUT_BAR = "hide_input_bar";
     public static final String SHOW_KC_DIVIDER = "show_dividers";
     public static final String MAKE_KC_TOUCH_VISIBLE = "touch_visible";
     public static final String SHOW_PATTERN_PATH = "show_path";

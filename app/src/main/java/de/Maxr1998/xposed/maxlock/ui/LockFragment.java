@@ -68,6 +68,7 @@ import android.widget.Toast;
 
 import com.haibison.android.lockpattern.widget.LockPatternView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -363,10 +364,17 @@ public final class LockFragment extends Fragment implements View.OnClickListener
     }
 
     private void setupPINLayout() {
-        for (int i : pinButtonIds) {
-            View pb = rootView.findViewById(i);
+        List<String> keys = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
+        if (prefs.getBoolean(Common.SHUFFLE_PIN, false)) {
+            Collections.shuffle(keys);
+        }
+        for (int i = 0; i < pinButtonIds.size(); i++) {
+            View pb = rootView.findViewById(pinButtonIds.get(i));
             pb.setOnClickListener(this);
             pb.setOnLongClickListener(this);
+            if (pb.getId() != R.id.pin_ok) {
+                ((TextView) pb).setText(keys.get(i));
+            }
             if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
                 ((TextView) pb).setTextColor(Color.BLACK);
             }
@@ -466,6 +474,15 @@ public final class LockFragment extends Fragment implements View.OnClickListener
     private void setupPatternLayout() {
         // Pattern View
         lockPatternView = (LockPatternView) rootView.findViewById(R.id.pattern_view);
+        if (prefs.getBoolean(Common.INVERT_COLOR, false)) {
+            try {
+                Field field = lockPatternView.getClass().getDeclaredField("mRegularColor");
+                field.setAccessible(true);
+                field.set(lockPatternView, Color.BLACK);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         // Pattern Listener
         patternListener = new LockPatternView.OnPatternListener() {
             @Override

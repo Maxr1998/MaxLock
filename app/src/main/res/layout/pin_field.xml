@@ -15,30 +15,18 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
-        <!-- 1 -->
+
         <TextView
             android:id="@+id/pin1"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="1" />
-        <!-- 2 -->
+            style="@style/Widget.TextView.NumPadKey" />
+
         <TextView
             android:id="@+id/pin2"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="2" />
-        <!-- 3 -->
+            style="@style/Widget.TextView.NumPadKey" />
+
         <TextView
             android:id="@+id/pin3"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="3" />
+            style="@style/Widget.TextView.NumPadKey" />
     </LinearLayout>
 
     <!-- Middle row -->
@@ -47,30 +35,18 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
-        <!-- 4 -->
+
         <TextView
             android:id="@+id/pin4"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="4" />
-        <!-- 5 -->
+            style="@style/Widget.TextView.NumPadKey" />
+
         <TextView
             android:id="@+id/pin5"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="5" />
-        <!-- 6 -->
+            style="@style/Widget.TextView.NumPadKey" />
+
         <TextView
             android:id="@+id/pin6"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="6" />
+            style="@style/Widget.TextView.NumPadKey" />
     </LinearLayout>
 
     <!-- Bottom row -->
@@ -79,30 +55,18 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
-        <!-- 7 -->
+
         <TextView
             android:id="@+id/pin7"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="7" />
-        <!-- 8 -->
+            style="@style/Widget.TextView.NumPadKey" />
+
         <TextView
             android:id="@+id/pin8"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="8" />
-        <!-- 9 -->
+            style="@style/Widget.TextView.NumPadKey" />
+
         <TextView
             android:id="@+id/pin9"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="9" />
+            style="@style/Widget.TextView.NumPadKey" />
     </LinearLayout>
     <!-- Null row -->
     <LinearLayout
@@ -116,21 +80,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
-        <!-- 0 -->
+
         <TextView
             android:id="@+id/pin0"
-            style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="0" />
+            style="@style/Widget.TextView.NumPadKey" />
         <!-- Enter -->
         <TextView
             android:id="@+id/pin_ok"
             style="@style/Widget.TextView.NumPadKey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
             android:text="@android:string/ok" />
     </LinearLayout>
 </LinearLayout>

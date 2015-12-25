@@ -67,19 +67,21 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">Custom color</string>
-    <string name="pref_hide_status_bar">Hide status bar/Fullscreen</string>
     <string name="pref_use_tablet_mode">Use tablet mode</string>
-    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">This %1$s was detected as a %2$s device because of a dpi of %3$d and a display width of %4$d pixels.</string>
-    <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
+    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">This %1$s was detected as a %2$s device because of a dpi of %3$d and a display width of %4$d pixels</string>
+    <string name="pref_hide_status_bar">Hide status bar/Fullscreen</string>
     <string name="pref_invert_color">Invert color of UI elements</string>
     <string name="pref_invert_color_summary">This sets the color of texts and dividers to black</string>
     <string name="pref_hide_title_bar">Hide title bar</string>
-    <string name="pref_hide_input_bar">Hide input bar</string>
-    <string name="pref_hide_input_bar_summary">This hides clear button, too!</string>
     <string name="pref_category_password_and_pin">Password and PIN</string>
     <string name="pref_quick_unlock">Quick unlock</string>
+    <string name="pref_category_pin_only">PIN only</string>
+    <string name="pref_shuffle_pin">Shuffle digits</string>
+    <string name="pref_category_pin_and_knock_code">PIN and knock code</string>
+    <string name="pref_hide_input_bar">Hide input bar</string>
+    <string name="pref_hide_input_bar_summary">This hides clear button, too, however, you can still clear the code by long pressing digits/container</string>
     <string name="pref_category_knock_code_only">Knock code only</string>
-    <string name="pref_show_dividers">Show dividers</string>
+    <string name="pref_show_dividers">Show divider</string>
     <string name="pref_touch_visible">Make touches visible</string>
     <string name="pref_category_pattern_only">Pattern only</string>
     <string name="pref_show_path">Show path</string>

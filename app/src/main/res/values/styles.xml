@@ -86,6 +86,9 @@
     </style>
 
     <style name="Widget.TextView.NumPadKey" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:clickable">true</item>
         <item name="android:gravity">center</item>
