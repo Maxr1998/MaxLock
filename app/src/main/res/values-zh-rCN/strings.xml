@@ -6,6 +6,11 @@
     <string name="name_pseudo_pro">伪专业版</string>
     <string name="placeholder">占位符</string>
     <string name="maxlock_inactive">MaxLock未激活</string>
+	<string name="dialog_message_not_active">Android系统不能挂钩MaxLock,这可能有几方面原因:\n
+    &#x2022; <i>Xposed框架未安装</i>\n
+    &#x2022; <i>Xposed安装并激活,在Xposed安装器\"模块\"选项卡中激活MaxLock或重启</i>\n
+    &#x2022; <i>禁用Xposed框架安全模式,在XDA网站了解Xposed更多信息</i>\n
+    &#x2022; <i>MaxLock可能遇到崩溃,那么您应该从屏幕底部给我一个bug报告</i></string>
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
     <string name="toast_pro_required">使用此功能需要专业版本！</string>
     <string name="sb_no_locking_type">没有锁定特定类型</string>
@@ -114,14 +119,15 @@
     <string name="pref_reset_screen_off">自动复位I.Mod</string>
     <string name="pref_reset_screen_off_summary">在关闭屏幕时复位I.Mod计时器</string>
     <!-- Apps settings -->
-    <string name="pref_category_apps">选择应用</string>
-    <string name="pref_choose_apps">选择应用</string>
+    <string name="pref_category_apps">锁定应用</string>
+    <string name="pref_choose_apps">锁定应用</string>
     <string name="pref_choose_apps_summary">选择需要锁定的应用</string>
     <string name="pref_screen_apps">应用</string>
 
     <string name="menu_backup_list">备份列表</string>
     <string name="menu_restore_list">恢复列表</string>
     <string name="menu_clear_list">清除列表</string>
+	<string name="dialog_storage_permission_backup_restore">MaxLock需要访问外部存储读/写备份文件,继续?</string>
     <string name="toast_no_files_to_backup">未找到备份文件</string>
     <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者!</string>
     <string name="toast_backup_success">备份成功</string>
@@ -166,6 +172,10 @@
     <string name="pref_uninstall">卸载</string>
     <string name="device_admin_description">保护MaxLock防止被卸载和禁用</string>
     <string name="pref_send_feedback">发送反馈/报告错误</string>
+	<string name="dialog_storage_permission_bug_report">MaxLock需要访问外部存储来保存日志和设备信息, 继续?</string>
+    <string name="dialog_message_bugreport_finished_select_email">日志和设备信息已导出!现在选择您喜欢的电子邮件应用将日志发送给我\n\n
+    <i>注:不会收集私人信息</i></string>
+    <string name="share_menu_title_send_email">发送邮件…</string>
     <!-- External stuff -->
     <string name="dialog_like_app">您喜欢这个应用吗?</string>
     <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠:)</string>
