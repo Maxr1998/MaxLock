@@ -244,11 +244,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
             appIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (tag.matches("com.(google.)?android.packageinstaller"))
+                    Intent launch = v.getContext().getPackageManager().getLaunchIntentForPackage(tag);
+                    if (launch == null) {
                         return;
-                    Intent it = v.getContext().getPackageManager().getLaunchIntentForPackage(tag);
-                    it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    v.getContext().startActivity(it);
+                    }
+                    launch.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    v.getContext().startActivity(launch);
                 }
             });
 
