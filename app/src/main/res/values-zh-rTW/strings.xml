@@ -176,7 +176,7 @@
     <string name="pref_send_feedback">發送反饋/報告錯誤</string>
     <string name="dialog_storage_permission_bug_report">MaxLock 需要訪問外部儲存裝置來保存日誌和裝置信息。是否繼續？</string>
     <string name="dialog_message_bugreport_finished_select_email">日誌和裝置信息已匯出。現在選擇你最喜歡的電子郵件應用將日誌發送給我。\n\n
-    <i>注意：沒有收集私隱信息。</i></string>
+    <i>注意：不會收集私隱信息。</i></string>
     <string name="share_menu_title_send_email">發送電子郵件…</string>
     <!-- External stuff -->
     <string name="dialog_like_app">你喜歡這個應用程式嗎？</string>
