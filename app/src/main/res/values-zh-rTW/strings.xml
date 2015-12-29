@@ -8,8 +8,8 @@
     <string name="maxlock_inactive">MaxLock尚未激活</string>
     <string name="dialog_message_not_active">MaxLock不能在Android系統上運作。這可能有幾方面的原因：\n
     &#x2022; <i>未安裝Xposed框架</i>\n
-    &#x2022; <i>Xposed安裝並激活，但你未在Xposed啟用MaxLock (\"模組\" 選項) 之後需要重啟手機</i>\n
-    &#x2022; <i>Xposed安全模式禁用了Xposed框架。可以上XDA了解更多Xposed信息。</i>\n
+    &#x2022; <i>Xposed安裝並激活，在Xposed框架 (\"模組\" 選項) 啟用MaxLock，之後重啟手機</i>\n
+    &#x2022; <i>禁用Xposed框架安全模式。在XDA了解Xposed更多信息。</i>\n
     &#x2022; <i>MaxLock可能遇到崩潰。你可以在屏幕的底部發送報告錯誤給我。</i></string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
     <string name="toast_pro_required">使用此功能需要專業版！</string>
@@ -67,18 +67,20 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">自定義顏色</string>
-    <string name="pref_hide_status_bar">隱藏狀態欄/全屏</string>
     <string name="pref_use_tablet_mode">使用平板模式</string>
     <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">檢測到%1$s這個%2$s裝置的dpi為%3$d和顯示的寬度為%4$d像素</string>
-    <string name="pref_category_pin_and_knock_code">PIN和Knock code</string>
+    <string name="pref_hide_status_bar">隱藏狀態欄/全屏</string>
     <string name="pref_invert_color">轉換用戶界面顏色</string>
     <string name="pref_invert_color_summary">設定這個文本和分隔器的顏色為黑色</string>
     <string name="pref_hide_title_bar">隱藏標題欄</string>
-    <string name="pref_hide_input_bar">隱藏輸入欄</string>
-    <string name="pref_hide_input_bar_summary">隱藏清除按鈕！</string>
     <string name="pref_category_password_and_pin">密碼和PIN</string>
     <string name="pref_quick_unlock">快速解鎖</string>
-    <string name="pref_category_knock_code_only">僅Knock code</string>
+    <string name="pref_category_pin_only">僅PIN</string>
+    <string name="pref_shuffle_pin">隨機數字</string>
+    <string name="pref_category_pin_and_knock_code">PIN和knock代碼</string>
+    <string name="pref_hide_input_bar">隱藏輸入欄</string>
+    <string name="pref_hide_input_bar_summary">這將隱藏清除按鈕，你仍然可以通過長按數字/容器清除代碼</string>
+    <string name="pref_category_knock_code_only">僅Knock代碼</string>
     <string name="pref_show_dividers">顯示分隔</string>
     <string name="pref_touch_visible">使觸摸可見</string>
     <string name="pref_category_pattern_only">僅圖案</string>
@@ -173,8 +175,8 @@
     <string name="device_admin_description">保護MaxLock防止被移除和禁用</string>
     <string name="pref_send_feedback">發送反饋/報告錯誤</string>
     <string name="dialog_storage_permission_bug_report">MaxLock 需要訪問外部儲存裝置來保存日誌和裝置信息。是否繼續？</string>
-    <string name="dialog_message_bugreport_finished_select_email">已匯出日誌和裝置信息。現在選擇你最喜愛的電子郵件應用程式來發送日誌給我。\n\n
-    <i>注意：沒有收集私隱信息。</i></string>
+    <string name="dialog_message_bugreport_finished_select_email">日誌和裝置信息已匯出。現在選擇你最喜歡的電子郵件應用將日誌發送給我。\n\n
+    <i>注意：不會收集私隱信息。</i></string>
     <string name="share_menu_title_send_email">發送電子郵件…</string>
     <!-- External stuff -->
     <string name="dialog_like_app">你喜歡這個應用程式嗎？</string>
