@@ -17,6 +17,11 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
+import android.annotation.TargetApi;
+import android.content.ComponentName;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 
 import org.json.JSONArray;
@@ -34,16 +39,63 @@ import static de.Maxr1998.xposed.maxlock.hooks.Apps.readFile;
 import static de.Maxr1998.xposed.maxlock.hooks.Apps.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
-public class ScreenOff {
+public class SystemUI {
 
     public static final String PACKAGE_NAME = "com.android.systemui";
     public static final String PACKAGE_NAME_LEGACY = "com.android.keyguard";
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
 
-    public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void init(XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
+        initRecents(prefsApps, lPParam);
+        initScreenOff(prefsApps, lPParam, true);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static void initRecents(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
+        try {
+            findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "rebindToTask", PACKAGE_NAME + ".recents.model.Task", new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    prefsApps.reload();
+                    Object task = param.args[0];
+                    String packageName = ((ComponentName) getObjectField(getObjectField(getObjectField(task, "key"), "mComponentNameKey"), "component")).getPackageName();
+                    if (prefsApps.getBoolean("hide_recents_thumbnails", false) && prefsApps.getBoolean(packageName, false)) {
+                        Bitmap thumbnail = ((Bitmap) getObjectField(task, "thumbnail"));
+                        Bitmap replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
+                        replacement.eraseColor(Color.WHITE);
+                        setObjectField(task, "thumbnail", replacement);
+                    }
+                }
+            });
+        } catch (Throwable t) {
+            log(t);
+        }
+    }
+
+    public static void initRecentsLegacy(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
+        try {
+            findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    prefsApps.reload();
+                    if (prefsApps.getBoolean("hide_recents_thumbnails", false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
+                        param.setResult(new ColorDrawable(Color.WHITE));
+                    }
+                }
+            });
+        } catch (Throwable t) {
+            log(t);
+        }
+    }
+
+    public static void initScreenOff(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam, boolean lollipop) {
+        // Resolve vars
         String hookedClass;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (lollipop) {
             hookedClass = "com.android.systemui.keyguard.KeyguardViewMediator";
         } else {
             try {
@@ -67,11 +119,13 @@ public class ScreenOff {
             }
         };
         Object[] paramsAndHook;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (lollipop && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             paramsAndHook = new Object[]{hook};
         } else {
             paramsAndHook = new Object[]{int.class, hook};
         }
+
+        // Hook
         try {
             findAndHookMethod(hookedClass, lPParam.classLoader, "onScreenTurnedOff", paramsAndHook);
         } catch (Throwable t) {

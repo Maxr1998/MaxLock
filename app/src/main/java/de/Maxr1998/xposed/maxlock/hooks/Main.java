@@ -42,16 +42,19 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(final LoadPackageParam lPParam) throws Throwable {
-        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && lPParam.packageName.equals(ScreenOff.PACKAGE_NAME))
-                || (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && lPParam.packageName.equals(ScreenOff.PACKAGE_NAME_LEGACY))) {
-            ScreenOff.init(prefsApps, lPParam);
-            return;
-        }
-
         if (lPParam.packageName.equals(MaxLock.PACKAGE_NAME)) {
             MaxLock.init(lPParam);
+        } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                SystemUI.init(prefsApps, lPParam);
+            } else {
+                SystemUI.initRecentsLegacy(prefsApps, lPParam);
+            }
+            return;
+        } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME_LEGACY) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            SystemUI.initScreenOff(prefsApps, lPParam, false);
+            return;
         }
-
         prefsApps.reload();
         if (prefsApps.getBoolean(lPParam.packageName, false)) {
             Apps.init(prefsApps, lPParam);

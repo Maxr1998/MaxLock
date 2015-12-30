@@ -120,6 +120,7 @@
     <string name="pref_show_reset_notification_summary">Show a notification to reset I.Mod timer</string>
     <string name="pref_reset_screen_off">Auto-reset I.Mod</string>
     <string name="pref_reset_screen_off_summary">Reset I.Mod Timer when turning screen off</string>
+    <string name="pref_hide_recents_thumbnails">Hide recents thumbnails</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Choose apps</string>
     <string name="pref_choose_apps">Choose apps</string>

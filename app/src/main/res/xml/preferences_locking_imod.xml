@@ -49,6 +49,9 @@
             android:key="reset_imod_screen_off"
             android:summary="@string/pref_reset_screen_off_summary"
             android:title="@string/pref_reset_screen_off" />
+        <CheckBoxPreference
+            android:key="hide_recents_thumbnails"
+            android:title="@string/pref_hide_recents_thumbnails" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>
