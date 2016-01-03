@@ -6,7 +6,7 @@
     <string name="name_pseudo_pro">偽專業版</string>
     <string name="placeholder">佔位符</string>
     <string name="maxlock_inactive">MaxLock尚未激活</string>
-    <string name="dialog_message_not_active">MaxLock不能在Android系統上運作。這可能有幾方面的原因：\n
+    <string name="dialog_message_not_active">Android系統不能運行MaxLock。這可能有幾方面的原因：\n
     &#x2022; <i>未安裝Xposed框架</i>\n
     &#x2022; <i>Xposed安裝並激活，在Xposed框架 (\"模組\" 選項) 啟用MaxLock，之後重啟手機</i>\n
     &#x2022; <i>禁用Xposed框架安全模式。在XDA了解Xposed更多信息。</i>\n
@@ -120,6 +120,7 @@
     <string name="pref_show_reset_notification_summary">在重置I.Mod計時器時顯示一個通知</string>
     <string name="pref_reset_screen_off">自動重置I.Mod</string>
     <string name="pref_reset_screen_off_summary">關閉屏幕時重置I.Mod計時器</string>
+    <string name="pref_hide_recents_thumbnails">隱藏最近的縮略圖</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">選擇應用</string>
     <string name="pref_choose_apps">選擇應用</string>
