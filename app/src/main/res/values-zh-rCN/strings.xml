@@ -67,17 +67,19 @@
         <!--<item>主题背景</item>-->
     </string-array>
     <string name="pref_custom_color">自定义颜色</string>
-    <string name="pref_hide_status_bar">隐藏状态栏/全屏</string>
     <string name="pref_use_tablet_mode">使用平板模式</string>
     <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">检测到%1$s这个%2$s设备的dpi为%3$d,显示宽度为%4$d像素</string>
-    <string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
-    <string name="pref_invert_color">转换用户界面颜色</string>
-    <string name="pref_invert_color_summary">设置文本和分隔器的颜色为黑色</string>
-    <string name="pref_hide_title_bar">隐藏标题栏</string>
+	<string name="pref_hide_status_bar">隐藏状态栏/全屏</string>
+	<string name="pref_invert_color">转换用户界面颜色</string>
+	<string name="pref_invert_color_summary">设置文本和分隔器的颜色为黑色</string>
+	<string name="pref_hide_title_bar">隐藏标题栏</string>
+	<string name="pref_category_password_and_pin">密码与PIN</string>
+	<string name="pref_quick_unlock">快速解锁</string>
+	<string name="pref_category_pin_only">仅PIN</string>
+	<string name="pref_shuffle_pin">随机数字</string>
+	<string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
     <string name="pref_hide_input_bar">隐藏输入栏</string>
     <string name="pref_hide_input_bar_summary">隐藏清除按钮!</string>
-    <string name="pref_category_password_and_pin">密码与PIN</string>
-    <string name="pref_quick_unlock">快速解锁</string>
     <string name="pref_category_knock_code_only">仅轻敲代码</string>
     <string name="pref_show_dividers">显示分隔</string>
     <string name="pref_touch_visible">让触摸可见</string>
@@ -118,6 +120,7 @@
     <string name="pref_show_reset_notification_summary">在I.Mod计时器复位时显示一个通知</string>
     <string name="pref_reset_screen_off">自动复位I.Mod</string>
     <string name="pref_reset_screen_off_summary">在关闭屏幕时复位I.Mod计时器</string>
+	<string name="pref_hide_recents_thumbnails">隐藏最近缩略图</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">锁定应用</string>
     <string name="pref_choose_apps">锁定应用</string>
@@ -152,10 +155,10 @@
     <string name="pref_widget_background_color">小部件背景颜色</string>
     <!-- About information -->
     <string name="pref_category_about">关于</string>
-    <string name="pref_about_summary">点击这里查看致谢,使用的库和许可证!</string>
+    <string name="pref_about_summary">点击这里查看贡献,使用的库和许可证!</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_visit_website">访问Maxr1998网站</string>
-    <string name="pref_category_credits">致谢</string>
+    <string name="pref_category_credits">贡献</string>
     <string name="pref_category_translations">翻译人员</string>
     <string name="pref_category_licenses">许可证</string>
     <string name="pref_donate_upgrade_pro">捐赠后将升级为专业版</string>
