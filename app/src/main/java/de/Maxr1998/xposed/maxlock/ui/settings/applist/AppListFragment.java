@@ -34,7 +34,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,6 +47,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import org.apache.commons.io.FileUtils;
 
@@ -66,8 +66,6 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
-import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
-import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
 public class AppListFragment extends Fragment {
 
@@ -100,15 +98,10 @@ public class AppListFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         // Setup layout
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.app_list);
+        FastScrollRecyclerView recyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.app_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
-        fastScroller.setRecyclerView(recyclerView);
-        recyclerView.addOnScrollListener(fastScroller.getOnScrollListener());
-        SectionTitleIndicator scrollIndicator = (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
-        fastScroller.setSectionIndicator(scrollIndicator);
         return rootView;
     }
 

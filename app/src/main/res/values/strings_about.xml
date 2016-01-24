@@ -148,10 +148,10 @@
  * limitations under the License.\n
  */</string>
 
-    <string name="recycler_view_fast_scroller_name">RecyclerViewFastScroller</string>
-    <string name="recycler_view_fast_scroller_author">by Daniel Smith alias danoz73</string>
-    <string name="license_recycler_view_fast_scroller">/*\n
- * Copyright 2015 Daniel Smith\n
+    <string name="recycler_view_fast_scroll_name">RecyclerView-FastScroll</string>
+    <string name="recycler_view_fast_scroll_author">by Tim Malseed alias timusus</string>
+    <string name="license_recycler_view_fast_scroll">/*\n
+ * Copyright (C) 2016 Tim Malseed\n
  *\n
  * Licensed under the Apache License, Version 2.0 (the "License");\n
  * you may not use this file except in compliance with the License.\n

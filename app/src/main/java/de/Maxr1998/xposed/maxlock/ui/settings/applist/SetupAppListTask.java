@@ -85,7 +85,7 @@ class SetupAppListTask extends AsyncTask<Void, Integer, Void> {
             }
         });
         publishProgress(1);
-        mAdapter.getFilter().saveFilterList();
+        mAdapter.saveListBackup();
         return null;
     }
 

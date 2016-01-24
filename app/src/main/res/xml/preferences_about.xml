@@ -85,9 +85,9 @@
             android:title="@string/guava_name"
             maxlock:license="@string/license_guava" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
-            android:summary="@string/recycler_view_fast_scroller_author"
-            android:title="@string/recycler_view_fast_scroller_name"
-            maxlock:license="@string/license_recycler_view_fast_scroller" />
+            android:summary="@string/recycler_view_fast_scroll_author"
+            android:title="@string/recycler_view_fast_scroll_name"
+            maxlock:license="@string/license_recycler_view_fast_scroll" />
         <Preference
             android:summary="@string/seek_bar_preference_author"
             android:title="@string/seek_bar_preference_name" />
