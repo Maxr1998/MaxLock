@@ -88,6 +88,8 @@ public class AppListFragment extends Fragment {
         if (APP_LIST.isEmpty() && TASK == null) {
             TASK = new SetupAppListTask(this, APP_LIST, mAdapter);
             TASK.execute();
+        } else {
+            mAdapter.saveListBackup();
         }
     }
 
