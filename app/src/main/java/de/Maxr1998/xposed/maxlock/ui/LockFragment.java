@@ -74,9 +74,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public final class LockFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {

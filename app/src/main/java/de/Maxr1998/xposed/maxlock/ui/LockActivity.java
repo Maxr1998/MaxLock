@@ -33,9 +33,9 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -172,7 +172,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
     @Override
     public void onAuthenticationSucceeded() {
         unlocked = true;
-        NotificationHelper.postNotification(this);
+        NotificationHelper.postIModNotification(this);
         finish();
     }
 

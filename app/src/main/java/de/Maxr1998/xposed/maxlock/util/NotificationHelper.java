@@ -32,23 +32,23 @@ import de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper;
 
 public final class NotificationHelper {
 
-    public static final int NOTIFICATION_ID = 0x130D;
+    public static final int IMOD_NOTIFICATION_ID = 0x130D;
 
-    public static void postNotification(Context mContext) {
-        NotificationManagerCompat nm = NotificationManagerCompat.from(mContext);
-        if (!MLPreferences.getPrefsApps(mContext).getBoolean(Common.SHOW_IMOD_RESET_NOTIFICATION, false)) {
-            nm.cancel(NOTIFICATION_ID);
+    public static void postIModNotification(Context context) {
+        NotificationManagerCompat nm = NotificationManagerCompat.from(context);
+        if (!MLPreferences.getPrefsApps(context).getBoolean(Common.SHOW_IMOD_RESET_NOTIFICATION, false)) {
+            nm.cancel(IMOD_NOTIFICATION_ID);
             return;
         }
-        Intent notifyIntent = new Intent(mContext, ActionActivity.class);
+        Intent notifyIntent = new Intent(context, ActionActivity.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notifyIntent.putExtra(ActionsHelper.ACTION_EXTRA_KEY, R.id.radio_imod_reset);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
-                .setContentTitle(mContext.getString(R.string.action_imod_reset))
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setContentTitle(context.getString(R.string.action_imod_reset))
                 .setContentText("")
                 .setSmallIcon(R.drawable.ic_apps_24dp)
-                .setContentIntent(PendingIntent.getActivity(mContext.getApplicationContext(), 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context.getApplicationContext(), 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                 .setOngoing(true)
                 .setAutoCancel(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -57,8 +57,8 @@ public final class NotificationHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setPriority(NotificationCompat.PRIORITY_MIN)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)
-                    .setColor(ContextCompat.getColor(mContext, R.color.accent));
+                    .setColor(ContextCompat.getColor(context, R.color.accent));
         }
-        nm.notify(NOTIFICATION_ID, builder.build());
+        nm.notify(IMOD_NOTIFICATION_ID, builder.build());
     }
 }

@@ -68,7 +68,6 @@ import java.util.zip.ZipOutputStream;
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.DonateActivity;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;

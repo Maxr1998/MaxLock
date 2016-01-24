@@ -25,11 +25,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import de.Maxr1998.xposed.maxlock.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.LockFragment;
 import de.Maxr1998.xposed.maxlock.ui.actions.widget.MasterSwitchWidget;
+import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class ActionActivity extends AppCompatActivity implements AuthenticationSucceededListener {
