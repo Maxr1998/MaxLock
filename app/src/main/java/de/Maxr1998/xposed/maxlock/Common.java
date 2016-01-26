@@ -26,8 +26,9 @@ public abstract class Common {
 
     // Preference keys/ids //
     public static final String FIRST_START = "first_start";
-    public static final String FIRST_START_TIME = "first_start_time";
-    public static final String DIALOG_SHOW_NEVER = "dialog_show_never";
+    public static final String RATING_DIALOG_APP_OPENING_COUNTER = "rating_dialog_app_opening_counter";
+    public static final String RATING_DIALOG_LAST_SHOWN = "rating_dialog_last_shown";
+    public static final String RATING_DIALOG_SHOW_NEVER = "rating_dialog_show_never";
     public static final String PREVENT_APP_INSTALLED_NOTIFICATION = "prevent_app_installed_notification";
     public static final String THEME_PKG = "theme_pkg";
 

@@ -51,6 +51,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
@@ -63,6 +64,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipOutputStream;
 
 import de.Maxr1998.xposed.maxlock.BuildConfig;
@@ -112,12 +114,40 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         switch (screen) {
             case MAIN:
                 setRetainInstance(true);
-                findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
-                Preference pro = findPreference(Common.ENABLE_PRO);
-                if (prefs.getBoolean(Common.DONATED, false)) {
-                    pro.setEnabled(false);
-                    pro.setSummary("");
-                    prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+                // Show rating dialog
+                if (getTag().equals(SettingsActivity.TAG_SETTINGS_FRAGMENT) && !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
+                        (System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(8) ||
+                                prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 10)) {
+                    prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)
+                            .putLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()).apply();
+                    @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
+                    @SuppressWarnings("ResourceType") final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
+                    DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (checkBox.isChecked()) {
+                                prefs.edit().putBoolean(Common.RATING_DIALOG_SHOW_NEVER, true).apply();
+                            }
+                            switch (i) {
+                                case -3:
+                                    try {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
+                                    } catch (android.content.ActivityNotFoundException e) {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                                    }
+                                    break;
+                                case -1:
+                                    startActivity(new Intent(getActivity(), DonateActivity.class));
+                                    break;
+                            }
+                        }
+                    };
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.dialog_like_app)
+                            .setView(dialogView)
+                            .setPositiveButton(R.string.dialog_button_donate, onClickListener)
+                            .setNeutralButton(R.string.dialog_button_rate, onClickListener)
+                            .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
                 }
                 TwoStatePreference useDark = (TwoStatePreference) findPreference(Common.USE_DARK_STYLE);
                 if (useDark.isChecked()) {
@@ -128,6 +158,13 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     amoledBlack.setOrder(useDark.getOrder() + 1);
                     ((PreferenceCategory) findPreference(Common.CATEGORY_APPLICATION_UI)).addPreference(amoledBlack);
                     amoledBlack.setDependency(Common.USE_DARK_STYLE);
+                }
+                findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
+                Preference pro = findPreference(Common.ENABLE_PRO);
+                if (prefs.getBoolean(Common.DONATED, false)) {
+                    pro.setEnabled(false);
+                    pro.setSummary("");
+                    prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
                 }
                 break;
             case TYPE:
@@ -271,7 +308,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         launchFragment(Screen.ABOUT.getScreen(), true, this);
                         return true;
                     case Common.DONATE:
-                        getActivity().startActivity(new Intent(getActivity(), DonateActivity.class));
+                        startActivity(new Intent(getActivity(), DonateActivity.class));
                         return true;
                     case Common.UNINSTALL:
                         if (!((SettingsActivity) getActivity()).isDeviceAdminActive()) {
@@ -285,7 +322,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             Intent uninstall = new Intent(Intent.ACTION_DELETE);
                             uninstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             uninstall.setData(Uri.parse("package:de.Maxr1998.xposed.maxlock"));
-                            getActivity().startActivity(uninstall);
+                            startActivity(uninstall);
                         }
                         return true;
                     case Common.SEND_FEEDBACK:

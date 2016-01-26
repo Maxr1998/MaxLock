@@ -18,19 +18,12 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
 
 import org.apache.commons.io.FileUtils;
 
@@ -39,18 +32,13 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class Startup extends AsyncTask<Boolean, Void, Void> {
 
     private final Context mContext;
     private final SharedPreferences prefs;
-    private boolean showDialog;
-    private AlertDialog.Builder builder;
-    private boolean isFirstStart;
 
     public Startup(Context context) {
         mContext = context;
@@ -61,10 +49,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
     @SuppressLint({"SetWorldReadable", "SetWorldWritable"})
     @Override
     protected Void doInBackground(Boolean... firstStart) {
-        isFirstStart = firstStart[0];
-        if (isFirstStart) {
-            prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
-        }
+        prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) + 1).apply();
 
         // Create ML Files
         File historyF = new File(mContext.getFilesDir(), "history.json");
@@ -84,38 +69,6 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
             prefs.edit().putBoolean(Common.ENABLE_LOGGING, false).apply();
             prefs.edit().putBoolean(Common.ENABLE_IMOD_DELAY_APP, false).apply();
             prefs.edit().putBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false).apply();
-        }
-        // Like app dialog
-        if (!prefs.getBoolean(Common.DIALOG_SHOW_NEVER, false) && System.currentTimeMillis() - prefs.getLong(Common.FIRST_START_TIME, System.currentTimeMillis()) > 10 * 24 * 3600 * 1000) {
-            showDialog = true;
-            builder = new AlertDialog.Builder(mContext);
-            @SuppressLint("InflateParams") View dialogView = ((Activity) mContext).getLayoutInflater().inflate(R.layout.dialog_like_app, null);
-            @SuppressWarnings("ResourceType") final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
-            DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (checkBox.isChecked())
-                        prefs.edit().putBoolean(Common.DIALOG_SHOW_NEVER, true).apply();
-                    switch (i) {
-                        case -3:
-                            try {
-                                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
-                            } catch (android.content.ActivityNotFoundException e) {
-                                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
-                            }
-                            break;
-                        case -1:
-
-                            break;
-                    }
-                    prefs.edit().putLong(Common.FIRST_START_TIME, System.currentTimeMillis()).apply();
-                }
-            };
-            builder.setTitle(R.string.dialog_like_app)
-                    .setView(dialogView)
-                    .setPositiveButton(R.string.dialog_button_donate, onClickListener)
-                    .setNeutralButton(R.string.dialog_button_rate, onClickListener)
-                    .setNegativeButton(android.R.string.cancel, onClickListener);
         }
         // Clean up
         if (!prefs.getString("migrated", "").equals("b40")) {
@@ -153,12 +106,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (isFirstStart) {
-            prefs.edit().putBoolean(Common.FIRST_START, false).apply();
-        }
-        if (showDialog) {
-            builder.create().show();
-        }
+        prefs.edit().putBoolean(Common.FIRST_START, false).apply();
         Log.i(Util.LOG_TAG, "Startup finished");
     }
 }

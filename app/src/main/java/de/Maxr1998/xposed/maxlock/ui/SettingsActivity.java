@@ -66,7 +66,7 @@ import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
-    private static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
+    public static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
     private static final Uri WEBSITE_URI = Uri.parse("http://maxlock.maxr1998.de/?client=inapp&lang=" + Util.getLanguageCode());
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
@@ -112,8 +112,10 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
         mSettingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (mSettingsFragment == null) {
+            // Main fragment not visible → app just opened
+            // Run startup tasks
             new Startup(this).execute(prefs.getBoolean(Common.FIRST_START, true));
-            // Hide Action bar and fragment
+            // Hide Action bar and multipane fragment
             if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
             }
@@ -121,6 +123,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment)).commit();
             }
             // Show lockscreen
+            UNLOCKED = false;
             Fragment lockFragment = new LockFragment();
             Bundle b = new Bundle(1);
             b.putStringArray(Common.INTENT_EXTRAS_NAMES, new String[]{getApplicationContext().getPackageName(), getClass().getName()});
