@@ -49,7 +49,6 @@ public class NewAppInstalledBroadcastReceiver extends BroadcastReceiver {
                         PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.PREVENT_APP_INSTALLED_NOTIFICATION, false) ||
                         intent.getBooleanExtra(Intent.EXTRA_REPLACING, false) ||
                         intent.getData() == null || intent.getData().getSchemeSpecificPart().length() == 0) {
-                    System.out.println(intent.getBooleanExtra(Intent.EXTRA_REPLACING, false));
                     return;
                 }
                 String newPackageName = intent.getData().getSchemeSpecificPart();
