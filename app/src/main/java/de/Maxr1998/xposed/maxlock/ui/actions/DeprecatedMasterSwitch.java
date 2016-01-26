@@ -21,13 +21,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import de.Maxr1998.xposed.maxlock.R;
-
 public class DeprecatedMasterSwitch extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = new Intent(this, ActionActivity.class);
-        i.putExtra(ActionsHelper.ACTION_EXTRA_KEY, R.id.radio_toggle_ms);
+        i.putExtra(ActionsHelper.ACTION_EXTRA_KEY, ActionsHelper.ACTION_TOGGLE_MASTER_SWITCH);
         startActivity(i);
         finish();
         super.onCreate(savedInstanceState);
