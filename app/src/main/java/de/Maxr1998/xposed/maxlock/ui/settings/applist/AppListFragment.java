@@ -83,7 +83,7 @@ public class AppListFragment extends Fragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mAdapter = new AppListAdapter(AppListFragment.this, APP_LIST);
+        mAdapter = new AppListAdapter(this, APP_LIST);
         // Generate list
         if (APP_LIST.isEmpty() && TASK == null) {
             TASK = new SetupAppListTask(this, APP_LIST, mAdapter);
