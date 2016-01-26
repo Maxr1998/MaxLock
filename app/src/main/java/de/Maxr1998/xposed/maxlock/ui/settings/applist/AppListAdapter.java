@@ -207,7 +207,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
     @NonNull
     @Override
     public String getSectionName(int position) {
-        return nameAt(position).substring(0, 1).toUpperCase();
+        return (nameAt(position) + "?").substring(0, 1).toUpperCase();
     }
 
     public AppFilter getFilter() {
