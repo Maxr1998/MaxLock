@@ -158,6 +158,19 @@
             </intent-filter>
         </receiver>
 
+        <!-- New app install -->
+        <receiver
+            android:name=".ui.NewAppInstalledBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
         <!-- Xposed configs -->
         <meta-data
             android:name="xposedmodule"

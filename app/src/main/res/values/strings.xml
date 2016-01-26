@@ -5,16 +5,26 @@
     <string name="name_pro"> Pro</string>
     <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">Placeholder</string>
+
     <string name="maxlock_inactive">MaxLock is not active</string>
     <string name="dialog_message_not_active">MaxLock could not hook the Android System methods needed for it to work. This may have several reasons:\n
     &#x2022; <i>Xposed Framework is not installed</i>\n
     &#x2022; <i>Xposed is installed and active, but you didn\'t enable MaxLock in Xposed installer (\"Modules\" tab) or didn\'t reboot afterwards.</i>\n
     &#x2022; <i>Xposed Framework got disabled by Xposed safemode. Look at the Xposed Thread on XDA for further information.</i>\n
     &#x2022; <i>MaxLock may have encountered a crash. You should send me a bugreport from the bottom of this screen then.</i></string>
+    <string name="sb_no_locking_type">No locking type specified</string>
+    <string name="sb_no_locked_apps">No apps chosen to lock</string>
+    <string name="dialog_like_app">Do you love the app?</string>
+    <string name="dialog_like_app_text">If you do, please leave a review in Play Store and also consider donating :)</string>
+    <string name="dialog_cb_never_again">Never show this again</string>
+    <string name="dialog_button_donate">Donate</string>
+    <string name="dialog_button_rate">Rate</string>
+    <string name="notification_lock_new_app_title">Lock newly installed app?</string>
+    <string name="notification_lock_new_app_action_never_again">Never show again</string>
+    <string name="notification_lock_new_app_action_lock">Lock app</string>
+    <string name="toast_lock_new_app_locked_successfully">Locked successfully</string>
     <string name="dialog_text_restart_required">MaxLock requires a restart for changes to take effect</string>
     <string name="toast_pro_required">Pro-version is required to use this feature!</string>
-    <string name="sb_no_locking_type">No locking type specified.</string>
-    <string name="sb_no_locked_apps">No apps chosen to lock.</string>
     <!-- First start screens-->
     <string name="button_skip">SKIP</string>
     <string name="button_next_content_description">next</string>
@@ -179,12 +189,6 @@
     <string name="dialog_message_bugreport_finished_select_email">Logs and device info exported. Now select your favorite email application to send the logs to me.\n\n
     <i>NOTE: No private information were collected.</i></string>
     <string name="share_menu_title_send_email">Send email with…</string>
-    <!-- External stuff -->
-    <string name="dialog_like_app">Do you love the app?</string>
-    <string name="dialog_like_app_text">If you do, please leave a review in Play Store and also consider donating :)</string>
-    <string name="dialog_cb_never_again">Never show this again</string>
-    <string name="dialog_button_donate">Donate</string>
-    <string name="dialog_button_rate">Rate</string>
     <!-- Fake crash screen -->
     <string name="dialog_text_fake_die_stopped">Unfortunately, %1$s has stopped.</string>
     <string name="dialog_button_report">Report</string>
@@ -203,6 +207,5 @@
     <string name="unlock_master_switch">Unlock MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch disabled</string>
     <string name="toast_master_switch_on">MasterSwitch re-enabled</string>
-    <string name="toast_no_locking_types">No locking type specified</string>
 
 </resources>

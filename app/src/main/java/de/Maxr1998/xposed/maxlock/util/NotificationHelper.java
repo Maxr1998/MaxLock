@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.util;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -27,12 +28,18 @@ import android.support.v4.content.ContextCompat;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.ui.NewAppInstalledBroadcastReceiver;
 import de.Maxr1998.xposed.maxlock.ui.actions.ActionActivity;
 import de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper;
+
+import static de.Maxr1998.xposed.maxlock.ui.NewAppInstalledBroadcastReceiver.EXTRA_PACKAGE_NAME;
+import static de.Maxr1998.xposed.maxlock.ui.NewAppInstalledBroadcastReceiver.MAXLOCK_ACTION_LOCK_APP;
+import static de.Maxr1998.xposed.maxlock.ui.NewAppInstalledBroadcastReceiver.MAXLOCK_ACTION_NEVER_SHOW_AGAIN;
 
 public final class NotificationHelper {
 
     public static final int IMOD_NOTIFICATION_ID = 0x130D;
+    public static final int APP_INSTALLED_NOTIFICATION_ID = 0x2EE;
 
     public static void postIModNotification(Context context) {
         NotificationManagerCompat nm = NotificationManagerCompat.from(context);
@@ -60,5 +67,42 @@ public final class NotificationHelper {
                     .setColor(ContextCompat.getColor(context, R.color.accent));
         }
         nm.notify(IMOD_NOTIFICATION_ID, builder.build());
+    }
+
+    public static void postAppInstalledNotification(Context context, String packageName) {
+        Intent neverShowAgain = new Intent(MAXLOCK_ACTION_NEVER_SHOW_AGAIN);
+        neverShowAgain.setClass(context, NewAppInstalledBroadcastReceiver.class);
+        Intent lockApp = new Intent(MAXLOCK_ACTION_LOCK_APP);
+        lockApp.setClass(context, NewAppInstalledBroadcastReceiver.class);
+        lockApp.putExtra(EXTRA_PACKAGE_NAME, packageName);
+
+        String appName;
+        try {
+            appName = context.getPackageManager().getApplicationInfo(packageName, 0).loadLabel(context.getPackageManager()).toString();
+        } catch (PackageManager.NameNotFoundException e) {
+            appName = packageName;
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setContentTitle(context.getString(R.string.notification_lock_new_app_title))
+                .setContentText(appName)
+                .setSmallIcon(R.drawable.ic_lock_48dp)
+                .setAutoCancel(true)
+                .addAction(new NotificationCompat.Action(0, context.getString(R.string.notification_lock_new_app_action_never_again),
+                        PendingIntent.getBroadcast(context, 0, neverShowAgain, PendingIntent.FLAG_UPDATE_CURRENT)))
+                .addAction(new NotificationCompat.Action(0, context.getString(R.string.notification_lock_new_app_action_lock),
+                        PendingIntent.getBroadcast(context, 0, lockApp, PendingIntent.FLAG_UPDATE_CURRENT)));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_RECOMMENDATION)
+                    .setColor(ContextCompat.getColor(context, R.color.accent));
+            try {
+                builder.setVibrate(new long[0]);
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            }
+        }
+        NotificationManagerCompat nm = NotificationManagerCompat.from(context);
+        nm.notify(APP_INSTALLED_NOTIFICATION_ID, builder.build());
     }
 }
