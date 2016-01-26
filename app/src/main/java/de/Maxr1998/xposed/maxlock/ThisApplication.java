@@ -37,7 +37,7 @@ public class ThisApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (!Util.isDevMode() && !new File(Common.EXTERNAL_FILES_DIR, "disable-ga").exists()) {
+        if (!Util.isDevMode() || !new File(Common.EXTERNAL_FILES_DIR, "disable-ga").exists()) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             tracker = analytics.newTracker(R.xml.app_tracker);
             tracker.enableAdvertisingIdCollection(true);
