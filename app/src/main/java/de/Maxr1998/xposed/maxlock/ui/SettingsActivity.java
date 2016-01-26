@@ -78,8 +78,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     private CustomTabsServiceConnection mConnection;
     private CustomTabsSession mSession;
 
-    private int mPhoebeMasterSwitchCounter = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Util.setTheme(this);
@@ -162,16 +160,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         master_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint({"CommitPrefEdits"})
             @Override
-            public void onCheckedChanged(CompoundButton button, boolean checked) {
-                MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, checked).commit();
-                if (++mPhoebeMasterSwitchCounter >= 3) {
-                    new AlertDialog.Builder(SettingsActivity.this)
-                            .setTitle(R.string.phoebe_can_i_help)
-                            .setMessage(getString(R.string.phoebe_master_switch) + (!IS_ACTIVE ? "\n\n" + getString(R.string.phoebe_master_switch_xposed_active, getString(R.string.maxlock_inactive)) : ""))
-                            .setPositiveButton(android.R.string.ok, null)
-                            .create().show();
-                    mPhoebeMasterSwitchCounter = 0;
-                }
+            public void onCheckedChanged(CompoundButton button, boolean b) {
+                MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
             }
         });
         Fragment lockScreen = getSupportFragmentManager().findFragmentByTag(TAG_LOCK_FRAGMENT);
