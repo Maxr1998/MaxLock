@@ -35,7 +35,7 @@ import java.util.Arrays;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-public class Startup extends AsyncTask<Boolean, Void, Void> {
+public class Startup extends AsyncTask<Void, Void, Void> {
 
     private final Context mContext;
     private final SharedPreferences prefs;
@@ -48,7 +48,7 @@ public class Startup extends AsyncTask<Boolean, Void, Void> {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint({"SetWorldReadable", "SetWorldWritable"})
     @Override
-    protected Void doInBackground(Boolean... firstStart) {
+    protected Void doInBackground(Void... v) {
         prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) + 1).apply();
 
         // Create ML Files

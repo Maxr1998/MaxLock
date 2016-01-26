@@ -115,7 +115,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case MAIN:
                 setRetainInstance(true);
                 // Show rating dialog
-                if (getTag().equals(SettingsActivity.TAG_SETTINGS_FRAGMENT) && !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
+                if (!prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
                         (System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(8) ||
                                 prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 10)) {
                     prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)

@@ -66,7 +66,7 @@ import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
-    public static final String TAG_SETTINGS_FRAGMENT = "SettingsFragment";
+    private static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
     private static final Uri WEBSITE_URI = Uri.parse("http://maxlock.maxr1998.de/?client=inapp&lang=" + Util.getLanguageCode());
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
@@ -110,11 +110,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             });
         }
 
-        mSettingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
+        mSettingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT);
         if (mSettingsFragment == null) {
             // Main fragment not visible → app just opened
             // Run startup tasks
-            new Startup(this).execute(prefs.getBoolean(Common.FIRST_START, true));
+            new Startup(this).execute();
             // Hide Action bar and multipane fragment
             if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
@@ -224,7 +224,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             mSettingsFragment = MaxLockPreferenceFragment.Screen.MAIN.getScreen();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out);
-            ft.replace(R.id.frame_container, mSettingsFragment, TAG_SETTINGS_FRAGMENT).commit();
+            ft.replace(R.id.frame_container, mSettingsFragment, TAG_PREFERENCE_FRAGMENT).commit();
             if (getSupportActionBar() != null) {
                 getSupportActionBar().show();
             }
