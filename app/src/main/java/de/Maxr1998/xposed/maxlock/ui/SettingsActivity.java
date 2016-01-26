@@ -66,7 +66,8 @@ import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
-    private static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
+    public static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
+    public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
     private static final Uri WEBSITE_URI = Uri.parse("http://maxlock.maxr1998.de/?client=inapp&lang=" + Util.getLanguageCode());
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
@@ -110,25 +111,27 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             });
         }
 
+        // Hide multipane view
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            hideMultipane();
+        }
         mSettingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT);
         if (mSettingsFragment == null) {
             // Main fragment not visible → app just opened
-            // Run startup tasks
-            new Startup(this).execute();
-            // Hide Action bar and multipane fragment
+            if (getSupportFragmentManager().findFragmentByTag(TAG_LOCK_FRAGMENT) == null) {
+                // Lockscreen not visible as well → run startup & show lockscreen
+                new Startup(this).execute();
+                UNLOCKED = false;
+                Fragment lockFragment = new LockFragment();
+                Bundle b = new Bundle(1);
+                b.putStringArray(Common.INTENT_EXTRAS_NAMES, new String[]{getApplicationContext().getPackageName(), getClass().getName()});
+                lockFragment.setArguments(b);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, lockFragment, TAG_LOCK_FRAGMENT).commit();
+            }
+            // Hide Action bar
             if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
             }
-            if (getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment) != null) {
-                getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment)).commit();
-            }
-            // Show lockscreen
-            UNLOCKED = false;
-            Fragment lockFragment = new LockFragment();
-            Bundle b = new Bundle(1);
-            b.putStringArray(Common.INTENT_EXTRAS_NAMES, new String[]{getApplicationContext().getPackageName(), getClass().getName()});
-            lockFragment.setArguments(b);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, lockFragment, TAG_LOCK_FRAGMENT).commit();
         }
 
         mConnection = new CustomTabsServiceConnection() {
@@ -204,14 +207,12 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 //noinspection ConstantConditions
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                if (getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment) != null) {
-                    getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment)).commit();
-                }
+                hideMultipane();
             }
+            getSupportFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
@@ -224,10 +225,38 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             mSettingsFragment = MaxLockPreferenceFragment.Screen.MAIN.getScreen();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out);
-            ft.replace(R.id.frame_container, mSettingsFragment, TAG_PREFERENCE_FRAGMENT).commit();
+            ft.replace(R.id.fragment_container, mSettingsFragment, TAG_PREFERENCE_FRAGMENT).commit();
             if (getSupportActionBar() != null) {
                 getSupportActionBar().show();
             }
+        }
+    }
+
+    /**
+     * Hide second pane if visible
+     */
+    public void hideMultipane() {
+        Fragment secondPane = getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT_SECOND_PANE);
+        if (secondPane != null) {
+            getSupportFragmentManager().beginTransaction().hide(secondPane).commit();
+            View divider = findViewById(R.id.fragment_container_divider);
+            if (divider != null) {
+                divider.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    /**
+     * Show second pane if available
+     */
+    public void showMultipane() {
+        Fragment secondPane = getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT_SECOND_PANE);
+        if (secondPane != null) {
+            View divider = findViewById(R.id.fragment_container_divider);
+            if (divider != null) {
+                divider.setVisibility(View.VISIBLE);
+            }
+            getSupportFragmentManager().beginTransaction().show(secondPane).commit();
         }
     }
 

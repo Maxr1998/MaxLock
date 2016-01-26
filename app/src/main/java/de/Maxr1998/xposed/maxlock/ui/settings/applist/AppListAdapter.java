@@ -60,7 +60,7 @@ import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
+import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
@@ -115,7 +115,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                 // AlertDialog View
                 // Fake die checkbox
                 View checkBoxView = View.inflate(mContext, R.layout.per_app_settings, null);
-                CheckBox fakeDie = (CheckBox) checkBoxView.findViewById(R.id.cb_fake_die);
+                final CheckBox fakeDie = (CheckBox) checkBoxView.findViewById(R.id.cb_fake_die);
                 fakeDie.setChecked(prefsApps.getBoolean(key + "_fake", false));
                 fakeDie.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -167,7 +167,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                                     Bundle b = new Bundle(1);
                                     b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
                                     frag.setArguments(b);
-                                    ((SettingsActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).addToBackStack(null).commit();
+                                    MaxLockPreferenceFragment.launchFragment(frag, false, mFragment);
                                 }
                             }).show();
                         } else

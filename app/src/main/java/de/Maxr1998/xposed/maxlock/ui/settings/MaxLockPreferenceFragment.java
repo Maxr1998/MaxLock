@@ -76,6 +76,8 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static de.Maxr1998.xposed.maxlock.ui.SettingsActivity.TAG_PREFERENCE_FRAGMENT_SECOND_PANE;
+
 public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     private static final int WALLPAPER_REQUEST_CODE = 42;
@@ -89,9 +91,8 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         }
         FragmentTransaction ft = from.getFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_pop_in, R.anim.fragment_pop_out);
-        ft.replace(R.id.frame_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : null).addToBackStack(null).commit();
-        if (from.getFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment) != null)
-            from.getFragmentManager().beginTransaction().show(from.getFragmentManager().findFragmentById(R.id.multi_pane_settings_fragment)).commit();
+        ft.replace(R.id.fragment_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : null).addToBackStack(null).commit();
+        ((SettingsActivity) from.getActivity()).showMultipane();
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -115,7 +116,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case MAIN:
                 setRetainInstance(true);
                 // Show rating dialog
-                if (!prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
+                if ((getTag() == null || !getTag().equals(TAG_PREFERENCE_FRAGMENT_SECOND_PANE)) && !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
                         (System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(8) ||
                                 prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 10)) {
                     prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)
