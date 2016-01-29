@@ -5,11 +5,26 @@
     <string name="name_pro"> プロ版</string>
     <string name="name_pseudo_pro"> 準プロ版</string>
     <string name="placeholder">Placeholder</string>
+
     <string name="maxlock_inactive">MaxLock は動作していません</string>
-    <string name="dialog_text_restart_required">変更を適用にするには MaxLock の再起動が必要です</string>
-    <string name="toast_pro_required">この機能を使用するにはプロ版が必要です!</string>
+    <string name="dialog_message_not_active">MaxLock の動作に必要となる Android のシステムメソッドをフックできませんでした。次のような原因が考えられます\n
+&#x2022; <i>Xposed Framework がインストールされていない</i>\n
+&#x2022; <i>Xposed がインストールされ動作しているけれども、Xposed installer で MaxLock を有効化していないか、有効化した後で端末を再起動していない</i>\n
+&#x2022; <i>Xposed のセーフモードにより Xposed Framework が無効化されている。これについての詳しい情報は XDA の Xposed スレッドを参照してください</i>\n
+&#x2022; <i>MaxLock がクラッシュを起こした。お手数ですが、この画面の下部からバグレポートを送信してください</i></string>
     <string name="sb_no_locking_type">ロック方法が未設定です.</string>
     <string name="sb_no_locked_apps">ロックするアプリが未選択です.</string>
+    <string name="dialog_like_app">このアプリはいかがですか?</string>
+    <string name="dialog_like_app_text">もし気に入っていただけたら Play ストアに評価を投稿してください。また、寄付も受け付けています &#9786;</string>
+    <string name="dialog_cb_never_again">再び表示しない</string>
+    <string name="dialog_button_donate">寄付</string>
+    <string name="dialog_button_rate">評価</string>
+    <string name="notification_lock_new_app_title">新規アプリをロックしますか?</string>
+    <string name="notification_lock_new_app_action_never_again">再表示しない</string>
+    <string name="notification_lock_new_app_action_lock">ロックする</string>
+    <string name="toast_lock_new_app_locked_successfully">ロックに成功しました</string>
+    <string name="dialog_text_restart_required">変更を適用にするには MaxLock の再起動が必要です</string>
+    <string name="toast_pro_required">この機能を使用するにはプロ版が必要です!</string>
     <!-- First start screens-->
     <string name="button_skip">スキップ</string>
     <string name="button_next_content_description">次へ</string>
@@ -62,17 +77,19 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">背景色</string>
-    <string name="pref_hide_status_bar">ステータスバーの非表示</string>
     <string name="pref_use_tablet_mode">タブレットモード</string>
     <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">この端末(%1$s)は、ドット密度が %3$d dpi で画面幅が %4$d ピクセルなので %2$s として認識されました</string>
-    <string name="pref_category_pin_and_knock_code">暗証番号とノックコード</string>
+    <string name="pref_hide_status_bar">ステータスバーの非表示</string>
     <string name="pref_invert_color">表示色の反転</string>
     <string name="pref_invert_color_summary">テキストと分割線の色を黒にします</string>
     <string name="pref_hide_title_bar">タイトルバーの消去</string>
-    <string name="pref_hide_input_bar">入力バーの消去</string>
-    <string name="pref_hide_input_bar_summary">クリアボタンも消去されます!</string>
     <string name="pref_category_password_and_pin">バスワードと暗証番号</string>
     <string name="pref_quick_unlock">即時解除</string>
+    <string name="pref_category_pin_only">暗証番号のみ</string>
+    <string name="pref_shuffle_pin">番号ボタンのシャッフル表示</string>
+    <string name="pref_category_pin_and_knock_code">暗証番号とノックコード</string>
+    <string name="pref_hide_input_bar">入力バーの消去</string>
+    <string name="pref_hide_input_bar_summary">クリアボタンも消去されます!</string>
     <string name="pref_category_knock_code_only">ノックコード</string>
     <string name="pref_show_dividers">分割線の表示</string>
     <string name="pref_touch_visible">画面タッチの視覚化</string>
@@ -98,21 +115,22 @@
     <string name="pref_enable_tasker">Tasker 機能の有効化</string>
     <!-- I.Mod settings -->
     <string name="pref_screen_locking_intika">Intika 拡張</string>
-    <string name="pref_category_intika">Intika 拡張 - 猶予時間 - すべてのアプリ</string>
-    <string name="pref_category_intika2">Intika 拡張 - 猶予時間 - 個々のアプリ</string>
-    <string name="pref_locking_delay_general">すべてのアプリで再ロック猶予</string>
-    <string name="pref_locking_delay_general_summary">あるアプリでロックを解除したら、すべてのアプリについて再ロックを指定時間猶予します</string>
-    <string name="pref_delay_input_general">再ロックの猶予時間</string>
-    <string name="pref_delay_input_general_summary">アプリの再ロックの猶予時間(分)を設定してください</string>
-    <string name="pref_locking_delay_perapp">個々のアプリで再ロック猶予</string>
-    <string name="pref_locking_delay_perapp_summary">あるアプリでロックを解除したら、他のアプリのロック状態にかかわらず、そのアプリについて再ロックを指定時間猶予します</string>
-    <string name="pref_delay_input_perapp">再ロックの猶予時間</string>
-    <string name="pref_delay_input_perapp_summary">アプリの再ロックの猶予時間(分)を設定してください</string>
-    <string name="pref_delay_needpro">再ロックの猶予 - プロ版</string>
+    <string name="pref_category_intika">Intika 拡張 - 再ロックの延期 - アプリ一括</string>
+    <string name="pref_category_intika2">Intika 拡張 - 再ロックの延期 - アプリ個別</string>
+    <string name="pref_locking_delay_general">再ロックの延期 (アプリ一括)</string>
+    <string name="pref_locking_delay_general_summary">あるアプリでロックを解除したら、すべてのアプリのロック解除を一定時間要求しないようにします</string>
+    <string name="pref_delay_input_general">再ロックの延期時間 (アプリ一括)</string>
+    <string name="pref_delay_input_general_summary">アプリの再ロック延期時間(分)を設定してください</string>
+    <string name="pref_locking_delay_perapp">再ロックの延期 (アプリ個別)</string>
+    <string name="pref_locking_delay_perapp_summary">あるアプリでロックを解除したら、そのアプリのロック解除を一定時間要求しないようにします</string>
+    <string name="pref_delay_input_perapp">再ロックの延期時間 (アプリ個別)</string>
+    <string name="pref_delay_input_perapp_summary">アプリの再ロック延期時間(分)を設定してください</string>
+    <string name="pref_delay_needpro">再ロックの延期 - プロ版</string>
     <string name="pref_show_reset_notification">通知領域からリセット</string>
-    <string name="pref_show_reset_notification_summary">猶予タイマーのリセットスイッチを通知領域に表示します</string>
+    <string name="pref_show_reset_notification_summary">通知領域から再ロックの延期をリセットできるようにします</string>
     <string name="pref_reset_screen_off">画面オフでリセット</string>
-    <string name="pref_reset_screen_off_summary">画面をオフにしたら猶予タイマーをリセットするようにします</string>
+    <string name="pref_reset_screen_off_summary">画面をオフにしたら再ロックの延期をリセットします</string>
+    <string name="pref_hide_recents_thumbnails">アプリ履歴のサムネイルの非表示</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">アプリの選択</string>
     <string name="pref_choose_apps">アプリの選択</string>
@@ -122,6 +140,7 @@
     <string name="menu_backup_list">リストのバックアップ</string>
     <string name="menu_restore_list">リストの復元</string>
     <string name="menu_clear_list">リストの消去</string>
+    <string name="dialog_storage_permission_backup_restore">バックアップファイルの保存や読み込みには外部ストレージへのアクセスが必要です。続行しますか?</string>
     <string name="toast_no_files_to_backup">バックアップするファイルが見つかりません</string>
     <string name="toast_backup_restore_exception">問題が発生しました\n開発者へ報告をお願いします!</string>
     <string name="toast_backup_success">バックアップに成功しました</string>
@@ -154,7 +173,7 @@
     <string name="pref_category_licenses">ライセンス</string>
     <string name="pref_donate_upgrade_pro">プロ版にアップグレード (寄付)</string>
     <string name="donate_status_donated">寄付済み</string>
-    <string name="donate_status_not_donated">継続的な開発を支援するために寄付をお願いします。ありがとう :)</string>
+    <string name="donate_status_not_donated">寄付で開発を支援してください。ありがとう &#9786;</string>
     <string name="dialog_message_already_bought">すでに寄付していただきましたが、現在の購入を取り消して再度購入することでさらに寄付していただけます。\n\n購入を取り消して再購入しますか?</string>
 
     <string name="toast_no_network_connected">現在、インターネットに接続できません</string>
@@ -165,12 +184,11 @@
 これにより、この画面からアンインストールするか、\"設定 → セキュリティ → デバイス管理者\" で MaxLock を無効にしてからアンインストールすることが必要になります</string>
     <string name="pref_uninstall">アンインストール</string>
     <string name="device_admin_description">MaxLock のアンインストールや無効化を防止します</string>
-    <!-- External stuff -->
-    <string name="dialog_like_app">このアプリはいかがですか?</string>
-    <string name="dialog_like_app_text">もし気に入っていただけたら Play ストアに評価を投稿してください。また、寄付も受け付けています :)</string>
-    <string name="dialog_cb_never_again">再び表示しない</string>
-    <string name="dialog_button_donate">寄付</string>
-    <string name="dialog_button_rate">評価</string>
+    <string name="pref_send_feedback">フィードバック / バグレポート</string>
+    <string name="dialog_storage_permission_bug_report">ログと端末情報の保存には外部ストレージへのアクセスが必要です。続行しますか?</string>
+    <string name="dialog_message_bugreport_finished_select_email">ログと端末情報をエクスポートしました。メールアプリを選択して開発者に送信してください\n\n
+<i>なお、個人情報は収集していません</i></string>
+    <string name="share_menu_title_send_email">メールの送信…</string>
     <!-- Fake crash screen -->
     <string name="dialog_text_fake_die_stopped">問題が発生したため %1$s を終了します</string>
     <string name="dialog_button_report">レポート</string>
@@ -182,13 +200,12 @@
     <string name="action_ms_on">マスタースイッチ On</string>
     <string name="action_ms_off">マスタースイッチ Off</string>
     <string name="action_imod_reset">Intika 拡張のリセット</string>
-    <string name="tasker_imod_reset_summary">Intika 拡張をリセットして、すべてのアプリをロックします</string>
+    <string name="tasker_imod_reset_summary">Intika 拡張で再ロックが延期されているアプリを直ちにロックします</string>
     <string name="tasker_button_apply">適用</string>
     <string name="tasker_integration_disabled">Tasker 機能が無効になっています。\"MaxLock → オプション → Tasker 機能の有効化\" で有効にしてください</string>
     <string name="activity_label_toggle_ms_deprecated">マスタースイッチの On/Off (非推奨)</string>
     <string name="unlock_master_switch">マスタースイッチを Off にします</string>
     <string name="toast_master_switch_off">マスタースイッチを Off にしました</string>
     <string name="toast_master_switch_on">マスタースイッチを On にしました</string>
-    <string name="toast_no_locking_types">ロック方法が未設定です</string>
 
 </resources>
