@@ -5,16 +5,26 @@
     <string name="name_pro"> 专业版</string>
     <string name="name_pseudo_pro">伪专业版</string>
     <string name="placeholder">占位符</string>
+	
     <string name="maxlock_inactive">MaxLock未激活</string>
 	<string name="dialog_message_not_active">Android系统不能挂钩MaxLock,这可能有几方面原因:\n
     &#x2022; <i>Xposed框架未安装</i>\n
     &#x2022; <i>Xposed安装并激活,在Xposed安装器\"模块\"选项卡中激活MaxLock或重启</i>\n
     &#x2022; <i>禁用Xposed框架安全模式,在XDA网站了解Xposed更多信息</i>\n
     &#x2022; <i>MaxLock可能遇到崩溃,那么您应该从屏幕底部给我一个bug报告</i></string>
+	<string name="sb_no_locking_type">没有锁定特定类型</string>
+    <string name="sb_no_locked_apps">没有选择锁定应用</string>
+	<string name="dialog_like_app">您喜欢这个应用吗?</string>
+    <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠:)</string>
+    <string name="dialog_cb_never_again">不再显示</string>
+    <string name="dialog_button_donate">捐赠</string>
+    <string name="dialog_button_rate">评价</string>
+	<string name="notification_lock_new_app_title">锁定新安装的应用?</string>
+    <string name="notification_lock_new_app_action_never_again">不要显示</string>
+    <string name="notification_lock_new_app_action_lock">锁定应用</string>
+    <string name="toast_lock_new_app_locked_successfully">已成功锁定</string>
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
     <string name="toast_pro_required">使用此功能需要专业版本！</string>
-    <string name="sb_no_locking_type">没有锁定特定类型</string>
-    <string name="sb_no_locked_apps">没有选择锁定应用</string>
     <!-- First start screens-->
     <string name="button_skip">跳过</string>
     <string name="button_next_content_description">下一个</string>
@@ -179,12 +189,6 @@
     <string name="dialog_message_bugreport_finished_select_email">日志和设备信息已导出!现在选择您喜欢的电子邮件应用将日志发送给我\n\n
     <i>注:不会收集私人信息</i></string>
     <string name="share_menu_title_send_email">发送邮件…</string>
-    <!-- External stuff -->
-    <string name="dialog_like_app">您喜欢这个应用吗?</string>
-    <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠:)</string>
-    <string name="dialog_cb_never_again">不再显示</string>
-    <string name="dialog_button_donate">捐赠</string>
-    <string name="dialog_button_rate">评分</string>
     <!-- Fake crash screen -->
     <string name="dialog_text_fake_die_stopped">非常抱歉,%1$s已停止</string>
     <string name="dialog_button_report">报告问题</string>
@@ -203,6 +207,5 @@
     <string name="unlock_master_switch">解锁主开关</string>
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关已重新启用</string>
-    <string name="toast_no_locking_types">没有指定锁定类型</string>
 
 </resources>
