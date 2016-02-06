@@ -5,31 +5,41 @@
     <string name="name_pro">專業版</string>
     <string name="name_pseudo_pro">偽專業版</string>
     <string name="placeholder">佔位符</string>
+    
     <string name="maxlock_inactive">MaxLock尚未激活</string>
-    <string name="dialog_message_not_active">Android系統不能運行MaxLock。這可能有幾方面的原因：\n
+    <string name="dialog_message_not_active">Android系統不能掛鉤MaxLock。這可能有幾方面的原因：\n
     &#x2022; <i>未安裝Xposed框架</i>\n
-    &#x2022; <i>Xposed安裝並激活，在Xposed框架 (\"模組\" 選項) 啟用MaxLock，之後重啟手機</i>\n
+    &#x2022; <i>Xposed安裝並激活，在Xposed框架 (\"模組\" 選項) 啟用MaxLock或重啟</i>\n
     &#x2022; <i>禁用Xposed框架安全模式。在XDA了解Xposed更多信息。</i>\n
-    &#x2022; <i>MaxLock可能遇到崩潰。你可以在屏幕的底部發送報告錯誤給我。</i></string>
+    &#x2022; <i>MaxLock可能遇到崩潰。你可以在螢幕的底部發送報告錯誤給我。</i></string>
+    <string name="sb_no_locking_type">沒有鎖定特定類型</string>
+    <string name="sb_no_locked_apps">沒有選擇鎖定應用程式</string>
+    <string name="dialog_like_app">你喜歡這個應用程式嗎？</string>
+    <string name="dialog_like_app_text">如果您這樣做,請在Play Store留下您的評論或考慮捐贈 :)</string>
+    <string name="dialog_cb_never_again">不再顯示</string>
+    <string name="dialog_button_donate">捐贈</string>
+    <string name="dialog_button_rate">評分</string>
+    <string name="notification_lock_new_app_title">鎖定新安裝的應用程式?</string>
+    <string name="notification_lock_new_app_action_never_again">不再顯示</string>
+    <string name="notification_lock_new_app_action_lock">鎖定應用程式</string>
+    <string name="toast_lock_new_app_locked_successfully">已成功鎖定</string>
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
     <string name="toast_pro_required">使用此功能需要專業版！</string>
-    <string name="sb_no_locking_type">沒有鎖定特定類型</string>
-    <string name="sb_no_locked_apps">沒有選擇鎖定應用</string>
     <!-- First start screens-->
     <string name="button_skip">跳過</string>
     <string name="button_next_content_description">下一個</string>
     <string name="button_done">完成</string>
     <string name="fs_welcome_maxlock">歡迎使用MaxLock!</string>
-    <string name="fs_maxlock_description">MaxLock將保護您的應用免受未經授權訪問</string>
+    <string name="fs_maxlock_description">MaxLock將保護您的應用程式免受未經授權訪問</string>
     <string name="fs_phone_content_description">電話</string>
     <string name="fs_lock_content_description">鎖定這個電話</string>
     <string name="fs_app_package_installer">安裝包</string>
     <string name="fs_app_settings">設定</string>
     <string name="fs_app_xposed_installer">Xposed安裝器</string>
-    <string name="fs_recommended_apps">通過鎖定這些應用能進一步保護</string>
-    <string name="fs_recommended_apps_summary">您應該勾選這些應用，以確保MaxLock不能被禁用或移除</string>
+    <string name="fs_recommended_apps">通過鎖定這些應用程式能進一步保護</string>
+    <string name="fs_recommended_apps_summary">您應該勾選這些應用程式，以確保MaxLock不能被禁用或移除</string>
     <!-- Locking type settings -->
-    <string name="pref_category_locking">鎖定設置</string>
+    <string name="pref_category_locking">鎖定設定</string>
     <string name="pref_screen_locking_type">鎖定類型</string>
     <string name="pref_locking_type_password">密碼</string>
     <string name="pref_locking_type_pin">PIN</string>
@@ -54,33 +64,33 @@
     <string name="knock_code_too_short">Knock code必須至少4點觸摸</string>
     <string name="confirm_knock_code">再次確認Knock code</string>
     <!-- Locking UI settings -->
-    <string name="pref_screen_locking_ui">鎖屏界面</string>
+    <string name="pref_screen_locking_ui">鎖定螢幕介面</string>
     <string name="pref_open_theme_manager">打開主題管理</string>
-    <string name="pref_open_theme_manager_summary_none">沒有主題應用</string>
-    <string name="pref_open_theme_manager_summary_applied">應用： </string>
+    <string name="pref_open_theme_manager_summary_none">沒有主題已套用</string>
+    <string name="pref_open_theme_manager_summary_applied">已套用： </string>
     <string name="pref_summary_overridden_by_theme">（覆蓋主題）</string>
     <string name="pref_background">背景圖片</string>
     <string-array name="background_types">
-        <item>壁紙</item>
+        <item>桌布</item>
         <item>@string/pref_custom_color</item>
-        <item>自定義圖片…</item>
+        <item>自訂圖片…</item>
         <!--<item>Theme background</item>-->
     </string-array>
-    <string name="pref_custom_color">自定義顏色</string>
+    <string name="pref_custom_color">自訂顏色</string>
     <string name="pref_use_tablet_mode">使用平板模式</string>
     <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">檢測到%1$s這個%2$s裝置的dpi為%3$d和顯示的寬度為%4$d像素</string>
-    <string name="pref_hide_status_bar">隱藏狀態欄/全屏</string>
-    <string name="pref_invert_color">轉換用戶界面顏色</string>
-    <string name="pref_invert_color_summary">設定這個文本和分隔器的顏色為黑色</string>
+    <string name="pref_hide_status_bar">隱藏狀態欄/全螢幕</string>
+    <string name="pref_invert_color">轉換用戶介面顏色</string>
+    <string name="pref_invert_color_summary">設定這個文字和分隔器的顏色為黑色</string>
     <string name="pref_hide_title_bar">隱藏標題欄</string>
     <string name="pref_category_password_and_pin">密碼和PIN</string>
     <string name="pref_quick_unlock">快速解鎖</string>
     <string name="pref_category_pin_only">僅PIN</string>
     <string name="pref_shuffle_pin">隨機數字</string>
-    <string name="pref_category_pin_and_knock_code">PIN和knock代碼</string>
+    <string name="pref_category_pin_and_knock_code">PIN和knock code</string>
     <string name="pref_hide_input_bar">隱藏輸入欄</string>
     <string name="pref_hide_input_bar_summary">這將隱藏清除按鈕，你仍然可以通過長按數字/容器清除代碼</string>
-    <string name="pref_category_knock_code_only">僅Knock代碼</string>
+    <string name="pref_category_knock_code_only">僅Knock code</string>
     <string name="pref_show_dividers">顯示分隔</string>
     <string name="pref_touch_visible">使觸摸可見</string>
     <string name="pref_category_pattern_only">僅圖案</string>
@@ -95,41 +105,41 @@
     <string name="pref_screen_logs">日誌</string>
     <string name="menu_delete_log">刪除日誌</string>
     <string name="logs_empty_text">沒有日誌記錄</string>
-    <string name="pref_category_other">其它</string>
-    <string name="pref_fake_crash_all_apps">假死所有應用</string>
-    <string name="pref_fake_crash_all_apps_summary">這將覆蓋從應用清單中的所有應用設定</string>
+    <string name="pref_category_other">其他</string>
+    <string name="pref_fake_crash_all_apps">假死所有應用程式</string>
+    <string name="pref_fake_crash_all_apps_summary">這將會覆蓋從應用程式清單中的所有應用程式設定</string>
     <string name="pref_fake_unlock">假死直接解鎖</string>
-    <string name="pref_fake_unlock_summary">當啟用鎖屏假死對話框後按鈕上的\“應用程式已崩潰…\”直接顯示<i>\“不幸的是，X已經停止”</i></string>
+    <string name="pref_fake_unlock_summary">當啟用鎖定螢幕假死對話框中按下報告按鈕後顯示\“應用程式已崩潰…\”<i>\“不幸的是，X已經停止”</i></string>
     <string name="pref_fake_crash_passphrase">假死輸入</string>
-    <string name="pref_fake_crash_passphrase_summary">用戶需要在對話框中輸入短語才能打開鎖屏</string>
+    <string name="pref_fake_crash_passphrase_summary">用戶需要在對話框中輸入短語才能打開鎖定螢幕</string>
     <string name="pref_enable_tasker">啟用Tasker集成</string>
     <!-- I.Mod settings -->
     <string name="pref_screen_locking_intika">Intika I.Mod</string>
     <string name="pref_category_intika">Intika I.Mod - 寬限期 - 全局</string>
-    <string name="pref_category_intika2">Intika I.Mod - 寬限期 - 每個應用</string>
+    <string name="pref_category_intika2">Intika I.Mod - 寬限期 - 每個應用程式</string>
     <string name="pref_locking_delay_general">全局延遲重新鎖定</string>
     <string name="pref_locking_delay_general_summary">避免到在一段時間內再次要求解鎖應用程式</string>
     <string name="pref_delay_input_general">全局延遲重新鎖定計時器</string>
     <string name="pref_delay_input_general_summary">給全局延遲輸入一個數字指定延遲時間,值為分鐘</string>
-    <string name="pref_locking_delay_perapp">每個應用延遲重新鎖定</string>
-    <string name="pref_locking_delay_perapp_summary">防止要求在一定時間內為每個應用程式再次解鎖,分開而不管其他受保護的應用</string>
-    <string name="pref_delay_input_perapp">每個應用重新鎖定計時器</string>
-    <string name="pref_delay_input_perapp_summary">給每個應用重新鎖定輸入一個數字指定延遲時間,值為分鐘</string>
+    <string name="pref_locking_delay_perapp">每個應用程式延遲重新鎖定</string>
+    <string name="pref_locking_delay_perapp_summary">防止要求在一定時間內為每個應用程式再次解鎖,分開而不管其他受保護的應用程式</string>
+    <string name="pref_delay_input_perapp">每個應用程式重新鎖定計時器</string>
+    <string name="pref_delay_input_perapp_summary">給每個應用程式重新鎖定輸入一個數字指定延遲時間,值為分鐘</string>
     <string name="pref_delay_needpro">延遲重新鎖定 - 專業版</string>
     <string name="pref_show_reset_notification">顯示通知</string>
-    <string name="pref_show_reset_notification_summary">在重置I.Mod計時器時顯示一個通知</string>
+    <string name="pref_show_reset_notification_summary">在I.Mod計時器重置時顯示一個通知</string>
     <string name="pref_reset_screen_off">自動重置I.Mod</string>
-    <string name="pref_reset_screen_off_summary">關閉屏幕時重置I.Mod計時器</string>
+    <string name="pref_reset_screen_off_summary">關閉螢幕時重置I.Mod計時器</string>
     <string name="pref_hide_recents_thumbnails">隱藏最近的縮略圖</string>
     <!-- Apps settings -->
-    <string name="pref_category_apps">選擇應用</string>
-    <string name="pref_choose_apps">選擇應用</string>
+    <string name="pref_category_apps">選擇應用程式</string>
+    <string name="pref_choose_apps">選擇應用程式</string>
     <string name="pref_choose_apps_summary">選擇需要鎖定的應用程式</string>
     <string name="pref_screen_apps">應用程式</string>
 
-    <string name="menu_backup_list">備份列表</string>
-    <string name="menu_restore_list">恢復列表</string>
-    <string name="menu_clear_list">清除列表</string>
+    <string name="menu_backup_list">備份清單</string>
+    <string name="menu_restore_list">恢復清單</string>
+    <string name="menu_clear_list">清除清單</string>
     <string name="dialog_storage_permission_backup_restore">MaxLock 需要訪問外部儲存裝置來讀取/寫入備份檔案。是否繼續？</string>
     <string name="toast_no_files_to_backup">沒有找到備份文件</string>
     <string name="toast_backup_restore_exception">出現錯誤。\n請聯繫開發者！</string>
@@ -137,35 +147,35 @@
     <string name="dialog_text_restore_list">這將從備份替換當前設定 ！</string>
     <string name="toast_no_files_to_restore">沒有找到恢復文件</string>
     <string name="toast_restore_success">成功恢復備份！</string>
-    <string name="menu_search">搜索</string>
+    <string name="menu_search">搜尋</string>
     <string name="toggle_lock_on">開</string>
     <string name="toggle_lock_off">關</string>
     <string name="dialog_title_settings">設定</string>
-    <string name="dialog_text_fake_crash">顯示假死窗口</string>
-    <string name="dialog_text_custom_password">自定義密碼</string>
+    <string name="dialog_text_fake_crash">顯示假死視窗</string>
+    <string name="dialog_text_custom_password">自訂密碼</string>
     <string name="dialog_button_exclude_activities">活動</string>
     <string name="dialog_title_exclude_activities">排除鎖定活動</string>
     <!-- UI settings -->
-    <string name="pref_category_ui">界面設定</string>
-    <string name="pref_hide_from_launcher">桌面隱藏應用圖標</string>
-    <string name="reboot_required">可能需要重新啟動以應用更改</string>
+    <string name="pref_category_ui">介面設定</string>
+    <string name="pref_hide_from_launcher">隱藏桌面圖示</string>
+    <string name="reboot_required">可能需要重新啟動以套用更改</string>
     <string name="pref_use_dark_style">使用黑暗風格</string>
     <string name="pref_use_amoled_black">使用黑純AMOLED</string>
-    <string name="pref_use_amoled_black_summary">低能耗AMOLED顯示屏可使用黑色主題作為一個純黑背景</string>
+    <string name="pref_use_amoled_black_summary">低能耗AMOLED顯示螢幕可使用黑色主題作為一個純黑背景</string>
     <string name="pref_widget_background_color">小部件背景顏色</string>
     <!-- About information -->
     <string name="pref_category_about">關於</string>
     <string name="pref_about_summary">點擊查看貢獻，使用的庫和許可證。</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_visit_website">訪問Maxr1998網站</string>
-    <string name="pref_category_credits">致謝</string>
+    <string name="pref_category_credits">貢獻</string>
     <string name="pref_category_translations">翻譯</string>
     <string name="pref_category_licenses">許可證</string>
     <string name="pref_donate_upgrade_pro">捐贈可升級到專業版</string>
     <string name="donate_status_donated">已捐贈。</string>
     <string name="donate_status_not_donated">考慮捐贈，以支持進一步發展。感謝：）</string>
     <string name="dialog_message_already_bought">你已經擁有此捐贈選項。
-        您可以取消和選擇另一個產品或購買此再次與消費（删除）在之前的購買。\n\n消費和回購？</string>
+        您可以取消和選擇其他產品或再次消費（删除）目前的購買，再次購買一個，\n\n消費和回購？</string>
     <string name="toast_no_network_connected">您目前沒有連接到任何網絡</string>
     <string name="pref_enable_pro">開啟專業版</string>
     <string name="pref_enable_pro_summary">這將開啟專業版功能，即使您沒有購買</string>
@@ -174,35 +184,28 @@
         移除此應用程式您必須在\"設定 → 安全 → 裝置管理員\"這裡或停用管理員權限，然後移除</string>
     <string name="pref_uninstall">移除</string>
     <string name="device_admin_description">保護MaxLock防止被移除和禁用</string>
-    <string name="pref_send_feedback">發送反饋/報告錯誤</string>
+    <string name="pref_send_feedback">發送回報/報告錯誤</string>
     <string name="dialog_storage_permission_bug_report">MaxLock 需要訪問外部儲存裝置來保存日誌和裝置信息。是否繼續？</string>
     <string name="dialog_message_bugreport_finished_select_email">日誌和裝置信息已匯出。現在選擇你最喜歡的電子郵件應用將日誌發送給我。\n\n
     <i>注意：不會收集私隱信息。</i></string>
     <string name="share_menu_title_send_email">發送電子郵件…</string>
-    <!-- External stuff -->
-    <string name="dialog_like_app">你喜歡這個應用程式嗎？</string>
-    <string name="dialog_like_app_text">如果您這樣做,請在Play Store留下您的評論或考慮捐贈 :)</string>
-    <string name="dialog_cb_never_again">不再顯示</string>
-    <string name="dialog_button_donate">捐贈</string>
-    <string name="dialog_button_rate">評分</string>
     <!-- Fake crash screen -->
     <string name="dialog_text_fake_die_stopped">非常抱歉,%1$s已停止。</string>
     <string name="dialog_button_report">回報</string>
     <string name="dialog_title_report_problem">回報問題</string>
     <!-- Action stuff -->
     <string name="activity_label_actions">MaxLock操作</string>
-    <string name="action_configuration">配置:</string>
+    <string name="action_configuration">設定:</string>
     <string name="action_toggle_ms">切換主開關</string>
     <string name="action_ms_on">打開主開關</string>
     <string name="action_ms_off">關閉主開關</string>
     <string name="action_imod_reset">重置I.MoD</string>
-    <string name="tasker_imod_reset_summary">鎖定所有應用之前打開I.MoD</string>
-    <string name="tasker_button_apply">應用</string>
+    <string name="tasker_imod_reset_summary">鎖定所有應用程式之前打開I.MoD</string>
+    <string name="tasker_button_apply">套用</string>
     <string name="tasker_integration_disabled">當前Tasker集成已禁用。您可以通過\"MaxLock → 鎖定選項 → 啟用Tasker集成\".</string>
     <string name="activity_label_toggle_ms_deprecated">切換主開關(已取消)</string>
     <string name="unlock_master_switch">解鎖主開關</string>
     <string name="toast_master_switch_off">主開關已關閉</string>
     <string name="toast_master_switch_on">主開關已重新啟用</string>
-    <string name="toast_no_locking_types">沒有指定鎖定類型</string>
 
 </resources>
