@@ -51,6 +51,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -115,40 +116,45 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         switch (screen) {
             case MAIN:
                 setRetainInstance(true);
-                // Show rating dialog
-                if ((getTag() == null || !getTag().equals(TAG_PREFERENCE_FRAGMENT_SECOND_PANE)) && !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
-                        (System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(8) ||
-                                prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 10)) {
-                    prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)
-                            .putLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()).apply();
-                    @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
-                    @SuppressWarnings("ResourceType") final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
-                    DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if (checkBox.isChecked()) {
-                                prefs.edit().putBoolean(Common.RATING_DIALOG_SHOW_NEVER, true).apply();
+                // Show changelog and rating dialog
+                if (prefs.getInt(Common.LAST_VERSION_NUMBER, 0) != BuildConfig.VERSION_CODE) {
+                    showChangelog();
+                    prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE);
+                } else {
+                    if ((getTag() == null || !getTag().equals(TAG_PREFERENCE_FRAGMENT_SECOND_PANE)) && !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
+                            (System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(8) ||
+                                    prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 20)) {
+                        prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)
+                                .putLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()).apply();
+                        @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
+                        @SuppressWarnings("ResourceType") final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
+                        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (checkBox.isChecked()) {
+                                    prefs.edit().putBoolean(Common.RATING_DIALOG_SHOW_NEVER, true).apply();
+                                }
+                                switch (i) {
+                                    case -3:
+                                        try {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
+                                        } catch (android.content.ActivityNotFoundException e) {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                                        }
+                                        break;
+                                    case -1:
+                                        startActivity(new Intent(getActivity(), DonateActivity.class));
+                                        break;
+                                }
                             }
-                            switch (i) {
-                                case -3:
-                                    try {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
-                                    } catch (android.content.ActivityNotFoundException e) {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
-                                    }
-                                    break;
-                                case -1:
-                                    startActivity(new Intent(getActivity(), DonateActivity.class));
-                                    break;
-                            }
-                        }
-                    };
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.dialog_like_app)
-                            .setView(dialogView)
-                            .setPositiveButton(R.string.dialog_button_donate, onClickListener)
-                            .setNeutralButton(R.string.dialog_button_rate, onClickListener)
-                            .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
+                        };
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.dialog_like_app)
+                                .setView(dialogView)
+                                .setPositiveButton(R.string.dialog_button_donate, onClickListener)
+                                .setNeutralButton(R.string.dialog_button_rate, onClickListener)
+                                .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
+                    }
                 }
                 TwoStatePreference useDark = (TwoStatePreference) findPreference(Common.USE_DARK_STYLE);
                 if (useDark.isChecked()) {
@@ -377,6 +383,9 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 break;
             case ABOUT:
                 switch (preference.getKey()) {
+                    case Common.SHOW_CHANGELOG:
+                        showChangelog();
+                        return true;
                     case Common.VISIT_WEBSITE:
                         CustomTabsIntent devWebsite = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
                                 .setShowTitle(true)
@@ -465,6 +474,15 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }
                 break;
         }
+    }
+
+    private void showChangelog() {
+        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+        WebView wv = new WebView(getContext());
+        wv.loadUrl("http://maxlock.maxr1998.de/files/changelog-base.php");
+        b.setView(wv);
+        b.setPositiveButton(android.R.string.ok, null);
+        b.create().show();
     }
 
     public enum Screen {

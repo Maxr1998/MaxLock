@@ -7,6 +7,9 @@
             android:title="@string/app_name"
             maxlock:license="@string/license_maxlock" />
         <Preference
+            android:key="show_changelog"
+            android:title="Changelog" />
+        <Preference
             android:key="visit_website"
             android:title="@string/pref_visit_website" />
     </PreferenceCategory>

@@ -32,6 +32,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
+import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -71,7 +72,7 @@ public class Startup extends AsyncTask<Void, Void, Void> {
             prefs.edit().putBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false).apply();
         }
         // Clean up
-        if (!prefs.getString("migrated", "").equals("b40")) {
+        if (prefs.getInt(Common.LAST_VERSION_NUMBER, 0) != BuildConfig.VERSION_CODE) {
             File backgroundFolder = new File(Util.dataDir(mContext), "background");
             if (backgroundFolder.exists()) {
                 try {
@@ -98,7 +99,6 @@ public class Startup extends AsyncTask<Void, Void, Void> {
                     FileUtils.deleteQuietly(file);
                 }
             }
-            prefs.edit().putString("migrated", "b40").apply();
         }
         return null;
     }
