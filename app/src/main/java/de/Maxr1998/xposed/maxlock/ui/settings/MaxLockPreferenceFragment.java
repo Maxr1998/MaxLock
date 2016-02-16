@@ -117,9 +117,9 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case MAIN:
                 setRetainInstance(true);
                 // Show changelog and rating dialog
-                if (prefs.getInt(Common.LAST_VERSION_NUMBER, 0) != BuildConfig.VERSION_CODE) {
+                if (prefs.getInt(Common.LAST_VERSION_NUMBER, 0) < BuildConfig.VERSION_CODE) {
                     showChangelog();
-                    prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE);
+                    prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE).apply();
                 } else {
                     if ((getTag() == null || !getTag().equals(TAG_PREFERENCE_FRAGMENT_SECOND_PANE)) && !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
                             (System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(8) ||
