@@ -26,6 +26,7 @@ public abstract class Common {
 
     // Preference keys/ids //
     public static final String FIRST_START = "first_start";
+    public static final String LAST_VERSION_NUMBER = "last_version_number";
     public static final String RATING_DIALOG_APP_OPENING_COUNTER = "rating_dialog_app_opening_counter";
     public static final String RATING_DIALOG_LAST_SHOWN = "rating_dialog_last_shown";
     public static final String RATING_DIALOG_SHOW_NEVER = "rating_dialog_show_never";
@@ -82,6 +83,7 @@ public abstract class Common {
 
     public static final String ABOUT = "about";
     /* ABOUT */
+    public static final String SHOW_CHANGELOG = "show_changelog";
     public static final String VISIT_WEBSITE = "visit_website";
 
     public static final String DONATE = "donate_upgrade_pro";
