@@ -82,5 +82,14 @@
             android:key="haptic_feedback"
             android:title="@string/pref_haptic_feedback" />
     </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference android:key="shadow_fingerprint" />
+    <PreferenceCategory
+        android:key="cat_fingerprint"
+        android:title="@string/pref_category_fingerprint">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="disable_fingerprint"
+            android:title="@string/pref_disable_fingerprint" />
+    </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>

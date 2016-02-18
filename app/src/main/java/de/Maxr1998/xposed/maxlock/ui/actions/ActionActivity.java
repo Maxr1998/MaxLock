@@ -22,13 +22,14 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.LockFragment;
 import de.Maxr1998.xposed.maxlock.ui.actions.widget.MasterSwitchWidget;
+import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
@@ -42,12 +43,7 @@ public class ActionActivity extends AppCompatActivity implements AuthenticationS
         mode = getIntent().getIntExtra(ActionsHelper.ACTION_EXTRA_KEY, -1);
         if ((mode == ActionsHelper.ACTION_MASTER_SWITCH_OFF || mode == ActionsHelper.ACTION_TOGGLE_MASTER_SWITCH) && prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_lock);
-            Fragment frag = new LockFragment();
-            Bundle b = new Bundle(1);
-            b.putStringArray(Common.INTENT_EXTRAS_NAMES, new String[]{getString(R.string.unlock_master_switch), getClass().getName()});
-            frag.setArguments(b);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+            setContentView(new LockView(this, getString(R.string.unlock_master_switch), getClass().getName()), new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
             ActionsHelper.callAction(mode, this);
             fireIntentAndFinish();

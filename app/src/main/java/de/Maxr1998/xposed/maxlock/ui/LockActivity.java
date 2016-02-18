@@ -25,16 +25,18 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
@@ -80,12 +82,7 @@ public class LockActivity extends FragmentActivity implements AuthenticationSucc
 
     private void defaultSetup() {
         // Authentication fragment/UI
-        setContentView(R.layout.activity_lock);
-        Fragment frag = new LockFragment();
-        Bundle b = new Bundle(1);
-        b.putStringArray(Common.INTENT_EXTRAS_NAMES, names);
-        frag.setArguments(b);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, frag).commit();
+        setContentView(new LockView(this, names[0], names[1]), new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     private void fakeDieSetup() {

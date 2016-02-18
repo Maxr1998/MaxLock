@@ -20,14 +20,46 @@ package de.Maxr1998.xposed.maxlock.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import java.lang.ref.WeakReference;
 
 import de.Maxr1998.xposed.maxlock.Common;
 
 public class MLPreferences {
 
+    private static WeakReference<SharedPreferences> PREFS = new WeakReference<>(null);
+    private static WeakReference<SharedPreferences> PREFS_APPS = new WeakReference<>(null);
+    private static WeakReference<SharedPreferences> PREFS_KEY = new WeakReference<>(null);
+    private static WeakReference<SharedPreferences> PREFS_KEYS_PER_APP = new WeakReference<>(null);
+
+    public static SharedPreferences getPreferences(Context context) {
+        if (PREFS.get() == null) {
+            PREFS = new WeakReference<>(PreferenceManager.getDefaultSharedPreferences(context));
+        }
+        return PREFS.get();
+    }
+
     @SuppressLint("WorldReadableFiles")
+    @SuppressWarnings("deprecation")
     public static SharedPreferences getPrefsApps(Context context) {
-        //noinspection deprecation
-        return context.getSharedPreferences(Common.PREFS_APPS, Context.MODE_WORLD_READABLE);
+        if (PREFS_APPS.get() == null) {
+            PREFS_APPS = new WeakReference<>(context.getSharedPreferences(Common.PREFS_APPS, Context.MODE_WORLD_READABLE));
+        }
+        return PREFS_APPS.get();
+    }
+
+    public static SharedPreferences getPreferencesKeys(Context context) {
+        if (PREFS_KEY.get() == null) {
+            PREFS_KEY = new WeakReference<>(context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE));
+        }
+        return PREFS_KEY.get();
+    }
+
+    public static SharedPreferences getPreferencesKeysPerApp(Context context) {
+        if (PREFS_KEYS_PER_APP.get() == null) {
+            PREFS_KEYS_PER_APP = new WeakReference<>(context.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE));
+        }
+        return PREFS_KEYS_PER_APP.get();
     }
 }

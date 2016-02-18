@@ -96,6 +96,8 @@
     <string name="pref_category_pattern_only">Pattern only</string>
     <string name="pref_show_path">Show path</string>
     <string name="pref_haptic_feedback">Vibrate on drawing</string>
+    <string name="pref_category_fingerprint">Fingerprint</string>
+    <string name="pref_disable_fingerprint">Disable fingerprint unlocking</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">Locking options</string>
     <string name="pref_category_logging">Logging</string>

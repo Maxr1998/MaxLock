@@ -57,6 +57,10 @@ public abstract class Common {
     public static final String MAKE_KC_TOUCH_VISIBLE = "touch_visible";
     public static final String SHOW_PATTERN_PATH = "show_path";
     public static final String ENABLE_PATTERN_FEEDBACK = "haptic_feedback";
+    public static final String SHADOW_FINGERPRINT = "shadow_fingerprint";
+    public static final String CATEGORY_FINGERPRINT = "cat_fingerprint";
+    public static final String DISABLE_FINGERPRINT = "disable_fingerprint";
+
 
     public static final String LOCKING_OPTIONS = "locking_options";
     /* OPTIONS */

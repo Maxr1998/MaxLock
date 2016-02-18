@@ -24,12 +24,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -45,9 +45,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import java.util.Arrays;
@@ -56,6 +58,7 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity;
+import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
@@ -83,8 +86,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     protected void onCreate(Bundle savedInstanceState) {
         Util.setTheme(this);
         super.onCreate(savedInstanceState);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getInt(FirstStartActivity.FIRST_START_LAST_VERSION_KEY, 0) != FirstStartActivity.FIRST_START_LATEST_VERSION) {
+        if (MLPreferences.getPreferences(this).getInt(FirstStartActivity.FIRST_START_LAST_VERSION_KEY, 0) != FirstStartActivity.FIRST_START_LATEST_VERSION) {
             startActivity(new Intent(this, FirstStartActivity.class));
             finish();
             return;
@@ -122,10 +124,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 // Lockscreen not visible as well → run startup & show lockscreen
                 new Startup(this).execute();
                 UNLOCKED = false;
-                Fragment lockFragment = new LockFragment();
-                Bundle b = new Bundle(1);
-                b.putStringArray(Common.INTENT_EXTRAS_NAMES, new String[]{getApplicationContext().getPackageName(), getClass().getName()});
-                lockFragment.setArguments(b);
+                Fragment lockFragment = new Lockscreen();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, lockFragment, TAG_LOCK_FRAGMENT).commit();
             }
             // Hide Action bar
@@ -323,6 +322,20 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         public void onEnabled(Context context, Intent intent) {
             super.onEnabled(context, intent);
             Log.i(LOG_TAG_ADMIN, "Device admin is now active!");
+        }
+    }
+
+    public static class Lockscreen extends Fragment {
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return new LockView(getActivity(), getActivity().getApplicationContext().getPackageName(), SettingsActivity.class.getName());
         }
     }
 }

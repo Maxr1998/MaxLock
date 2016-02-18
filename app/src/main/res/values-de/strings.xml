@@ -96,6 +96,8 @@
     <string name="pref_category_pattern_only">Nur Muster</string>
     <string name="pref_show_path">Muster zeigen</string>
     <string name="pref_haptic_feedback">Beim Zeichnen vibrieren</string>
+    <string name="pref_category_fingerprint">Fingerabdruck</string>
+    <string name="pref_disable_fingerprint">Fingerabdruckentsperrung deaktivieren</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">Sperr-Optionen</string>
     <string name="pref_category_logging">Logging</string>

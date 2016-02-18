@@ -36,7 +36,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
-import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.TwoStatePreference;
 import android.support.annotation.NonNull;
@@ -46,6 +45,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.preference.PreferenceFragmentCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -75,11 +75,12 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static de.Maxr1998.xposed.maxlock.ui.SettingsActivity.TAG_PREFERENCE_FRAGMENT_SECOND_PANE;
 
-public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
+public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     private static final int WALLPAPER_REQUEST_CODE = 42;
     private static final int BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE = 100;
@@ -106,7 +107,7 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         } else {
             screen = Screen.MAIN;
         }
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs = MLPreferences.getPreferences(getActivity());
         setTitle();
         if (screen == Screen.IMOD) {
             getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
@@ -207,6 +208,11 @@ public class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 tabletMode.setSummary(String.format(getString(R.string.pref_use_tablet_mode_summary),
                         Build.MODEL, getResources().getBoolean(R.bool.tablet_mode_default) ? "tablet/phablet" : "phone",
                         (int) getResources().getDisplayMetrics().xdpi, Math.min(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)));
+                FingerprintManagerCompat fpm = FingerprintManagerCompat.from(getActivity());
+                if (!fpm.isHardwareDetected() || !fpm.hasEnrolledFingerprints()) {
+                    getPreferenceScreen().removePreference(findPreference(Common.SHADOW_FINGERPRINT));
+                    getPreferenceScreen().removePreference(findPreference(Common.CATEGORY_FINGERPRINT));
+                }
                 break;
             case OPTIONS:
                 Preference el = findPreference(Common.ENABLE_LOGGING);
