@@ -211,4 +211,7 @@
     <string name="toast_master_switch_off">MasterSwitch disabled</string>
     <string name="toast_master_switch_on">MasterSwitch re-enabled</string>
 
+    <!-- Device admin external -->
+    <string name="maxlock_protected_admin">This admin is protected from being disabled. You can disable it from inside the MaxLock app, when tapping the \"%1$s\" option.</string>
+
 </resources>

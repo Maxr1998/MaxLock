@@ -209,4 +209,7 @@
     <string name="toast_master_switch_off">MasterSwitch aus</string>
     <string name="toast_master_switch_on">MasterSwitch an</string>
 
+    <!-- Device admin external -->
+    <string name="maxlock_protected_admin">Dieser Admin ist vor Deaktivierung geschützt. Du kannst in innerhalb der MaxLock App mit der Option \"%1$s\" deaktivieren.</string>
+
 </resources>

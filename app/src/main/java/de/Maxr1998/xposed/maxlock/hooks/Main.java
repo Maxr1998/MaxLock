@@ -44,6 +44,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public void handleLoadPackage(final LoadPackageParam lPParam) throws Throwable {
         if (lPParam.packageName.equals(MaxLock.PACKAGE_NAME)) {
             MaxLock.init(lPParam);
+        } else if (lPParam.packageName.equals(DeviceAdminProtection.PACKAGE_NAME)) {
+            DeviceAdminProtection.init(lPParam);
         } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 SystemUI.init(prefsApps, lPParam);
