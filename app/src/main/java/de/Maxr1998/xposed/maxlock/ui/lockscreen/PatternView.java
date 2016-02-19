@@ -1,6 +1,6 @@
 /*
  * MaxLock, an Xposed applock module for Android
- * Copyright (C) 2014-2015  Maxr1998
+ * Copyright (C) 2014-2016 Max Rumpf alias Maxr1998
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,13 @@ import de.Maxr1998.xposed.maxlock.Common;
 public class PatternView extends LockPatternView {
 
     private final LockView mLockView;
+    private final Runnable mLockPatternViewReloader = new Runnable() {
+        @Override
+        public void run() {
+            clearPattern();
+            mPatternListener.onPatternCleared();
+        }
+    };
     private final OnPatternListener mPatternListener = new OnPatternListener() {
         @Override
         public void onPatternStart() {
@@ -56,13 +63,6 @@ public class PatternView extends LockPatternView {
         public void onPatternDetected(List<Cell> pattern) {
             mLockView.setPattern(pattern, PatternView.this);
 
-        }
-    };
-    private final Runnable mLockPatternViewReloader = new Runnable() {
-        @Override
-        public void run() {
-            clearPattern();
-            mPatternListener.onPatternCleared();
         }
     };
 
