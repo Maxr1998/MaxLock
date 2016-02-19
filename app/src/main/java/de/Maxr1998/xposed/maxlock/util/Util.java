@@ -23,9 +23,7 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -40,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
@@ -145,34 +144,38 @@ public abstract class Util {
         return result.describeContents() == InputMethodManager.RESULT_HIDDEN;
     }
 
-    public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
-        String backgroundType = getPreferences(context).getString(Common.BACKGROUND, "wallpaper");
-        Bitmap bitmap;
-        switch (backgroundType) {
+    public static void getBackground(final ImageView background) {
+        switch (getPreferences(background.getContext()).getString(Common.BACKGROUND, "")) {
+            case "color":
+                background.setBackgroundColor(getPreferences(background.getContext()).getInt(Common.BACKGROUND_COLOR, ContextCompat.getColor(background.getContext(), R.color.accent)));
+                break;
             case "custom":
                 try {
-                    bitmap = BitmapFactory.decodeStream(context.openFileInput("background"));
+                    background.setImageBitmap(BitmapFactory.decodeStream(background.getContext().openFileInput("background")));
                 } catch (IOException | OutOfMemoryError e) {
-                    bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                    bitmap.eraseColor(getPreferences(context).getInt(Common.BACKGROUND_COLOR, 0));
-                    Toast.makeText(context, "Error loading background image, " + (e instanceof IOException ? ", IOException." : "is it to big?"), Toast.LENGTH_LONG).show();
+                    background.setBackgroundColor(ContextCompat.getColor(background.getContext(), R.color.accent));
+                    Toast.makeText(background.getContext(), "Error loading background image, " + (e instanceof IOException ? ", IOException." : "is it to big?"), Toast.LENGTH_LONG).show();
                 }
-                break;
-            case "color":
-                bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                bitmap.eraseColor(getPreferences(context).getInt(Common.BACKGROUND_COLOR, 0));
                 break;
             default:
-                Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
-                if (wallpaper == null) {
-                    bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                    bitmap.eraseColor(ContextCompat.getColor(context, R.color.accent));
-                } else {
-                    bitmap = ((BitmapDrawable) wallpaper).getBitmap();
-                }
+                new Thread() {
+                    @Override
+                    public void run() {
+                        final Drawable wallpaper = WallpaperManager.getInstance(background.getContext()).getDrawable();
+                        background.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (wallpaper != null) {
+                                    background.setImageDrawable(wallpaper);
+                                } else {
+                                    background.setBackgroundColor(ContextCompat.getColor(background.getContext(), R.color.accent));
+                                }
+                            }
+                        });
+                    }
+                }.start();
                 break;
         }
-        return new BitmapDrawable(context.getResources(), bitmap);
     }
 
     // Lock

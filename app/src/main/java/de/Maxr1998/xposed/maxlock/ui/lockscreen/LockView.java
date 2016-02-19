@@ -26,7 +26,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
@@ -104,7 +103,6 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         }
         LayoutInflater.from(getThemedContext()).inflate(R.layout.fragment_lock, this, true);
 
-        final ImageView background = (ImageView) findViewById(R.id.background);
         TextView mTitleTextView = (TextView) findViewById(R.id.title_view);
         mInputBar = (ViewGroup) findViewById(R.id.input_bar);
         mInputTextView = (TextView) findViewById(R.id.input_view);
@@ -112,18 +110,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         mContainer = (FrameLayout) findViewById(R.id.container);
 
         // Background
-        new Thread() {
-            @Override
-            public void run() {
-                final Drawable backgroundDrawable = Util.getBackground(getContext(), screenSize.x, screenSize.y);
-                background.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        background.setImageDrawable(backgroundDrawable);
-                    }
-                });
-            }
-        }.start();
+        Util.getBackground((ImageView) findViewById(R.id.background));
 
         // Gaps for Status and Nav bar
         if (!getContext().getClass().getName().equals(SettingsActivity.class.getName())) {
