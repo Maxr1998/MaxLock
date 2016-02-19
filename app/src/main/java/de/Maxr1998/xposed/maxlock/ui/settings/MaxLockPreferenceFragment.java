@@ -198,6 +198,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                                 intent.setType("image/*");
                                 startActivityForResult(intent, WALLPAPER_REQUEST_CODE);
+                            } else {
+                                FileUtils.deleteQuietly(new File(getActivity().getFilesDir(), "background"));
                             }
                             findPreference(Common.BACKGROUND_COLOR).setEnabled(newValue.toString().equals("color"));
                         }
