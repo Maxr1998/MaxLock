@@ -89,6 +89,7 @@ public abstract class Common {
     /* ABOUT */
     public static final String SHOW_CHANGELOG = "show_changelog";
     public static final String VISIT_WEBSITE = "visit_website";
+    public static final String TECHNOSPARKS_PROFILE = "technosparks_profile";
 
     public static final String DONATE = "donate_upgrade_pro";
     public static final String DONATED = "donated";

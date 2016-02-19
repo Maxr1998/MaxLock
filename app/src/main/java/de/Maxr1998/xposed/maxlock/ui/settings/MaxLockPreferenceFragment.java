@@ -402,13 +402,13 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 .build();
                         devWebsite.launchUrl(getActivity(), Uri.parse("http://maxr1998.de/"));
                         return true;
-                    case "technosparks_profile":
-                        CustomTabsIntent greenwapWebsite = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
+                    case Common.TECHNOSPARKS_PROFILE:
+                        CustomTabsIntent technosparksSite = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
                                 .setShowTitle(true)
                                 .enableUrlBarHiding()
                                 .setToolbarColor(Color.parseColor("#6d993f"))
                                 .build();
-                        greenwapWebsite.launchUrl(getActivity(), Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
+                        technosparksSite.launchUrl(getActivity(), Uri.parse("http://www.technosparks.net/"));
                         return true;
                 }
                 break;
