@@ -112,7 +112,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         mContainer = (FrameLayout) findViewById(R.id.container);
 
         // Background
-        new Thread(new Runnable() {
+        new Thread() {
             @Override
             public void run() {
                 final Drawable backgroundDrawable = Util.getBackground(getContext(), screenSize.x, screenSize.y);
@@ -123,7 +123,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                     }
                 });
             }
-        }).run();
+        }.start();
 
         // Gaps for Status and Nav bar
         if (!getContext().getClass().getName().equals(SettingsActivity.class.getName())) {
