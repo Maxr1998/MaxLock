@@ -22,7 +22,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -38,18 +38,15 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
-    private final String[] app_names = {
-            "com.android.packageinstaller", "com.android.settings", "de.robv.android.xposed.installer"
-    };
+    private final String[] app_names = {"null", "com.android.settings", "de.robv.android.xposed.installer"};
     private DevicePolicyManager devicePolicyManager;
     private ComponentName deviceAdmin;
-    private SharedPreferences prefsApps;
 
     @SuppressLint("WorldReadableFiles")
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_first_start_setup, container, false);
-        prefsApps = MLPreferences.getPrefsApps(getActivity());
+        app_names[0] = getPackageInstallerID();
         devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), SettingsActivity.UninstallProtectionReceiver.class);
         CheckBox[] app_cbs = {
@@ -58,13 +55,13 @@ public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheck
                 (CheckBox) rootView.findViewById(R.id.first_start_app_xposed),
                 (CheckBox) rootView.findViewById(R.id.first_start_app_device_admin)
         };
+        for (int i = 0; i < 3; i++) {
+            app_cbs[i].setChecked(MLPreferences.getPrefsApps(getActivity()).getBoolean(app_names[i], false));
+        }
+        app_cbs[3].setChecked(devicePolicyManager.isAdminActive(deviceAdmin));
         for (CheckBox cb : app_cbs) {
             cb.setOnCheckedChangeListener(this);
         }
-        for (int android = 0; android < 3; android++) {
-            app_cbs[android].setChecked(prefsApps.getBoolean(app_names[android], false));
-        }
-        app_cbs[3].setChecked(devicePolicyManager.isAdminActive(deviceAdmin));
         return rootView;
     }
 
@@ -79,7 +76,7 @@ public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheck
                 c++;
             case R.id.first_start_app_package:
                 c++;
-                prefsApps.edit().putBoolean(app_names[c], b).commit();
+                MLPreferences.getPrefsApps(getActivity()).edit().putBoolean(app_names[c], b).commit();
                 break;
             case R.id.first_start_app_device_admin:
                 if (b) {
@@ -90,6 +87,14 @@ public class FragmentAppSetup extends Fragment implements CompoundButton.OnCheck
                     devicePolicyManager.removeActiveAdmin(deviceAdmin);
                 }
                 break;
+        }
+    }
+
+    private String getPackageInstallerID() {
+        try {
+            return getActivity().getPackageManager().getPackageInfo("com.google.android.packageinstaller", 0).packageName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "com.android.packageinstaller";
         }
     }
 }
