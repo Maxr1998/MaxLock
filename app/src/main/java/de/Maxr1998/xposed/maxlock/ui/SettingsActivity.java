@@ -216,9 +216,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             }
         }
         if (!IS_ACTIVE) {
-            View maxlockActive = findViewById(R.id.xposed_active);
-            maxlockActive.setVisibility(View.VISIBLE);
-            maxlockActive.setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.xposed_active).setVisibility(View.VISIBLE);
+            findViewById(R.id.xposed_active_message).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog help = new AlertDialog.Builder(SettingsActivity.this)
