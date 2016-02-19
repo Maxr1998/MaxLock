@@ -51,6 +51,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.SoftReference;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -77,6 +78,8 @@ public abstract class Util {
     public static final String LOG_TAG_ADMIN = "ML-DeviceAdmin";
     public static final String LOG_TAG_IAB = "ML-IAB";
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+    private static SoftReference<Drawable> WALLPAPER = new SoftReference<>(null);
 
     // UI
 
@@ -158,22 +161,27 @@ public abstract class Util {
                 }
                 break;
             default:
-                new Thread() {
-                    @Override
-                    public void run() {
-                        final Drawable wallpaper = WallpaperManager.getInstance(background.getContext()).getDrawable();
-                        background.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (wallpaper != null) {
-                                    background.setImageDrawable(wallpaper);
-                                } else {
-                                    background.setBackgroundColor(ContextCompat.getColor(background.getContext(), R.color.accent));
+                if (WALLPAPER.get() == null) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            final Drawable wallpaper = WallpaperManager.getInstance(background.getContext()).getDrawable();
+                            background.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (wallpaper != null) {
+                                        WALLPAPER = new SoftReference<>(wallpaper);
+                                        background.setImageDrawable(wallpaper);
+                                    } else {
+                                        background.setBackgroundColor(ContextCompat.getColor(background.getContext(), R.color.accent));
+                                    }
                                 }
-                            }
-                        });
-                    }
-                }.start();
+                            });
+                        }
+                    }.start();
+                } else {
+                    background.setImageDrawable(WALLPAPER.get());
+                }
                 break;
         }
     }
