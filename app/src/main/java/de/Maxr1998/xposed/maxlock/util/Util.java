@@ -22,7 +22,6 @@ import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,7 +29,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.ResultReceiver;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -66,6 +64,9 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferences;
+import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeys;
+import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeysPerApp;
 
 public abstract class Util {
 
@@ -77,14 +78,6 @@ public abstract class Util {
     public static final String LOG_TAG_ADMIN = "ML-DeviceAdmin";
     public static final String LOG_TAG_IAB = "ML-IAB";
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-    private static SharedPreferences PREFS, PREFS_KEY, PREFS_PER_APP;
-
-    // Prefs
-    private static void loadPrefs(Context context) {
-        PREFS = PreferenceManager.getDefaultSharedPreferences(context);
-        PREFS_KEY = context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE);
-        PREFS_PER_APP = context.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
-    }
 
     // UI
 
@@ -108,11 +101,10 @@ public abstract class Util {
     }
 
     public static void setTheme(Activity a) {
-        loadPrefs(a);
-        if (!PREFS.getBoolean(Common.USE_DARK_STYLE, false)) {
+        if (!getPreferences(a).getBoolean(Common.USE_DARK_STYLE, false)) {
             a.setTheme(R.style.AppTheme);
         } else {
-            if (!PREFS.getBoolean(Common.USE_AMOLED_BLACK, false)) {
+            if (!getPreferences(a).getBoolean(Common.USE_AMOLED_BLACK, false)) {
                 a.setTheme(R.style.AppTheme_Dark);
             } else {
                 a.setTheme(R.style.AppTheme_Dark_AMOLED);
@@ -154,8 +146,7 @@ public abstract class Util {
     }
 
     public static Drawable getBackground(Context context, int viewWidth, int viewHeight) {
-        loadPrefs(context);
-        String backgroundType = PREFS.getString(Common.BACKGROUND, "wallpaper");
+        String backgroundType = getPreferences(context).getString(Common.BACKGROUND, "wallpaper");
         Bitmap bitmap;
         switch (backgroundType) {
             case "custom":
@@ -163,13 +154,13 @@ public abstract class Util {
                     bitmap = BitmapFactory.decodeStream(context.openFileInput("background"));
                 } catch (IOException | OutOfMemoryError e) {
                     bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                    bitmap.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
+                    bitmap.eraseColor(getPreferences(context).getInt(Common.BACKGROUND_COLOR, 0));
                     Toast.makeText(context, "Error loading background image, " + (e instanceof IOException ? ", IOException." : "is it to big?"), Toast.LENGTH_LONG).show();
                 }
                 break;
             case "color":
                 bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
-                bitmap.eraseColor(PREFS.getInt(Common.BACKGROUND_COLOR, 0));
+                bitmap.eraseColor(getPreferences(context).getInt(Common.BACKGROUND_COLOR, 0));
                 break;
             default:
                 Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
@@ -211,16 +202,15 @@ public abstract class Util {
     }
 
     public static void receiveAndSetPattern(Context context, char[] pattern, String app) {
-        loadPrefs(context);
         StringBuilder patternKey = new StringBuilder();
         for (char x : pattern) {
             patternKey.append(x);
         }
         if (app == null) {
-            PREFS.edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PATTERN).apply();
-            PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
+            getPreferences(context).edit().putString(Common.LOCKING_TYPE, Common.PREF_VALUE_PATTERN).apply();
+            getPreferencesKeys(context).edit().putString(Common.KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
         } else {
-            PREFS_PER_APP.edit().putString(app, Common.PREF_VALUE_PATTERN).putString(app + Common.APP_KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
+            getPreferencesKeysPerApp(context).edit().putString(app, Common.PREF_VALUE_PATTERN).putString(app + Common.APP_KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
         }
     }
 
@@ -235,7 +225,6 @@ public abstract class Util {
     }
 
     public static void setPassword(final Context context, final String app) {
-        loadPrefs(context);
         @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_set_password, null);
 
         final AlertDialog dialog = new AlertDialog.Builder(context)
@@ -266,10 +255,10 @@ public abstract class Util {
                 } else {
                     dialog.dismiss();
                     if (app == null) {
-                        PREFS_KEY.edit().putString(Common.KEY_PREFERENCE, shaHash(v1)).apply();
-                        PREFS.edit().putString(Common.LOCKING_TYPE, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).apply();
+                        getPreferencesKeys(context).edit().putString(Common.KEY_PREFERENCE, shaHash(v1)).apply();
+                        getPreferences(context).edit().putString(Common.LOCKING_TYPE, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).apply();
                     } else {
-                        PREFS_PER_APP.edit().putString(app, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
+                        getPreferencesKeysPerApp(context).edit().putString(app, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
                     }
                     Toast.makeText(context, R.string.toast_password_changed, Toast.LENGTH_SHORT).show();
                 }
