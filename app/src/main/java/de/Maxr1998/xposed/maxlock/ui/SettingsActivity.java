@@ -98,20 +98,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (!IS_ACTIVE) {
-            View maxlockActive = findViewById(R.id.xposed_active);
-            maxlockActive.setVisibility(View.VISIBLE);
-            maxlockActive.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog help = new AlertDialog.Builder(SettingsActivity.this)
-                            .setTitle(R.string.maxlock_inactive)
-                            .setMessage(R.string.dialog_message_not_active)
-                            .create();
-                    help.show();
-                }
-            });
-        }
 
         // Hide multipane view
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -228,6 +214,20 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             if (getSupportActionBar() != null) {
                 getSupportActionBar().show();
             }
+        }
+        if (!IS_ACTIVE) {
+            View maxlockActive = findViewById(R.id.xposed_active);
+            maxlockActive.setVisibility(View.VISIBLE);
+            maxlockActive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog help = new AlertDialog.Builder(SettingsActivity.this)
+                            .setTitle(R.string.maxlock_inactive)
+                            .setMessage(R.string.dialog_message_not_active)
+                            .create();
+                    help.show();
+                }
+            });
         }
     }
 

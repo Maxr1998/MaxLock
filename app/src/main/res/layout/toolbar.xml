@@ -12,18 +12,27 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         tools:ignore="UnusedAttribute" />
 
-    <TextView
+    <RelativeLayout
         android:id="@+id/xposed_active"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:gravity="center_horizontal"
-        android:paddingBottom="8dp"
-        android:text="@string/maxlock_inactive"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold|italic"
+        android:orientation="vertical"
         android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:drawableLeft="@drawable/ic_error_outline_24dp"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/ic_error_outline_24dp"
+            android:text="@string/maxlock_inactive"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold|italic" />
+    </RelativeLayout>
 </merge>
