@@ -11,15 +11,22 @@ android {
         targetSdkVersion 23
         versionCode 39
         versionName "6.1.1"
+        //noinspection GroovyAssignabilityCheck
+        signingConfig signingConfigs.main
+        resConfigs "de", "es", "fa", "fr", "it", "ja", "zh-rCN", "zh-rTW"
+        vectorDrawables {
+            generatedDensities = ["mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"]
+        }
     }
     buildTypes {
         release {
             debuggable false
-            signingConfig signingConfigs.main
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             debuggable true
-            signingConfig signingConfigs.main
             versionNameSuffix "-beta"
         }
     }
