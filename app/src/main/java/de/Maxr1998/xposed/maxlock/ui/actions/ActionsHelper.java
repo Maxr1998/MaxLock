@@ -31,12 +31,10 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 public abstract class ActionsHelper {
 
     public static final String ACTION_EXTRA_KEY = "de.Maxr1998.xposed.maxlock.extra.STRING_MESSAGE";
-
     public static final int ACTION_TOGGLE_MASTER_SWITCH = 0x02576;
     public static final int ACTION_MASTER_SWITCH_ON = 0x02502;
     public static final int ACTION_MASTER_SWITCH_OFF = 0x25055;
     public static final int ACTION_IMOD_RESET = 0x01200;
-
 
     @SuppressLint("CommitPrefEdits")
     public static void callAction(final int which, final Context context) {
@@ -59,7 +57,6 @@ public abstract class ActionsHelper {
                 break;
         }
     }
-
 
     public static int getKey(@IdRes int id) {
         switch (id) {
