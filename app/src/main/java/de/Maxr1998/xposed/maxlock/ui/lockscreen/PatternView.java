@@ -35,6 +35,13 @@ import de.Maxr1998.xposed.maxlock.Common;
 public class PatternView extends LockPatternView {
 
     private final LockView mLockView;
+    private final Runnable mLockPatternViewReloader = new Runnable() {
+        @Override
+        public void run() {
+            clearPattern();
+            mPatternListener.onPatternCleared();
+        }
+    };
     private final OnPatternListener mPatternListener = new OnPatternListener() {
         @Override
         public void onPatternStart() {
@@ -58,13 +65,6 @@ public class PatternView extends LockPatternView {
 
         }
     };
-    private final Runnable mLockPatternViewReloader = new Runnable() {
-        @Override
-        public void run() {
-            clearPattern();
-            mPatternListener.onPatternCleared();
-        }
-    };
 
     public PatternView(Context context, LockView lockView) {
         super(context);
@@ -80,17 +80,16 @@ public class PatternView extends LockPatternView {
                 break;
             }
         }
-        if (mLockView.getPrefs().getBoolean(Common.INVERT_COLOR, false)) {
-            try {
-                Field regularColor = getClass().getSuperclass().getDeclaredField("mRegularColor");
-                regularColor.setAccessible(true);
-                regularColor.set(this, Color.BLACK);
-                Field successColor = getClass().getSuperclass().getDeclaredField("mSuccessColor");
-                successColor.setAccessible(true);
-                successColor.set(this, Color.BLACK);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            int color = getContext().obtainStyledAttributes(new int[]{android.R.attr.textColorPrimary}).getColor(0, Color.WHITE);
+            Field regularColor = getClass().getSuperclass().getDeclaredField("mRegularColor");
+            regularColor.setAccessible(true);
+            regularColor.set(this, color);
+            Field successColor = getClass().getSuperclass().getDeclaredField("mSuccessColor");
+            successColor.setAccessible(true);
+            successColor.set(this, color);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         setInStealthMode(!mLockView.getPrefs().getBoolean(Common.SHOW_PATTERN_PATH, true));
         setTactileFeedbackEnabled(mLockView.getPrefs().getBoolean(Common.ENABLE_PATTERN_FEEDBACK, true));
