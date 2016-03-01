@@ -26,8 +26,6 @@ import android.graphics.Paint;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
@@ -45,12 +43,10 @@ import de.Maxr1998.xposed.maxlock.R;
 public class KnockCodeHelper {
     private final ArrayList<Float> knockCodeX;
     private final ArrayList<Float> knockCodeY;
-    private final boolean mTouchHighlightVisible;
     private final LockView mLockView;
     private final FrameLayout mContainer;
     private final Context mContext;
     private final Paint touchColorLegacy;
-    private final RippleDrawable highlightLP;
     private int containerX, containerY;
     private Bitmap highlightLegacy;
 
@@ -63,13 +59,9 @@ public class KnockCodeHelper {
         knockCodeX = new ArrayList<>();
         knockCodeY = new ArrayList<>();
 
-        mTouchHighlightVisible = mLockView.getPrefs().getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true);
-        if (mTouchHighlightVisible) {
+        if (mLockView.getPrefs().getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                highlightLP = new RippleDrawable(ContextCompat.getColorStateList(mContext, R.color.legacy_highlight_dark), null, new ColorDrawable(Color.WHITE));
-                mContainer.setForeground(highlightLP);
-                highlightLP.setState(new int[]{});
-
+                mContainer.setForeground(mContext.obtainStyledAttributes(new int[]{R.attr.highlightDrawable}).getDrawable(0));
                 // Destroy others
                 touchColorLegacy = null;
             } else {
@@ -77,21 +69,21 @@ public class KnockCodeHelper {
                 touchColorLegacy.setColor(ContextCompat.getColor(mContext, R.color.legacy_highlight_dark));
                 touchColorLegacy.setStrokeWidth(1);
                 touchColorLegacy.setStyle(Paint.Style.FILL_AND_STROKE);
-
-                // Destroy others
-                highlightLP = null;
             }
         } else {
-            // Destroy others
-            highlightLP = null;
             touchColorLegacy = null;
         }
         mContainer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent e) {
                 if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    if (mTouchHighlightVisible) {
-                        onNewHighlight(e.getRawX(), e.getRawY());
+                    if (touchColorLegacy != null) {
+                        float x = e.getRawX(), y = e.getRawY();
+                        touchColorLegacy.setShader(new RadialGradient(x - containerX, y - containerY, 200,
+                                ContextCompat.getColor(mContext, R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                        Canvas c = new Canvas(highlightLegacy);
+                        c.drawCircle(x - containerX, y - containerY, 100, touchColorLegacy);
+                        mContainer.invalidate();
                     }
 
                     // Center values
@@ -191,19 +183,6 @@ public class KnockCodeHelper {
             mContainer.setBackgroundDrawable(new BitmapDrawable(mContainer.getResources(), highlightLegacy));
         } else {
             mContainer.setBackground(new BitmapDrawable(mContainer.getResources(), highlightLegacy));
-        }
-    }
-
-    public void onNewHighlight(float x, float y) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            highlightLP.setState(new int[]{android.R.attr.state_pressed});
-            highlightLP.setHotspot(x, y);
-        } else {
-            touchColorLegacy.setShader(new RadialGradient(x - containerX, y - containerY, 200,
-                    ContextCompat.getColor(mContext, R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
-            Canvas c = new Canvas(highlightLegacy);
-            c.drawCircle(x - containerX, y - containerY, 100, touchColorLegacy);
-            mContainer.invalidate();
         }
     }
 

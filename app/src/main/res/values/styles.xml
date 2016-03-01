@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppTheme.Base" />
 
@@ -52,29 +52,22 @@
     <style name="AppTheme.FirstStart" parent="AppTheme.Base" />
 
     <style name="AppTheme.FirstStart.TitleText">
-        <item name="android:maxLines">3</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">sans-serif</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="AppTheme.FirstStart.SubtitleText">
-        <item name="android:maxLines">3</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:layout_weight">0.4</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="FakeDieDialog" parent="android:Theme.DeviceDefault.Dialog.NoActionBar" />
@@ -95,7 +88,7 @@
         <item name="android:textSize">36sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:background">?highlightDrawable</item>
-        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="Preference">

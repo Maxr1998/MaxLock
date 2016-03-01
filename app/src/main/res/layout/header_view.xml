@@ -19,7 +19,7 @@
         android:drawableStart="@mipmap/ic_launcher"
         android:maxLines="2"
         android:text="@string/placeholder"
-        android:textColor="@android:color/white"
+        android:textColor="?android:textColorPrimary"
         android:textSize="36sp" />
 
     <LinearLayout
@@ -49,9 +49,10 @@
             android:id="@+id/delete_input"
             android:layout_width="64dp"
             android:layout_height="match_parent"
-            android:background="@drawable/highlight_light"
+            android:background="?highlightDrawable"
             android:contentDescription="delete"
             android:src="@drawable/ic_delete_36dp"
+            android:tint="?android:textColorPrimary"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </LinearLayout>

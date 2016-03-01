@@ -35,13 +35,6 @@ import de.Maxr1998.xposed.maxlock.Common;
 public class PatternView extends LockPatternView {
 
     private final LockView mLockView;
-    private final Runnable mLockPatternViewReloader = new Runnable() {
-        @Override
-        public void run() {
-            clearPattern();
-            mPatternListener.onPatternCleared();
-        }
-    };
     private final OnPatternListener mPatternListener = new OnPatternListener() {
         @Override
         public void onPatternStart() {
@@ -65,6 +58,13 @@ public class PatternView extends LockPatternView {
 
         }
     };
+    private final Runnable mLockPatternViewReloader = new Runnable() {
+        @Override
+        public void run() {
+            clearPattern();
+            mPatternListener.onPatternCleared();
+        }
+    };
 
     public PatternView(Context context, LockView lockView) {
         super(context);
@@ -82,9 +82,12 @@ public class PatternView extends LockPatternView {
         }
         if (mLockView.getPrefs().getBoolean(Common.INVERT_COLOR, false)) {
             try {
-                Field field = getClass().getDeclaredField("mRegularColor");
-                field.setAccessible(true);
-                field.set(this, Color.BLACK);
+                Field regularColor = getClass().getSuperclass().getDeclaredField("mRegularColor");
+                regularColor.setAccessible(true);
+                regularColor.set(this, Color.BLACK);
+                Field successColor = getClass().getSuperclass().getDeclaredField("mSuccessColor");
+                successColor.setAccessible(true);
+                successColor.set(this, Color.BLACK);
             } catch (Exception e) {
                 e.printStackTrace();
             }

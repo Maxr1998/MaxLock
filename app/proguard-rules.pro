@@ -17,3 +17,8 @@
 -keepclassmembers class de.Maxr1998.xposed.maxlock.ui.SettingsActivity {
     private static boolean IS_ACTIVE;
 }
+
+-keepclassmembers class  com.haibison.android.lockpattern.widget.LockPatternView {
+    private int mRegularColor;
+    private int mSuccessColor;
+}

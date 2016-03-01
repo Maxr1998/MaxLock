@@ -23,9 +23,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
@@ -236,12 +234,6 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
             fv.setScaleType(ImageView.ScaleType.CENTER);
             ((FrameLayout) findViewById(R.id.fingerprint_stub)).addView(fv);
         }
-
-        if (getPrefs().getBoolean(Common.INVERT_COLOR, false)) {
-            mTitleTextView.setTextColor(Color.BLACK);
-            mInputTextView.setTextColor(Color.BLACK);
-            mDeleteButton.setColorFilter(android.R.color.black, PorterDuff.Mode.SRC_ATOP);
-        }
     }
 
     public SharedPreferences getPrefs() {
@@ -314,7 +306,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
     // Helpers
     private Context getThemedContext() {
-        return new ContextThemeWrapper(getContext(), R.style.AppTheme_Dark);
+        return new ContextThemeWrapper(getContext(), getPrefs().getBoolean(Common.INVERT_COLOR, false) ? R.style.AppTheme : R.style.AppTheme_Dark);
     }
 
     public int getDimens(@DimenRes int id) {
