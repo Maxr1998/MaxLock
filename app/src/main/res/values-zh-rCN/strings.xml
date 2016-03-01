@@ -7,19 +7,19 @@
     <string name="placeholder">占位符</string>
 	
     <string name="maxlock_inactive">MaxLock未激活</string>
-	<string name="dialog_message_not_active">Android系统不能挂钩MaxLock,这可能有几方面原因:\n
+    <string name="dialog_message_not_active">Android系统不能挂钩MaxLock,这可能有几方面原因:\n
     &#x2022; <i>Xposed框架未安装</i>\n
     &#x2022; <i>Xposed安装并激活,在Xposed安装器\"模块\"选项卡中激活MaxLock或重启</i>\n
     &#x2022; <i>禁用Xposed框架安全模式,在XDA网站了解Xposed更多信息</i>\n
     &#x2022; <i>MaxLock可能遇到崩溃,那么您应该从屏幕底部给我一个bug报告</i></string>
-	<string name="sb_no_locking_type">没有锁定特定类型</string>
+    <string name="sb_no_locking_type">没有锁定特定类型</string>
     <string name="sb_no_locked_apps">没有选择锁定应用</string>
-	<string name="dialog_like_app">您喜欢这个应用吗?</string>
+    <string name="dialog_like_app">您喜欢这个应用吗?</string>
     <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠:)</string>
     <string name="dialog_cb_never_again">不再显示</string>
     <string name="dialog_button_donate">捐赠</string>
     <string name="dialog_button_rate">评价</string>
-	<string name="notification_lock_new_app_title">锁定新安装的应用?</string>
+    <string name="notification_lock_new_app_title">锁定新安装的应用?</string>
     <string name="notification_lock_new_app_action_never_again">不要显示</string>
     <string name="notification_lock_new_app_action_lock">锁定应用</string>
     <string name="toast_lock_new_app_locked_successfully">已成功锁定</string>
@@ -79,15 +79,15 @@
     <string name="pref_custom_color">自定义颜色</string>
     <string name="pref_use_tablet_mode">使用平板模式</string>
     <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">检测到%1$s这个%2$s设备的dpi为%3$d,显示宽度为%4$d像素</string>
-	<string name="pref_hide_status_bar">隐藏状态栏/全屏</string>
-	<string name="pref_invert_color">转换用户界面颜色</string>
-	<string name="pref_invert_color_summary">设置文本和分隔器的颜色为黑色</string>
-	<string name="pref_hide_title_bar">隐藏标题栏</string>
-	<string name="pref_category_password_and_pin">密码与PIN</string>
-	<string name="pref_quick_unlock">快速解锁</string>
-	<string name="pref_category_pin_only">仅PIN</string>
-	<string name="pref_shuffle_pin">随机数字</string>
-	<string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
+    <string name="pref_hide_status_bar">隐藏状态栏/全屏</string>
+    <string name="pref_invert_color">转换用户界面颜色</string>
+    <string name="pref_invert_color_summary">设置文本和分隔器的颜色为黑色</string>
+    <string name="pref_hide_title_bar">隐藏标题栏</string>
+    <string name="pref_category_password_and_pin">密码与PIN</string>
+    <string name="pref_quick_unlock">快速解锁</string>
+    <string name="pref_category_pin_only">仅PIN</string>
+    <string name="pref_shuffle_pin">随机数字</string>
+    <string name="pref_category_pin_and_knock_code">PIN和轻敲代码</string>
     <string name="pref_hide_input_bar">隐藏输入栏</string>
     <string name="pref_hide_input_bar_summary">隐藏清除按钮!</string>
     <string name="pref_category_knock_code_only">仅轻敲代码</string>
@@ -96,6 +96,8 @@
     <string name="pref_category_pattern_only">仅图案</string>
     <string name="pref_show_path">图案可见</string>
     <string name="pref_haptic_feedback">滑动时振动</string>
+    <string name="pref_category_fingerprint">指纹</string>
+    <string name="pref_disable_fingerprint">禁用指纹解锁</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">锁定设置</string>
     <string name="pref_category_logging">日志记录</string>
@@ -130,7 +132,7 @@
     <string name="pref_show_reset_notification_summary">在I.Mod计时器复位时显示一个通知</string>
     <string name="pref_reset_screen_off">自动复位I.Mod</string>
     <string name="pref_reset_screen_off_summary">在关闭屏幕时复位I.Mod计时器</string>
-	<string name="pref_hide_recents_thumbnails">隐藏最近缩略图</string>
+    <string name="pref_hide_recents_thumbnails">隐藏最近缩略图</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">锁定应用</string>
     <string name="pref_choose_apps">锁定应用</string>
@@ -140,7 +142,7 @@
     <string name="menu_backup_list">备份列表</string>
     <string name="menu_restore_list">恢复列表</string>
     <string name="menu_clear_list">清除列表</string>
-	<string name="dialog_storage_permission_backup_restore">MaxLock需要访问外部存储读/写备份文件,继续?</string>
+    <string name="dialog_storage_permission_backup_restore">MaxLock需要访问外部存储读/写备份文件,继续?</string>
     <string name="toast_no_files_to_backup">未找到备份文件</string>
     <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者!</string>
     <string name="toast_backup_success">备份成功</string>
@@ -168,6 +170,7 @@
     <string name="pref_about_summary">点击这里查看贡献,使用的库和许可证!</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_visit_website">访问Maxr1998网站</string>
+    <string name="pref_show_changelog">显示更新日志</string>
     <string name="pref_category_credits">贡献</string>
     <string name="pref_category_translations">翻译人员</string>
     <string name="pref_category_licenses">许可证</string>
@@ -175,17 +178,17 @@
     <string name="donate_status_donated">已捐赠</string>
     <string name="donate_status_not_donated">考虑捐赠以支持进一步开发, 谢谢:）</string>
     <string name="dialog_message_already_bought">你已经拥有这个捐赠选项
-		您可以取消和选择其它产品或再次消费(删除)目前的购买,再次购买一个,\n\n消费和回购?</string>
+	您可以取消和选择其它产品或再次消费(删除)目前的购买,再次购买一个,\n\n消费和回购?</string>
     <string name="toast_no_network_connected">您目前没有连接到任何网络</string>
     <string name="pref_enable_pro">开启专业版</string>
     <string name="pref_enable_pro_summary">即使您没有购买也可以使用专业版功能</string>
     <string name="pref_prevent_uninstall">保护应用程序被卸载</string>
     <string name="pref_prevent_uninstall_summary">MaxLock在设备管理器权限打勾,应用程序将无法卸载
-		卸载这个应用您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
+	卸载这个应用您必须在\“设置→安全→设备管理器\”这里或禁用管理员权限,然后卸载</string>
     <string name="pref_uninstall">卸载</string>
     <string name="device_admin_description">保护MaxLock防止被卸载和禁用</string>
     <string name="pref_send_feedback">发送反馈/报告错误</string>
-	<string name="dialog_storage_permission_bug_report">MaxLock需要访问外部存储来保存日志和设备信息, 继续?</string>
+    <string name="dialog_storage_permission_bug_report">MaxLock需要访问外部存储来保存日志和设备信息, 继续?</string>
     <string name="dialog_message_bugreport_finished_select_email">日志和设备信息已导出!现在选择您喜欢的电子邮件应用将日志发送给我\n\n
     <i>注:不会收集私人信息</i></string>
     <string name="share_menu_title_send_email">发送邮件…</string>
@@ -208,4 +211,7 @@
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关已重新启用</string>
 
+    <!-- Device admin external -->
+    <string name="maxlock_protected_admin">此管理保护被禁用!您可以从MaxLock应用程序内点击\"%1$s\"选项时禁用它</string>
+	
 </resources>
