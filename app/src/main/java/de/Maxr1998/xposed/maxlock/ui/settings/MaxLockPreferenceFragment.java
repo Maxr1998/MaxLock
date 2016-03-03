@@ -400,7 +400,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 .enableUrlBarHiding()
                                 .setToolbarColor(Color.parseColor("#ffc107"))
                                 .build();
-                        devWebsite.launchUrl(getActivity(), Uri.parse("http://maxr1998.de/"));
+                        devWebsite.launchUrl(getActivity(), Common.MAXR1998_URI);
                         return true;
                     case Common.TECHNOSPARKS_PROFILE:
                         CustomTabsIntent technosparksSite = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
@@ -408,7 +408,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 .enableUrlBarHiding()
                                 .setToolbarColor(Color.parseColor("#6d993f"))
                                 .build();
-                        technosparksSite.launchUrl(getActivity(), Uri.parse("http://www.technosparks.net/"));
+                        technosparksSite.launchUrl(getActivity(), Common.TECHNO_SPARKS_URI);
                         return true;
                 }
                 break;

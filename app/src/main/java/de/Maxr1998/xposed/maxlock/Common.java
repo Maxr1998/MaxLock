@@ -17,7 +17,10 @@
 
 package de.Maxr1998.xposed.maxlock;
 
+import android.net.Uri;
 import android.os.Environment;
+
+import de.Maxr1998.xposed.maxlock.util.Util;
 
 public abstract class Common {
 
@@ -31,6 +34,9 @@ public abstract class Common {
     public static final String RATING_DIALOG_LAST_SHOWN = "rating_dialog_last_shown";
     public static final String RATING_DIALOG_SHOW_NEVER = "rating_dialog_show_never";
     public static final String PREVENT_APP_INSTALLED_NOTIFICATION = "prevent_app_installed_notification";
+    public static final String MASTER_SWITCH_ON = "master_switch_on";
+    public static final String KEY_PREFERENCE = "key";
+    public static final String APP_KEY_PREFERENCE = "_key";
     public static final String THEME_PKG = "theme_pkg";
 
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";
@@ -97,10 +103,6 @@ public abstract class Common {
     public static final String UNINSTALL = "uninstall";
     public static final String SEND_FEEDBACK = "send_feedback";
 
-    public static final String MASTER_SWITCH_ON = "master_switch_on";
-    public static final String KEY_PREFERENCE = "key";
-    public static final String APP_KEY_PREFERENCE = "_key";
-
     // Preference values //
     public static final String PREF_VALUE_PASSWORD = "password";
     public static final String PREF_VALUE_PASS_PIN = "pass_pin";
@@ -112,13 +114,20 @@ public abstract class Common {
     public static final String PREFS_KEY = "keys";
     public static final String PREFS_APPS = "packages";
     public static final String PREFS_KEYS_PER_APP = "per_app_settings";
-
     public static final String PREFS_THEME = "theme";
 
+    // Modes //
     public static final String LOCK_ACTIVITY_MODE = "la_mode";
     public static final String MODE_FAKE_CRASH = "fake-crash";
     public static final String MODE_UNLOCK = "force-unlock";
 
+    // Directories //
     public static final String EXTERNAL_FILES_DIR = Environment.getExternalStorageDirectory() + "/MaxLock/";
     public static final String BACKUP_DIR = EXTERNAL_FILES_DIR + "Backup/";
+
+    // URLS //
+    public static final Uri WEBSITE_URI = Uri.parse("http://maxlock.maxr1998.de/?client=inapp&lang=" + Util.getLanguageCode());
+    public static final Uri MAXR1998_URI = Uri.parse("http://maxr1998.de/");
+    public static final Uri TECHNO_SPARKS_URI = Uri.parse("http://www.technosparks.net/");
+
 }

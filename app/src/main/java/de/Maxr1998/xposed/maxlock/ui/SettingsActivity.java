@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -72,7 +71,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
-    private static final Uri WEBSITE_URI = Uri.parse("http://maxlock.maxr1998.de/?client=inapp&lang=" + Util.getLanguageCode());
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
     private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
@@ -110,8 +108,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 // Lockscreen not visible as well → run startup & show lockscreen
                 new Startup(this).execute();
                 UNLOCKED = false;
-                Fragment lockFragment = new Lockscreen();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, lockFragment, TAG_LOCK_FRAGMENT).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Lockscreen(), TAG_LOCK_FRAGMENT).commit();
             }
             // Hide Action bar
             if (getSupportActionBar() != null) {
@@ -128,10 +125,10 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                     return;
                 }
                 Bundle maxr1998Website = new Bundle();
-                maxr1998Website.putParcelable(CustomTabsService.KEY_URL, Uri.parse("http://maxr1998.de/"));
-                Bundle technosparksProfile = new Bundle();
-                technosparksProfile.putParcelable(CustomTabsService.KEY_URL, Uri.parse("http://greenwap.nfshost.com/about/shahmi"));
-                mSession.mayLaunchUrl(WEBSITE_URI, null, Arrays.asList(technosparksProfile, maxr1998Website));
+                maxr1998Website.putParcelable(CustomTabsService.KEY_URL, Common.MAXR1998_URI);
+                Bundle technoSparksProfile = new Bundle();
+                technoSparksProfile.putParcelable(CustomTabsService.KEY_URL, Common.TECHNO_SPARKS_URI);
+                mSession.mayLaunchUrl(Common.WEBSITE_URI, null, Arrays.asList(technoSparksProfile, maxr1998Website));
             }
 
             @Override
@@ -179,7 +176,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                         .enableUrlBarHiding()
                         .setToolbarColor(getResources().getColor(R.color.primary_red))
                         .build();
-                intent.launchUrl(this, WEBSITE_URI);
+                intent.launchUrl(this, Common.WEBSITE_URI);
                 return true;
             case android.R.id.home:
                 onBackPressed();
@@ -325,13 +322,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     }
 
     public static class Lockscreen extends Fragment {
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-        }
-
-        @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return new LockView(getActivity(), getActivity().getApplicationContext().getPackageName(), SettingsActivity.class.getName());
