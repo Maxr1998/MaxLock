@@ -4,7 +4,7 @@ android {
         main
     }
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '24.0.0 rc1'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 15
@@ -68,12 +68,12 @@ dependencies {
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     compile 'commons-io:commons-io:2.4'
     //-- Android support and Google Services
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:customtabs:23.1.1'
-    compile 'com.android.support:gridlayout-v7:23.1.1'
-    compile 'com.android.support:palette-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:customtabs:23.2.1'
+    compile 'com.android.support:gridlayout-v7:23.2.1'
+    compile 'com.android.support:palette-v7:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
     compile 'com.google.android.gms:play-services-base:8.4.0'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     // Local files
