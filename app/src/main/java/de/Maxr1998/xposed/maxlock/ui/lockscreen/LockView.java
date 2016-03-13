@@ -99,7 +99,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
             statusBarHeight = 0;
             navBarHeight = 0;
         }
-        LayoutInflater.from(getThemedContext()).inflate(R.layout.fragment_lock, this, true);
+        LayoutInflater.from(getThemedContext()).inflate(R.layout.lock_view, this, true);
 
         TextView mTitleTextView = (TextView) findViewById(R.id.title_view);
         mInputBar = (ViewGroup) findViewById(R.id.input_bar);
