@@ -35,13 +35,6 @@ import de.Maxr1998.xposed.maxlock.Common;
 public class PatternView extends LockPatternView {
 
     private final LockView mLockView;
-    private final Runnable mLockPatternViewReloader = new Runnable() {
-        @Override
-        public void run() {
-            clearPattern();
-            mPatternListener.onPatternCleared();
-        }
-    };
     private final OnPatternListener mPatternListener = new OnPatternListener() {
         @Override
         public void onPatternStart() {
@@ -62,24 +55,20 @@ public class PatternView extends LockPatternView {
         @Override
         public void onPatternDetected(List<Cell> pattern) {
             mLockView.setPattern(pattern, PatternView.this);
-
+        }
+    };
+    private final Runnable mLockPatternViewReloader = new Runnable() {
+        @Override
+        public void run() {
+            clearPattern();
+            mPatternListener.onPatternCleared();
         }
     };
 
     public PatternView(Context context, LockView lockView) {
         super(context);
-        this.mLockView = lockView;
+        mLockView = lockView;
         setOnPatternListener(mPatternListener);
-        switch (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) {
-            case Configuration.SCREENLAYOUT_SIZE_LARGE:
-            case Configuration.SCREENLAYOUT_SIZE_XLARGE: {
-                final int size = mLockView.getDimens(com.haibison.android.lockpattern.R.dimen.alp_42447968_lockpatternview_size);
-                ViewGroup.LayoutParams lp = getLayoutParams();
-                lp.width = size;
-                lp.height = size;
-                break;
-            }
-        }
         try {
             int color = getContext().obtainStyledAttributes(new int[]{android.R.attr.textColorPrimary}).getColor(0, Color.WHITE);
             Field regularColor = getClass().getSuperclass().getDeclaredField("mRegularColor");
@@ -93,6 +82,21 @@ public class PatternView extends LockPatternView {
         }
         setInStealthMode(!mLockView.getPrefs().getBoolean(Common.SHOW_PATTERN_PATH, true));
         setTactileFeedbackEnabled(mLockView.getPrefs().getBoolean(Common.ENABLE_PATTERN_FEEDBACK, true));
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        switch (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) {
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE: {
+                final int size = mLockView.getDimens(com.haibison.android.lockpattern.R.dimen.alp_42447968_lockpatternview_size);
+                ViewGroup.LayoutParams lp = getLayoutParams();
+                lp.width = size;
+                lp.height = size;
+                break;
+            }
+        }
     }
 
     public void setWrong() {
