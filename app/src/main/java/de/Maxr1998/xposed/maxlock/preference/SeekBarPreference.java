@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import de.Maxr1998.xposed.maxlock.R;
@@ -22,7 +22,7 @@ import de.Maxr1998.xposed.maxlock.R;
  *
  * @author Robobunny, modified by Max Rumpf alias Maxr1998
  */
-public class SeekBarPreference extends Preference implements OnSeekBarChangeListener {
+public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarChangeListener {
 
     private static final String ANDROID_XMLNS = "http://schemas.android.com/apk/res/android";
     private static final String SEEK_BAR_XMLNS = "http://robobunny.com";
@@ -33,7 +33,7 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
     private int mInterval = 1;
     private int mCurrentValue;
     private String mUnits = "";
-    private SeekBar mSeekBar;
+    private AppCompatSeekBar mSeekBar;
 
     private TextView mStatusText;
 
@@ -49,7 +49,7 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
 
     private void initPreference(Context context, AttributeSet attrs) {
         setValuesFromXml(attrs);
-        mSeekBar = new SeekBar(context, attrs);
+        mSeekBar = new AppCompatSeekBar(context, attrs);
         mSeekBar.setMax(mMaxValue - mMinValue);
         mSeekBar.setOnSeekBarChangeListener(this);
         setWidgetLayoutResource(R.layout.seek_bar_preference);
@@ -226,4 +226,3 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
         }
     }
 }
-
