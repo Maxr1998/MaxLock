@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height"
     android:layout_marginEnd="20dp"
@@ -41,7 +42,7 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/applist_gear_background"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_settings_36dp" />
+        app:srcCompat="@drawable/ic_settings_36dp" />
 
     <ToggleButton
         android:id="@+id/toggleLock"

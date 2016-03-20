@@ -14,9 +14,7 @@ android {
         //noinspection GroovyAssignabilityCheck
         signingConfig signingConfigs.main
         resConfigs "de", "es", "fa", "fr", "it", "ja", "zh-rCN", "zh-rTW"
-        vectorDrawables {
-            generatedDensities = ["mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"]
-        }
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -63,6 +61,7 @@ dependencies {
     //-- 3rd-party
     compile 'com.anjlab.android.iab.v3:library:1.0.27@aar'
     compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
+    compile 'com.github.heinrichreimer:material-intro:1.1'
     compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
     compile 'com.google.guava:guava:19.0-rc1'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'

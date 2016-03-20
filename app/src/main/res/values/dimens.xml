@@ -10,4 +10,6 @@
     <dimen name="tablet_margin_bottom">72dp</dimen>
 
     <dimen name="first_start_top_margin">33dp</dimen>
+
+    <dimen name="license_preference_margin">16dp</dimen>
 </resources>
