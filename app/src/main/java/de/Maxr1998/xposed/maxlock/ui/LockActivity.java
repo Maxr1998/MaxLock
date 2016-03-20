@@ -25,8 +25,8 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -41,7 +41,7 @@ import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-public class LockActivity extends FragmentActivity implements AuthenticationSucceededListener {
+public class LockActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
     private SharedPreferences prefs;
     private String[] names;
