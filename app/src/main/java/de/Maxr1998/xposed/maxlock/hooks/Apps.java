@@ -84,6 +84,7 @@ public class Apps {
                     JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
                     if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
                         app.finish();
+                        log("Finish 1");
                         return;
                     }
                     prefsApps.reload();
@@ -99,6 +100,19 @@ public class Apps {
                     }
                     it.putExtra(Common.INTENT_EXTRAS_NAMES, new String[]{lPParam.packageName, activityName});
                     app.startActivity(it);
+                }
+            });
+            findAndHookMethod("android.app.Activity", lPParam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    if ((boolean) param.args[0]) {
+                        JSONObject history = readFile();
+                        JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
+                        if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
+                            log("Finish 2");
+                            ((Activity) param.thisObject).finish();
+                        }
+                    }
                 }
             });
         } catch (Throwable t) {
