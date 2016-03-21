@@ -15,13 +15,13 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="36dp"
-        android:drawableLeft="@mipmap/ic_launcher"
         android:drawablePadding="20dp"
-        android:drawableStart="@mipmap/ic_launcher"
         android:maxLines="2"
-        android:text="@string/placeholder"
         android:textColor="?android:textColorPrimary"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        tools:drawableLeft="@mipmap/ic_launcher"
+        tools:drawableStart="@mipmap/ic_launcher"
+        tools:text="@string/placeholder" />
 
     <LinearLayout
         android:id="@+id/input_bar"
