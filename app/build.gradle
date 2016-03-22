@@ -61,9 +61,10 @@ dependencies {
     //-- 3rd-party
     compile 'com.anjlab.android.iab.v3:library:1.0.27@aar'
     compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
-    compile 'com.github.heinrichreimer:material-intro:1.1'
     compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
     compile 'com.google.guava:guava:19.0-rc1'
+    compile 'com.github.Maxr1998:material-intro:20044f88e8'
+    //compile 'com.heinrichreimersoftware:material-intro:1.2.1'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     compile 'commons-io:commons-io:2.4'
     //-- Android support and Google Services

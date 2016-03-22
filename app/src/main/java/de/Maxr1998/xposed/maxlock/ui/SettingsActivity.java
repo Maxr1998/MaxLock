@@ -86,8 +86,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         super.onCreate(savedInstanceState);
         if (MLPreferences.getPreferences(this).getInt(FirstStartActivity.FIRST_START_LAST_VERSION_KEY, 0) != FirstStartActivity.FIRST_START_LATEST_VERSION) {
             startActivity(new Intent(this, FirstStartActivity.class));
-            finish();
-            return;
         }
 
         devicePolicyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
@@ -213,7 +211,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             }
         }
         if (!IS_ACTIVE) {
+            //noinspection ConstantConditions
             findViewById(R.id.xposed_active).setVisibility(View.VISIBLE);
+            //noinspection ConstantConditions
             findViewById(R.id.xposed_active_message).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/first_start_page3"
-    android:orientation="vertical"
-    tools:context="de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentAppSetup">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/first_start_top_margin"
-        android:layout_weight="1" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4">
+    <de.Maxr1998.xposed.maxlock.ui.firstStart.views.ConfigView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -59,23 +47,9 @@
                 android:text="@string/pref_prevent_uninstall"
                 android:textSize="18sp" />
         </LinearLayout>
-    </RelativeLayout>
+    </de.Maxr1998.xposed.maxlock.ui.firstStart.views.ConfigView>
 
-
-    <View
+    <android.support.v4.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <TextView
-        android:id="@+id/first_start_title"
-        style="@style/AppTheme.FirstStart.TitleText"
-        android:layout_weight="1"
-        android:text="@string/fs_recommended_apps" />
-
-    <TextView
-        style="@style/AppTheme.FirstStart.SubtitleText"
-        android:layout_marginBottom="8dp"
-        android:layout_weight="0.5"
-        android:text="@string/fs_recommended_apps_summary" />
-</LinearLayout>
+        android:layout_height="@dimen/mi_pager_margin_bottom" />
+</merge>

@@ -17,153 +17,65 @@
 
 package de.Maxr1998.xposed.maxlock.ui.firstStart;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
+
+import com.heinrichreimersoftware.materialintro.app.IntroActivity;
+import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
-import de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentAppSetup;
-import de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentInformation;
-import de.Maxr1998.xposed.maxlock.ui.firstStart.fragments.FragmentWelcome;
+import de.Maxr1998.xposed.maxlock.ui.firstStart.views.InformationView;
 
-public class FirstStartActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class FirstStartActivity extends IntroActivity {
 
-    public static final int FIRST_START_LATEST_VERSION = 28;
+    public static final int FIRST_START_LATEST_VERSION = 40;
     public static final String FIRST_START_LAST_VERSION_KEY = "first_start_last_version";
-    private FirstStartPagerAdapter mAdapter;
-    private ViewPager mPager;
-    private Button skipButton, continueButton, doneButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setFullscreen(false);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_start);
-        mPager = (ViewPager) findViewById(R.id.first_start_pager);
-        mAdapter = new FirstStartPagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mAdapter);
-        mPager.setOffscreenPageLimit(2);
-        mPager.addOnPageChangeListener(this);
+        addSlide(new SimpleSlide.Builder()
+                .title(R.string.fs_welcome_maxlock)
+                .image(R.drawable.ic_welcome)
+                .background(R.color.first_start_page1)
+                .scrollable(false)
+                .build());
+        addSlide(new SimpleSlide.Builder()
+                .title(R.string.fs_maxlock_description)
+                .background(R.color.first_start_page2)
+                .layout(R.layout.fs_information)
+                .build());
+        addSlide(new SimpleSlide.Builder()
+                .title(R.string.fs_recommended_apps)
+                .description(R.string.fs_recommended_apps_summary)
+                .background(R.color.first_start_page3)
+                .layout(R.layout.fs_config)
+                .build());
+        addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
-        skipButton = (Button) findViewById(R.id.skip_button);
-        skipButton.setOnClickListener(this);
-        continueButton = (Button) findViewById(R.id.continue_button);
-        continueButton.setOnClickListener(this);
-        doneButton = (Button) findViewById(R.id.done_button);
-        doneButton.setOnClickListener(this);
-    }
-
-    private void fadeBottomColor(int colorFrom, int colorTo, float percent) {
-        final float[] from = new float[3], to = new float[3], hsv = new float[3];
-
-        Color.colorToHSV(colorFrom, from);
-        Color.colorToHSV(colorTo, to);
-
-        hsv[0] = from[0] + (to[0] - from[0]) * percent;
-        hsv[1] = from[1] + (to[1] - from[1]) * percent;
-        hsv[2] = from[2] + (to[2] - from[2]) * percent;
-
-        findViewById(R.id.first_start_bottom).setBackgroundColor(Color.HSVToColor(hsv));
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.skip_button:
-            case R.id.done_button:
-                leave();
-                break;
-            case R.id.continue_button:
-                mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-                break;
-        }
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        // Skip and finish button fading, bottom background color fading, Animation listener
-        switch (position) {
-            case 0:
-                fadeBottomColor(getResources().getColor(R.color.first_start_page1), getResources().getColor(R.color.first_start_page2), positionOffset);
-                if (positionOffset < 0.4) {
-                    ((FragmentPagerSelected) mAdapter.getItem(1)).onScrollAway();
+            @Override
+            public void onPageSelected(int position) {
+                View fragmentView = getItem(1).getView();
+                if (fragmentView != null) {
+                    ((InformationView) fragmentView.findViewById(R.id.information_view)).onViewScreenVisibilityChanged(position == 1);
                 }
-                break;
-            case 1:
-                fadeBottomColor(getResources().getColor(R.color.first_start_page2), getResources().getColor(R.color.first_start_page3), positionOffset);
-                skipButton.setVisibility(View.VISIBLE);
-                continueButton.setVisibility(View.VISIBLE);
-                skipButton.setAlpha(1 - positionOffset * 1.5f);
-                if (positionOffset > 0) {
-                    continueButton.setAlpha(1 - positionOffset * 2f);
-                    doneButton.setAlpha(positionOffset);
-                    doneButton.setVisibility(View.VISIBLE);
-                } else {
-                    doneButton.setVisibility(View.GONE);
-                }
-                if (positionOffset == 0) {
-                    ((FragmentPagerSelected) mAdapter.getItem(1)).onSelect();
-                } else if (positionOffset > 0.6) {
-                    ((FragmentPagerSelected) mAdapter.getItem(1)).onScrollAway();
-                }
-                break;
-            case 2:
-                findViewById(R.id.first_start_bottom).setBackgroundColor(getResources().getColor(R.color.first_start_page3));
-                skipButton.setVisibility(View.INVISIBLE);
-                continueButton.setVisibility(View.GONE);
-                break;
-        }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     @Override
-    public void onPageSelected(int position) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    private void leave() {
+    public void finish() {
         PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(FIRST_START_LAST_VERSION_KEY, FIRST_START_LATEST_VERSION).apply();
-        startActivity(new Intent(FirstStartActivity.this, SettingsActivity.class));
-        finish();
-    }
-
-    public interface FragmentPagerSelected {
-        void onSelect();
-
-        void onScrollAway();
-    }
-
-    private static class FirstStartPagerAdapter extends FragmentPagerAdapter {
-
-        private final Fragment[] items = new Fragment[3];
-
-        public FirstStartPagerAdapter(FragmentManager fm) {
-            super(fm);
-            items[0] = new FragmentWelcome();
-            items[1] = new FragmentInformation();
-            items[2] = new FragmentAppSetup();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return items[position];
-        }
-
-        @Override
-        public int getCount() {
-            return items.length;
-        }
+        super.finish();
     }
 }
