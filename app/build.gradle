@@ -11,8 +11,6 @@ android {
         targetSdkVersion 23
         versionCode 39
         versionName "6.1.1"
-        //noinspection GroovyAssignabilityCheck
-        signingConfig signingConfigs.main
         resConfigs "de", "es", "fa", "fr", "it", "ja", "zh-rCN", "zh-rTW"
         vectorDrawables.useSupportLibrary = true
     }
@@ -22,10 +20,14 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //noinspection GroovyAssignabilityCheck
+            signingConfig signingConfigs.main
         }
         debug {
             debuggable true
             versionNameSuffix "-beta"
+            //noinspection GroovyAssignabilityCheck
+            signingConfig signingConfigs.main
         }
     }
     compileOptions {
