@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="36dp"
+                android:layout_marginBottom="@dimen/fingerprint_margin"
                 android:clickable="false"
                 tools:background="@drawable/lockscreen_fingerprint_draw_off" />
         </RelativeLayout>

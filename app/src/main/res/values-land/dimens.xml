@@ -3,4 +3,6 @@
     <dimen name="toolbar_height">48dp</dimen>
     <dimen name="tablet_margin_sides">16dp</dimen>
 
+    <dimen name="container_size">240dp</dimen>
+    <dimen name="fingerprint_margin">48dp</dimen>
 </resources>

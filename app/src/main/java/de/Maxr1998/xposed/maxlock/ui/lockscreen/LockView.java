@@ -30,6 +30,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -159,7 +160,10 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                 ((Activity) getContext()).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 break;
             case Common.PREF_VALUE_PIN:
-                mContainer.addView(new PinView(getThemedContext(), this), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                FrameLayout.LayoutParams pinParams = new FrameLayout.LayoutParams(getDimens(R.dimen.container_size), getDimens(R.dimen.container_size));
+                pinParams.gravity = isLandscape() ? Gravity.CENTER : Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+                pinParams.bottomMargin = isLandscape() ? 0 : getDimens(R.dimen.fingerprint_margin);
+                mContainer.addView(new PinView(getThemedContext(), this), pinParams);
                 break;
             case Common.PREF_VALUE_KNOCK_CODE:
                 mContainer.setOnLongClickListener(this);
@@ -167,7 +171,9 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                 break;
             case Common.PREF_VALUE_PATTERN:
                 mInputBar.setVisibility(View.GONE);
-                mContainer.addView(new PatternView(getThemedContext(), this), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                FrameLayout.LayoutParams patternParams = new FrameLayout.LayoutParams(getDimens(R.dimen.container_size), getDimens(R.dimen.container_size));
+                patternParams.gravity = Gravity.CENTER;
+                mContainer.addView(new PatternView(getThemedContext(), this), patternParams);
                 break;
             default:
                 authenticationSucceededListener.onAuthenticationSucceeded();
@@ -198,10 +204,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
             // Header views
             ((ViewGroup.MarginLayoutParams) mTitleTextView.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom), getDimens(R.dimen.tablet_margin_sides), 0);
             ((ViewGroup.MarginLayoutParams) mInputBar.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), 0, getDimens(R.dimen.tablet_margin_sides), 0);
-            // Container
-            ((ViewGroup.MarginLayoutParams) mContainer.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_top), getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom));
         }
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !getPrefs().getBoolean(Common.DISABLE_FINGERPRINT, false)) {
             FingerprintView fv = new FingerprintView(getThemedContext(), (AuthenticationSucceededListener) getContext());
