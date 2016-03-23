@@ -11,49 +11,35 @@
         tools:ignore="ContentDescription" />
 
     <LinearLayout
+        android:id="@+id/horizontal_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:baselineAligned="false"
+        android:fitsSystemWindows="true"
+        android:orientation="horizontal">
 
-        <Space
-            android:id="@+id/status_bar_gap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:id="@+id/horizontal_container"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_weight="1">
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <include layout="@layout/header_view" />
-
-                <FrameLayout
-                    android:id="@+id/fingerprint_stub"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="36dp"
-                    android:clickable="false" />
-            </RelativeLayout>
+            <include layout="@layout/header_view" />
 
             <FrameLayout
-                android:id="@+id/container"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" />
-
-            <Space
-                android:id="@+id/nav_bar_gap"
+                android:id="@+id/fingerprint_stub"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="36dp"
+                android:clickable="false"
+                tools:background="@drawable/lockscreen_fingerprint_draw_off" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
     </LinearLayout>
 </merge>

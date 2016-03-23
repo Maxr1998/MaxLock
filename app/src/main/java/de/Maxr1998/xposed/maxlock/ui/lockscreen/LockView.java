@@ -21,8 +21,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.DimenRes;
@@ -50,7 +48,6 @@ import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
@@ -67,7 +64,6 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     private final AuthenticationSucceededListener authenticationSucceededListener;
     private final FrameLayout mContainer;
     private final ViewGroup mInputBar;
-    private int statusBarHeight, navBarHeight;
     private StringBuilder mCurrentKey = new StringBuilder(10);
     private TextView mInputTextView;
     private KnockCodeHelper mKnockCodeHolder;
@@ -86,19 +82,13 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
         if (getPreferencesKeysPerApp(getContext()).contains(mPackageName)) {
             mPassword = getPreferencesKeysPerApp(getContext()).getString(mPackageName + Common.APP_KEY_PREFERENCE, null);
-        } else
+        } else {
             mPassword = getPreferencesKeys(getContext()).getString(Common.KEY_PREFERENCE, "");
+        }
 
         // Dimensions
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getSize(screenSize);
-        try {
-            statusBarHeight = getDimens(getResources().getIdentifier("status_bar_height", "dimen", "android"));
-            navBarHeight = getDimens(getResources().getIdentifier(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"));
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-            statusBarHeight = 0;
-            navBarHeight = 0;
-        }
+
         LayoutInflater.from(getThemedContext()).inflate(R.layout.lock_view, this, true);
 
         TextView mTitleTextView = (TextView) findViewById(R.id.title_view);
@@ -109,22 +99,6 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
         // Background
         Util.getBackground((ImageView) findViewById(R.id.background));
-
-        // Gaps for Status and Nav bar
-        if (!getContext().getClass().getName().equals(SettingsActivity.class.getName())) {
-            View gapTop = findViewById(R.id.status_bar_gap);
-            View gapBottom = findViewById(R.id.nav_bar_gap);
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                // Portrait
-                gapBottom.getLayoutParams().height = navBarHeight;
-                screenSize.y = screenSize.y + navBarHeight;
-            } else {
-                // Landscape
-                //noinspection SuspiciousNameCombination
-                gapBottom.getLayoutParams().width = navBarHeight;
-            }
-            gapTop.getLayoutParams().height = statusBarHeight;
-        }
 
         // Locking type view setup
         switch (mLockingType) {
