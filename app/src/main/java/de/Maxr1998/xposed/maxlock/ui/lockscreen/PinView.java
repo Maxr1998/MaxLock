@@ -22,6 +22,7 @@ import android.content.Context;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.GridLayout;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -78,8 +79,11 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
             mLockView.setKey(value, true);
             mLockView.appendToInput(value);
         }
-        if (mLockView.getPrefs().getBoolean(Common.ENABLE_QUICK_UNLOCK, false) || value.equals(getResources().getString(android.R.string.ok))) {
+        if (mLockView.getPrefs().getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
             mLockView.checkInput();
+        } else if (value.equals(getResources().getString(android.R.string.ok)) && !mLockView.checkInput()) {
+            mLockView.setKey(null, false);
+            v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
         }
     }
 
