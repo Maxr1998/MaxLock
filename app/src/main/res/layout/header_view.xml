@@ -44,7 +44,8 @@
             android:clickable="false"
             android:gravity="center"
             android:inputType="textPassword"
-            tools:ignore="TextViewEdits" />
+            tools:ignore="TextViewEdits"
+            tools:text="\u2022\u2022\u2022\u2022" />
 
         <ImageButton
             android:id="@+id/delete_input"
