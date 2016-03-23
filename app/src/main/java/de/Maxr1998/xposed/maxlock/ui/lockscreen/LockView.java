@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -123,8 +124,8 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                             if (checkInput()) {
                                 Util.hideKeyboardFromWindow((Activity) getContext(), LockView.this);
                             } else {
-                                v.setText("");
-                                mCurrentKey.setLength(0);
+                                setKey(null, false);
+                                v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
                             }
                             return true;
                         }
