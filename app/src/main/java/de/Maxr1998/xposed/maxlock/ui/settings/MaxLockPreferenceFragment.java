@@ -206,10 +206,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         return true;
                     }
                 });
-                Preference tabletMode = findPreference(Common.OVERRIDE_TABLET_MODE);
-                tabletMode.setSummary(String.format(getString(R.string.pref_use_tablet_mode_summary),
-                        Build.MODEL, getResources().getBoolean(R.bool.tablet_mode_default) ? "tablet/phablet" : "phone",
-                        (int) getResources().getDisplayMetrics().xdpi, Math.min(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)));
                 FingerprintManagerCompat fpm = FingerprintManagerCompat.from(getActivity());
                 if (!fpm.isHardwareDetected() || !fpm.hasEnrolledFingerprints()) {
                     getPreferenceScreen().removePreference(findPreference(Common.SHADOW_FINGERPRINT));

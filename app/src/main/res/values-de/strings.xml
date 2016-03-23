@@ -77,8 +77,6 @@
         <!--<item>Thema</item>-->
     </string-array>
     <string name="pref_custom_color">Farbe</string>
-    <string name="pref_use_tablet_mode">Tablet Modus benutzen</string>
-    <string name="pref_use_tablet_mode_summary">Dieses %1$s wurde als %2$s erkannt wegen einer DPI von %3$d und einer Display-Breite von %4$d Pixeln</string>
     <string name="pref_hide_status_bar">Statusleiste verstecken/Vollbild</string>
     <string name="pref_invert_color">Invertiere Vordergrundfarbe</string>
     <string name="pref_invert_color_summary">Farbe von Text oder Trennlinien wird auf schwarz gesetzt</string>

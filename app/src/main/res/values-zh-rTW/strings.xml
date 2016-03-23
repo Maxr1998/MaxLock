@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <string name="app_name">MaxLock</string>
     <string name="name_pro">專業版</string>
@@ -77,8 +77,6 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">自訂顏色</string>
-    <string name="pref_use_tablet_mode">使用平板模式</string>
-    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">檢測到%1$s這個%2$s裝置的dpi為%3$d和顯示的寬度為%4$d像素</string>
     <string name="pref_hide_status_bar">隱藏狀態欄/全螢幕</string>
     <string name="pref_invert_color">轉換用戶介面顏色</string>
     <string name="pref_invert_color_summary">設定這個文字和分隔器的顏色為黑色</string>

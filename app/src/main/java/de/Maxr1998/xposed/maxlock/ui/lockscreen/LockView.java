@@ -201,12 +201,6 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
             }
         }
 
-        if (!mLockingType.equals(Common.PREF_VALUE_KNOCK_CODE) && isTablet()) {
-            // Header views
-            ((ViewGroup.MarginLayoutParams) mTitleTextView.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), getDimens(R.dimen.tablet_margin_bottom), getDimens(R.dimen.tablet_margin_sides), 0);
-            ((ViewGroup.MarginLayoutParams) mInputBar.getLayoutParams()).setMargins(getDimens(R.dimen.tablet_margin_sides), 0, getDimens(R.dimen.tablet_margin_sides), 0);
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !getPrefs().getBoolean(Common.DISABLE_FINGERPRINT, false)) {
             FingerprintView fv = new FingerprintView(getThemedContext(), (AuthenticationSucceededListener) getContext());
             fv.setScaleType(ImageView.ScaleType.CENTER);
@@ -289,10 +283,6 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
     public int getDimens(@DimenRes int id) {
         return getResources().getDimensionPixelSize(id);
-    }
-
-    private boolean isTablet() {
-        return getPrefs().getBoolean(Common.OVERRIDE_TABLET_MODE, getResources().getBoolean(R.bool.tablet_mode_default));
     }
 
     public boolean isLandscape() {

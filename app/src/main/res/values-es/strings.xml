@@ -63,8 +63,6 @@
     </string-array>
     <string name="pref_custom_color">Color personalizado</string>
     <string name="pref_hide_status_bar">Ocultar barra de estado/Pantalla completa</string>
-    <string name="pref_use_tablet_mode">Usar modo tablet</string>
-    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">Este %1$s fue detectado como %2$s porque tiene un dpi de %3$d y un ancho de pantalla de %4$d pixeles.</string>
     <string name="pref_category_pin_and_knock_code">PIN y código Knock</string>
     <string name="pref_invert_color">Invertir colores de la UI</string>
     <string name="pref_invert_color_summary">Esto pone de color negro el texto y los divisores</string>

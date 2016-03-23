@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_margin_sides">96dp</dimen>
+    <dimen name="title_margin_bottom">72dp</dimen>
+    <dimen name="input_margin_sides">88dp</dimen>
+</resources>

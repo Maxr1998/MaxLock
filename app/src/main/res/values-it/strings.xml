@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <string name="app_name">MaxLock</string>
     <string name="name_pro"> Pro</string>
@@ -63,8 +63,6 @@
     </string-array>
     <string name="pref_custom_color">Colore personalizzato</string>
     <string name="pref_hide_status_bar">Nascondi la barra di stato/Schermo intero</string>
-    <string name="pref_use_tablet_mode">Utilizza la modalità tablet</string>
-    <string name="pref_use_tablet_mode_summary" tools:ignore="PluralsCandidate">Questo %1$s è stato rilevato come %2$s dispositivo a causa di un dpi di %3$d e di un display di larghezza di %4$d pixel.</string>
     <string name="pref_category_pin_and_knock_code">PIN e codice di tocchi</string>
     <string name="pref_invert_color">Inverti i colori degli elementi della UI</string>
     <string name="pref_invert_color_summary">Questo imposta a nero il colore del testo e dei divisori</string>
