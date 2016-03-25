@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -45,11 +46,11 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.preference.PreferenceFragmentCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -414,11 +415,14 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View v, Bundle savedInstanceState) {
         getListView().setPadding(0, 0, 0, 0);
-        TypedValue windowBackground = new TypedValue();
-        getListView().getContext().getTheme().resolveAttribute(R.attr.windowBackground, windowBackground, true);
-        getListView().setOverscrollFooter(new ColorDrawable(windowBackground.data));
+        getListView().setOverscrollFooter(new ColorDrawable(v.getContext().obtainStyledAttributes(new int[]{R.attr.windowBackground}).getColor(0, ContextCompat.getColor(v.getContext(), R.color.default_window_background))));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            getListView().setSelector(v.getContext().obtainStyledAttributes(new int[]{R.attr.highlightDrawable}).getDrawable(0));
+            ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_edge", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
+            ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_glow", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
+        }
     }
 
     @Override
