@@ -10,15 +10,9 @@
     void onAuthenticationSucceeded();
 }
 
--keepclassmembers class de.Maxr1998.xposed.maxlock.ui.LockActivity {
-    private *** names;
-}
-
--keepclassmembers class de.Maxr1998.xposed.maxlock.ui.SettingsActivity {
-    private static boolean IS_ACTIVE;
-}
-
 -keepclassmembers class  com.haibison.android.lockpattern.widget.LockPatternView {
     private int mRegularColor;
     private int mSuccessColor;
 }
+
+-keep class android.support.v7.widget.SearchView { *; }

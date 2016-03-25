@@ -25,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Keep;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -44,6 +45,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 public class LockActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
     private SharedPreferences prefs;
+    @Keep
     private String[] names;
     private boolean unlocked = false;
     private AlertDialog fakeDieDialog, reportDialog;

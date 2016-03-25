@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Keep;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
@@ -71,6 +72,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
+    @Keep
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
     private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
