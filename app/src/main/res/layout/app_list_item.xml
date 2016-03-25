@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height"
     android:layout_marginEnd="20dp"
@@ -13,13 +14,13 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="56dp"
+        android:layout_width="@dimen/toolbar_height"
         android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:contentDescription="@string/app_name"
         android:gravity="center"
-        android:padding="8dp" />
+        android:padding="8dp"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/title"
@@ -36,13 +37,14 @@
 
     <ImageButton
         android:id="@+id/edit"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/applist_gear_background"
-        android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/ic_settings_36dp" />
+        android:padding="6dp"
+        app:srcCompat="@drawable/ic_settings_36dp"
+        tools:ignore="ContentDescription" />
 
     <ToggleButton
         android:id="@+id/toggleLock"

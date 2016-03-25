@@ -26,13 +26,8 @@
     <string name="dialog_text_restart_required">MaxLock requires a restart for changes to take effect</string>
     <string name="toast_pro_required">Pro-version is required to use this feature!</string>
     <!-- First start screens-->
-    <string name="button_skip">SKIP</string>
-    <string name="button_next_content_description">next</string>
-    <string name="button_done">DONE</string>
     <string name="fs_welcome_maxlock">Welcome to MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock will protect your apps from unauthorized access</string>
-    <string name="fs_phone_content_description">Phone</string>
-    <string name="fs_lock_content_description">Lock on the phone</string>
     <string name="fs_app_package_installer">Package Installer</string>
     <string name="fs_app_settings">Settings</string>
     <string name="fs_app_xposed_installer">Xposed Installer</string>
@@ -211,5 +206,20 @@
 
     <!-- Device admin external -->
     <string name="maxlock_protected_admin">This admin is protected from being disabled. You can disable it from inside the MaxLock app, when tapping the \"%1$s\" option.</string>
+
+    <!-- Accessibility -->
+    <string name="content_description_fs_phone">Picture of a phone</string>
+    <string name="content_description_fs_lock">Lock on the phone</string>
+    <string name="content_description_lockscreen_current_input">Current input string</string>
+    <string name="content_description_lockscreen_delete">Remove last input digit</string>
+    <string name="content_description_lockscreen_container">Knock code container</string>
+    <string name="content_description_applist_filter">Current filter: %s</string>
+    <string name="content_description_applist_filter_all_apps">All apps</string>
+    <string name="content_description_applist_filter_locked">Locked apps</string>
+    <string name="content_description_applist_filter_unlocked">Unlocked apps</string>
+    <string name="content_description_applist_icon">App icon of %s</string>
+    <string name="content_description_applist_options">Change locking options of %s</string>
+    <string name="content_description_applist_toggle_off">Lock %s</string>
+    <string name="content_description_applist_toggle_on">Unlock %s</string>
 
 </resources>

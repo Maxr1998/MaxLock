@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -174,7 +175,7 @@ public class AppListFragment extends Fragment {
                         prefs.edit().putString("app_list_filter", "@*deactivated*").apply();
                         break;
                     case "@*deactivated*":
-                        prefs.edit().putString("app_list_filter", "").apply();
+                        prefs.edit().remove("app_list_filter").apply();
                         break;
                     default:
                         prefs.edit().putString("app_list_filter", "@*activated*").apply();
@@ -273,16 +274,24 @@ public class AppListFragment extends Fragment {
             return;
         }
         String filter = prefs.getString("app_list_filter", "");
-        Drawable icon = getResources().getDrawable(R.drawable.ic_apps_24dp);
+        Drawable icon;
+        @StringRes int filterTypeString;
         switch (filter) {
             case "@*activated*":
                 icon = getResources().getDrawable(R.drawable.ic_checked_24dp);
+                filterTypeString = R.string.content_description_applist_filter_locked;
                 break;
             case "@*deactivated*":
                 icon = getResources().getDrawable(R.drawable.ic_unchecked_24dp);
+                filterTypeString = R.string.content_description_applist_filter_unlocked;
+                break;
+            default:
+                icon = getResources().getDrawable(R.drawable.ic_apps_24dp);
+                filterTypeString = R.string.content_description_applist_filter_all_apps;
                 break;
         }
         item.setIcon(icon);
+        item.setTitle(getString(R.string.content_description_applist_filter, getString(filterTypeString)));
     }
 
     public void filter() {

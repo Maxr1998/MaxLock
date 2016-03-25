@@ -98,16 +98,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         hld.tag = key;
         hld.prefsApps = prefsApps;
 
-        hld.appName.setText(nameAt(position));
         hld.appIcon.setImageDrawable(mItemList.get(position).loadIcon(mContext.getPackageManager()));
-
-        if (prefsApps.getBoolean(key, false)) {
-            hld.toggle.setChecked(true);
-            hld.options.setVisibility(View.VISIBLE);
-        } else {
-            hld.toggle.setChecked(false);
-            hld.options.setVisibility(View.GONE);
-        }
+        hld.appIcon.setContentDescription(mContext.getString(R.string.content_description_applist_icon, nameAt(position)));
+        hld.appName.setText(nameAt(position));
+        boolean locked = prefsApps.getBoolean(key, false);
+        hld.options.setVisibility(locked ? View.VISIBLE : View.GONE);
+        hld.options.setContentDescription(mContext.getString(R.string.content_description_applist_options, hld.appName.getText()));
+        hld.toggle.setChecked(locked);
+        hld.toggle.setContentDescription(mContext.getString(locked ? R.string.content_description_applist_toggle_on : R.string.content_description_applist_toggle_off, hld.appName.getText()));
 
         hld.options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,8 +249,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
             toggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToggleButton tb = (ToggleButton) v;
-                    boolean value = tb.isChecked();
+                    boolean value = ((ToggleButton) v).isChecked();
                     if (value) {
                         prefsApps.edit().putBoolean(tag, true).commit();
                         AnimationSet in = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings);
@@ -283,6 +280,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                         });
                         options.startAnimation(out);
                     }
+                    toggle.setContentDescription(v.getContext().getString(value ? R.string.content_description_applist_toggle_on : R.string.content_description_applist_toggle_off, appName.getText()));
                 }
             });
         }

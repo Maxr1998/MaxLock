@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:contentDescription="@string/fs_phone_content_description"
+            android:contentDescription="@string/content_description_fs_phone"
             app:srcCompat="@drawable/first_start_phone"
             tools:src="@drawable/first_start_phone" />
 
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:contentDescription="@string/fs_lock_content_description"
+            android:contentDescription="@string/content_description_fs_lock"
             android:src="@drawable/ic_lock_on_72dp"
             android:visibility="gone" />
     </de.Maxr1998.xposed.maxlock.ui.firstStart.views.InformationView>

@@ -26,13 +26,8 @@
     <string name="dialog_text_restart_required">MaxLock muss für die Übernahme der Änderungen neu gestartet werden</string>
     <string name="toast_pro_required">Die Pro-Version wird für diese Funktion benötigt</string>
     <!-- First start screens-->
-    <string name="button_skip">Überspringen</string>
-    <string name="button_next_content_description">Nächstes</string>
-    <string name="button_done">Fertig</string>
     <string name="fs_welcome_maxlock">Willkommen bei MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock schützt deine Apps vor unberechtigtem Zugriff</string>
-    <string name="fs_phone_content_description">Bild eines Telefons</string>
-    <string name="fs_lock_content_description">Schloss über dem Telefon</string>
     <string name="fs_app_package_installer">Paket Installer</string>
     <string name="fs_app_settings">Einstellungen</string>
     <string name="fs_app_xposed_installer">Xposed Installer</string>
@@ -169,12 +164,14 @@
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_visit_website">Besuche Maxr1998\'s Webseite</string>
     <string name="pref_show_changelog">Änderungen zeigen</string>
+    <string name="pref_category_credits">Credits</string>
     <string name="pref_category_translations">Übersetzungen</string>
     <string name="pref_category_licenses">Lizenzen</string>
     <string name="pref_donate_upgrade_pro">Spenden, um auf Pro-Version upzugraden</string>
     <string name="donate_status_donated">Gespendet.</string>
     <string name="donate_status_not_donated">Ziehe in Erwägung zu spenden, um zukünftige Entwicklung zu untersützen. Vielen Dank :)</string>
-    <string name="dialog_message_already_bought">Du hast diese Spendeoption schon genutzt. Du kannst ein anderes Produkt wählen, oder das gewählte entfernen und neu kaufen.\n\nNeu kaufen?</string>
+    <string name="dialog_message_already_bought">Du hast diese Spendeoption schon genutzt.
+        Du kannst ein anderes Produkt wählen, oder das gewählte entfernen und neu kaufen.\n\nNeu kaufen?</string>
     <string name="toast_no_network_connected">Sie sind momentan mit keinem Netwerk verbunden</string>
     <string name="pref_enable_pro">Pro aktivieren</string>
     <string name="pref_enable_pro_summary">Alle weiteren Funktionen aktivieren, selbst wenn MaxLock Pro nicht gekauft wurde</string>
@@ -209,5 +206,20 @@
 
     <!-- Device admin external -->
     <string name="maxlock_protected_admin">Dieser Admin ist vor Deaktivierung geschützt. Du kannst in innerhalb der MaxLock App mit der Option \"%1$s\" deaktivieren.</string>
+
+    <!-- Accessibility -->
+    <string name="content_description_fs_phone">Bild eines Telefons</string>
+    <string name="content_description_fs_lock">Schloss über dem Telefon</string>
+    <string name="content_description_lockscreen_current_input">Aktuelle Eingabe</string>
+    <string name="content_description_lockscreen_delete">Zuletzt eingegebene Ziffer entfernen</string>
+    <string name="content_description_lockscreen_container">Knock Code Container</string>
+    <string name="content_description_applist_filter">Aktueller Filter: %s</string>
+    <string name="content_description_applist_filter_all_apps">Alle Apps</string>
+    <string name="content_description_applist_filter_locked">Gesperrte Apps</string>
+    <string name="content_description_applist_filter_unlocked">Nicht gesperrte Apps</string>
+    <string name="content_description_applist_icon">App Icon von %s</string>
+    <string name="content_description_applist_options">Ändere Sperroptionen von %s</string>
+    <string name="content_description_applist_toggle_off">Sperre %s</string>
+    <string name="content_description_applist_toggle_on">Entsperre %s</string>
 
 </resources>

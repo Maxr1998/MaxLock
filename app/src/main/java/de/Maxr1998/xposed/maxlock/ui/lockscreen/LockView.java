@@ -167,8 +167,9 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                 mContainer.addView(new PinView(getThemedContext(), this), pinParams);
                 break;
             case Common.PREF_VALUE_KNOCK_CODE:
-                mContainer.setOnLongClickListener(this);
                 mKnockCodeHolder = new KnockCodeHelper(this, mContainer);
+                mContainer.setOnLongClickListener(this);
+                mContainer.setContentDescription(getResources().getString(R.string.content_description_lockscreen_container));
                 break;
             case Common.PREF_VALUE_PATTERN:
                 mInputBar.setVisibility(View.GONE);
