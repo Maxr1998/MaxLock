@@ -52,6 +52,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -483,6 +484,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     private void showChangelog() {
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
         WebView wv = new WebView(getContext());
+        wv.setWebViewClient(new WebViewClient());
+        wv.getSettings().setUserAgentString("MaxLock App v" + BuildConfig.VERSION_NAME);
         wv.loadUrl("http://maxlock.maxr1998.de/files/changelog-base.php");
         b.setView(wv);
         b.setPositiveButton(android.R.string.ok, null);
