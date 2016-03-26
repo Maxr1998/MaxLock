@@ -26,13 +26,8 @@
     <string name="dialog_text_restart_required">MaxLock需要重新啟動使更改生效</string>
     <string name="toast_pro_required">使用此功能需要專業版！</string>
     <!-- First start screens-->
-    <string name="button_skip">跳過</string>
-    <string name="button_next_content_description">下一個</string>
-    <string name="button_done">完成</string>
     <string name="fs_welcome_maxlock">歡迎使用MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock將保護您的應用程式免受未經授權訪問</string>
-    <string name="fs_phone_content_description">電話</string>
-    <string name="fs_lock_content_description">鎖定這個電話</string>
     <string name="fs_app_package_installer">安裝包</string>
     <string name="fs_app_settings">設定</string>
     <string name="fs_app_xposed_installer">Xposed安裝器</string>
@@ -94,6 +89,8 @@
     <string name="pref_category_pattern_only">僅圖案</string>
     <string name="pref_show_path">顯示圖案</string>
     <string name="pref_haptic_feedback">滑動時振動</string>
+    <string name="pref_category_fingerprint">指紋</string>
+    <string name="pref_disable_fingerprint">禁用指紋解鎖</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">鎖定選項</string>
     <string name="pref_category_logging">日誌記錄</string>
@@ -166,6 +163,7 @@
     <string name="pref_about_summary">點擊查看貢獻，使用的庫和許可證。</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_visit_website">訪問Maxr1998網站</string>
+    <string name="pref_show_changelog">顯示更新記錄</string>
     <string name="pref_category_credits">貢獻</string>
     <string name="pref_category_translations">翻譯</string>
     <string name="pref_category_licenses">許可證</string>
@@ -206,4 +204,22 @@
     <string name="toast_master_switch_off">主開關已關閉</string>
     <string name="toast_master_switch_on">主開關已重新啟用</string>
 
+    <!-- Device admin external -->
+    <string name="maxlock_protected_admin">此管理保護被禁用。您可以從MaxLock應用程式內點擊 \"%1$s\" 選項裡禁用它。</string>
+    
+    <!-- Accessibility -->
+    <string name="content_description_fs_phone">手機圖片</string>
+    <string name="content_description_fs_lock">鎖定在手機上</string>
+    <string name="content_description_lockscreen_current_input">當前輸入的字串</string>
+    <string name="content_description_lockscreen_delete">刪除最後輸入的數位</string>
+    <string name="content_description_lockscreen_container">Knock code 容器</string>
+    <string name="content_description_applist_filter">當前篩選器︰ %s</string>
+    <string name="content_description_applist_filter_all_apps">所有應用程式</string>
+    <string name="content_description_applist_filter_locked">已鎖定的應用程式</string>
+    <string name="content_description_applist_filter_unlocked">已解鎖的應用程式</string>
+    <string name="content_description_applist_icon">應用程式圖示於 %s</string>
+    <string name="content_description_applist_options">更改鎖定選項於 %s</string>
+    <string name="content_description_applist_toggle_off">鎖定 %s</string>
+    <string name="content_description_applist_toggle_on">解鎖 %s</string>
+    
 </resources>
