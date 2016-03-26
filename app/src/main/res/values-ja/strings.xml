@@ -26,13 +26,8 @@
     <string name="dialog_text_restart_required">変更を適用にするには MaxLock の再起動が必要です</string>
     <string name="toast_pro_required">この機能を使用するにはプロ版が必要です!</string>
     <!-- First start screens-->
-    <string name="button_skip">スキップ</string>
-    <string name="button_next_content_description">次へ</string>
-    <string name="button_done">完了</string>
     <string name="fs_welcome_maxlock">MaxLock へようこそ!</string>
     <string name="fs_maxlock_description">MaxLock はアプリが許可なく起動されることを防止します</string>
-    <string name="fs_phone_content_description">Phone</string>
-    <string name="fs_lock_content_description">Lock on the phone</string>
     <string name="fs_app_package_installer">パッケージ インストーラー</string>
     <string name="fs_app_settings">システム設定</string>
     <string name="fs_app_xposed_installer">Xposed インストーラー</string>
@@ -211,5 +206,20 @@
 
     <!-- Device admin external -->
     <string name="maxlock_protected_admin">この管理アプリは無効化が防止されています。無効化するには MaxLock の \"%1$s\" オプションをタップしてください</string>
+
+    <!-- Accessibility -->
+    <string name="content_description_fs_phone">端末の写真</string>
+    <string name="content_description_fs_lock">端末のロック</string>
+    <string name="content_description_lockscreen_current_input">現在の入力文字列</string>
+    <string name="content_description_lockscreen_delete">最後の入力の削除</string>
+    <string name="content_description_lockscreen_container">ノックコード コンテナ</string>
+    <string name="content_description_applist_filter">現在のフィルタ %s</string>
+    <string name="content_description_applist_filter_all_apps">すべてのアプリ</string>
+    <string name="content_description_applist_filter_locked">ロックアプリ</string>
+    <string name="content_description_applist_filter_unlocked">未ロックアプリ</string>
+    <string name="content_description_applist_icon">%s のアプリアイコン</string>
+    <string name="content_description_applist_options">%s のロックオプションの変更</string>
+    <string name="content_description_applist_toggle_off">ロック %s</string>
+    <string name="content_description_applist_toggle_on">ロック解除 %s</string>
 
 </resources>
