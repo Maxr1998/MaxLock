@@ -30,5 +30,7 @@
         android:textSize="12sp"
         android:textStyle="normal"
         android:typeface="monospace"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:text="@string/license_maxlock"
+        tools:visibility="visible" />
 </RelativeLayout>

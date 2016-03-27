@@ -38,16 +38,11 @@ public class ExpandingLicensePreference extends Preference {
     private View expandIcon;
 
     public ExpandingLicensePreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
+        this(context, attrs, 0);
     }
 
     public ExpandingLicensePreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context, attrs);
-    }
-
-    private void init(Context context, AttributeSet attrs) {
         licenseText = context.getString(attrs.getAttributeResourceValue(RES_AUTO, "license", 0));
         setWidgetLayoutResource(R.layout.expanding_license_preference);
     }
