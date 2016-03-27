@@ -18,7 +18,6 @@
 package de.Maxr1998.xposed.maxlock.preference;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
@@ -60,7 +59,6 @@ public class ExpandingLicensePreference extends Preference {
         expandIcon = view.findViewById(android.R.id.icon1);
         licenseTextView = (TextView) view.findViewById(android.R.id.text1);
         if (licenseTextView != null) {
-            licenseTextView.setTypeface(Typeface.MONOSPACE);
             licenseTextView.setText(licenseText);
         }
     }
@@ -71,7 +69,7 @@ public class ExpandingLicensePreference extends Preference {
             case View.GONE:
                 expandIcon.setVisibility(View.GONE);
                 LinearLayout.LayoutParams textContainerOpen = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                int endMargin = (int) (40 * view.getContext().getResources().getDisplayMetrics().density);
+                int endMargin = view.getResources().getDimensionPixelSize(R.dimen.preference_margin);
                 textContainerOpen.setMargins(0, 0, endMargin, 0);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     textContainerOpen.setMarginEnd(endMargin);

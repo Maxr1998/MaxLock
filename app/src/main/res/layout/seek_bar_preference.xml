@@ -1,37 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/widget_frame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp">
-
-    <TextView
-        android:id="@+id/seekBarPrefUnits"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp" />
+    android:paddingBottom="12dp">
 
     <TextView
         android:id="@+id/seekBarPrefValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/seekBarPrefUnits"
-        android:layout_toStartOf="@id/seekBarPrefUnits"
-        android:gravity="end" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        tools:text="10:00" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/seekBarPrefBarContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/seekBarPrefUnits">
-
-        <SeekBar
-            android:id="@+id/seekBarPrefSeekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:layout_below="@+id/seekBarPrefValue">
+    </FrameLayout>
 </RelativeLayout>

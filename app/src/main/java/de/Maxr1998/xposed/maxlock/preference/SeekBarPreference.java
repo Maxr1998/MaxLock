@@ -32,9 +32,7 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
     private int mMinValue = 0;
     private int mInterval = 1;
     private int mCurrentValue;
-    private String mUnits = "";
     private AppCompatSeekBar mSeekBar;
-
     private TextView mStatusText;
 
     public SeekBarPreference(Context context, AttributeSet attrs) {
@@ -50,6 +48,7 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
     private void initPreference(Context context, AttributeSet attrs) {
         setValuesFromXml(attrs);
         mSeekBar = new AppCompatSeekBar(context, attrs);
+        mSeekBar.setPadding(0,0,0,0);
         mSeekBar.setMax(mMaxValue - mMinValue);
         mSeekBar.setOnSeekBarChangeListener(this);
         setWidgetLayoutResource(R.layout.seek_bar_preference);
@@ -58,8 +57,6 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
     private void setValuesFromXml(AttributeSet attrs) {
         mMaxValue = attrs.getAttributeIntValue(ANDROID_XMLNS, "max", 100);
         mMinValue = attrs.getAttributeIntValue(SEEK_BAR_XMLNS, "min", 0);
-        String units = getAttributeStringValue(attrs, "units", "");
-        mUnits = getAttributeStringValue(attrs, "unitsRight", units);
         try {
             String newInterval = attrs.getAttributeValue(SEEK_BAR_XMLNS, "interval");
             if (newInterval != null)
@@ -67,12 +64,6 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
         } catch (Exception e) {
             Log.e(TAG, "Invalid interval value", e);
         }
-
-    }
-
-    private String getAttributeStringValue(AttributeSet attrs, String name, String defaultValue) {
-        String value = attrs.getAttributeValue(SeekBarPreference.SEEK_BAR_XMLNS, name);
-        return value == null ? defaultValue : value;
     }
 
     @Override
@@ -133,18 +124,14 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
             mStatusText = (TextView) view.findViewById(R.id.seekBarPrefValue);
             mSeekBar.setProgress(mCurrentValue - mMinValue);
             setText();
-            TextView unitsRight = (TextView) view.findViewById(R.id.seekBarPrefUnits);
-            unitsRight.setText(mUnits);
         } catch (Exception e) {
             Log.e(TAG, "Error updating seek bar preference", e);
         }
-
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         int newValue = progress + mMinValue;
-
         if (newValue > mMaxValue)
             newValue = mMaxValue;
         else if (newValue < mMinValue)
@@ -157,7 +144,6 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
             seekBar.setProgress(mCurrentValue - mMinValue);
             return;
         }
-
         // change accepted, store it
         mCurrentValue = newValue;
         setText();
@@ -192,7 +178,6 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-
         if (restoreValue) {
             mCurrentValue = getPersistedInt(mCurrentValue);
         } else {
@@ -205,7 +190,6 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
             persistInt(temp);
             mCurrentValue = temp;
         }
-
     }
 
     /**

@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fragment_horizontal_padding">0dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
-    <dimen name="license_preference_margin">16dp</dimen>
+    <dimen name="preference_margin">16dp</dimen>
 
     <dimen name="title_margin_sides">16dp</dimen>
     <dimen name="title_margin_bottom">16dp</dimen>

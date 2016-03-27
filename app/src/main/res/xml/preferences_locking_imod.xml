@@ -17,8 +17,7 @@
             android:summary="@string/pref_delay_input_general_summary"
             android:title="@string/pref_delay_input_general"
             robobunny:interval="30000"
-            robobunny:min="60000"
-            robobunny:unitsRight="" />
+            robobunny:min="60000" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_intika2">
@@ -36,8 +35,7 @@
             android:summary="@string/pref_delay_input_perapp_summary"
             android:title="@string/pref_delay_input_perapp"
             robobunny:interval="30000"
-            robobunny:min="60000"
-            robobunny:unitsRight="" />
+            robobunny:min="60000" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
