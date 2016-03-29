@@ -26,16 +26,11 @@
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
     <string name="toast_pro_required">使用此功能需要专业版本！</string>
     <!-- First start screens-->
-    <string name="button_skip">跳过</string>
-    <string name="button_next_content_description">下一个</string>
-    <string name="button_done">完成</string>
     <string name="fs_welcome_maxlock">欢迎使用MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock将保护您的应用免受未经授权访问</string>
-    <string name="fs_phone_content_description">手机</string>
-    <string name="fs_lock_content_description">锁定这个手机</string>
-    <string name="fs_app_package_installer">安装包</string>
-    <string name="fs_app_settings">设置</string>
-    <string name="fs_app_xposed_installer">Xposed安装器</string>
+	<string name="fs_app_package_installer">安装包</string>
+	<string name="fs_app_settings">设置</string>
+	<string name="fs_app_xposed_installer">Xposed安装器</string>
     <string name="fs_recommended_apps">通过锁定这些应用能进一步保护</string>
     <string name="fs_recommended_apps_summary">您应该勾选这些应用，以确保MaxLock不能被禁用或卸载</string>
     <!-- Locking type settings -->
@@ -211,5 +206,20 @@
 
     <!-- Device admin external -->
     <string name="maxlock_protected_admin">此管理保护被禁用!您可以从MaxLock应用程序内点击\"%1$s\"选项时禁用它</string>
+	
+	<!-- Accessibility -->
+    <string name="content_description_fs_phone">手机图片</string>
+    <string name="content_description_fs_lock">锁定这个手机</string>
+    <string name="content_description_lockscreen_current_input">当前输入的字符串</string>
+    <string name="content_description_lockscreen_delete">删除最后输入的数字</string>
+    <string name="content_description_lockscreen_container">轻敲代码容器</string>
+    <string name="content_description_applist_filter">当前过滤器:%s</string>
+    <string name="content_description_applist_filter_all_apps">所有应用</string>
+    <string name="content_description_applist_filter_locked">已锁定应用</string>
+    <string name="content_description_applist_filter_unlocked">已解锁应用</string>
+    <string name="content_description_applist_icon">应用图标%s</string>
+    <string name="content_description_applist_options">更改锁定选项%s</string>
+    <string name="content_description_applist_toggle_off">已锁定%s</string>
+    <string name="content_description_applist_toggle_on">已解锁%s</string>
 	
 </resources>
