@@ -11,7 +11,7 @@ android {
         targetSdkVersion 23
         versionCode 39
         versionName "6.1.1"
-        resConfigs "de", "es", "fa", "fr", "it", "ja", "zh-rCN", "zh-rTW"
+        resConfigs "de", "es", "fa", "fr", "it", "ja", "ru", "zh-rCN", "zh-rTW"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

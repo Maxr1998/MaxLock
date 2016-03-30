@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MaxLock</string>
+    <string name="name_pro"> Pro</string>
+    <string name="name_pseudo_pro"> PseudoPro</string>
+    <string name="placeholder">Placeholder</string>
+
+    <string name="maxlock_inactive">MaxLock не активен</string>
+    <string name="dialog_message_not_active">MaxLock не смог встроиться в систему Андроид. Этому может быть несколько причин:\n
+    &#x2022; <i>Xposed Framework не установлен</i>\n
+    &#x2022; <i>Xposed установлен и активирован, но вы не включили модуль MaxLock в Xposed installer (вкладка \"Модули\") Или не перезагрузились после этого.</i>\n
+    &#x2022; <i>Xposed Framework был выключен Безопасным режимом (safemode) Xposed. Более подробная информация - в соответствующей ветке Xposed на XDA.</i>\n
+    &#x2022; <i>MaxLock, возможно, закрылся из-за ошибки. Пожалуйста, пришлите мне отчёт о падении (внизу экрана).</i></string>
+    <string name="sb_no_locking_type">Не определён тип блокировки</string>
+    <string name="sb_no_locked_apps">Не выбраны приложения для блокировки</string>
+    <string name="dialog_like_app">Вам нравится программа?</string>
+    <string name="dialog_like_app_text">Если - да,- пожалуйста, оставьте отзыв в Play Store и рассмотрите возможность финансовой поддержки автора :)</string>
+    <string name="dialog_cb_never_again">Больше не показывать</string>
+    <string name="dialog_button_donate">Финансовая поддержка</string>
+    <string name="dialog_button_rate">Оценить</string>
+    <string name="notification_lock_new_app_title">Автоматически блокировать вновь установленные приложения?</string>
+    <string name="notification_lock_new_app_action_never_again">Больше не показывать</string>
+    <string name="notification_lock_new_app_action_lock">Блокировать приложение</string>
+    <string name="toast_lock_new_app_locked_successfully">Заблокировано успешно</string>
+    <string name="dialog_text_restart_required">Перезагрузите систему, чтобы изменения в MaxLock вступили в силу.</string>
+    <string name="toast_pro_required">Необходима Pro-версия для использования этой возможности!</string>
+    <!-- First start screens-->
+    <string name="fs_welcome_maxlock">Добро пожаловать в MaxLock!</string>
+    <string name="fs_maxlock_description">MaxLock защитит Ваши приложения от несанкционированного доступа</string>
+    <string name="fs_app_package_installer">Установщик</string>
+    <string name="fs_app_settings">Настройки</string>
+    <string name="fs_app_xposed_installer">Xposed Installer</string>
+    <string name="fs_recommended_apps">Усильте защиту, заблокировав эти приложения</string>
+    <string name="fs_recommended_apps_summary">Необходимо отметить (выбрать) все эти приложения, чтобы MaxLock не мог быть деактивирован или удалён</string>
+    <!-- Locking type settings -->
+    <string name="pref_category_locking">Блокировка</string>
+    <string name="pref_screen_locking_type">Тип блокировки</string>
+    <string name="pref_locking_type_password">Пароль</string>
+    <string name="pref_locking_type_pin">PIN (ПИН)</string>
+    <string name="pref_locking_type_knockcode">Knock code (Защита прикосновениями)</string>
+    <string name="pref_locking_type_pattern">Pattern (защита рисунком)</string>
+
+    <string name="pref_set_password">Установить пароль</string>
+    <string name="toast_password_inconsistent">Пароли не совпадают!</string>
+    <string name="toast_password_null">Пароль не может быть пустым!</string>
+    <string name="toast_password_changed">Пароль изменён!</string>
+    <string name="toast_password_incorrect">Неверный пароль!</string>
+    <string name="dialog_text_password">Пароль: </string>
+    <string name="dialog_text_re_password">Повторите пароль: </string>
+
+    <string name="choose_pin">Выберите PIN-код</string>
+    <string name="pin_too_short">PIN-код должен быть минимум 4 цифры</string>
+    <string name="continue_done">Нажмите \'Продолжить\' по окончании</string>
+    <string name="confirm_pin">Подтвердите Ваш PIN-код</string>
+    <string name="button_continue">Продолжить</string>
+
+    <string name="choose_knock_code">Выберите Ваш Код защиты прикосновениями</string>
+    <string name="knock_code_too_short">Код защиты прикосновениями должен содержать минимум 4 касания</string>
+    <string name="confirm_knock_code">Подтвердите Код защиты прикосновениями</string>
+    <!-- Locking UI settings -->
+    <string name="pref_screen_locking_ui">Интерфейс экрана блокировки</string>
+    <string name="pref_open_theme_manager">Открыть Менеджер тем</string>
+    <string name="pref_open_theme_manager_summary_none">Тема не применена</string>
+    <string name="pref_open_theme_manager_summary_applied">Применено: </string>
+    <string name="pref_summary_overridden_by_theme">(Переопределено темой)</string>
+    <string name="pref_background">Фоновая картинка</string>
+    <string-array name="background_types">
+        <item>Wallpaper</item>
+        <item>@string/pref_custom_color</item>
+        <item>Custom image…</item>
+        <!--<item>Theme background</item>-->
+    </string-array>
+    <string name="pref_custom_color">Выберите цвет</string>
+    <string name="pref_hide_status_bar">Скрыть status bar (строку состояния)/Полноэкранный режим</string>
+    <string name="pref_invert_color">Инвертировать цвета элементов интерфейса</string>
+    <string name="pref_invert_color_summary">Установить чёрным цвета текста и разделителей</string>
+    <string name="pref_hide_title_bar">Скрыть заголовок</string>
+    <string name="pref_category_password_and_pin">Пароль и PIN-код</string>
+    <string name="pref_quick_unlock">Быстрая разблокировка</string>
+    <string name="pref_category_pin_only">Только PIN-код</string>
+    <string name="pref_shuffle_pin">Перемешать цифры (вывести в произвольном порядке)</string>
+    <string name="pref_category_pin_and_knock_code">PIN-код и Код защиты прикосновениями</string>
+    <string name="pref_hide_input_bar">Скрыть строку ввода</string>
+    <string name="pref_hide_input_bar_summary">Этот выбор скрывает кнопку \'Очистить\', однако, вы всё ещё можете сбросить код долгим нажатием цифр/полей</string>
+    <string name="pref_category_knock_code_only">Только код защиты прикосновениями</string>
+    <string name="pref_show_dividers">Показать разделители</string>
+    <string name="pref_touch_visible">Сделать нажатия видимыми</string>
+    <string name="pref_category_pattern_only">Только Рисунок</string>
+    <string name="pref_show_path">Показать путь</string>
+    <string name="pref_haptic_feedback">Вибрировать при рисовании</string>
+    <string name="pref_category_fingerprint">Отпечаток пальца</string>
+    <string name="pref_disable_fingerprint">Убрать разблокировку Отпечатком пальца</string>
+    <!-- Locking options settings -->
+    <string name="pref_screen_locking_options">Опции блокировки</string>
+    <string name="pref_category_logging">Логгирование (Запись действий)</string>
+    <string name="pref_enable_logging">Включить логгирование</string>
+    <string name="pref_enable_logging_summary">Записывать неудачные/неоконченные попытки разблокировки</string>
+    <string name="pref_view_logs">Просмотр записей</string>
+    <string name="pref_screen_logs">Записи</string>
+    <string name="menu_delete_log">Стереть записи</string>
+    <string name="logs_empty_text">Список записей пуст</string>
+    <string name="pref_category_other">Другие опции</string>
+    <string name="pref_fake_crash_all_apps">Имитация \'падения\'для всех приложений</string>
+    <string name="pref_fake_crash_all_apps_summary">Эта опция переназначит настройки. Вместо Вашего списка приложений будут задействованы все приложения</string>
+    <string name="pref_fake_unlock">Прямая разблокировка после имитации \'падения\'</string>
+    <string name="pref_fake_unlock_summary">Если включено, экран блокировки показывается сразу после нажатия кнопки<i>\"К сожалению, приложение X остановлено."</i> в диалоге \"Падение приложения…\"</string>
+    <string name="pref_fake_crash_passphrase">Пароль имитации падения</string>
+    <string name="pref_fake_crash_passphrase_summary">Фраза, которую пользователь должен ввести в диалоге для появления экрана блокировки</string>
+    <string name="pref_enable_tasker">Включить интеграцию с Tasker</string>
+    <!-- I.Mod settings -->
+    <string name="pref_screen_locking_intika">Intika I.Mod</string>
+    <string name="pref_category_intika">Intika I.Mod - Время, в течение которого приложения не блокируются повторно - Для всех приложений</string>
+    <string name="pref_category_intika2">Intika I.Mod - Время, в течение которого приложения не блокируются повторно - Для каждого приложения отдельно</string>
+    <string name="pref_locking_delay_general">Задержка повторной блокировки для всех приложений</string>
+    <string name="pref_locking_delay_general_summary">Позволяет не блокировать ВСЕ заблокированные приложения после разблокировки любого из них в течение определённого промежутка времени</string>
+    <string name="pref_delay_input_general">Таймер повторной блокировки для ВСЕХ приложений</string>
+    <string name="pref_delay_input_general_summary">Введите число в минутах, на которое будет отложена повторная блокировка</string>
+    <string name="pref_locking_delay_perapp">Задержка повторной блокировки для списка приложений </string>
+    <string name="pref_locking_delay_perapp_summary">Позволяет не блокировать заблокированные приложения ДЛЯ КАЖДОГО ОТДЕЛЬНО после разблокировки в течение определённого промежутка времени</string>
+    <string name="pref_delay_input_perapp">Таймер повторной блокировки ДЛЯ КАЖДОГО ПРИЛОЖЕНИЯ ОТДЕЛЬНО</string>
+    <string name="pref_delay_input_perapp_summary">Введите число в минутах, на которое будет отложена повторная блокировка ДЛЯ КАЖДОГО ПРИЛОЖЕНИЯ ОТДЕЛЬНО</string>
+    <string name="pref_delay_needpro">Повторная блокировка - версия Pro</string>
+    <string name="pref_show_reset_notification">Показывать уведомление</string>
+    <string name="pref_show_reset_notification_summary">Показывать уведомление, чтобы сбрасывать таймер I.Mod</string>
+    <string name="pref_reset_screen_off">Автосброс таймера I.Mod</string>
+    <string name="pref_reset_screen_off_summary">Сбросить таймер I.Mod при выключении экрана</string>
+    <string name="pref_hide_recents_thumbnails">Скрыть приложения в \'Недавних\'</string>
+    <!-- Apps settings -->
+    <string name="pref_category_apps">Выбрать приложения</string>
+    <string name="pref_choose_apps">Выбрать приложения</string>
+    <string name="pref_choose_apps_summary">Выберите приложения для блокировки</string>
+    <string name="pref_screen_apps">Приложения</string>
+
+    <string name="menu_backup_list">Резервное копирование списка приложений</string>
+    <string name="menu_restore_list">Восстановление списка приложений из резервной копии</string>
+    <string name="menu_clear_list">Очистить список</string>
+    <string name="dialog_storage_permission_backup_restore">MaxLock должен получить доступ к внешней карте памяти на чтение/запись, чтобы зарезервировать файлы. Продолжить?</string>
+    <string name="toast_no_files_to_backup">Нет файлов для резервирования</string>
+    <string name="toast_backup_restore_exception">Произошла ошибочка.\nПожалуйста, свяжитесь с разработчиком!</string>
+    <string name="toast_backup_success">Резервирование успешно завершено!</string>
+    <string name="dialog_text_restore_list">Заменить текущие настройки на те, что зарезервированы на карте?</string>
+    <string name="toast_no_files_to_restore">Нет файлов для восстановления</string>
+    <string name="toast_restore_success">Зарезервированные настройки успешно восстановлены!</string>
+    <string name="menu_search">Поиск</string>
+    <string name="toggle_lock_on">Включено</string>
+    <string name="toggle_lock_off">Выключено</string>
+    <string name="dialog_title_settings">Настройки</string>
+    <string name="dialog_text_fake_crash">Имитация \'падения\' приложений</string>
+    <string name="dialog_text_custom_password">Личный пароль</string>
+    <string name="dialog_button_exclude_activities">Activities (Активити)</string>
+    <string name="dialog_title_exclude_activities">Исключить Activities (Активити) из блокировки</string>
+    <!-- UI settings -->
+    <string name="pref_category_ui">Настройки интерфейса</string>
+    <string name="pref_hide_from_launcher">Скрыть приложение от Лаунчера (рабочего стола и списка приложений)</string>
+    <string name="reboot_required">Возможно, необходима перезагрузка, чтобы изменения вступили в силу</string>
+    <string name="pref_use_dark_style">Использовать тёмный стиль</string>
+    <string name="pref_use_amoled_black">Испольновать чёрный стиль AMOLED</string>
+    <string name="pref_use_amoled_black_summary">Использовать полностью чёрный фон в тёмной теме (для низкого энергопотребления экранами AMOLED)</string>
+    <string name="pref_widget_background_color">Цвет фона виджета</string>
+    <!-- About information -->
+    <string name="pref_category_about">О приложении</string>
+    <string name="pref_about_summary">Нажмите, чтобы посмотреть благодарности, использованные библиотеки и лицензию.</string>
+    <string name="pref_screen_about">@string/pref_category_about</string>
+    <string name="pref_visit_website">Посетите сайт Maxr1998\</string>
+    <string name="pref_show_changelog">Показать изменения</string>
+    <string name="pref_category_credits">Благодарности</string>
+    <string name="pref_category_translations">Переводы</string>
+    <string name="pref_category_licenses">Лицензии</string>
+    <string name="pref_donate_upgrade_pro">Отблагодарить автора пиастрами и улучшить до версии Pro</string>
+    <string name="donate_status_donated">Пиастры получены.</string>
+    <string name="donate_status_not_donated">Пожалуйста, рассмотрите возможность отблагодарить автора материально - для поддержки штанишек и будущего развития проекта. Благодарю :)</string>
+    <string name="dialog_message_already_bought">Эта опция Вам уже предоставлена за поддержку автора.
+        Вы можете отменить и выбрать другой продукт, или ещё раз купить этот с удалением информации о текущей покупке.\n\nКупить ещё раз?</string>
+    <string name="toast_no_network_connected">Вы не подсоединены ни к одной сети</string>
+    <string name="pref_enable_pro">Включить Pro режим</string>
+    <string name="pref_enable_pro_summary">Включить Pro режим, даже если Вы не отблагодарили автора MaxLock Pro звонкой монетой</string>
+    <string name="pref_prevent_uninstall">Защитить приложение от удаления</string>
+    <string name="pref_prevent_uninstall_summary">Получить права администратора для MaxLock, чтобы приложение нельзя было просто так удалить.
+        Для удаления в дальнейшем Вам придётся действовать либо отсюда, либо путём снятия прав администратора в \"Настройки → Безопасность → Администраторы устройства\" и затем удалить как приложение</string>
+    <string name="pref_uninstall">Удалить</string>
+    <string name="device_admin_description">Защитить MaxLock от удаления и отключения</string>
+    <string name="pref_send_feedback">Послать отзыв / Сообщить об ошибке</string>
+    <string name="dialog_storage_permission_bug_report">MaxLock необходимо получить доступ к Вашей внешней карте памяти для сохранения истории действий и информации об устройстве. Продолжить?</string>
+    <string name="dialog_message_bugreport_finished_select_email">История действий и информация об устройстве записаны. Теперь выберите каким приложением послать отчёт мне.\n\n
+    <i>ЗАМЕЧАНИЕ: Я не собираю Вашу частную информацию. Только необходимый минимум для качественного анализа ошибок.</i></string>
+    <string name="share_menu_title_send_email">Послать почту…</string>
+    <!-- Fake crash screen -->
+    <string name="dialog_text_fake_die_stopped">К сожалению, %1$s остановлено.</string>
+    <string name="dialog_button_report">Сообщить</string>
+    <string name="dialog_title_report_problem">Сообщить о проблеме</string>
+    <!-- Action stuff -->
+    <string name="activity_label_actions">Действия MaxLock</string>
+    <string name="action_configuration">Конфигурация:</string>
+    <string name="action_toggle_ms">Включить MasterSwitch</string>
+    <string name="action_ms_on">MasterSwitch Включен</string>
+    <string name="action_ms_off">MasterSwitch Выключен</string>
+    <string name="action_imod_reset">Сбросить I.Mod</string>
+    <string name="tasker_imod_reset_summary">Заблокировать все приложения, которые были прежде разблокированы с помощью I.Mod</string>
+    <string name="tasker_button_apply">Применить</string>
+    <string name="tasker_integration_disabled">Интеграция с Tasker в настоящее время выключена. Вы можете включить её в \"MaxLock → Блокировка → Включить интеграцию с Tasker\".</string>
+    <string name="activity_label_toggle_ms_deprecated">Включить MasterSwitch (Не советую)</string>
+    <string name="unlock_master_switch">Разблокировать MasterSwitch</string>
+    <string name="toast_master_switch_off">MasterSwitch Отключен</string>
+    <string name="toast_master_switch_on">MasterSwitch Включен повторно</string>
+
+    <!-- Device admin external -->
+    <string name="maxlock_protected_admin">Этот Администратор защищён от отключения. Вы можете отключить его из приложения MaxLockp, если нажмёте \"%1$s\".</string>
+
+    <!-- Accessibility -->
+    <string name="content_description_fs_phone">Фото телефона</string>
+    <string name="content_description_fs_lock">Заблокировать телефон</string>
+    <string name="content_description_lockscreen_current_input">Текущая строка ввода</string>
+    <string name="content_description_lockscreen_delete">Удалить последнюю введёную цифру</string>
+    <string name="content_description_lockscreen_container">Контейнер блокировки прикосновением</string>
+    <string name="content_description_applist_filter">Текущий фильтр: %s</string>
+    <string name="content_description_applist_filter_all_apps">Все приложения</string>
+    <string name="content_description_applist_filter_locked">Заблокированные приложения</string>
+    <string name="content_description_applist_filter_unlocked">Разблокированные приложения</string>
+    <string name="content_description_applist_icon">Иконка приложения %s</string>
+    <string name="content_description_applist_options">Сменить режим блокировки %s</string>
+    <string name="content_description_applist_toggle_off">Заблокировать %s</string>
+    <string name="content_description_applist_toggle_on">Разблокировать %s</string>
+
+</resources>

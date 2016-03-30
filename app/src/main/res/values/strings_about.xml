@@ -26,13 +26,14 @@
     <string name="credits_intika_summary">I.Mod, other code contributions, support</string>
 
     <!-- Translators -->
-    <string name="translation_chinese_simple">liveasx (5.2.1)</string>
-    <string name="translation_chinese_traditional">alexking99 (6.1)</string>
+    <string name="translation_chinese_simple">liveasx (6.2)</string>
+    <string name="translation_chinese_traditional">alexking99 (6.2)</string>
     <string name="translation_french">Intika (5.0.3)</string>
-    <string name="translation_german">Mihahn (2.0.1), Maxr1998 (6.0)</string>
+    <string name="translation_german">Mihahn (2.0.1), Maxr1998 (6.2)</string>
     <string name="translation_italian">Sergio Marchesi (6.1)</string>
-    <string name="translation_japanese">t61p (6.0)</string>
+    <string name="translation_japanese">t61p (6.2)</string>
     <string name="translation_persian">Anonymous (2.0)</string>
+    <string name="translation_russian">Vernyak (6.2)</string>
     <string name="translation_spanish">badkill (2.0), BeRniTo (6.0)</string>
 
     <!-- Licenses -->
@@ -166,7 +167,7 @@
  * limitations under the License.\n
  */</string>
 
-    <string name="seek_bar_preference_name">SeekBar preference</string>
+    <string name="seek_bar_preference_name">SeekBarPreference</string>
     <string name="seek_bar_preference_author">by robobunny, Max Rumpf alias Maxr1998 (modified)</string>
 
     <string name="status_bar_tint_api_name">StatusBarTintApi</string>
