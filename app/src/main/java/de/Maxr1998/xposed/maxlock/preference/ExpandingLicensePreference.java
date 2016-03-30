@@ -32,17 +32,13 @@ import de.Maxr1998.xposed.maxlock.R;
 public class ExpandingLicensePreference extends Preference {
 
     private static final String RES_AUTO = "http://schemas.android.com/apk/res-auto";
-    private String licenseText = "";
+    private final String licenseText;
     private LinearLayout view;
     private TextView licenseTextView;
     private View expandIcon;
 
     public ExpandingLicensePreference(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public ExpandingLicensePreference(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        super(context, attrs);
         licenseText = context.getString(attrs.getAttributeResourceValue(RES_AUTO, "license", 0));
         setWidgetLayoutResource(R.layout.expanding_license_preference);
     }
@@ -60,25 +56,28 @@ public class ExpandingLicensePreference extends Preference {
 
     @Override
     protected void onClick() {
+        LinearLayout.LayoutParams titleContainerParams = (LinearLayout.LayoutParams) view.getChildAt(0).getLayoutParams();
         switch (licenseTextView.getVisibility()) {
             case View.GONE:
                 expandIcon.setVisibility(View.GONE);
-                LinearLayout.LayoutParams textContainerOpen = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                int endMargin = view.getResources().getDimensionPixelSize(R.dimen.preference_margin);
-                textContainerOpen.setMargins(0, 0, endMargin, 0);
+                int endMargin = view.getResources().getDimensionPixelSize(R.dimen.preference_margin) * 2;
+                titleContainerParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                titleContainerParams.rightMargin = endMargin;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    textContainerOpen.setMarginEnd(endMargin);
+                    titleContainerParams.setMarginEnd(endMargin);
                 }
-                view.getChildAt(0).setLayoutParams(textContainerOpen);
                 view.setOrientation(LinearLayout.VERTICAL);
                 licenseTextView.setVisibility(View.VISIBLE);
                 break;
             case View.VISIBLE:
                 licenseTextView.setVisibility(View.GONE);
+                titleContainerParams.width = 0;
+                titleContainerParams.weight = 1;
+                titleContainerParams.rightMargin = 0;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    titleContainerParams.setMarginEnd(0);
+                }
                 view.setOrientation(LinearLayout.HORIZONTAL);
-                LinearLayout.LayoutParams textContainerClosed = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-                textContainerClosed.weight = 1;
-                view.getChildAt(0).setLayoutParams(textContainerClosed);
                 expandIcon.setVisibility(View.VISIBLE);
                 break;
         }

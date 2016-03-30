@@ -20,38 +20,16 @@ package de.Maxr1998.xposed.maxlock.preference;
 import android.content.Context;
 import android.preference.Preference;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.Locale;
 
 public class TranslationPreference extends Preference {
 
     private static final String RES_AUTO = "http://schemas.android.com/apk/res-auto";
-    String locale;
 
     public TranslationPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
-    }
-
-    public TranslationPreference(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context, attrs);
-    }
-
-    private void init(Context context, AttributeSet attrs) {
-        String language = attrs.getAttributeValue(RES_AUTO, "language");
-        if (language.startsWith("zh") && language.contains("-")) {
-            locale = new Locale("zh").getDisplayName() + " (" + language.substring(language.lastIndexOf("-") + 1) + ")";
-        } else {
-            locale = new Locale(language).getDisplayName();
-        }
-    }
-
-    @Override
-    protected View onCreateView(ViewGroup parent) {
-        setTitle(locale);
-        return super.onCreateView(parent);
+        String[] value = attrs.getAttributeValue(RES_AUTO, "language").split("-");
+        setTitle(new Locale(value[0], value.length > 1 ? value[1] : "").getDisplayName());
     }
 }
