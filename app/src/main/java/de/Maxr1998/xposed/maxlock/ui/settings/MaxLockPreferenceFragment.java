@@ -305,10 +305,10 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         TwoStatePreference hideApp = (TwoStatePreference) preference;
                         if (hideApp.isChecked()) {
                             Toast.makeText(getActivity(), R.string.reboot_required, Toast.LENGTH_SHORT).show();
-                            ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
+                            ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.Main");
                             getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
                         } else {
-                            ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.ui.SettingsActivity");
+                            ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.Main");
                             getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                         }
                         return true;
