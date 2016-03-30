@@ -9,8 +9,8 @@ android {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 40
-        versionName "6.2"
+        versionCode 41
+        versionName "6.2.1"
         resConfigs "de", "es", "fa", "fr", "it", "ja", "ru", "zh-rCN", "zh-rTW"
         vectorDrawables.useSupportLibrary = true
     }
