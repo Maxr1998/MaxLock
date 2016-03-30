@@ -37,10 +37,10 @@
     <string name="translation_spanish">badkill (2.0), BeRniTo (6.0)</string>
 
     <!-- Licenses -->
-    <string name="color_picker_preference_name">android-ColorPickerPreference</string>
-    <string name="color_picker_preference_author">by Sergey Margaritov alias attenzione &amp; Daniel Nilsson</string>
-    <string name="license_color_picker_preference">/*\n
- * Copyright (C) 2011 Sergey Margaritov &amp; Daniel Nilsson\n
+    <string name="android_in_app_billing_v3_name">Android In-App Billing v3 Library</string>
+    <string name="android_in_app_billing_v3_author">by AnjLab</string>
+    <string name="license_android_in_app_billing_v3">/*\n
+ * Copyright 2014 AnjLab\n
  *\n
  * Licensed under the Apache License, Version 2.0 (the "License");\n
  * you may not use this file except in compliance with the License.\n
@@ -73,13 +73,9 @@
  * limitations under the License.\n
  */</string>
 
-    <string name="android_preference_fragment_compat_name">android_PreferenceFragmentCompat</string>
-    <string name="android_preference_fragment_compat_author">by shkschneider, kolavar and The Android Open Source Project</string>
-    <string name="license_android_preference_fragment_compat">@string/license_android_support_library</string>
-
     <string name="android_support_library_name">Android Support Library</string>
-    <string name="android_support_library_author">by The Android Open Source Project</string>
-    <string name="license_android_support_library">/*\n
+    <string name="the_android_open_source_project_author">by The Android Open Source Project</string>
+    <string name="license_the_android_open_source_project">/*\n
  * Copyright (C) 2015 The Android Open Source Project\n
  *\n
  * Licensed under the Apache License, Version 2.0 (the "License");\n
@@ -95,15 +91,33 @@
  * limitations under the License.\n
  */</string>
 
-    <string name="commons_io_name">Apache Commons IO ™</string>
-    <string name="commons_io_author">by Apache Software Foundation (ASF)</string>
-    <string name="license_commons_io">/*\n
+    <string name="apache_commons_io_name">Apache Commons IO ™</string>
+    <string name="apache_commons_io_author">by Apache Software Foundation (ASF)</string>
+    <string name="license_apache_commons_io">/*\n
  * Licensed to the Apache Software Foundation (ASF) under one or more\n
  * contributor license agreements.  See the NOTICE file distributed with\n
  * this work for additional information regarding copyright ownership.\n
  * The ASF licenses this file to You under the Apache License, Version 2.0\n
  * (the "License"); you may not use this file except in compliance with\n
  * the License.  You may obtain a copy of the License at\n
+ *\n
+ *      http://www.apache.org/licenses/LICENSE-2.0\n
+ *\n
+ * Unless required by applicable law or agreed to in writing, software\n
+ * distributed under the License is distributed on an "AS IS" BASIS,\n
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
+ * See the License for the specific language governing permissions and\n
+ * limitations under the License.\n
+ */</string>
+
+    <string name="color_picker_preference_name">ColorPickerPreference</string>
+    <string name="color_picker_preference_author">by Sergey Margaritov alias attenzione &amp; Daniel Nilsson</string>
+    <string name="license_color_picker_preference">/*\n
+ * Copyright (C) 2011 Sergey Margaritov &amp; Daniel Nilsson\n
+ *\n
+ * Licensed under the Apache License, Version 2.0 (the "License");\n
+ * you may not use this file except in compliance with the License.\n
+ * You may obtain a copy of the License at\n
  *\n
  *      http://www.apache.org/licenses/LICENSE-2.0\n
  *\n
@@ -149,6 +163,28 @@
  * limitations under the License.\n
  */</string>
 
+    <string name="material_intro_name">material-intro</string>
+    <string name="material_intro_author">by Heinrich Reimer</string>
+    <string name="license_material_intro">/*\n
+ * Copyright 2016 Heinrich Reimer\n
+ *\n
+ * Licensed under the Apache License, Version 2.0 (the "License");\n
+ * you may not use this file except in compliance with the License.\n
+ * You may obtain a copy of the License at\n
+ *\n
+ *      http://www.apache.org/licenses/LICENSE-2.0\n
+ *\n
+ * Unless required by applicable law or agreed to in writing, software\n
+ * distributed under the License is distributed on an "AS IS" BASIS,\n
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
+ * See the License for the specific language governing permissions and\n
+ * limitations under the License.\n
+ */</string>
+
+    <string name="preference_fragment_compat_name">PreferenceFragmentCompat</string>
+    <string name="preference_fragment_compat_author">by The Android Open Source Project, kolavar and shkschneider</string>
+    <string name="license_preference_fragment_compat">@string/license_the_android_open_source_project</string>
+
     <string name="recycler_view_fast_scroll_name">RecyclerView-FastScroll</string>
     <string name="recycler_view_fast_scroll_author">by Tim Malseed alias timusus</string>
     <string name="license_recycler_view_fast_scroll">/*\n
@@ -167,10 +203,10 @@
  * limitations under the License.\n
  */</string>
 
-    <string name="seek_bar_preference_name">SeekBarPreference</string>
+    <string name="seek_bar_preference_name">SeekBarPreference.java</string>
     <string name="seek_bar_preference_author">by robobunny, Max Rumpf alias Maxr1998 (modified)</string>
 
-    <string name="status_bar_tint_api_name">StatusBarTintApi</string>
+    <string name="status_bar_tint_api_name">StatusBarTintApi.java</string>
     <string name="status_bar_tint_api_author">by Mohammad Abu-Garbeyyeh</string>
 
     <string name="xposed_bridge_name">XposedBridge</string>

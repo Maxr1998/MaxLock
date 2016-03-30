@@ -60,29 +60,29 @@
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_licenses">
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
-            android:summary="@string/color_picker_preference_author"
-            android:title="@string/color_picker_preference_name"
-            maxlock:license="@string/license_color_picker_preference" />
+            android:summary="@string/android_in_app_billing_v3_author"
+            android:title="@string/android_in_app_billing_v3_name"
+            maxlock:license="@string/license_android_in_app_billing_v3" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
             android:summary="@string/android_lockpattern_author"
             android:title="@string/android_lockpattern_name"
             maxlock:license="@string/license_android_lockpattern" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
-            android:summary="@string/android_preference_fragment_compat_author"
-            android:title="@string/android_preference_fragment_compat_name"
-            maxlock:license="@string/license_android_preference_fragment_compat" />
-        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
-            android:summary="@string/android_support_library_author"
+            android:summary="@string/the_android_open_source_project_author"
             android:title="@string/android_support_library_name"
-            maxlock:license="@string/license_android_support_library" />
+            maxlock:license="@string/license_the_android_open_source_project" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
-            android:summary="@string/commons_io_author"
-            android:title="@string/commons_io_name"
-            maxlock:license="@string/license_commons_io" />
+            android:summary="@string/apache_commons_io_author"
+            android:title="@string/apache_commons_io_name"
+            maxlock:license="@string/license_apache_commons_io" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
-            android:summary="@string/android_support_library_author"
+            android:summary="@string/color_picker_preference_author"
+            android:title="@string/color_picker_preference_name"
+            maxlock:license="@string/license_color_picker_preference" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/the_android_open_source_project_author"
             android:title="@string/fingerprint_icon_name"
-            maxlock:license="@string/license_android_support_library" />
+            maxlock:license="@string/license_the_android_open_source_project" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
             android:summary="@string/google_play_services_author"
             android:title="@string/google_play_services_name"
@@ -91,6 +91,14 @@
             android:summary="@string/guava_author"
             android:title="@string/guava_name"
             maxlock:license="@string/license_guava" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/material_intro_author"
+            android:title="@string/material_intro_name"
+            maxlock:license="@string/license_material_intro" />
+        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
+            android:summary="@string/preference_fragment_compat_author"
+            android:title="@string/preference_fragment_compat_name"
+            maxlock:license="@string/license_preference_fragment_compat" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
             android:summary="@string/recycler_view_fast_scroll_author"
             android:title="@string/recycler_view_fast_scroll_name"
