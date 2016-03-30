@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -150,13 +151,13 @@ public abstract class Util {
     public static void getBackground(final ImageView background) {
         switch (getPreferences(background.getContext()).getString(Common.BACKGROUND, "")) {
             case "color":
-                background.setBackgroundColor(getPreferences(background.getContext()).getInt(Common.BACKGROUND_COLOR, ContextCompat.getColor(background.getContext(), R.color.accent)));
+                background.setImageDrawable(new ColorDrawable(getPreferences(background.getContext()).getInt(Common.BACKGROUND_COLOR, ContextCompat.getColor(background.getContext(), R.color.accent))));
                 break;
             case "custom":
                 try {
                     background.setImageBitmap(BitmapFactory.decodeStream(background.getContext().openFileInput("background")));
                 } catch (IOException | OutOfMemoryError e) {
-                    background.setBackgroundColor(ContextCompat.getColor(background.getContext(), R.color.accent));
+                    background.setImageDrawable(new ColorDrawable(ContextCompat.getColor(background.getContext(), R.color.accent)));
                     Toast.makeText(background.getContext(), "Error loading background image, " + (e instanceof IOException ? ", IOException." : "is it to big?"), Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -173,7 +174,8 @@ public abstract class Util {
                                         WALLPAPER = new SoftReference<>(wallpaper);
                                         background.setImageDrawable(wallpaper);
                                     } else {
-                                        background.setBackgroundColor(ContextCompat.getColor(background.getContext(), R.color.accent));
+                                        background.setImageDrawable(new ColorDrawable(ContextCompat.getColor(background.getContext(), R.color.accent)));
+                                        Toast.makeText(background.getContext(), "Failed to load system wallpaper!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
