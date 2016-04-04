@@ -63,6 +63,7 @@ import java.util.zip.ZipOutputStream;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.ui.actions.ActionActivity;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferences;
@@ -322,16 +323,19 @@ public abstract class Util {
     }
 
     public static String getApplicationNameFromPackage(String packageName, Context context) {
+        if (context instanceof ActionActivity) {
+            return packageName;
+        }
         PackageManager packageManager = context.getPackageManager();
         try {
             CharSequence label = packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, 0));
             if (label != null) {
                 return label.toString();
             } else {
-                return "(error)";
+                return packageName;
             }
         } catch (PackageManager.NameNotFoundException e) {
-            return "(error)";
+            return "(Not found)";
         }
     }
 
