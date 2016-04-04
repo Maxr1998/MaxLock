@@ -69,6 +69,8 @@ dependencies {
     //compile 'com.heinrichreimersoftware:material-intro:1.2.1'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     compile 'commons-io:commons-io:2.4'
+    provided 'de.robv.android.xposed:api:81'
+    provided 'de.robv.android.xposed:api:81:sources'
     //-- Android support and Google Services
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:customtabs:23.2.1'
@@ -80,5 +82,4 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
-    provided files('lib/XposedBridgeApi-20150213.jar')
 }
