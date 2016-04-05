@@ -45,12 +45,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.google.common.collect.ImmutableList;
 import com.haibison.android.lockpattern.LockPatternActivity;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -67,20 +67,18 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 @SuppressLint("CommitPrefEdits")
-public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
+public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements Filterable, FastScrollRecyclerView.SectionedAdapter {
 
     private final Fragment mFragment;
     private final Context mContext;
     private final SharedPreferences prefsApps, prefsKeysPerApp;
     private final AppFilter mFilter;
-    private final List<ApplicationInfo> mItemList;
-    private List<ApplicationInfo> mListBackup;
+
     private AlertDialog dialog;
 
-    public AppListAdapter(Fragment fragment, List<ApplicationInfo> list) {
+    public AppListAdapter(Fragment fragment) {
         mFragment = fragment;
         mContext = fragment.getActivity();
-        mItemList = list;
         prefsApps = MLPreferences.getPrefsApps(mContext);
         prefsKeysPerApp = mContext.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE);
         mFilter = new AppFilter();
@@ -94,11 +92,11 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     @Override
     public void onBindViewHolder(final AppsListViewHolder hld, int position) {
-        final String key = mItemList.get(position).packageName;
+        final String key = ListHolder.getInstance().get(position).packageName;
         hld.tag = key;
         hld.prefsApps = prefsApps;
 
-        hld.appIcon.setImageDrawable(mItemList.get(position).loadIcon(mContext.getPackageManager()));
+        hld.appIcon.setImageDrawable(ListHolder.getInstance().get(position).loadIcon(mContext.getPackageManager()));
         hld.appIcon.setContentDescription(mContext.getString(R.string.content_description_applist_icon, nameAt(position)));
         hld.appName.setText(nameAt(position));
         boolean locked = prefsApps.getBoolean(key, false);
@@ -176,7 +174,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                 // Finish dialog
                 dialog = new AlertDialog.Builder(mContext)
                         .setTitle(mContext.getString(R.string.dialog_title_settings))
-                        .setIcon(mItemList.get(hld.getAdapterPosition()).loadIcon(mContext.getPackageManager()))
+                        .setIcon(ListHolder.getInstance().get(hld.getAdapterPosition()).loadIcon(mContext.getPackageManager()))
                         .setView(checkBoxView)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -195,11 +193,11 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     @Override
     public int getItemCount() {
-        return mItemList.size();
+        return ListHolder.getInstance().size();
     }
 
     private String nameAt(int position) {
-        return mItemList.get(position < getItemCount() ? position : getItemCount() - 1).loadLabel(mContext.getPackageManager()).toString();
+        return ListHolder.getInstance().get(position < getItemCount() ? position : getItemCount() - 1).loadLabel(mContext.getPackageManager()).toString();
     }
 
     @NonNull
@@ -208,12 +206,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         return (nameAt(position) + "?").substring(0, 1).toUpperCase();
     }
 
+    @Override
     public AppFilter getFilter() {
         return mFilter;
-    }
-
-    public void saveListBackup() {
-        mListBackup = ImmutableList.copyOf(mItemList);
     }
 
     public static class AppsListViewHolder extends RecyclerView.ViewHolder {
@@ -347,58 +342,58 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         @SuppressLint("DefaultLocale")
         @Override
         protected FilterResults performFiltering(CharSequence filter) {
+            List<ApplicationInfo> backup = ListHolder.getInstance().backup();
             final String search = filter.toString().toLowerCase();
-            FilterResults results = new FilterResults();
-            if (search.length() == 0) {
-                results.values = mListBackup;
-                results.count = mListBackup.size();
+            final String defaultFilter = MLPreferences.getPreferences(mContext).getString("app_list_filter", "");
+            if (search.length() == 0 && defaultFilter.length() == 0) {
+                return null;
             } else {
+                FilterResults results = new FilterResults();
                 List<ApplicationInfo> filteredList = new ArrayList<>();
-                for (int i = 0; i < mListBackup.size(); i++) {
+                for (int i = 0; i < backup.size(); i++) {
                     boolean add = false;
-                    switch (search) {
-                        case "@*activated*":
-                            add = prefsApps.getBoolean(mListBackup.get(i).packageName, false);
-                            break;
-                        case "@*deactivated*":
-                            add = !prefsApps.getBoolean(mListBackup.get(i).packageName, false);
-                            break;
-                        default:
-                            String title = mListBackup.get(i).loadLabel(mContext.getPackageManager()).toString().toLowerCase();
-                            if (title.startsWith(search)) {
-                                add = true;
-                            }
-                            if (!add) {
-                                for (String titlePart : title.split(" ")) {
-                                    if (titlePart.startsWith(search)) {
-                                        add = true;
-                                    } else {
-                                        for (String searchPart : search.split(" ")) {
-                                            if (titlePart.startsWith(searchPart)) {
-                                                add = true;
-                                            }
-                                        }
-                                    }
+                    if (search.length() != 0) {
+                        String title = backup.get(i).loadLabel(mContext.getPackageManager()).toString().toLowerCase();
+                        if (title.startsWith(search)) {
+                            add = true;
+                        }
+                        // Spaces/multiple words in title
+                        if (!add)
+                            for (String titlePart : title.split(" ")) {
+                                if (titlePart.startsWith(search)) {
+                                    add = true;
+                                    break;
                                 }
                             }
-                            break;
+                        // Spaces/multiple words in search
+                        if (!add)
+                            for (String searchPart : search.split(" ")) {
+                                if (title.startsWith(searchPart)) {
+                                    add = true;
+                                    break;
+                                }
+                            }
+                    } else {
+                        add = true;
                     }
-                    if (add) {
-                        filteredList.add(mListBackup.get(i));
+                    boolean isEnabled = prefsApps.getBoolean(backup.get(i).packageName, false);
+                    if (add && (isEnabled || defaultFilter.equals("@*deactivated*")) && (!isEnabled || defaultFilter.equals("@*activated*"))) {
+                        filteredList.add(backup.get(i));
                     }
                 }
                 results.values = filteredList;
                 results.count = filteredList.size();
+                return results;
             }
-            return results;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            mItemList.clear();
-            if (results.values != null) {
-                mItemList.addAll((List<ApplicationInfo>) results.values);
+            if (results != null) {
+                ListHolder.getInstance().setItems((List<ApplicationInfo>) results.values);
+            } else {
+                ListHolder.getInstance().reset();
             }
             notifyDataSetChanged();
         }

@@ -26,10 +26,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +44,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -68,14 +69,13 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-public class AppListFragment extends Fragment {
+public class AppListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<ApplicationInfo>> {
 
     private static final int BACKUP_STORAGE_PERMISSION_REQUEST_CODE = 101;
     private static final int RESTORE_STORAGE_PERMISSION_REQUEST_CODE = 102;
-    private static List<ApplicationInfo> APP_LIST = new ArrayList<>();
-    private static SetupAppListTask TASK;
-    private AppListAdapter mAdapter;
+    private ViewGroup rootView;
     private SharedPreferences prefs;
+    private AppListAdapter mAdapter;
     private ArrayAdapter<String> restoreAdapter;
 
     @Override
@@ -83,15 +83,33 @@ public class AppListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mAdapter = new AppListAdapter(this, APP_LIST);
-        // Generate list
-        if (APP_LIST.isEmpty() && TASK == null) {
-            TASK = new SetupAppListTask(this, APP_LIST, mAdapter);
-            TASK.execute();
-        } else {
-            mAdapter.saveListBackup();
+        prefs = MLPreferences.getPreferences(getActivity());
+        mAdapter = new AppListAdapter(this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public Loader<List<ApplicationInfo>> onCreateLoader(int id, Bundle args) {
+        return new SetupAppListLoader(getActivity());
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<ApplicationInfo>> loader) {
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<ApplicationInfo>> loader, List<ApplicationInfo> data) {
+        if (data != null) {
+            ListHolder.getInstance().setItems(data);
         }
+        mAdapter.getFilter().filter("");
+        rootView.findViewById(android.R.id.progress).setVisibility(View.GONE);
     }
 
     @Override
@@ -99,7 +117,7 @@ public class AppListFragment extends Fragment {
         getActivity().setTitle(getString(R.string.pref_screen_apps));
         //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         // Setup layout
         FastScrollRecyclerView recyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.app_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -123,8 +141,8 @@ public class AppListFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-                return false;
+                Util.hideKeyboardFromWindow(getActivity(), searchView);
+                return true;
             }
 
             @Override
@@ -182,7 +200,7 @@ public class AppListFragment extends Fragment {
                         break;
                 }
                 filterIcon(item);
-                filter();
+                mAdapter.getFilter().filter("");
                 return true;
             default:
                 return false;
@@ -294,15 +312,11 @@ public class AppListFragment extends Fragment {
         item.setTitle(getString(R.string.content_description_applist_filter, getString(filterTypeString)));
     }
 
-    public void filter() {
-        mAdapter.getFilter().filter(prefs.getString("app_list_filter", ""));
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (String.valueOf(requestCode).startsWith(String.valueOf(Util.PATTERN_CODE_APP))) {
             if (resultCode == LockPatternActivity.RESULT_OK) {
-                String app = APP_LIST.get(Integer.parseInt(String.valueOf(requestCode).substring(1))).packageName;
+                String app = ListHolder.getInstance().get(Integer.parseInt(String.valueOf(requestCode).substring(1))).packageName;
                 Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), app);
             }
         } else super.onActivityResult(requestCode, resultCode, data);
