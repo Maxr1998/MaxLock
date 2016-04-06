@@ -41,6 +41,7 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
@@ -77,19 +78,19 @@ public class Apps {
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    final Activity app = (Activity) param.thisObject;
-                    String activityName = app.getClass().getName();
-                    log("MLaS|" + activityName + "||" + System.currentTimeMillis());
+                    final Activity activity = (Activity) param.thisObject;
+                    String activityName = activity.getClass().getName();
+                    logD("ML|Started" + activityName + " at " + System.currentTimeMillis());
                     JSONObject history = readFile();
                     JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
                     if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
-                        app.finish();
-                        log("Finish 1");
+                        activity.finish();
+                        logD("ML|Finish " + activityName);
                         return;
                     }
                     prefsApps.reload();
                     if (activityName.equals("android.app.Activity") ||
-                            pass(app.getTaskId(), lPParam.packageName, activityName, history, prefsApps)) {
+                            pass(activity.getTaskId(), lPParam.packageName, activityName, history, prefsApps)) {
                         return;
                     }
                     Intent it = new Intent();
@@ -99,7 +100,7 @@ public class Apps {
                         it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH);
                     }
                     it.putExtra(Common.INTENT_EXTRAS_NAMES, new String[]{lPParam.packageName, activityName});
-                    app.startActivity(it);
+                    activity.startActivity(it);
                 }
             });
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
@@ -109,8 +110,9 @@ public class Apps {
                         JSONObject history = readFile();
                         JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
                         if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
-                            log("Finish 2");
-                            ((Activity) param.thisObject).finish();
+                            final Activity activity = (Activity) param.thisObject;
+                            activity.finish();
+                            logD("ML|Finish " + activity.getClass().getName());
                         }
                     }
                 }

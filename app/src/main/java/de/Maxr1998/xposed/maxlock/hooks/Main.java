@@ -19,6 +19,7 @@ package de.Maxr1998.xposed.maxlock.hooks;
 
 import android.os.Build;
 
+import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XSharedPreferences;
@@ -63,5 +64,10 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         } else {
             Apps.initLogging(lPParam);
         }
+    }
+
+    public static void logD(String message) {
+        if (BuildConfig.DEBUG)
+            log(message);
     }
 }

@@ -32,6 +32,7 @@ import static de.Maxr1998.xposed.maxlock.hooks.Apps.getDefault;
 import static de.Maxr1998.xposed.maxlock.hooks.Apps.readFile;
 import static de.Maxr1998.xposed.maxlock.hooks.Apps.writeFile;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.MAXLOCK_PACKAGE_NAME;
+import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
@@ -50,8 +51,10 @@ public class MaxLock {
                     JSONObject history = readFile();
                     addToHistory(Apps.UNLOCK_ID, lPParam.packageName, history);
                     history.put(IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis());
-                    history.optJSONObject(IMOD_OBJECT_KEY).put(((String[]) getObjectField(param.thisObject, "names"))[0] + Apps.FLAG_IMOD, System.currentTimeMillis());
+                    String[] names = (String[]) getObjectField(param.thisObject, "names");
+                    history.optJSONObject(IMOD_OBJECT_KEY).put(names[0] + Apps.FLAG_IMOD, System.currentTimeMillis());
                     writeFile(history);
+                    logD("ML|Unlocked " + names[1]);
                 }
             });
             findAndHookMethod(PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onBackPressed", new XC_MethodHook() {
