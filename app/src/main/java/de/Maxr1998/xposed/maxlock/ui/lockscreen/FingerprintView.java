@@ -26,6 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
+import android.util.Log;
 import android.widget.ImageView;
 
 import de.Maxr1998.xposed.maxlock.R;
@@ -93,5 +94,11 @@ public final class FingerprintView extends ImageView {
         } else {
             mCancelFingerprint.cancel();
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mCancelFingerprint.cancel();
     }
 }
