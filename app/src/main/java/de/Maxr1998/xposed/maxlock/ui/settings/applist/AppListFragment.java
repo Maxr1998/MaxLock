@@ -69,6 +69,8 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static de.Maxr1998.xposed.maxlock.ui.settings.applist.SetupAppListLoader.LOAD_ALL;
+
 public class AppListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<ApplicationInfo>> {
 
     private static final int BACKUP_STORAGE_PERMISSION_REQUEST_CODE = 101;
@@ -90,6 +92,11 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        startLoading();
+    }
+
+    private void startLoading() {
+        rootView.findViewById(android.R.id.progress).setVisibility(View.VISIBLE);
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -100,7 +107,6 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoaderReset(Loader<List<ApplicationInfo>> loader) {
-
     }
 
     @Override
@@ -159,6 +165,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
             }
         });
         filterIcon(menu.findItem(R.id.toolbar_filter_activated));
+        menu.findItem(R.id.toolbar_load_all).setTitle(LOAD_ALL ? R.string.menu_only_openable : R.string.menu_all_apps);
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -167,6 +174,22 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         switch (item.getItemId()) {
             case android.R.id.home:
                 return Util.hideKeyboardFromWindow(getActivity(), getView());
+            case R.id.toolbar_filter_activated:
+                String appListFilter = prefs.getString("app_list_filter", "");
+                switch (appListFilter) {
+                    case "@*activated*":
+                        prefs.edit().putString("app_list_filter", "@*deactivated*").apply();
+                        break;
+                    case "@*deactivated*":
+                        prefs.edit().remove("app_list_filter").apply();
+                        break;
+                    default:
+                        prefs.edit().putString("app_list_filter", "@*activated*").apply();
+                        break;
+                }
+                filterIcon(item);
+                mAdapter.getFilter().filter("");
+                return true;
             case R.id.toolbar_backup_list:
                 if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
                     Util.checkForStoragePermission(this, BACKUP_STORAGE_PERMISSION_REQUEST_CODE, R.string.dialog_storage_permission_backup_restore);
@@ -186,21 +209,16 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE).edit().clear().commit();
                 ((SettingsActivity) getActivity()).restart();
                 return true;
-            case R.id.toolbar_filter_activated:
-                String appListFilter = prefs.getString("app_list_filter", "");
-                switch (appListFilter) {
-                    case "@*activated*":
-                        prefs.edit().putString("app_list_filter", "@*deactivated*").apply();
-                        break;
-                    case "@*deactivated*":
-                        prefs.edit().remove("app_list_filter").apply();
-                        break;
-                    default:
-                        prefs.edit().putString("app_list_filter", "@*activated*").apply();
-                        break;
-                }
-                filterIcon(item);
-                mAdapter.getFilter().filter("");
+            case R.id.toolbar_load_all:
+                LOAD_ALL = !LOAD_ALL;
+                item.setTitle(LOAD_ALL ? R.string.menu_only_openable : R.string.menu_all_apps);
+                // Clear up old data
+                ListHolder.getInstance().restore();
+                ListHolder.getInstance().setItems(null);
+                mAdapter.notifyDataSetChanged();
+                // Stop and restart loader
+                getLoaderManager().destroyLoader(0);
+                startLoading();
                 return true;
             default:
                 return false;

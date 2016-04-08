@@ -135,6 +135,8 @@
     <string name="menu_backup_list">Backup list</string>
     <string name="menu_restore_list">Restore list</string>
     <string name="menu_clear_list">Clear list</string>
+    <string name="menu_all_apps">Load all apps</string>
+    <string name="menu_only_openable">Only load openable apps</string>
     <string name="dialog_storage_permission_backup_restore">MaxLock needs to access your external storage to read/write the backup files. Proceed?</string>
     <string name="toast_no_files_to_backup">No files found to backup</string>
     <string name="toast_backup_restore_exception">There was an error.\nPlease contact developer!</string>

@@ -135,6 +135,8 @@
     <string name="menu_backup_list">Liste sichern</string>
     <string name="menu_restore_list">Liste wiederherstellen</string>
     <string name="menu_clear_list">Liste leeren</string>
+    <string name="menu_all_apps">Alle Apps laden</string>
+    <string name="menu_only_openable">Nur startbare Apps laden</string>
     <string name="dialog_storage_permission_backup_restore">MaxLock muss auf deinen externen Speicher zugreifen um die Backups zu lesen/schreiben. Fortfahren?</string>
     <string name="toast_no_files_to_backup">Keine Dateien zum Sichern gefunden</string>
     <string name="toast_backup_restore_exception">Ein Fehler ist aufgetreten.\nBitte dem Entwickler melden!</string>

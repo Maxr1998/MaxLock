@@ -32,6 +32,8 @@ import de.Maxr1998.xposed.maxlock.BuildConfig;
 
 class SetupAppListLoader extends AsyncTaskLoader<List<ApplicationInfo>> {
 
+    public static boolean LOAD_ALL = false;
+
     public SetupAppListLoader(Context c) {
         super(c);
     }
@@ -51,7 +53,7 @@ class SetupAppListLoader extends AsyncTaskLoader<List<ApplicationInfo>> {
         final List<ApplicationInfo> result = new ArrayList<>();
         for (int i = 0; i < mAllApps.size(); i++) {
             ApplicationInfo ai = mAllApps.get(i);
-            if ((pm.getLaunchIntentForPackage(ai.packageName) != null && !ai.packageName.equals(BuildConfig.APPLICATION_ID)) || ai.packageName.matches("com.(google.)?android.packageinstaller")) {
+            if ((shouldLoad(pm, ai) && !ai.packageName.equals(BuildConfig.APPLICATION_ID)) || ai.packageName.matches("com.(google.)?android.packageinstaller")) {
                 result.add(ai);
             }
         }
@@ -64,5 +66,16 @@ class SetupAppListLoader extends AsyncTaskLoader<List<ApplicationInfo>> {
             }
         });
         return result;
+    }
+
+    private boolean shouldLoad(PackageManager pm, ApplicationInfo ai) {
+        try {
+            if (LOAD_ALL && pm.getPackageInfo(ai.packageName, PackageManager.GET_ACTIVITIES).activities != null) {
+                return true;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return pm.getLaunchIntentForPackage(ai.packageName) != null;
     }
 }
