@@ -393,7 +393,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
             if (results != null) {
                 ListHolder.getInstance().setItems((List<ApplicationInfo>) results.values);
             } else {
-                ListHolder.getInstance().reset();
+                ListHolder.getInstance().restore();
             }
             notifyDataSetChanged();
         }

@@ -29,6 +29,9 @@ public class ListHolder {
     private final List<ApplicationInfo> mAppList = new ArrayList<>();
     private final List<ApplicationInfo> mAppListBackup = new ArrayList<>();
 
+    private ListHolder() {
+    }
+
     public static ListHolder getInstance() {
         if (sInstance == null) {
             sInstance = new ListHolder();
@@ -36,12 +39,10 @@ public class ListHolder {
         return sInstance;
     }
 
-    private ListHolder() {
-    }
-
     public void setItems(Collection<ApplicationInfo> collection) {
         mAppList.clear();
-        mAppList.addAll(collection);
+        if (collection != null)
+            mAppList.addAll(collection);
     }
 
     public ApplicationInfo get(int location) {
@@ -59,10 +60,9 @@ public class ListHolder {
         return mAppListBackup;
     }
 
-    public void reset() {
+    public void restore() {
         if (!mAppListBackup.isEmpty()) {
-            mAppList.clear();
-            mAppList.addAll(mAppListBackup);
+            setItems(mAppListBackup);
             mAppListBackup.clear();
         }
     }
