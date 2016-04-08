@@ -377,7 +377,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
                         add = true;
                     }
                     boolean isEnabled = prefsApps.getBoolean(backup.get(i).packageName, false);
-                    if (add && (isEnabled || defaultFilter.equals("@*deactivated*")) && (!isEnabled || defaultFilter.equals("@*activated*"))) {
+                    if (add && (defaultFilter.equals("") || (isEnabled && defaultFilter.equals("@*activated*")) || (!isEnabled && defaultFilter.equals("@*deactivated*")))) {
                         filteredList.add(backup.get(i));
                     }
                 }
