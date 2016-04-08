@@ -80,7 +80,7 @@ public class Apps {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     final Activity activity = (Activity) param.thisObject;
                     String activityName = activity.getClass().getName();
-                    logD("ML|Started" + activityName + " at " + System.currentTimeMillis());
+                    logD("ML|Started " + activityName + " at " + System.currentTimeMillis());
                     JSONObject history = readFile();
                     JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
                     if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
