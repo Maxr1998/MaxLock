@@ -31,8 +31,13 @@ import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,28 +168,42 @@ public abstract class Util {
                 }
                 break;
             default:
-                if (WALLPAPER.get() == null) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            final Drawable wallpaper = WallpaperManager.getInstance(background.getContext()).getDrawable();
-                            background.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (wallpaper != null) {
-                                        WALLPAPER = new SoftReference<>(wallpaper);
-                                        background.setImageDrawable(wallpaper);
-                                    } else {
-                                        background.setImageDrawable(new ColorDrawable(ContextCompat.getColor(background.getContext(), R.color.accent)));
-                                        Toast.makeText(background.getContext(), "Failed to load system wallpaper!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                ((AppCompatActivity) ((ContextThemeWrapper) background.getContext()).getBaseContext()).getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Drawable>() {
+                    @Override
+                    public Loader<Drawable> onCreateLoader(int id, Bundle args) {
+                        return new AsyncTaskLoader<Drawable>(background.getContext()) {
+                            @Override
+                            protected void onStartLoading() {
+                                super.onStartLoading();
+                                forceLoad();
+                            }
+
+                            @Override
+                            public Drawable loadInBackground() {
+                                if (WALLPAPER.get() != null)
+                                    return WALLPAPER.get();
+                                else
+                                    return WallpaperManager.getInstance(getContext()).getFastDrawable();
+                            }
+                        };
+                    }
+
+                    @Override
+                    public void onLoadFinished(Loader<Drawable> loader, Drawable data) {
+                        if (data != null) {
+                            background.setImageDrawable(data);
+                            if (WALLPAPER.get() == null)
+                                WALLPAPER = new SoftReference<>(data);
+                        } else {
+                            background.setImageDrawable(new ColorDrawable(ContextCompat.getColor(background.getContext(), R.color.accent)));
+                            Toast.makeText(background.getContext(), "Failed to load system wallpaper!", Toast.LENGTH_SHORT).show();
                         }
-                    }.start();
-                } else {
-                    background.setImageDrawable(WALLPAPER.get());
-                }
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<Drawable> loader) {
+                    }
+                });
                 break;
         }
     }
