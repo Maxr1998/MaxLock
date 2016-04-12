@@ -28,9 +28,9 @@
     <!-- First start screens-->
     <string name="fs_welcome_maxlock">欢迎使用MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock将保护您的应用免受未经授权访问</string>
-	<string name="fs_app_package_installer">安装包</string>
-	<string name="fs_app_settings">设置</string>
-	<string name="fs_app_xposed_installer">Xposed安装器</string>
+    <string name="fs_app_package_installer">安装包</string>
+    <string name="fs_app_settings">设置</string>
+    <string name="fs_app_xposed_installer">Xposed安装器</string>
     <string name="fs_recommended_apps">通过锁定这些应用能进一步保护</string>
     <string name="fs_recommended_apps_summary">您应该勾选这些应用，以确保MaxLock不能被禁用或卸载</string>
     <!-- Locking type settings -->
@@ -135,6 +135,8 @@
     <string name="menu_backup_list">备份列表</string>
     <string name="menu_restore_list">恢复列表</string>
     <string name="menu_clear_list">清除列表</string>
+    <string name="menu_all_apps">加载所有应用</string>
+    <string name="menu_only_openable">只加载已打开的应用</string>
     <string name="dialog_storage_permission_backup_restore">MaxLock需要访问外部存储读/写备份文件,继续?</string>
     <string name="toast_no_files_to_backup">未找到备份文件</string>
     <string name="toast_backup_restore_exception">有一个错误,\n请联系开发者!</string>
@@ -206,8 +208,8 @@
 
     <!-- Device admin external -->
     <string name="maxlock_protected_admin">此管理保护被禁用!您可以从MaxLock应用程序内点击\"%1$s\"选项时禁用它</string>
-	
-	<!-- Accessibility -->
+    
+    <!-- Accessibility -->
     <string name="content_description_fs_phone">手机图片</string>
     <string name="content_description_fs_lock">锁定这个手机</string>
     <string name="content_description_lockscreen_current_input">当前输入的字符串</string>
