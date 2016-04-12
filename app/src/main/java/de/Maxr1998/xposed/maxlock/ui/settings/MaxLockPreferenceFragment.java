@@ -343,8 +343,10 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         try {
                             // Obtain data
                             FileUtils.copyDirectoryToDirectory(new File(Util.dataDir(getActivity()), "shared_prefs"), tempDirectory);
-                            FileUtils.writeStringToFile(new File(tempDirectory, "device-info.txt"), Build.MANUFACTURER + " " + Build.MODEL + ", " +
-                                    "SDK" + Build.VERSION.SDK_INT + ", Fingerprint " + Build.FINGERPRINT);
+                            FileUtils.writeStringToFile(new File(tempDirectory, "device-info.txt"),
+                                    "App Version: " + BuildConfig.VERSION_NAME + "\n\n" +
+                                            "Device: " + Build.MANUFACTURER + " " + Build.MODEL + " (" + Build.PRODUCT + ")\n" +
+                                            "API: " + Build.VERSION.SDK_INT + ", Fingerprint: " + Build.FINGERPRINT);
                             FileUtils.copyFileToDirectory(getActivity().getFileStreamPath("history.json"), tempDirectory);
                             Process process = Runtime.getRuntime().exec("logcat -d");
                             FileUtils.copyInputStreamToFile(process.getInputStream(), new File(tempDirectory, "logcat.txt"));
@@ -463,7 +465,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     final Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.dev_email)});
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "MaxLock feedback/bug-report");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "MaxLock feedback on " + Build.MODEL);
+                    intent.putExtra(Intent.EXTRA_TEXT, "Please here describe your issue as DETAILED as possible!");
                     try {
                         FileUtils.moveFile(zipFile, external);
                         FileUtils.deleteQuietly(zipFile);
