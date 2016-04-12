@@ -49,7 +49,7 @@ public final class NotificationHelper {
         }
         Intent notifyIntent = new Intent(context, ActionActivity.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notifyIntent.putExtra(ActionsHelper.ACTION_EXTRA_KEY, R.id.radio_imod_reset);
+        notifyIntent.putExtra(ActionsHelper.ACTION_EXTRA_KEY, ActionsHelper.ACTION_IMOD_RESET);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentTitle(context.getString(R.string.action_imod_reset))

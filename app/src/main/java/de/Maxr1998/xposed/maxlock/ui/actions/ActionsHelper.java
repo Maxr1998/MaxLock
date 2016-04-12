@@ -28,7 +28,7 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
-public abstract class ActionsHelper {
+public final class ActionsHelper {
 
     public static final String ACTION_EXTRA_KEY = "de.Maxr1998.xposed.maxlock.extra.STRING_MESSAGE";
     public static final int ACTION_TOGGLE_MASTER_SWITCH = 0x02576;
