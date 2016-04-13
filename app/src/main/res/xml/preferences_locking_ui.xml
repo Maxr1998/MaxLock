@@ -57,6 +57,13 @@
             android:title="@string/pref_hide_input_bar" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
+    <PreferenceCategory android:title="@string/pref_category_pin_and_pattern">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="haptic_feedback"
+            android:title="@string/pref_haptic_feedback" />
+    </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_knock_code_only">
         <CheckBoxPreference
             android:defaultValue="true"
@@ -73,10 +80,6 @@
             android:defaultValue="true"
             android:key="show_path"
             android:title="@string/pref_show_path" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="haptic_feedback"
-            android:title="@string/pref_haptic_feedback" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference android:key="shadow_fingerprint" />
     <PreferenceCategory

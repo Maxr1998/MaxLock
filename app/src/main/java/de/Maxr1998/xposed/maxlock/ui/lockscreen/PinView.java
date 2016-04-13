@@ -19,8 +19,10 @@ package de.Maxr1998.xposed.maxlock.ui.lockscreen;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Vibrator;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.GridLayout;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -33,11 +35,17 @@ import java.util.List;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 
+import static android.view.HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING;
+import static android.view.HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING;
+import static android.view.HapticFeedbackConstants.LONG_PRESS;
+import static android.view.HapticFeedbackConstants.VIRTUAL_KEY;
+
 @SuppressLint("ViewConstructor")
 public class PinView extends GridLayout implements View.OnClickListener, View.OnLongClickListener {
 
     private final LockView mLockView;
     private final List<String> values = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"));
+    private final boolean hapticFeedback;
 
     public PinView(Context context, LockView lockView) {
         super(context);
@@ -70,10 +78,14 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
             LayoutParams params = new LayoutParams(spec(i / 3, 1f), spec(i % 3, 1f));
             addView(v, params);
         }
+        hapticFeedback = mLockView.getPrefs().getBoolean(Common.ENABLE_PATTERN_FEEDBACK, true);
     }
 
     @Override
     public void onClick(View v) {
+        if (hapticFeedback) {
+            performHapticFeedback(VIRTUAL_KEY, FLAG_IGNORE_VIEW_SETTING | FLAG_IGNORE_GLOBAL_SETTING);
+        }
         String value = ((PinDigit) v).getValue();
         if (value.length() == 1) {
             mLockView.setKey(value, true);
@@ -83,6 +95,14 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
             mLockView.checkInput();
         } else if (value.equals(getResources().getString(android.R.string.ok)) && !mLockView.checkInput()) {
             mLockView.setKey(null, false);
+            if (hapticFeedback) {
+                getHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        performHapticFeedback(VIRTUAL_KEY, FLAG_IGNORE_VIEW_SETTING | FLAG_IGNORE_GLOBAL_SETTING);
+                    }
+                }, 120);
+            }
             v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
         }
     }
@@ -90,6 +110,8 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
     @Override
     public boolean onLongClick(View v) {
         mLockView.setKey(null, false);
+        if (hapticFeedback)
+            performHapticFeedback(LONG_PRESS, FLAG_IGNORE_VIEW_SETTING | FLAG_IGNORE_GLOBAL_SETTING);
         return true;
     }
 }
