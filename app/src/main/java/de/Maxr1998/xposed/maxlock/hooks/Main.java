@@ -49,7 +49,8 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             DeviceAdminProtection.init(lPParam);
         } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                SystemUI.init(prefsApps, lPParam);
+                SystemUI.initRecents(prefsApps, lPParam);
+                SystemUI.initScreenOff(prefsApps, lPParam, true);
             } else {
                 SystemUI.initRecentsLegacy(prefsApps, lPParam);
             }

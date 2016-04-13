@@ -52,7 +52,7 @@ public class MaxLock {
                     addToHistory(Apps.UNLOCK_ID, lPParam.packageName, history);
                     history.put(IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis());
                     String[] names = (String[]) getObjectField(param.thisObject, "names");
-                    history.optJSONObject(IMOD_OBJECT_KEY).put(names[0] + Apps.FLAG_IMOD, System.currentTimeMillis());
+                    history.optJSONObject(IMOD_OBJECT_KEY).put(names[0], System.currentTimeMillis());
                     writeFile(history);
                     logD("ML|Unlocked " + names[1]);
                 }
@@ -61,7 +61,7 @@ public class MaxLock {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     JSONObject history = readFile();
-                    history.optJSONObject(CLOSE_OBJECT_KEY).put(((String[]) getObjectField(param.thisObject, "names"))[0] + Apps.FLAG_CLOSE_APP, System.currentTimeMillis());
+                    history.optJSONObject(CLOSE_OBJECT_KEY).put(((String[]) getObjectField(param.thisObject, "names"))[0], System.currentTimeMillis());
                     writeFile(history);
                 }
             });

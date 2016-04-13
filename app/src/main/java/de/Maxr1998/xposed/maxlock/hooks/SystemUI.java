@@ -33,7 +33,8 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.Maxr1998.xposed.maxlock.hooks.Apps.CLOSE_OBJECT_KEY;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.HISTORY_ARRAY_KEY;
+import static de.Maxr1998.xposed.maxlock.hooks.Apps.PACKAGE_HISTORY_ARRAY_KEY;
+import static de.Maxr1998.xposed.maxlock.hooks.Apps.PROCESS_HISTORY_ARRAY_KEY;
 import static de.Maxr1998.xposed.maxlock.hooks.Apps.getDefault;
 import static de.Maxr1998.xposed.maxlock.hooks.Apps.readFile;
 import static de.Maxr1998.xposed.maxlock.hooks.Apps.writeFile;
@@ -49,13 +50,7 @@ public class SystemUI {
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void init(XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
-        initRecents(prefsApps, lPParam);
-        initScreenOff(prefsApps, lPParam, true);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static void initRecents(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
+    public static void initRecents(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
         try {
             findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "rebindToTask", PACKAGE_NAME + ".recents.model.Task", new XC_MethodHook() {
                 @Override
@@ -99,6 +94,7 @@ public class SystemUI {
             hookedClass = "com.android.systemui.keyguard.KeyguardViewMediator";
         } else {
             try {
+                // Handle MIUI Keyguard class
                 XposedHelpers.findClass("com.android.keyguard.MiuiKeyguardViewMediator", lPParam.classLoader);
                 hookedClass = "com.android.keyguard.MiuiKeyguardViewMediator";
                 log("ML: Recognized MIUI device.");
@@ -114,7 +110,10 @@ public class SystemUI {
                     writeFile(getDefault());
                     log("ML: Screen turned off, locked apps.");
                 } else {
-                    writeFile(readFile().put(HISTORY_ARRAY_KEY, new JSONArray()).put(CLOSE_OBJECT_KEY, new JSONObject()));
+                    writeFile(readFile()
+                            .put(PROCESS_HISTORY_ARRAY_KEY, new JSONArray())
+                            .put(PACKAGE_HISTORY_ARRAY_KEY, new JSONArray())
+                            .put(CLOSE_OBJECT_KEY, new JSONObject()));
                 }
             }
         };

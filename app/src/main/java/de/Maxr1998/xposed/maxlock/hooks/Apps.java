@@ -33,8 +33,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.robv.android.xposed.XC_MethodHook;
@@ -49,12 +47,11 @@ public class Apps {
 
     @SuppressLint("SdCardPath")
     public static final String HISTORY_PATH = "/data/data/" + Main.MAXLOCK_PACKAGE_NAME + "/files/history.json";
-    public static final String HISTORY_ARRAY_KEY = "history";
+    public static final String PROCESS_HISTORY_ARRAY_KEY = "procs";
+    public static final String PACKAGE_HISTORY_ARRAY_KEY = "pkgs";
     public static final int UNLOCK_ID = -0x3A8;
     public static final String IMOD_OBJECT_KEY = "iModPerApp";
-    public static final String FLAG_IMOD = "_imod";
     public static final String CLOSE_OBJECT_KEY = "close";
-    public static final String FLAG_CLOSE_APP = "_close";
 
     public static final String IMOD_DELAY_APP = "delay_inputperapp";
     public static final String IMOD_DELAY_GLOBAL = "delay_inputgeneral";
@@ -83,7 +80,7 @@ public class Apps {
                     logD("ML|Started " + activityName + " at " + System.currentTimeMillis());
                     JSONObject history = readFile();
                     JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
-                    if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
+                    if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName) <= 800) {
                         activity.finish();
                         logD("ML|Finish " + activityName);
                         return;
@@ -109,7 +106,7 @@ public class Apps {
                     if ((boolean) param.args[0]) {
                         JSONObject history = readFile();
                         JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
-                        if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName + FLAG_CLOSE_APP) <= 800) {
+                        if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName) <= 800) {
                             final Activity activity = (Activity) param.thisObject;
                             activity.finish();
                             logD("ML|Finish " + activity.getClass().getName());
@@ -124,17 +121,12 @@ public class Apps {
 
     private static boolean pass(int taskId, @NonNull String packageName, String activityName, @NonNull JSONObject history, @NonNull XSharedPreferences prefs) throws Throwable {
         writeFile(addToHistory(taskId, packageName, history));
-        List<Integer> historyList = new ArrayList<>();
-        String[] list = history.getJSONArray(HISTORY_ARRAY_KEY).toString().replaceAll("[\\[\\]]", "").split(",");
-        for (int i = 0; i < 2; i++) {
-            historyList.add(Integer.parseInt(list[i]));
-        }
         // MasterSwitch disabled
         if (!prefs.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             return true;
         }
         // Activity got launched/closed
-        if (historyList.indexOf(UNLOCK_ID) == 1) {
+        if (history.getJSONArray(PROCESS_HISTORY_ARRAY_KEY).optInt(1) == UNLOCK_ID) {
             return true;
         }
 
@@ -150,7 +142,7 @@ public class Apps {
         JSONObject iModPerApp = history.optJSONObject(IMOD_OBJECT_KEY);
         long iModLastUnlockApp = 0;
         if (iModPerApp != null) {
-            iModLastUnlockApp = iModPerApp.optLong(packageName + FLAG_IMOD);
+            iModLastUnlockApp = iModPerApp.optLong(packageName);
         }
 
         return (iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
@@ -163,12 +155,14 @@ public class Apps {
 
     public static JSONObject getDefault() throws Throwable {
         JSONObject history = new JSONObject();
-        JSONArray array = new JSONArray();
+        JSONArray procs = new JSONArray();
+        JSONArray pkgs = new JSONArray();
         JSONObject iMod = new JSONObject();
         JSONObject close = new JSONObject();
-        history.put(HISTORY_ARRAY_KEY, array);
-        history.put(IMOD_OBJECT_KEY, iMod);
-        history.put(CLOSE_OBJECT_KEY, close);
+        history.put(PROCESS_HISTORY_ARRAY_KEY, procs)
+                .put(PACKAGE_HISTORY_ARRAY_KEY, pkgs)
+                .put(IMOD_OBJECT_KEY, iMod)
+                .put(CLOSE_OBJECT_KEY, close);
         return history;
     }
 
@@ -183,7 +177,7 @@ public class Apps {
             } catch (JSONException | NullPointerException e) {
                 return getDefault();
             }
-            if (!(history.has(HISTORY_ARRAY_KEY) && history.has(IMOD_OBJECT_KEY) && history.has(CLOSE_OBJECT_KEY))) {
+            if (!(history.has(PROCESS_HISTORY_ARRAY_KEY) && history.has(PACKAGE_HISTORY_ARRAY_KEY) && history.has(IMOD_OBJECT_KEY) && history.has(CLOSE_OBJECT_KEY))) {
                 return getDefault();
             }
         } catch (FileNotFoundException e) {
@@ -208,15 +202,22 @@ public class Apps {
     }
 
     public static JSONObject addToHistory(int taskId, String packageName, JSONObject history) throws Throwable {
-        JSONArray array = history.optJSONArray(HISTORY_ARRAY_KEY);
-        array.put(4, array.optString(3));
-        array.put(3, array.optString(2));
-        array.put(2, packageName);
-        if (array.optInt(0) != taskId) {
-            array.put(1, array.optInt(0));
-            array.put(0, taskId);
+        JSONArray procs = history.optJSONArray(PROCESS_HISTORY_ARRAY_KEY);
+        JSONArray pkgs = history.optJSONArray(PACKAGE_HISTORY_ARRAY_KEY);
+        // Only add task id if new task got launched
+        if (taskId != procs.optInt(0)) {
+            // If new task doesn't have same package name, keep (shift back) the previous task id
+            if (!packageName.equals(pkgs.optString(0))) {
+                procs.put(1, procs.optInt(0));
+            }
+            procs.put(0, taskId);
         }
-        history.put(HISTORY_ARRAY_KEY, array);
+        pkgs
+                .put(2, pkgs.optString(1))
+                .put(1, pkgs.optString(0))
+                .put(0, packageName);
+
+        history.put(PROCESS_HISTORY_ARRAY_KEY, procs).put(PACKAGE_HISTORY_ARRAY_KEY, pkgs);
         return history;
     }
 }
