@@ -82,7 +82,7 @@
     <string name="pref_shuffle_pin">Ziffern rotieren</string>
     <string name="pref_category_pin_and_knock_code">PIN und Knock Code</string>
     <string name="pref_hide_input_bar">Verstecke Eingabeleiste</string>
-    <string name="pref_hide_input_bar_summary">\"Löschen\" Knopf wird auch versteckt, löschen des Passworts aber immer noch durch langes Tippen der Ziffern bzw. im Container möglich</string>
+    <string name="pref_hide_input_bar_summary">\"Löschen\" Knopf wird auch versteckt, das Löschen des Passworts ist aber immer noch durch langes Tippen der Ziffern bzw. im Container möglich</string>
     <string name="pref_category_pin_and_pattern">PIN und Muster</string>
     <string name="pref_haptic_feedback">Bei Eingabe vibrieren</string>
     <string name="pref_category_knock_code_only">Nur Knock Code</string>
