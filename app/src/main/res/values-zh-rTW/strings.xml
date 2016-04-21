@@ -83,12 +83,13 @@
     <string name="pref_category_pin_and_knock_code">PIN和knock code</string>
     <string name="pref_hide_input_bar">隱藏輸入欄</string>
     <string name="pref_hide_input_bar_summary">這將隱藏清除按鈕，你仍然可以通過長按數字/容器清除代碼</string>
+    <string name="pref_category_pin_and_pattern">PIN 和 圖案</string>
+    <string name="pref_haptic_feedback">輸入時振動</string>
     <string name="pref_category_knock_code_only">僅Knock code</string>
     <string name="pref_show_dividers">顯示分隔</string>
     <string name="pref_touch_visible">使觸摸可見</string>
     <string name="pref_category_pattern_only">僅圖案</string>
     <string name="pref_show_path">顯示圖案</string>
-    <string name="pref_haptic_feedback">滑動時振動</string>
     <string name="pref_category_fingerprint">指紋</string>
     <string name="pref_disable_fingerprint">禁用指紋解鎖</string>
     <!-- Locking options settings -->
@@ -135,6 +136,8 @@
     <string name="menu_backup_list">備份清單</string>
     <string name="menu_restore_list">恢復清單</string>
     <string name="menu_clear_list">清除清單</string>
+    <string name="menu_all_apps">載入所有應用程式</string>
+    <string name="menu_only_openable">僅載入已開啟的應用程式</string>
     <string name="dialog_storage_permission_backup_restore">MaxLock 需要訪問外部儲存裝置來讀取/寫入備份檔案。是否繼續？</string>
     <string name="toast_no_files_to_backup">沒有找到備份文件</string>
     <string name="toast_backup_restore_exception">出現錯誤。\n請聯繫開發者！</string>
@@ -209,16 +212,16 @@
     
     <!-- Accessibility -->
     <string name="content_description_fs_phone">手機圖片</string>
-    <string name="content_description_fs_lock">鎖定在手機上</string>
+    <string name="content_description_fs_lock">鎖定這個手機</string>
     <string name="content_description_lockscreen_current_input">當前輸入的字串</string>
-    <string name="content_description_lockscreen_delete">刪除最後輸入的數位</string>
+    <string name="content_description_lockscreen_delete">刪除最後輸入的數字</string>
     <string name="content_description_lockscreen_container">Knock code 容器</string>
     <string name="content_description_applist_filter">當前篩選器︰ %s</string>
     <string name="content_description_applist_filter_all_apps">所有應用程式</string>
     <string name="content_description_applist_filter_locked">已鎖定的應用程式</string>
     <string name="content_description_applist_filter_unlocked">已解鎖的應用程式</string>
-    <string name="content_description_applist_icon">應用程式圖示於 %s</string>
-    <string name="content_description_applist_options">更改鎖定選項於 %s</string>
+    <string name="content_description_applist_icon">應用程式圖示 %s</string>
+    <string name="content_description_applist_options">更改鎖定選項 %s</string>
     <string name="content_description_applist_toggle_off">鎖定 %s</string>
     <string name="content_description_applist_toggle_on">解鎖 %s</string>
     
