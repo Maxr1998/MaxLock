@@ -48,15 +48,13 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         } else if (lPParam.packageName.equals(DeviceAdminProtection.PACKAGE_NAME)) {
             DeviceAdminProtection.init(lPParam);
         } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME)) {
+            SystemUI.init(prefsApps, lPParam);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                SystemUI.initRecents(prefsApps, lPParam);
-                SystemUI.initScreenOff(prefsApps, lPParam, true);
-            } else {
-                SystemUI.initRecentsLegacy(prefsApps, lPParam);
+                SystemUI.initScreenOff(prefsApps, lPParam);
             }
             return;
-        } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME_LEGACY) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            SystemUI.initScreenOff(prefsApps, lPParam, false);
+        } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME_KEYGUARD) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            SystemUI.initScreenOff(prefsApps, lPParam);
             return;
         }
         prefsApps.reload();

@@ -17,7 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
-import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -46,62 +45,56 @@ import static de.robv.android.xposed.XposedHelpers.setObjectField;
 public class SystemUI {
 
     public static final String PACKAGE_NAME = "com.android.systemui";
-    public static final String PACKAGE_NAME_LEGACY = "com.android.keyguard";
+    public static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
+    private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void initRecents(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
+    public static void init(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
         try {
-            findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "rebindToTask", PACKAGE_NAME + ".recents.model.Task", new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    prefsApps.reload();
-                    Object task = param.args[0];
-                    String packageName = ((ComponentName) getObjectField(getObjectField(getObjectField(task, "key"), "mComponentNameKey"), "component")).getPackageName();
-                    if (prefsApps.getBoolean("hide_recents_thumbnails", false) && prefsApps.getBoolean(packageName, false)) {
-                        Bitmap thumbnail = ((Bitmap) getObjectField(task, "thumbnail"));
-                        Bitmap replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
-                        replacement.eraseColor(Color.WHITE);
-                        setObjectField(task, "thumbnail", replacement);
+            if (LOLLIPOP) {
+                findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "rebindToTask", PACKAGE_NAME + ".recents.model.Task", new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        prefsApps.reload();
+                        Object task = param.args[0];
+                        String packageName = ((ComponentName) getObjectField(getObjectField(getObjectField(task, "key"), "mComponentNameKey"), "component")).getPackageName();
+                        if (prefsApps.getBoolean("hide_recents_thumbnails", false) && prefsApps.getBoolean(packageName, false)) {
+                            Bitmap thumbnail = ((Bitmap) getObjectField(task, "thumbnail"));
+                            Bitmap replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
+                            replacement.eraseColor(Color.WHITE);
+                            setObjectField(task, "thumbnail", replacement);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        prefsApps.reload();
+                        if (prefsApps.getBoolean("hide_recents_thumbnails", false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
+                            param.setResult(new ColorDrawable(Color.WHITE));
+                        }
+                    }
+                });
+            }
         } catch (Throwable t) {
             log(t);
         }
     }
 
-    public static void initRecentsLegacy(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
-        try {
-            findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    prefsApps.reload();
-                    if (prefsApps.getBoolean("hide_recents_thumbnails", false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
-                        param.setResult(new ColorDrawable(Color.WHITE));
-                    }
-                }
-            });
-        } catch (Throwable t) {
-            log(t);
-        }
-    }
-
-    public static void initScreenOff(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam, boolean lollipop) {
+    public static void initScreenOff(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
         // Resolve vars
         String hookedClass;
-        if (lollipop) {
-            hookedClass = "com.android.systemui.keyguard.KeyguardViewMediator";
-        } else {
-            try {
-                // Handle MIUI Keyguard class
-                XposedHelpers.findClass("com.android.keyguard.MiuiKeyguardViewMediator", lPParam.classLoader);
-                hookedClass = "com.android.keyguard.MiuiKeyguardViewMediator";
-                log("ML: Recognized MIUI device.");
-            } catch (XposedHelpers.ClassNotFoundError e) {
-                hookedClass = "com.android.keyguard.KeyguardViewMediator";
-            }
+        try {
+            if (LOLLIPOP) throw new Error();
+            // Handle MIUI Keyguard class
+            XposedHelpers.findClass(PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator", lPParam.classLoader);
+            hookedClass = PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator";
+            log("ML: Recognized MIUI device.");
+        } catch (Error e) {
+            hookedClass = lPParam.packageName.replace(".keyguard", "") + ".keyguard.KeyguardViewMediator";
         }
+
         final XC_MethodHook hook = new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -117,16 +110,9 @@ public class SystemUI {
                 }
             }
         };
-        Object[] paramsAndHook;
-        if (lollipop && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            paramsAndHook = new Object[]{hook};
-        } else {
-            paramsAndHook = new Object[]{int.class, hook};
-        }
-
         // Hook
         try {
-            findAndHookMethod(hookedClass, lPParam.classLoader, "onScreenTurnedOff", paramsAndHook);
+            findAndHookMethod(hookedClass, lPParam.classLoader, "onScreenTurnedOff", Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? hook : new Object[]{int.class, hook});
         } catch (Throwable t) {
             log(t);
         }
