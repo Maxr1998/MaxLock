@@ -30,6 +30,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.Maxr1998.xposed.maxlock.hooks.Main.MAXLOCK_PACKAGE_NAME;
 import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
@@ -42,7 +43,7 @@ public class DeviceAdminProtection {
             findAndHookMethod(PACKAGE_NAME + ".DeviceAdminAdd", lPParam.classLoader, "onResume", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    ComponentName admin = ((DeviceAdminInfo) getObjectField(param.thisObject, "mDeviceAdmin")).getComponent();
+                    ComponentName admin = (ComponentName) callMethod(getObjectField(param.thisObject, "mDeviceAdmin"), "getComponent");
                     if (((DevicePolicyManager) getObjectField(param.thisObject, "mDPM")).isAdminActive(admin) && admin.getPackageName().equals(MAXLOCK_PACKAGE_NAME)) {
                         ((Button) getObjectField(param.thisObject, "mActionButton")).setEnabled(false);
                         Resources modRes = ((Activity) param.thisObject).getPackageManager().getResourcesForApplication(MAXLOCK_PACKAGE_NAME);
