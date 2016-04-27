@@ -7,7 +7,7 @@ android {
     buildToolsVersion '24.0.0 rc2'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 41
         versionName "6.2.1"
