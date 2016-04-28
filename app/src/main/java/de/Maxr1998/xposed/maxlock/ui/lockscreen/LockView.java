@@ -204,7 +204,6 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !getPrefs().getBoolean(Common.DISABLE_FINGERPRINT, false)) {
             FingerprintView fv = new FingerprintView(getThemedContext(), (AuthenticationSucceededListener) getContext());
-            fv.setScaleType(ImageView.ScaleType.CENTER);
             ((FrameLayout) findViewById(R.id.fingerprint_stub)).addView(fv);
         }
     }

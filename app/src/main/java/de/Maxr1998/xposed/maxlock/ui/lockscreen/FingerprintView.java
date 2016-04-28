@@ -23,10 +23,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
-import android.util.Log;
 import android.widget.ImageView;
 
 import de.Maxr1998.xposed.maxlock.R;
@@ -61,9 +61,12 @@ public final class FingerprintView extends ImageView {
     };
     private CancellationSignal mCancelFingerprint = new CancellationSignal();
 
+    @TargetApi(Build.VERSION_CODES.M)
     public FingerprintView(Context context, AuthenticationSucceededListener listener) {
         super(context);
         mAuthenticationSucceededListener = listener;
+        setScaleType(ImageView.ScaleType.CENTER);
+        setContentDescription(getResources().getString(android.R.string.fingerprint_icon_content_description));
     }
 
     @TargetApi(LOLLIPOP)
