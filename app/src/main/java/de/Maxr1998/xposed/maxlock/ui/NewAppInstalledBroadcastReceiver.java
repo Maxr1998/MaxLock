@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
@@ -45,8 +44,7 @@ public class NewAppInstalledBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()) {
             case Intent.ACTION_PACKAGE_ADDED:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN ||
-                        PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.PREVENT_APP_INSTALLED_NOTIFICATION, false) ||
+                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.PREVENT_APP_INSTALLED_NOTIFICATION, false) ||
                         intent.getBooleanExtra(Intent.EXTRA_REPLACING, false) ||
                         intent.getData() == null || intent.getData().getSchemeSpecificPart().length() == 0) {
                     return;

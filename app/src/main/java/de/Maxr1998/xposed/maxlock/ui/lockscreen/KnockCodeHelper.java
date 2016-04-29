@@ -140,11 +140,7 @@ public class KnockCodeHelper {
             View divider = new View(mContext);
             divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(mContext.getResources().getDisplayMetrics().density)));
             if (mLockView.getPrefs().getBoolean(Common.INVERT_COLOR, false)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    divider.setBackground(mContext.getResources().getDrawable(android.R.color.black));
-                } else {
-                    divider.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.color.black));
-                }
+                divider.setBackground(mContext.getResources().getDrawable(android.R.color.black));
             } else {
                 divider.setBackgroundColor(mContext.getResources().getColor(R.color.divider_dark));
             }
@@ -157,12 +153,7 @@ public class KnockCodeHelper {
             @Override
             public void onGlobalLayout() {
                 // Remove layout listener
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                    mLockView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    mLockView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-
+                mLockView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 // Center values
                 int[] loc = new int[2];
                 mContainer.getLocationOnScreen(loc);
@@ -178,12 +169,7 @@ public class KnockCodeHelper {
 
     public void setHighlightLegacy() {
         highlightLegacy = Bitmap.createBitmap(mContainer.getWidth(), mContainer.getHeight(), Bitmap.Config.ARGB_8888);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            //noinspection deprecation
-            mContainer.setBackgroundDrawable(new BitmapDrawable(mContainer.getResources(), highlightLegacy));
-        } else {
-            mContainer.setBackground(new BitmapDrawable(mContainer.getResources(), highlightLegacy));
-        }
+        mContainer.setBackground(new BitmapDrawable(mContainer.getResources(), highlightLegacy));
     }
 
     public void clear(boolean full) {

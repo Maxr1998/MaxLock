@@ -122,7 +122,8 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
                 return v;
             }
         };
-        ListView productsList = ((ListView) findViewById(R.id.donate_products_list));
+        ListView productsList = (ListView) findViewById(R.id.donate_products_list);
+        assert productsList != null;
         productsList.setAdapter(productsAdapter);
         productsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -185,7 +186,9 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
     @SuppressLint("SetTextI18n")
     @Override
     public void onPurchaseHistoryRestored() {
-        findViewById(android.R.id.progress).setVisibility(View.GONE);
+        View progress = findViewById(android.R.id.progress);
+        assert progress != null;
+        progress.setVisibility(View.GONE);
         Log.i(LOG_TAG_IAB, "Loaded.");
         List<String> products = bp.listOwnedProducts();
         if (products.size() > 0) {
