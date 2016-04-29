@@ -19,10 +19,8 @@ package de.Maxr1998.xposed.maxlock.ui.lockscreen;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Vibrator;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.GridLayout;
-import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -46,6 +44,7 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
     private final LockView mLockView;
     private final List<String> values = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"));
     private final boolean hapticFeedback;
+    private String okString;
 
     public PinView(Context context, LockView lockView) {
         super(context);
@@ -57,7 +56,11 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
         }
         values.add(9, null);
         if (!mLockView.getPrefs().getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
-            values.add(getResources().getString(android.R.string.ok));
+            okString = getResources().getString(android.R.string.ok);
+            if (okString.length() > 4) {
+                okString = "OK";
+            }
+            values.add(okString);
         }
 
         for (int i = 0; i < values.size(); i++) {
@@ -93,7 +96,7 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
         }
         if (mLockView.getPrefs().getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
             mLockView.checkInput();
-        } else if (value.equals(getResources().getString(android.R.string.ok)) && !mLockView.checkInput()) {
+        } else if (value.equals(okString) && !mLockView.checkInput()) {
             mLockView.setKey(null, false);
             if (hapticFeedback) {
                 getHandler().postDelayed(new Runnable() {
