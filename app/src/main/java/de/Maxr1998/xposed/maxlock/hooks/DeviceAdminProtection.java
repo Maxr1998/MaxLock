@@ -18,7 +18,6 @@
 package de.Maxr1998.xposed.maxlock.hooks;
 
 import android.app.Activity;
-import android.app.admin.DeviceAdminInfo;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.res.Resources;
