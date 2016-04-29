@@ -25,6 +25,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
@@ -100,7 +101,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         mContainer = (FrameLayout) findViewById(R.id.container);
 
         // Background
-        Util.getBackground((ImageView) findViewById(R.id.background));
+        Util.getBackground((AppCompatActivity) getContext(), (ImageView) findViewById(R.id.background));
 
         // Locking type view setup
         switch (mLockingType) {
@@ -277,7 +278,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     }
 
     // Helpers
-    private Context getThemedContext() {
+    private ContextThemeWrapper getThemedContext() {
         return new ContextThemeWrapper(getContext(), getPrefs().getBoolean(Common.INVERT_COLOR, false) ? R.style.AppTheme : R.style.AppTheme_Dark);
     }
 

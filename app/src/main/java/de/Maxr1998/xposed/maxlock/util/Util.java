@@ -37,7 +37,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,7 +153,7 @@ public abstract class Util {
         return result.describeContents() == InputMethodManager.RESULT_HIDDEN;
     }
 
-    public static void getBackground(final ImageView background) {
+    public static void getBackground(AppCompatActivity activity, final ImageView background) {
         switch (getPreferences(background.getContext()).getString(Common.BACKGROUND, "")) {
             case "color":
                 background.setImageDrawable(new ColorDrawable(getPreferences(background.getContext()).getInt(Common.BACKGROUND_COLOR, ContextCompat.getColor(background.getContext(), R.color.accent))));
@@ -168,7 +167,7 @@ public abstract class Util {
                 }
                 break;
             default:
-                ((AppCompatActivity) ((ContextThemeWrapper) background.getContext()).getBaseContext()).getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Drawable>() {
+                activity.getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Drawable>() {
                     @Override
                     public Loader<Drawable> onCreateLoader(int id, Bundle args) {
                         return new AsyncTaskLoader<Drawable>(background.getContext()) {
