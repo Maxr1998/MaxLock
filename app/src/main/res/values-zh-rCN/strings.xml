@@ -5,7 +5,7 @@
     <string name="name_pro"> 专业版</string>
     <string name="name_pseudo_pro">伪专业版</string>
     <string name="placeholder">占位符</string>
-	
+
     <string name="maxlock_inactive">MaxLock未激活</string>
     <string name="dialog_message_not_active">Android系统不能挂钩MaxLock,这可能有几方面原因:\n
     &#x2022; <i>Xposed框架未安装</i>\n
@@ -147,9 +147,12 @@
     <string name="menu_search">搜索</string>
     <string name="toggle_lock_on">开</string>
     <string name="toggle_lock_off">关</string>
-    <string name="dialog_title_settings">设置</string>
-    <string name="dialog_text_fake_crash">显示假死窗口</string>
-    <string name="dialog_text_custom_password">自定义密码</string>
+    <string name="dialog_title_options">设置</string>
+    <string-array name="dialog_multi_select_items_options">
+        <item>自定义密码</item>
+        <item>显示假死窗口</item>
+        <item>Hide notification content</item>
+    </string-array>
     <string name="dialog_button_exclude_activities">活动</string>
     <string name="dialog_title_exclude_activities">排除锁定活动</string>
     <!-- UI settings -->
@@ -208,7 +211,7 @@
 
     <!-- Device admin external -->
     <string name="maxlock_protected_admin">此管理保护被禁用!您可以从MaxLock应用程序内点击\"%1$s\"选项时禁用它</string>
-    
+
     <!-- Accessibility -->
     <string name="content_description_fs_phone">手机图片</string>
     <string name="content_description_fs_lock">锁定这个手机</string>
@@ -223,5 +226,5 @@
     <string name="content_description_applist_options">更改锁定选项%s</string>
     <string name="content_description_applist_toggle_off">已锁定%s</string>
     <string name="content_description_applist_toggle_on">已解锁%s</string>
-	
+
 </resources>

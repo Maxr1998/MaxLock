@@ -18,7 +18,7 @@
     <string name="toast_password_changed">کلمه عبور تغییر کرد!</string>
     <string name="toast_password_incorrect">کلمه عبور اشتباه است!</string>
     <string name="menu_search">جستجو</string>
-    <string name="dialog_title_settings">تنظیمات</string>
+    <string name="dialog_title_options">تنظیمات</string>
     <string name="dialog_text_password">کلمه عبور:</string>
     <string name="dialog_text_re_password">کلمه عبور را مجدد وازد کنید:</string>
     <string name="dialog_text_fake_crash">Fake die</string>

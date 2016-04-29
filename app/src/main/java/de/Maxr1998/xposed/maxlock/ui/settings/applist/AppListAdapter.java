@@ -42,7 +42,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -73,8 +72,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
     private final Context mContext;
     private final SharedPreferences prefsApps, prefsKeysPerApp;
     private final AppFilter mFilter;
-
-    private AlertDialog dialog;
 
     public AppListAdapter(Fragment fragment) {
         mFragment = fragment;
@@ -108,85 +105,88 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         hld.options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // AlertDialog View
-                // Fake die checkbox
-                View checkBoxView = View.inflate(mContext, R.layout.per_app_settings, null);
-                final CheckBox fakeDie = (CheckBox) checkBoxView.findViewById(R.id.cb_fake_die);
-                fakeDie.setChecked(prefsApps.getBoolean(key + "_fake", false));
-                fakeDie.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        CheckBox cb = (CheckBox) v;
-                        boolean value = cb.isChecked();
-                        prefsApps.edit()
-                                .putBoolean(key + "_fake", value)
-                                .commit();
-                    }
-                });
-                // Custom password checkbox
-                CheckBox customPassword = (CheckBox) checkBoxView.findViewById(R.id.cb_custom_pw);
-                customPassword.setChecked(prefsKeysPerApp.contains(key));
-                customPassword.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        CheckBox cb = (CheckBox) v;
-                        boolean checked = cb.isChecked();
-                        if (checked) {
-                            dialog.dismiss();
-                            final AlertDialog.Builder choose_lock = new AlertDialog.Builder(mContext);
-                            CharSequence[] cs = new CharSequence[]{
-                                    mContext.getString(R.string.pref_locking_type_password),
-                                    mContext.getString(R.string.pref_locking_type_pin),
-                                    mContext.getString(R.string.pref_locking_type_knockcode),
-                                    mContext.getString(R.string.pref_locking_type_pattern)
-                            };
-                            choose_lock.setItems(cs, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                    Fragment frag = new Fragment();
-                                    switch (i) {
-                                        case 0:
-                                            Util.setPassword(mContext, key);
-                                            return;
-                                        case 1:
-                                            frag = new PinSetupFragment();
-                                            break;
-                                        case 2:
-                                            frag = new KnockCodeSetupFragment();
-                                            break;
-                                        case 3:
-                                            Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, mContext, LockPatternActivity.class);
-                                            mFragment.startActivityForResult(intent, Util.getPatternCode(hld.getAdapterPosition()));
-                                            return;
-                                    }
-                                    Bundle b = new Bundle(1);
-                                    b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
-                                    frag.setArguments(b);
-                                    MaxLockPreferenceFragment.launchFragment(frag, false, mFragment);
-                                }
-                            }).show();
-                        } else
-                            prefsKeysPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();
-
-                    }
-                });
-                // Finish dialog
-                dialog = new AlertDialog.Builder(mContext)
-                        .setTitle(mContext.getString(R.string.dialog_title_settings))
+                AlertDialog.Builder optionsDialog = new AlertDialog.Builder(mContext)
+                        .setTitle(mContext.getString(R.string.dialog_title_options))
                         .setIcon(ListHolder.getInstance().get(hld.getAdapterPosition()).loadIcon(mContext.getPackageManager()))
-                        .setView(checkBoxView)
+                        .setMultiChoiceItems(R.array.dialog_multi_select_items_options,
+                                new boolean[]{
+                                        prefsKeysPerApp.contains(key),
+                                        prefsApps.getBoolean(key + "_fake", false),
+                                        prefsApps.getBoolean(key + "_notif_content", false),
+                                },
+                                new DialogInterface.OnMultiChoiceClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                        String curKey = null;
+                                        switch (which) {
+                                            case 0:
+                                                if (isChecked) {
+                                                    dialog.dismiss();
+                                                    new AlertDialog.Builder(mContext)
+                                                            .setItems(new CharSequence[]{
+                                                                            mContext.getString(R.string.pref_locking_type_password),
+                                                                            mContext.getString(R.string.pref_locking_type_pin),
+                                                                            mContext.getString(R.string.pref_locking_type_knockcode),
+                                                                            mContext.getString(R.string.pref_locking_type_pattern)
+                                                                    },
+                                                                    new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface dialog, int i) {
+                                                                            dialog.dismiss();
+                                                                            Fragment frag = new Fragment();
+                                                                            switch (i) {
+                                                                                case 0:
+                                                                                    Util.setPassword(mContext, key);
+                                                                                    return;
+                                                                                case 1:
+                                                                                    frag = new PinSetupFragment();
+                                                                                    break;
+                                                                                case 2:
+                                                                                    frag = new KnockCodeSetupFragment();
+                                                                                    break;
+                                                                                case 3:
+                                                                                    Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, mContext, LockPatternActivity.class);
+                                                                                    mFragment.startActivityForResult(intent, Util.getPatternCode(hld.getAdapterPosition()));
+                                                                                    return;
+                                                                            }
+                                                                            Bundle b = new Bundle(1);
+                                                                            b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
+                                                                            frag.setArguments(b);
+                                                                            MaxLockPreferenceFragment.launchFragment(frag, false, mFragment);
+                                                                        }
+                                                                    }).show();
+                                                } else {
+                                                    prefsKeysPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();
+                                                }
+                                                return;
+                                            case 1:
+                                                curKey = key + "_fake";
+                                                break;
+                                            case 2:
+                                                curKey = key + "_notif_content";
+                                                break;
+                                        }
+                                        if (curKey != null) {
+                                            if (isChecked)
+                                                prefsApps.edit().putBoolean(curKey, true).commit();
+                                            else
+                                                prefsApps.edit().remove(curKey).commit();
+                                        }
+                                    }
+                                })
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dlg, int id) {
-                                dlg.dismiss();
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
                             }
-                        }).setNeutralButton(R.string.dialog_button_exclude_activities, new DialogInterface.OnClickListener() {
+                        })
+                        .setNeutralButton(R.string.dialog_button_exclude_activities, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 new ActivityLoader().execute(key);
                             }
-                        }).show();
+                        });
+                optionsDialog.create().show();
             }
         });
     }

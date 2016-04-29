@@ -5,7 +5,7 @@
     <string name="name_pro">專業版</string>
     <string name="name_pseudo_pro">偽專業版</string>
     <string name="placeholder">佔位符</string>
-    
+
     <string name="maxlock_inactive">MaxLock尚未激活</string>
     <string name="dialog_message_not_active">Android系統不能掛鉤MaxLock。這可能有幾方面的原因：\n
     &#x2022; <i>未安裝Xposed框架</i>\n
@@ -148,9 +148,12 @@
     <string name="menu_search">搜尋</string>
     <string name="toggle_lock_on">開</string>
     <string name="toggle_lock_off">關</string>
-    <string name="dialog_title_settings">設定</string>
-    <string name="dialog_text_fake_crash">顯示假死視窗</string>
-    <string name="dialog_text_custom_password">自訂密碼</string>
+    <string name="dialog_title_options">設定</string>
+    <string-array name="dialog_multi_select_items_options">
+        <item>自訂密碼</item>
+        <item>顯示假死視窗</item>
+        <item>Hide notification content</item>
+    </string-array>
     <string name="dialog_button_exclude_activities">活動</string>
     <string name="dialog_title_exclude_activities">排除鎖定活動</string>
     <!-- UI settings -->
@@ -209,7 +212,7 @@
 
     <!-- Device admin external -->
     <string name="maxlock_protected_admin">此管理保護被禁用。您可以從MaxLock應用程式內點擊 \"%1$s\" 選項裡禁用它。</string>
-    
+
     <!-- Accessibility -->
     <string name="content_description_fs_phone">手機圖片</string>
     <string name="content_description_fs_lock">鎖定這個手機</string>
@@ -224,5 +227,5 @@
     <string name="content_description_applist_options">更改鎖定選項 %s</string>
     <string name="content_description_applist_toggle_off">鎖定 %s</string>
     <string name="content_description_applist_toggle_on">解鎖 %s</string>
-    
+
 </resources>

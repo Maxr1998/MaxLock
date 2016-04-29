@@ -145,9 +145,12 @@
     <string name="menu_search">検索</string>
     <string name="toggle_lock_on">On</string>
     <string name="toggle_lock_off">Off</string>
-    <string name="dialog_title_settings">設定</string>
-    <string name="dialog_text_fake_crash">アプリ強制終了の偽装</string>
-    <string name="dialog_text_custom_password">アプリ個別のロック画面</string>
+    <string name="dialog_title_options">設定</string>
+    <string-array name="dialog_multi_select_items_options">
+        <item>アプリ個別のロック画面</item>
+        <item>アプリ強制終了の偽装</item>
+        <item>Hide notification content</item>
+    </string-array>
     <string name="dialog_button_exclude_activities">アクティビティ</string>
     <string name="dialog_title_exclude_activities">アクティビティ個別のロック設定</string>
     <!-- UI settings -->

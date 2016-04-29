@@ -145,9 +145,12 @@
     <string name="menu_search">Buscar</string>
     <string name="toggle_lock_on">Encendido</string>
     <string name="toggle_lock_off">Apagado</string>
-    <string name="dialog_title_settings">Configuración</string>
-    <string name="dialog_text_fake_crash">Cuelgue falso</string>
-    <string name="dialog_text_custom_password">Contraseña personalizada</string>
+    <string name="dialog_title_options">Configuración</string>
+    <string-array name="dialog_multi_select_items_options">
+        <item>Contraseña personalizada</item>
+        <item>Cuelgue falso</item>
+        <item>Hide notification content</item>
+    </string-array>
     <string name="dialog_button_exclude_activities">Actividades</string>
     <string name="dialog_title_exclude_activities">Excluir del bloqueo ciertas Actividades</string>
     <!-- UI settings -->

@@ -19,8 +19,13 @@ package de.Maxr1998.xposed.maxlock.hooks;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -39,9 +44,11 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+import static de.Maxr1998.xposed.maxlock.hooks.Main.MAXLOCK_PACKAGE_NAME;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 public class Apps {
 
@@ -111,6 +118,26 @@ public class Apps {
                             activity.finish();
                             logD("ML|Finish " + activity.getClass().getName());
                         }
+                    }
+                }
+            });
+
+            findAndHookMethod(NotificationManager.class, "notify", String.class, int.class, Notification.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    prefsApps.reload();
+                    Notification notification = (Notification) param.args[2];
+                    if (prefsApps.getBoolean(lPParam.packageName + "_notif_content", false)) {
+                        Context context = (Context) getObjectField(param.thisObject, "mContext");
+                        String appName = context.getPackageManager().getApplicationInfo(lPParam.packageName, 0).loadLabel(context.getPackageManager()).toString();
+                        Resources modRes = context.getPackageManager().getResourcesForApplication(MAXLOCK_PACKAGE_NAME);
+                        String replacement = modRes.getString(modRes.getIdentifier("notification_hidden_by_maxlock", "string", MAXLOCK_PACKAGE_NAME));
+                        Notification.Builder b = new Notification.Builder(context).setContentTitle(appName).setContentText(replacement);
+                        notification.contentView = b.build().contentView;
+                        notification.bigContentView = null;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                            notification.headsUpContentView = null;
+                        notification.tickerText = replacement;
                     }
                 }
             });

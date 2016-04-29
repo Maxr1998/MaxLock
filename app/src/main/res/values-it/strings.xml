@@ -5,19 +5,29 @@
     <string name="name_pro"> Pro</string>
     <string name="name_pseudo_pro"> PseudoPro</string>
     <string name="placeholder">Segnaposto</string>
+
     <string name="maxlock_inactive">MaxLock non è attivo</string>
-    <string name="dialog_text_restart_required">MaxLock deve essere riavviato affinchè le modifiche abbiano effetto</string>
-    <string name="toast_pro_required">È richiesta la versione Pro per utilizzare questa funzione!</string>
+	<string name="dialog_message_not_active">MaxLock non è stato in grado di intercettare i metodi del sistema Android necessari al suo funzionamento. Questo può accadere per diversi motivi:\n
+    &#x2022; <i>Il framework di Xposed non è installato</i>\n
+    &#x2022; <i>Xposed è installato e attivo, ma non hai abilitato MaxLock nel programma di installazione di Xposed (\"Moduli\" linguetta) oppure non hai riavviato in seguito.</i>\n
+    &#x2022; <i>Il framework di Xposed è stato disabilitato dalla modalità sicura di Xposed. Cerca nelle discussioni relative a Xposed sul sito di XDA per ulteriori informazioni.</i>\n
+    &#x2022; <i>MaxLock può essere stato soggetto ad un crash. Pertanto, dovresti inviarmi una segnalazione di errore dalla parte inferiore di questa schermata.</i></string>
     <string name="sb_no_locking_type">Nessun tipo di blocco specificato</string>
     <string name="sb_no_locked_apps">Nessuna app selezionata per il blocco</string>
+    <string name="dialog_like_app">Ti piace l\'app?</string>
+    <string name="dialog_like_app_text">Se è così, per favore scrivi una recensione sul Play Store e prendi anche in considerazione l\'idea di donare :)</string>
+    <string name="dialog_cb_never_again">Non mostrare più questo messaggio</string>
+    <string name="dialog_button_donate">Dona</string>
+    <string name="dialog_button_rate">Valuta</string>
+    <string name="notification_lock_new_app_title">Devo bloccare l\'app che hai appena installato?</string>
+    <string name="notification_lock_new_app_action_never_again">Non mostrare più</string>
+    <string name="notification_lock_new_app_action_lock">Blocca app</string>
+    <string name="toast_lock_new_app_locked_successfully">Bloccata con successo</string>
+    <string name="dialog_text_restart_required">MaxLock deve essere riavviato affinchè le modifiche abbiano effetto</string>
+    <string name="toast_pro_required">È richiesta la versione Pro per utilizzare questa funzione!</string>
     <!-- First start screens-->
-    <string name="button_skip">SALTA</string>
-    <string name="button_next_content_description">successivo</string>
-    <string name="button_done">ESEGUITO</string>
     <string name="fs_welcome_maxlock">MaxLock ti dà il benvenuto!</string>
     <string name="fs_maxlock_description">MaxLock proteggerà le tue app dall\'accesso non autorizzato</string>
-    <string name="fs_phone_content_description">Telefono</string>
-    <string name="fs_lock_content_description">Metti il lucchetto al telefono</string>
     <string name="fs_app_package_installer">Pacchetto di installazione</string>
     <string name="fs_app_settings">Impostazioni</string>
     <string name="fs_app_xposed_installer">Programma di installazione di Xposed</string>
@@ -63,20 +73,25 @@
     </string-array>
     <string name="pref_custom_color">Colore personalizzato</string>
     <string name="pref_hide_status_bar">Nascondi la barra di stato/Schermo intero</string>
-    <string name="pref_category_pin_and_knock_code">PIN e codice di tocchi</string>
     <string name="pref_invert_color">Inverti i colori degli elementi della UI</string>
     <string name="pref_invert_color_summary">Questo imposta a nero il colore del testo e dei divisori</string>
     <string name="pref_hide_title_bar">Nascondi la barra del titolo</string>
-    <string name="pref_hide_input_bar">Nascondi la barra di inserimento</string>
-    <string name="pref_hide_input_bar_summary">Questo nasconde anche il pulsante "Cancella"!</string>
     <string name="pref_category_password_and_pin">Password e PIN</string>
     <string name="pref_quick_unlock">Sblocco rapido</string>
+    <string name="pref_category_pin_only">Solo PIN</string>
+    <string name="pref_shuffle_pin">Cifre casuali</string>
+    <string name="pref_category_pin_and_knock_code">PIN e codice di tocchi</string>
+    <string name="pref_hide_input_bar">Nascondi la barra di inserimento</string>
+    <string name="pref_hide_input_bar_summary">Questo nasconde anche il pulsante Cancella; tuttavia, puoi ancora cancellare il codice, premendo a lungo sul contenitore delle cifre</string>
+    <string name="pref_category_pin_and_pattern">PIN e schema</string>
+    <string name="pref_haptic_feedback">Vibra mentre inserisci</string>
     <string name="pref_category_knock_code_only">Solo codice di tocchi</string>
     <string name="pref_show_dividers">Mostra i divisori</string>
     <string name="pref_touch_visible">Rendi visibili i tocchi</string>
     <string name="pref_category_pattern_only">Solo schema</string>
     <string name="pref_show_path">Mostra il percorso</string>
-    <string name="pref_haptic_feedback">Vibra mentre disegni</string>
+    <string name="pref_category_fingerprint">Impronta digitale</string>
+    <string name="pref_disable_fingerprint">Disabilita lo sblocco tramite impronta digitale</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">Opzioni di blocco</string>
     <string name="pref_category_logging">Registrazioni</string>
@@ -111,6 +126,7 @@
     <string name="pref_show_reset_notification_summary">Mostra una notifica per reimpostare il timer I.Mod</string>
     <string name="pref_reset_screen_off">Auto-reimposta I.Mod</string>
     <string name="pref_reset_screen_off_summary">Reimposta il timer I.Mod quando lo schermo si spegne</string>
+    <string name="pref_hide_recents_thumbnails">Nascondi le miniature recenti</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Scegli le app</string>
     <string name="pref_choose_apps">Scegli le app</string>
@@ -120,6 +136,9 @@
     <string name="menu_backup_list">Elenco di backup</string>
     <string name="menu_restore_list">Elenco di ripristino</string>
     <string name="menu_clear_list">Azzera elenco</string>
+    <string name="menu_all_apps">Carica tutte le app</string>
+    <string name="menu_only_openable">Carica solo le app apribili</string>
+    <string name="dialog_storage_permission_backup_restore">MaxLock deve accedere alla tua unità di archiviazione esterna per leggere/scrivere i file di backup. Procedere?</string>
     <string name="toast_no_files_to_backup">Nessun file trovato da salvare</string>
     <string name="toast_backup_restore_exception">Si è verificato un errore\Per favore, contatta lo sviluppatore!</string>
     <string name="toast_backup_success">Backup completato con successo</string>
@@ -129,9 +148,12 @@
     <string name="menu_search">Cerca</string>
     <string name="toggle_lock_on">On</string>
     <string name="toggle_lock_off">Off</string>
-    <string name="dialog_title_settings">Impostazioni</string>
-    <string name="dialog_text_fake_crash">Falsa chiusura</string>
-    <string name="dialog_text_custom_password">Password personalizzata</string>
+    <string name="dialog_title_options">Opzioni</string>
+    <string-array name="dialog_multi_select_items_options">
+        <item>Password personalizzata</item>
+        <item>Falsa chiusura</item>
+        <item>Nascondi il testo della notifica</item>
+    </string-array>
     <string name="dialog_button_exclude_activities">Attività</string>
     <string name="dialog_title_exclude_activities">Escludi "Attività" dal blocco</string>
     <!-- UI settings -->
@@ -147,6 +169,7 @@
     <string name="pref_about_summary">Fai click per dare un\'occhiata ai crediti, alle librerie utilizzate e alla licenza</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_visit_website">Visita il sito internet di Maxr1998</string>
+    <string name="pref_show_changelog">Mostra il registro delle modifiche</string>
     <string name="pref_category_credits">Crediti</string>
     <string name="pref_category_translations">Traduzioni</string>
     <string name="pref_category_licenses">Licenze</string>
@@ -163,12 +186,11 @@
         Dovrai allora disinstallare quest\'app da qui oppure dovrai disattivare queste autorizzazioni da \"Impostazioni → Sicurezza → Amministratori del dispositivo\" e quindi disinstallarla</string>
     <string name="pref_uninstall">Disinstalla</string>
     <string name="device_admin_description">Proteggi MaxLock dalla disinstallazione e disattivazione</string>
-    <!-- External stuff -->
-    <string name="dialog_like_app">Ti piace l\'app?</string>
-    <string name="dialog_like_app_text">Se è così, per favore scrivi una recensione sul Play Store e prendi anche in considerazione l\'idea di donare :)</string>
-    <string name="dialog_cb_never_again">Non mostrare più questo messaggio</string>
-    <string name="dialog_button_donate">Dona</string>
-    <string name="dialog_button_rate">Valuta</string>
+    <string name="pref_send_feedback">Invia un riscontro / Segnala un difetto</string>
+    <string name="dialog_storage_permission_bug_report">MaxLock deve accedere alla tua unità di archiviazione esterna per salvare i registri e le informazioni sul dispositivo. Procedere?</string>
+	<string name="dialog_message_bugreport_finished_select_email">Registri e informazioni sul dispositivo esportati. Ora seleziona la tua applicazione di posta preferita per inviarmi i registri.\n\n
+    <i>NOTA: Non è stata raccolta alcuna informazione privata.</i></string>
+    <string name="share_menu_title_send_email">Invia email con…</string>
     <!-- Fake crash screen -->
     <string name="dialog_text_fake_die_stopped">Sfortunatamente, %1$s si è fermato.</string>
     <string name="dialog_button_report">Rapporto</string>
@@ -187,6 +209,23 @@
     <string name="unlock_master_switch">Sblocca Interruttore principale</string>
     <string name="toast_master_switch_off">Interruttore principale disabilitato</string>
     <string name="toast_master_switch_on">Interruttore principale riabilitato</string>
-    <string name="toast_no_locking_types">Nessun tipo di blocco specificato</string>
+
+    <!-- Device admin external -->
+    <string name="maxlock_protected_admin">Questo amministratore è protetto dalla disabilitazione. Puoi disabilitarlo all\'interno dell\'app MaxLock, selezionando l\'opzione \"%1$s\".</string>
+
+    <!-- Accessibility -->
+    <string name="content_description_fs_phone">Immagine di un telefono</string>
+    <string name="content_description_fs_lock">Metti il lucchetto al telefono</string>
+    <string name="content_description_lockscreen_current_input">Attuale stringa inserita</string>
+    <string name="content_description_lockscreen_delete">Rimuovi l\'ultima cifra inserita</string>
+    <string name="content_description_lockscreen_container">Contenitore del codice di tocchi</string>
+    <string name="content_description_applist_filter">Filtro attuale: %s</string>
+    <string name="content_description_applist_filter_all_apps">Tutte le app</string>
+    <string name="content_description_applist_filter_locked">App bloccate</string>
+    <string name="content_description_applist_filter_unlocked">App sbloccate</string>
+    <string name="content_description_applist_icon">Icona dell\'app di %s</string>
+    <string name="content_description_applist_options">Cambia le opzioni di blocco di %s</string>
+    <string name="content_description_applist_toggle_off">Blocca %s</string>
+    <string name="content_description_applist_toggle_on">Sblocca %s</string>
 
 </resources>

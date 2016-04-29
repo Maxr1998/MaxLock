@@ -145,9 +145,12 @@
     <string name="menu_search">Поиск</string>
     <string name="toggle_lock_on">Включено</string>
     <string name="toggle_lock_off">Выключено</string>
-    <string name="dialog_title_settings">Настройки</string>
-    <string name="dialog_text_fake_crash">Имитация \'падения\' приложений</string>
-    <string name="dialog_text_custom_password">Личный пароль</string>
+    <string name="dialog_title_options">Настройки</string>
+    <string-array name="dialog_multi_select_items_options">
+        <item>Личный пароль</item>
+        <item>Имитация \'падения\' приложений</item>
+        <item>Hide notification content</item>
+    </string-array>
     <string name="dialog_button_exclude_activities">Activities (Активити)</string>
     <string name="dialog_title_exclude_activities">Исключить Activities (Активити) из блокировки</string>
     <!-- UI settings -->
