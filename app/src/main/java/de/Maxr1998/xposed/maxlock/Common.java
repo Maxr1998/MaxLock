@@ -37,6 +37,8 @@ public abstract class Common {
     public static final String MASTER_SWITCH_ON = "master_switch_on";
     public static final String KEY_PREFERENCE = "key";
     public static final String APP_KEY_PREFERENCE = "_key";
+    public static final String FAILED_ATTEMPTS_COUNTER = "failed_attempts_counter";
+    public static final String FAILED_ATTEMPTS_TIMER = "failed_attempts_timer";
     public static final String THEME_PKG = "theme_pkg";
 
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";

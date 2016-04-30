@@ -196,6 +196,10 @@
     <string name="dialog_text_fake_die_stopped">Unfortunately, %1$s has stopped.</string>
     <string name="dialog_button_report">Report</string>
     <string name="dialog_title_report_problem">Report problem</string>
+    <!-- Lock screen messages -->
+    <string name="message_wrong_password">Wrong input</string>
+    <string name="message_try_again_in_seconds">Try again in %1$d seconds</string>
+    <string name="message_fingerprint_disabled">Fingerprint was disabled after too many wrong attempts</string>
     <!-- Action stuff -->
     <string name="activity_label_actions">MaxLock Actions</string>
     <string name="action_configuration">Configuration:</string>

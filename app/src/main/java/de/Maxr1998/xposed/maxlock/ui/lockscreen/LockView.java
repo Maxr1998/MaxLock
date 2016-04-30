@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +62,8 @@ import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeysPe
 @SuppressLint("ViewConstructor")
 public final class LockView extends RelativeLayout implements View.OnClickListener, View.OnLongClickListener {
 
+    private final int MAX_ATTEMPTS = 5;
+
     private final String mPackageName, mActivityName;
     private final String mLockingType, mPassword;
     private final Point screenSize = new Point();
@@ -69,6 +72,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     private final ViewGroup mInputBar;
     private StringBuilder mCurrentKey = new StringBuilder(10);
     private TextView mInputTextView;
+    private TextView mMessageArea;
     private KnockCodeHelper mKnockCodeHolder;
 
     public LockView(Context context, String packageName, String activityName) {
@@ -98,6 +102,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         mInputBar = (ViewGroup) findViewById(R.id.input_bar);
         mInputTextView = (TextView) findViewById(R.id.input_view);
         ImageButton mDeleteButton = (ImageButton) findViewById(R.id.delete_input);
+        mMessageArea = (TextView) findViewById(R.id.message_area);
         mContainer = (FrameLayout) findViewById(R.id.container);
 
         // Background
@@ -127,6 +132,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                             } else {
                                 setKey(null, false);
                                 v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
+                                handleFailedAttempt();
                             }
                             return true;
                         }
@@ -179,7 +185,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                 mContainer.addView(new PatternView(getThemedContext(), this), patternParams);
                 break;
             default:
-                authenticationSucceededListener.onAuthenticationSucceeded();
+                handleAuthenticationSuccess();
                 return;
         }
 
@@ -204,8 +210,13 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !getPrefs().getBoolean(Common.DISABLE_FINGERPRINT, false)) {
-            FingerprintView fv = new FingerprintView(getThemedContext(), (AuthenticationSucceededListener) getContext());
+            FingerprintView fv = new FingerprintView(getThemedContext(), this);
             ((FrameLayout) findViewById(R.id.fingerprint_stub)).addView(fv);
+        }
+
+        // Handle timer for previous wrong attempts
+        if (isTimeLeft()) {
+            handleTimer();
         }
     }
 
@@ -214,10 +225,17 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     }
 
     public void appendToInput(String value) {
+        if (isTimeLeft()) {
+            return;
+        }
         mInputTextView.append(value);
     }
 
     public void setKey(@Nullable String value, boolean append) {
+        if (isTimeLeft()) {
+            return;
+        }
+        mMessageArea.setText("");
         if (value == null) {
             mCurrentKey.setLength(0);
             if (mKnockCodeHolder != null) {
@@ -237,15 +255,62 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         setKey(pattern.toString(), false);
         if (!checkInput()) {
             patternView.setWrong();
+            handleFailedAttempt();
         }
     }
 
     public boolean checkInput() {
-        if (Util.shaHash(mCurrentKey.toString()).equals(mPassword) || mPassword.equals("")) {
-            authenticationSucceededListener.onAuthenticationSucceeded();
+        if (!isTimeLeft() && Util.shaHash(mCurrentKey.toString()).equals(mPassword) || mPassword.equals("")) {
+            handleAuthenticationSuccess();
             return true;
         }
         return false;
+    }
+
+    public boolean handleAuthenticationSuccess() {
+        getPrefs().edit().putInt(Common.FAILED_ATTEMPTS_COUNTER, 0).apply();
+        authenticationSucceededListener.onAuthenticationSucceeded();
+        return true;
+    }
+
+    public void handleFailedAttempt() {
+        if (isTimeLeft()) {
+            return;
+        }
+        mMessageArea.setText(R.string.message_wrong_password);
+        int old = getPrefs().getInt(Common.FAILED_ATTEMPTS_COUNTER, 0);
+        getPrefs().edit().putInt(Common.FAILED_ATTEMPTS_COUNTER, ++old).apply();
+        if (old % MAX_ATTEMPTS == 0) {
+            setKey(null, false);
+            getPrefs().edit().putLong(Common.FAILED_ATTEMPTS_TIMER, System.currentTimeMillis()).apply();
+            handleTimer();
+        }
+    }
+
+    private void handleTimer() {
+        new CountDownTimer(getTimeLeft(), 100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mMessageArea.setText(getResources().getString(R.string.message_try_again_in_seconds, millisUntilFinished / 1000));
+            }
+
+            @Override
+            public void onFinish() {
+                mMessageArea.setText("");
+            }
+        }.start();
+    }
+
+    private long getTimeLeft() {
+        return 60000 + getPrefs().getLong(Common.FAILED_ATTEMPTS_TIMER, 0) - System.currentTimeMillis();
+    }
+
+    private boolean isTimeLeft() {
+        return getTimeLeft() > 0;
+    }
+
+    public boolean allowFingerprint() {
+        return !isTimeLeft() && getPrefs().getInt(Common.FAILED_ATTEMPTS_COUNTER, 0) < MAX_ATTEMPTS;
     }
 
     @Override

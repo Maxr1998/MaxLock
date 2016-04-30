@@ -107,6 +107,7 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
                 }, 120);
             }
             v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
+            mLockView.handleFailedAttempt();
         }
     }
 

@@ -27,10 +27,11 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
@@ -38,33 +39,47 @@ import static android.os.Build.VERSION_CODES.LOLLIPOP;
 @SuppressLint("ViewConstructor")
 public final class FingerprintView extends ImageView {
 
-    private final AuthenticationSucceededListener mAuthenticationSucceededListener;
-
+    private final LockView mLockView;
+    private final OnClickListener mNotAllowedToast = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getContext(), R.string.message_fingerprint_disabled, Toast.LENGTH_SHORT).show();
+        }
+    };
     private final FingerprintManagerCompat.AuthenticationCallback mFPAuthenticationCallback = new FingerprintManagerCompat.AuthenticationCallback() {
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-            Util.hideKeyboardFromWindow((Activity) mAuthenticationSucceededListener, FingerprintView.this);
-            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation);
-            mAuthenticationSucceededListener.onAuthenticationSucceeded();
+            Util.hideKeyboardFromWindow((Activity) mLockView.getContext(), FingerprintView.this);
+            if (mLockView.allowFingerprint()) {
+                handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation);
+                mLockView.handleAuthenticationSuccess();
+            } else {
+                onWindowFocusChanged(true);
+            }
         }
 
         @Override
         public void onAuthenticationFailed() {
             handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_fp_to_error_state_animation);
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation);
-                }
-            }, 800);
+            if (mLockView.allowFingerprint()) {
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation);
+                    }
+                }, 800);
+            } else {
+                mCancelFingerprint.cancel();
+                setOnClickListener(mNotAllowedToast);
+            }
         }
     };
     private CancellationSignal mCancelFingerprint = new CancellationSignal();
 
     @TargetApi(Build.VERSION_CODES.M)
-    public FingerprintView(Context context, AuthenticationSucceededListener listener) {
+    public FingerprintView(Context context, LockView lv) {
         super(context);
-        mAuthenticationSucceededListener = listener;
+        mLockView = lv;
         setScaleType(ImageView.ScaleType.CENTER);
         setContentDescription(getResources().getString(android.R.string.fingerprint_icon_content_description));
     }
@@ -86,6 +101,11 @@ public final class FingerprintView extends ImageView {
         if (hasWindowFocus) {
             FingerprintManagerCompat mFingerprintManager = FingerprintManagerCompat.from(getContext());
             if (mFingerprintManager.isHardwareDetected() && mFingerprintManager.hasEnrolledFingerprints()) {
+                if (!mLockView.allowFingerprint()) {
+                    handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_fp_to_error_state_animation);
+                    setOnClickListener(mNotAllowedToast);
+                    return;
+                }
                 if (mCancelFingerprint.isCanceled()) {
                     mCancelFingerprint = new CancellationSignal();
                 }
