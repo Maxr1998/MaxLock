@@ -152,8 +152,9 @@
     <string-array name="dialog_multi_select_items_options">
         <item>Password personalizzata</item>
         <item>Falsa chiusura</item>
-        <item>Nascondi il testo della notifica</item>
+        <item>Nascondi il contenuto della notifica</item>
     </string-array>
+    <string name="notification_hidden_by_maxlock">Contenuto nascosto da MaxLock</string>
     <string name="dialog_button_exclude_activities">Attività</string>
     <string name="dialog_title_exclude_activities">Escludi "Attività" dal blocco</string>
     <!-- UI settings -->
