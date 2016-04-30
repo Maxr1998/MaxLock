@@ -288,10 +288,10 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     }
 
     private void handleTimer() {
-        new CountDownTimer(getTimeLeft(), 100) {
+        new CountDownTimer(getTimeLeft(), 200) {
             @Override
             public void onTick(long millisUntilFinished) {
-                mMessageArea.setText(getResources().getString(R.string.message_try_again_in_seconds, millisUntilFinished / 1000));
+                mMessageArea.setText(getResources().getString(R.string.message_try_again_in_seconds, millisUntilFinished / 1000 + 1));
             }
 
             @Override
@@ -302,7 +302,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     }
 
     private long getTimeLeft() {
-        return 60000 + getPrefs().getLong(Common.FAILED_ATTEMPTS_TIMER, 0) - System.currentTimeMillis();
+        return 59000 + getPrefs().getLong(Common.FAILED_ATTEMPTS_TIMER, 0) - System.currentTimeMillis();
     }
 
     private boolean isTimeLeft() {
