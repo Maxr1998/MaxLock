@@ -60,7 +60,14 @@ public class SystemUI {
                         Object task = param.args[0];
                         String packageName = ((ComponentName) getObjectField(getObjectField(getObjectField(task, "key"), "mComponentNameKey"), "component")).getPackageName();
                         if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
-                            Bitmap replacement = Bitmap.createBitmap(new int[]{Color.WHITE}, 1, 1, Bitmap.Config.RGB_565);
+                            Bitmap replacement;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                replacement = Bitmap.createBitmap(new int[]{Color.WHITE}, 1, 1, Bitmap.Config.RGB_565);
+                            } else {
+                                Bitmap thumbnail = ((Bitmap) getObjectField(task, "thumbnail"));
+                                replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
+                                replacement.eraseColor(Color.WHITE);
+                            }
                             setObjectField(task, "thumbnail", replacement);
                         }
                     }
