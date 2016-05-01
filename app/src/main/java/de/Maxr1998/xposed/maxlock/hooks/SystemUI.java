@@ -47,6 +47,7 @@ public class SystemUI {
     public static final String PACKAGE_NAME = "com.android.systemui";
     public static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
     public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
+    public static final String HIDE_RECENTS_THUMBNAILS = "hide_recents_thumbnails";
     private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
 
     public static void init(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
@@ -58,10 +59,8 @@ public class SystemUI {
                         prefsApps.reload();
                         Object task = param.args[0];
                         String packageName = ((ComponentName) getObjectField(getObjectField(getObjectField(task, "key"), "mComponentNameKey"), "component")).getPackageName();
-                        if (prefsApps.getBoolean("hide_recents_thumbnails", false) && prefsApps.getBoolean(packageName, false)) {
-                            Bitmap thumbnail = ((Bitmap) getObjectField(task, "thumbnail"));
-                            Bitmap replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
-                            replacement.eraseColor(Color.WHITE);
+                        if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
+                            Bitmap replacement = Bitmap.createBitmap(new int[]{Color.WHITE}, 1, 1, Bitmap.Config.RGB_565);
                             setObjectField(task, "thumbnail", replacement);
                         }
                     }
@@ -71,8 +70,8 @@ public class SystemUI {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         prefsApps.reload();
-                        if (prefsApps.getBoolean("hide_recents_thumbnails", false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
-                            param.setResult(new ColorDrawable(Color.WHITE));
+                        if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
+                            param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(Color.WHITE) : Bitmap.createBitmap(new int[]{Color.WHITE}, 1, 1, Bitmap.Config.RGB_565));
                         }
                     }
                 });
@@ -112,7 +111,7 @@ public class SystemUI {
         };
         // Hook
         try {
-            findAndHookMethod(hookedClass, lPParam.classLoader, "onScreenTurnedOff", Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? hook : new Object[]{int.class, hook});
+            findAndHookMethod(hookedClass, lPParam.classLoader, "onScreenTurnedOff", Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? new Object[]{hook} : new Object[]{int.class, hook});
         } catch (Throwable t) {
             log(t);
         }
