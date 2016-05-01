@@ -79,7 +79,7 @@ public class Apps {
 
     public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
         try {
-            findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
+            findAndHookMethod(Activity.class, "onStart", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     final Activity activity = (Activity) param.thisObject;
@@ -107,7 +107,7 @@ public class Apps {
                     activity.startActivity(it);
                 }
             });
-            findAndHookMethod("android.app.Activity", lPParam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
+            findAndHookMethod(Activity.class, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if ((boolean) param.args[0]) {
@@ -122,6 +122,7 @@ public class Apps {
                 }
             });
 
+            // Notification content hiding
             findAndHookMethod(NotificationManager.class, "notify", String.class, int.class, Notification.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
