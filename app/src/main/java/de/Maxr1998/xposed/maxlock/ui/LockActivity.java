@@ -84,7 +84,7 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
 
     private void defaultSetup() {
         // Authentication fragment/UI
-        setContentView(new LockView(this, names[0], names[1]), new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setContentView(new LockView(LockView.getThemedContext(this), names[0], names[1]), new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     private void fakeDieSetup() {

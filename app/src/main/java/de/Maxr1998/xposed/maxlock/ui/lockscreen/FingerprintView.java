@@ -49,7 +49,7 @@ public final class FingerprintView extends ImageView {
     private final FingerprintManagerCompat.AuthenticationCallback mFPAuthenticationCallback = new FingerprintManagerCompat.AuthenticationCallback() {
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-            Util.hideKeyboardFromWindow((Activity) mLockView.getContext(), FingerprintView.this);
+            Util.hideKeyboardFromWindow(mLockView.getActivity(), FingerprintView.this);
             if (mLockView.allowFingerprint()) {
                 handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation);
                 mLockView.handleAuthenticationSuccess();

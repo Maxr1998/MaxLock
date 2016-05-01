@@ -326,7 +326,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public static class Lockscreen extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            return new LockView(getActivity(), getActivity().getApplicationContext().getPackageName(), SettingsActivity.class.getName());
+            return new LockView(LockView.getThemedContext(getActivity()), getActivity().getApplicationContext().getPackageName(), SettingsActivity.class.getName());
         }
     }
 }
