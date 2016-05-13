@@ -82,7 +82,7 @@
     <string name="pref_shuffle_pin">隨機數字</string>
     <string name="pref_category_pin_and_knock_code">PIN和knock code</string>
     <string name="pref_hide_input_bar">隱藏輸入欄</string>
-    <string name="pref_hide_input_bar_summary">這將隱藏清除按鈕，你仍然可以通過長按數字/容器清除代碼</string>
+    <string name="pref_hide_input_bar_summary">隱藏清除按鈕，你仍然可以通過長按數字清除</string>
     <string name="pref_category_pin_and_pattern">PIN 和 圖案</string>
     <string name="pref_haptic_feedback">輸入時振動</string>
     <string name="pref_category_knock_code_only">僅Knock code</string>
@@ -152,8 +152,9 @@
     <string-array name="dialog_multi_select_items_options">
         <item>自訂密碼</item>
         <item>顯示假死視窗</item>
-        <item>Hide notification content</item>
+        <item>隱藏通知列內容</item>
     </string-array>
+    <string name="notification_hidden_by_maxlock">隱藏內容來自MaxLock</string>
     <string name="dialog_button_exclude_activities">活動</string>
     <string name="dialog_title_exclude_activities">排除鎖定活動</string>
     <!-- UI settings -->
@@ -195,6 +196,10 @@
     <string name="dialog_text_fake_die_stopped">非常抱歉,%1$s已停止。</string>
     <string name="dialog_button_report">回報</string>
     <string name="dialog_title_report_problem">回報問題</string>
+    <!-- Lock screen messages -->
+    <string name="message_wrong_password">輸入錯誤</string>
+    <string name="message_try_again_in_seconds">請等待%1$d秒再嘗試</string>
+    <string name="message_fingerprint_disabled">指紋錯誤嘗試次數過多後關閉</string>
     <!-- Action stuff -->
     <string name="activity_label_actions">MaxLock操作</string>
     <string name="action_configuration">設定:</string>
