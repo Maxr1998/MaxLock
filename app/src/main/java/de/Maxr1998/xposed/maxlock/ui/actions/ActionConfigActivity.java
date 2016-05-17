@@ -43,7 +43,7 @@ public class ActionConfigActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Util.setTheme(this);
         super.onCreate(savedInstanceState);
-        if (getCallingActivity() != null || !BundleScrubber.scrub(getIntent())) {
+        if (getCallingActivity() != null && !BundleScrubber.scrub(getIntent())) {
             if (getCallingActivity().getPackageName().startsWith("net.dinglisch.android.taskerm") || getCallingActivity().getPackageName().startsWith("com.twofortyfouram.locale")) {
                 taskerMode = true;
             }
