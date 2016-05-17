@@ -13,7 +13,7 @@
         <item name="dividerColor">@color/divider_light</item>
         <item name="alertDialogTheme">@style/DialogTheme</item>
         <item name="android:preferenceStyle">@style/Preference</item>
-        <item name="android:checkBoxPreferenceStyle">@style/Preference.SwitchView</item>
+        <item name="android:checkBoxPreferenceStyle">@style/Preference.SwitchPreference</item>
         <item name="android:dialogPreferenceStyle">@style/Preference</item>
         <item name="android:editTextPreferenceStyle">@style/Preference.EditTextDialog</item>
         <item name="android:preferenceScreenStyle">@style/Preference</item>
@@ -39,7 +39,7 @@
         <item name="dividerColor">@color/divider_dark</item>
         <item name="alertDialogTheme">@style/DialogTheme.Dark</item>
         <item name="android:preferenceStyle">@style/Preference</item>
-        <item name="android:checkBoxPreferenceStyle">@style/Preference.SwitchView</item>
+        <item name="android:checkBoxPreferenceStyle">@style/Preference.SwitchPreference</item>
         <item name="android:dialogPreferenceStyle">@style/Preference</item>
         <item name="android:editTextPreferenceStyle">@style/Preference.EditTextDialog</item>
         <item name="android:preferenceScreenStyle">@style/Preference</item>
@@ -119,8 +119,8 @@
         <item name="android:dialogLayout">@layout/edit_text_preference</item>
     </style>
 
-    <style name="Preference.SwitchView">
-        <item name="android:widgetLayout">@layout/preference_switch_view</item>
+    <style name="Preference.SwitchPreference">
+        <item name="android:widgetLayout">@layout/preference_widget_switch</item>
     </style>
 
     <style name="Preference.Category">

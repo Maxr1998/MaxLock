@@ -20,6 +20,8 @@ package de.Maxr1998.xposed.maxlock.preference;
 import android.content.Context;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewParent;
 
 public class SwitchView extends SwitchCompat {
 
@@ -37,6 +39,16 @@ public class SwitchView extends SwitchCompat {
 
     @Override
     public boolean isShown() {
-        return getVisibility() == VISIBLE && getParent() != null;
+        ViewParent current = getParent();
+        if (current == null) {
+            return false;
+        }
+        while (current != null && current instanceof View) {
+            if (((View) current).getVisibility() != VISIBLE) {
+                return false;
+            }
+            current = current.getParent();
+        }
+        return true;
     }
 }
