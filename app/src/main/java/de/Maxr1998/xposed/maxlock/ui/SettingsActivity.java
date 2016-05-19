@@ -42,6 +42,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -68,6 +69,10 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     public static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";

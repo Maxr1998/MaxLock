@@ -28,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Keep;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -43,6 +44,10 @@ import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class LockActivity extends AppCompatActivity implements AuthenticationSucceededListener {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     private SharedPreferences prefs;
     @Keep
