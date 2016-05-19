@@ -21,6 +21,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -80,7 +81,7 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-import static de.Maxr1998.xposed.maxlock.ui.SettingsActivity.TAG_PREFERENCE_FRAGMENT_SECOND_PANE;
+import static de.Maxr1998.xposed.maxlock.ui.SettingsActivity.isSecondPane;
 
 public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
@@ -120,13 +121,11 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case MAIN:
                 setRetainInstance(true);
                 // Show changelog and rating dialog
-                if (prefs.getInt(Common.LAST_VERSION_NUMBER, 0) < BuildConfig.VERSION_CODE) {
+                if (BuildConfig.VERSION_CODE > prefs.getInt(Common.LAST_VERSION_NUMBER, 0)) {
                     showChangelog();
                     prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE).apply();
                 } else {
-                    if ((getTag() == null || !getTag().equals(TAG_PREFERENCE_FRAGMENT_SECOND_PANE)) && !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) &&
-                            (System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(8) ||
-                                    prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 20)) {
+                    if (!isSecondPane(this) && allowRatingDialog()) {
                         prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)
                                 .putLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()).apply();
                         @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
@@ -141,7 +140,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                     case -3:
                                         try {
                                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
-                                        } catch (android.content.ActivityNotFoundException e) {
+                                        } catch (ActivityNotFoundException e) {
                                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
                                         }
                                         break;
@@ -486,6 +485,11 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }
                 break;
         }
+    }
+
+    private boolean allowRatingDialog() {
+        return !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) && (prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 25 ||
+                System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(14));
     }
 
     private void showChangelog() {

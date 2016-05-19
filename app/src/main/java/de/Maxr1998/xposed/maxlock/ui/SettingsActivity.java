@@ -70,22 +70,27 @@ import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
-
-    public static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
-    public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
+    private static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
+    private static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
     @Keep
     @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
     private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     public ComponentName deviceAdmin;
     private MaxLockPreferenceFragment mSettingsFragment;
     private DevicePolicyManager devicePolicyManager;
     private CustomTabsServiceConnection mConnection;
     private CustomTabsSession mSession;
+
+    public static boolean isSecondPane(Fragment f) {
+        return f.getTag() != null && f.getTag().equals(TAG_PREFERENCE_FRAGMENT_SECOND_PANE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -328,6 +333,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static class Lockscreen extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
