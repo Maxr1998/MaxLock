@@ -151,18 +151,4 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="Text_Button">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
-    </style>
-
-    <style name="FlatButton">
-        <item name="android:textAppearance">@style/Text_Button</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">?selectableItemBackground</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
 </resources>
