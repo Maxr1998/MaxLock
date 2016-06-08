@@ -122,7 +122,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 setRetainInstance(true);
                 // Show changelog and rating dialog
                 if (BuildConfig.VERSION_CODE > prefs.getInt(Common.LAST_VERSION_NUMBER, 0)) {
-                    showChangelog();
+                    showUpdatedMessage();
                     prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE).apply();
                 } else {
                     if (!isSecondPane(this) && allowRatingDialog()) {
@@ -492,15 +492,30 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(14));
     }
 
+    private void showUpdatedMessage() {
+        AlertDialog message = new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.dialog_maxlock_updated)
+                .setNegativeButton(R.string.dialog_button_whats_new, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showChangelog();
+                    }
+                })
+                .setPositiveButton(R.string.dialog_button_got_it, null)
+                .create();
+        message.setCanceledOnTouchOutside(false);
+        message.show();
+    }
+
     private void showChangelog() {
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder changelog = new AlertDialog.Builder(getActivity());
         WebView wv = new WebView(getContext());
         wv.setWebViewClient(new WebViewClient());
         wv.getSettings().setUserAgentString("MaxLock App v" + BuildConfig.VERSION_NAME);
         wv.loadUrl("http://maxlock.maxr1998.de/files/changelog-base.php");
-        b.setView(wv);
-        b.setPositiveButton(android.R.string.ok, null);
-        b.create().show();
+        changelog.setView(wv);
+        changelog.setPositiveButton(android.R.string.ok, null);
+        changelog.create().show();
     }
 
     public enum Screen {
