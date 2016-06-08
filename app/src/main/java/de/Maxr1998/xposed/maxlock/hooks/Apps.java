@@ -50,21 +50,20 @@ import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
-public class Apps {
+class Apps {
 
+    static final String PROCESS_HISTORY_ARRAY_KEY = "procs";
+    static final String PACKAGE_HISTORY_ARRAY_KEY = "pkgs";
+    static final int UNLOCK_ID = -0x3A8;
+    static final String IMOD_OBJECT_KEY = "iModPerApp";
+    static final String CLOSE_OBJECT_KEY = "close";
+    static final String IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer";
     @SuppressLint("SdCardPath")
-    public static final String HISTORY_PATH = "/data/data/" + Main.MAXLOCK_PACKAGE_NAME + "/files/history.json";
-    public static final String PROCESS_HISTORY_ARRAY_KEY = "procs";
-    public static final String PACKAGE_HISTORY_ARRAY_KEY = "pkgs";
-    public static final int UNLOCK_ID = -0x3A8;
-    public static final String IMOD_OBJECT_KEY = "iModPerApp";
-    public static final String CLOSE_OBJECT_KEY = "close";
+    private static final String HISTORY_PATH = "/data/data/" + Main.MAXLOCK_PACKAGE_NAME + "/files/history.json";
+    private static final String IMOD_DELAY_APP = "delay_inputperapp";
+    private static final String IMOD_DELAY_GLOBAL = "delay_inputgeneral";
 
-    public static final String IMOD_DELAY_APP = "delay_inputperapp";
-    public static final String IMOD_DELAY_GLOBAL = "delay_inputgeneral";
-    public static final String IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer";
-
-    public static void initLogging(final XC_LoadPackage.LoadPackageParam lPParam) {
+    static void initLogging(final XC_LoadPackage.LoadPackageParam lPParam) {
         try {
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
                 @Override
@@ -77,7 +76,7 @@ public class Apps {
         }
     }
 
-    public static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
+    static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
         try {
             findAndHookMethod(Activity.class, "onStart", new XC_MethodHook() {
                 @Override
@@ -128,7 +127,7 @@ public class Apps {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     prefsApps.reload();
                     Notification notification = (Notification) param.args[2];
-                    if (prefsApps.getBoolean(lPParam.packageName + "_notif_content", false)) {
+                    if (prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) && prefsApps.getBoolean(lPParam.packageName + "_notif_content", false)) {
                         Context context = (Context) getObjectField(param.thisObject, "mContext");
                         String appName = context.getPackageManager().getApplicationInfo(lPParam.packageName, 0).loadLabel(context.getPackageManager()).toString();
                         Resources modRes = context.getPackageManager().getResourcesForApplication(MAXLOCK_PACKAGE_NAME);
@@ -181,7 +180,7 @@ public class Apps {
                         prefs.getInt(IMOD_DELAY_APP, 600000));
     }
 
-    public static JSONObject getDefault() throws Throwable {
+    static JSONObject getDefault() throws Throwable {
         JSONObject history = new JSONObject();
         JSONArray procs = new JSONArray();
         JSONArray pkgs = new JSONArray();
@@ -194,7 +193,7 @@ public class Apps {
         return history;
     }
 
-    public static JSONObject readFile() throws Throwable {
+    static JSONObject readFile() throws Throwable {
         JSONObject history;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(HISTORY_PATH), 50);
@@ -215,7 +214,7 @@ public class Apps {
         return history;
     }
 
-    public static void writeFile(@NonNull JSONObject history) throws Throwable {
+    static void writeFile(@NonNull JSONObject history) throws Throwable {
         try {
             File JSONFile = new File(HISTORY_PATH);
             if (!JSONFile.exists()) {
@@ -229,7 +228,7 @@ public class Apps {
         }
     }
 
-    public static JSONObject addToHistory(int taskId, String packageName, JSONObject history) throws Throwable {
+    static JSONObject addToHistory(int taskId, String packageName, JSONObject history) throws Throwable {
         JSONArray procs = history.optJSONArray(PROCESS_HISTORY_ARRAY_KEY);
         JSONArray pkgs = history.optJSONArray(PACKAGE_HISTORY_ARRAY_KEY);
         // Only add task id if new task got launched

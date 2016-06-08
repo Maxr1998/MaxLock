@@ -38,11 +38,11 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
-public class MaxLock {
+class MaxLock {
 
-    public static final String PACKAGE_NAME = MAXLOCK_PACKAGE_NAME;
+    static final String PACKAGE_NAME = MAXLOCK_PACKAGE_NAME;
 
-    public static void init(final XC_LoadPackage.LoadPackageParam lPParam) {
+    static void init(final XC_LoadPackage.LoadPackageParam lPParam) {
         try {
             XposedHelpers.setStaticBooleanField(findClass(PACKAGE_NAME + ".ui.SettingsActivity", lPParam.classLoader), "IS_ACTIVE", true);
             findAndHookMethod(PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onAuthenticationSucceeded", new XC_MethodHook() {

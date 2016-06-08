@@ -30,7 +30,8 @@ import static de.Maxr1998.xposed.maxlock.hooks.Apps.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
-    public static final String MAXLOCK_PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
+
+    static final String MAXLOCK_PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
     private static XSharedPreferences prefsApps;
 
     @Override
@@ -65,7 +66,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         }
     }
 
-    public static void logD(String message) {
+    static void logD(String message) {
         if (BuildConfig.DEBUG)
             log(message);
     }

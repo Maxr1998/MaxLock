@@ -33,11 +33,11 @@ import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
-public class DeviceAdminProtection {
+class DeviceAdminProtection {
 
-    public static final String PACKAGE_NAME = "com.android.settings";
+    static final String PACKAGE_NAME = "com.android.settings";
 
-    public static void init(XC_LoadPackage.LoadPackageParam lPParam) {
+    static void init(XC_LoadPackage.LoadPackageParam lPParam) {
         try {
             findAndHookMethod(PACKAGE_NAME + ".DeviceAdminAdd", lPParam.classLoader, "onResume", new XC_MethodHook() {
                 @Override

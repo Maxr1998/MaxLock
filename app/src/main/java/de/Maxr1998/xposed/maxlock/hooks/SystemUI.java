@@ -42,15 +42,15 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
-public class SystemUI {
+class SystemUI {
 
-    public static final String PACKAGE_NAME = "com.android.systemui";
-    public static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
-    public static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
-    public static final String HIDE_RECENTS_THUMBNAILS = "hide_recents_thumbnails";
+    static final String PACKAGE_NAME = "com.android.systemui";
+    static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
+    private static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
+    private static final String HIDE_RECENTS_THUMBNAILS = "hide_recents_thumbnails";
     private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
 
-    public static void init(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
+    static void init(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
         try {
             if (LOLLIPOP) {
                 findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "rebindToTask", PACKAGE_NAME + ".recents.model.Task", new XC_MethodHook() {
@@ -88,7 +88,7 @@ public class SystemUI {
         }
     }
 
-    public static void initScreenOff(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
+    static void initScreenOff(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
         // Resolve vars
         String hookedClass;
         try {
