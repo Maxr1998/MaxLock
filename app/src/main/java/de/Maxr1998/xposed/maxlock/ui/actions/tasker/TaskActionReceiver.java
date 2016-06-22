@@ -39,7 +39,7 @@ public class TaskActionReceiver extends BroadcastReceiver {
             return;
         }
         final Bundle extra = intent.getBundleExtra("com.twofortyfouram.locale.intent.extra.BUNDLE");
-        if (BundleScrubber.scrub(extra)) {
+        if (BundleScrubber.scrub(extra) || extra == null) {
             return;
         }
         ActionsHelper.callAction(extra.getInt(ActionsHelper.ACTION_EXTRA_KEY, -1), context);
