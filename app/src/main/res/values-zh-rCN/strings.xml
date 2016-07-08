@@ -11,9 +11,12 @@
     &#x2022; <i>Xposed框架未安装</i>\n
     &#x2022; <i>Xposed安装并激活,在Xposed安装器\"模块\"选项卡中激活MaxLock或重启</i>\n
     &#x2022; <i>禁用Xposed框架安全模式,在XDA网站了解Xposed更多信息</i>\n
-    &#x2022; <i>MaxLock可能遇到崩溃,那么您应该从屏幕底部给我一个bug报告</i></string>
+    &#x2022; <i>MaxLock可能遇到崩溃,您可以从屏幕底部给我一个bug报告</i></string>
     <string name="sb_no_locking_type">没有锁定特定类型</string>
     <string name="sb_no_locked_apps">没有选择锁定应用</string>
+    <string name="dialog_maxlock_updated">MaxLock已更新!</string>
+    <string name="dialog_button_whats_new">更新日志</string>
+    <string name="dialog_button_got_it">获取</string>
     <string name="dialog_like_app">您喜欢这个应用吗?</string>
     <string name="dialog_like_app_text">如果您这样做了,请在Play Store留下您的评论或考虑捐赠:)</string>
     <string name="dialog_cb_never_again">不再显示</string>
