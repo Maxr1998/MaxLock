@@ -66,14 +66,14 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 @SuppressLint("CommitPrefEdits")
-public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements Filterable, FastScrollRecyclerView.SectionedAdapter {
+class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements Filterable, FastScrollRecyclerView.SectionedAdapter {
 
     private final Fragment mFragment;
     private final Context mContext;
     private final SharedPreferences prefsApps, prefsKeysPerApp;
     private final AppFilter mFilter;
 
-    public AppListAdapter(Fragment fragment) {
+    AppListAdapter(Fragment fragment) {
         mFragment = fragment;
         mContext = fragment.getActivity();
         prefsApps = MLPreferences.getPrefsApps(mContext);
@@ -211,16 +211,16 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         return mFilter;
     }
 
-    public static class AppsListViewHolder extends RecyclerView.ViewHolder {
+    static class AppsListViewHolder extends RecyclerView.ViewHolder {
 
-        public final ImageView appIcon;
-        public final TextView appName;
-        public final ImageButton options;
-        public final ToggleButton toggle;
+        final ImageView appIcon;
+        final TextView appName;
+        final ImageButton options;
+        final ToggleButton toggle;
         String tag;
         SharedPreferences prefsApps;
 
-        public AppsListViewHolder(View itemView) {
+        AppsListViewHolder(View itemView) {
             super(itemView);
             appIcon = (ImageView) itemView.findViewById(R.id.icon);
             appName = (TextView) itemView.findViewById(R.id.title);
@@ -287,7 +287,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         private final Context mContext;
         private final SharedPreferences prefsApps;
 
-        public ActivityListAdapter(Context context, List<String> list) {
+        ActivityListAdapter(Context context, List<String> list) {
             mContext = context;
             activities = list;
             prefsApps = MLPreferences.getPrefsApps(mContext);
@@ -326,9 +326,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
 
     private static class ActivityListViewHolder extends RecyclerView.ViewHolder {
 
-        public final SwitchCompat switchCompat;
+        final SwitchCompat switchCompat;
 
-        public ActivityListViewHolder(View itemView) {
+        ActivityListViewHolder(View itemView) {
             super(itemView);
             switchCompat = (SwitchCompat) itemView.findViewById(R.id.activity_switch);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -337,7 +337,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsList
         }
     }
 
-    class AppFilter extends Filter {
+    private class AppFilter extends Filter {
 
         @SuppressLint("DefaultLocale")
         @Override
