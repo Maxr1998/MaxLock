@@ -173,6 +173,8 @@
     <string name="pref_use_dark_style">Dunkles Design benutzen</string>
     <string name="pref_use_amoled_black">Für AMOLED optimieren</string>
     <string name="pref_use_amoled_black_summary">Komplett schwarzen Hintergrund fürs dunkle Design verwenden, um bei AMOLED Displays Energie zu sparen</string>
+    <string name="pref_new_app_notification">Benachrichtigung bei neuer App</string>
+    <string name="pref_new_app_notification_summary">Frage wenn eine neue App installiert wird ob diese gesperrt sein soll</string>
     <!-- About information -->
     <string name="pref_category_about">Über</string>
     <string name="pref_about_summary">Anklicken, um Danksagung, verwendete Bibliotheken und Lizenzen zu sehen.</string>

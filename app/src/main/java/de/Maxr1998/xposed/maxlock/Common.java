@@ -33,7 +33,6 @@ public abstract class Common {
     public static final String RATING_DIALOG_APP_OPENING_COUNTER = "rating_dialog_app_opening_counter";
     public static final String RATING_DIALOG_LAST_SHOWN = "rating_dialog_last_shown";
     public static final String RATING_DIALOG_SHOW_NEVER = "rating_dialog_show_never";
-    public static final String PREVENT_APP_INSTALLED_NOTIFICATION = "prevent_app_installed_notification";
     public static final String MASTER_SWITCH_ON = "master_switch_on";
     public static final String KEY_PREFERENCE = "key";
     public static final String APP_KEY_PREFERENCE = "_key";
@@ -90,6 +89,7 @@ public abstract class Common {
     public static final String HIDE_APP_FROM_LAUNCHER = "hide_from_launcher";
     public static final String USE_DARK_STYLE = "use_dark_style";
     public static final String USE_AMOLED_BLACK = "use_amoled_black";
+    public static final String NEW_APP_NOTIFICATION = "new_app_notification";
 
     public static final String ABOUT = "about";
     /* ABOUT */

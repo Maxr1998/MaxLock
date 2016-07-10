@@ -44,7 +44,7 @@ public class NewAppInstalledBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()) {
             case Intent.ACTION_PACKAGE_ADDED:
-                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.PREVENT_APP_INSTALLED_NOTIFICATION, false) ||
+                if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.NEW_APP_NOTIFICATION, true) ||
                         intent.getBooleanExtra(Intent.EXTRA_REPLACING, false) ||
                         intent.getData() == null || intent.getData().getSchemeSpecificPart().length() == 0) {
                     return;
@@ -63,7 +63,7 @@ public class NewAppInstalledBroadcastReceiver extends BroadcastReceiver {
                 NotificationManagerCompat.from(context).cancel(APP_INSTALLED_NOTIFICATION_ID);
                 break;
             case MAXLOCK_ACTION_NEVER_SHOW_AGAIN:
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(Common.PREVENT_APP_INSTALLED_NOTIFICATION, true).commit();
+                PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(Common.NEW_APP_NOTIFICATION, false).commit();
                 NotificationManagerCompat.from(context).cancel(APP_INSTALLED_NOTIFICATION_ID);
                 break;
             case Intent.ACTION_PACKAGE_FULLY_REMOVED:

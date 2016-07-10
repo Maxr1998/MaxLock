@@ -43,6 +43,11 @@
             android:key="use_amoled_black"
             android:summary="@string/pref_use_amoled_black_summary"
             android:title="@string/pref_use_amoled_black" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="new_app_notification"
+            android:summary="@string/pref_new_app_notification_summary"
+            android:title="@string/pref_new_app_notification" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_about">
