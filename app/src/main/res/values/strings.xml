@@ -61,6 +61,14 @@
     <string name="choose_knock_code">Choose your knock code</string>
     <string name="knock_code_too_short">Knock code must be a least 4 touches</string>
     <string name="confirm_knock_code">Confirm your knock code</string>
+
+    <string name="pref_category_fingerprint">Fingerprint</string>
+    <string name="pref_disable_fingerprint">Disable fingerprint unlocking</string>
+    <string name="pref_disable_fingerprint_summary">Fingerprint unlock is enabled by default when you have fingerprints enrolled to your device
+        and can be used with any of the above locking types</string>
+    <string name="pref_fingerprint_summary_non_enrolled">.\nCurrently, no fingerprints are enrolled.
+        Enroll at least one in settings to use this feature.</string>
+    <string name="pref_disable_fingerprint_summary_on">Fingerprint unlock disabled</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">Lockscreen UI</string>
     <string name="pref_open_theme_manager">Open Theme Manager</string>
@@ -93,8 +101,6 @@
     <string name="pref_touch_visible">Make touches visible</string>
     <string name="pref_category_pattern_only">Pattern only</string>
     <string name="pref_show_path">Show path</string>
-    <string name="pref_category_fingerprint">Fingerprint</string>
-    <string name="pref_disable_fingerprint">Disable fingerprint unlocking</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">Locking options</string>
     <string name="pref_category_logging">Logging</string>

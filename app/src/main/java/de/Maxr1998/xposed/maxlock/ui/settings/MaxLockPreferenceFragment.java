@@ -177,6 +177,16 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }
                 break;
             case TYPE:
+                FingerprintManagerCompat fpm = FingerprintManagerCompat.from(getActivity());
+                if (!fpm.isHardwareDetected()) {
+                    getPreferenceScreen().removePreference(findPreference(Common.SHADOW_FINGERPRINT));
+                    getPreferenceScreen().removePreference(findPreference(Common.CATEGORY_FINGERPRINT));
+                } else {
+                    CheckBoxPreference disableFP = (CheckBoxPreference) findPreference(Common.DISABLE_FINGERPRINT);
+                    if (!fpm.hasEnrolledFingerprints() && !disableFP.isChecked()) {
+                        disableFP.setSummary(disableFP.getSummary() + getResources().getString(R.string.pref_fingerprint_summary_non_enrolled));
+                    }
+                }
                 break;
             case UI:
                 SharedPreferences prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
@@ -207,11 +217,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         return true;
                     }
                 });
-                FingerprintManagerCompat fpm = FingerprintManagerCompat.from(getActivity());
-                if (!fpm.isHardwareDetected() || !fpm.hasEnrolledFingerprints()) {
-                    getPreferenceScreen().removePreference(findPreference(Common.SHADOW_FINGERPRINT));
-                    getPreferenceScreen().removePreference(findPreference(Common.CATEGORY_FINGERPRINT));
-                }
                 break;
             case OPTIONS:
                 Preference el = findPreference(Common.ENABLE_LOGGING);
