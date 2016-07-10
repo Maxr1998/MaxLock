@@ -19,7 +19,6 @@ package de.Maxr1998.xposed.maxlock.ui.lockscreen;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,7 +30,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
@@ -46,6 +47,7 @@ public final class FingerprintView extends ImageView {
             Toast.makeText(getContext(), R.string.message_fingerprint_disabled, Toast.LENGTH_SHORT).show();
         }
     };
+    private CancellationSignal mCancelFingerprint = new CancellationSignal();
     private final FingerprintManagerCompat.AuthenticationCallback mFPAuthenticationCallback = new FingerprintManagerCompat.AuthenticationCallback() {
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
@@ -74,7 +76,6 @@ public final class FingerprintView extends ImageView {
             }
         }
     };
-    private CancellationSignal mCancelFingerprint = new CancellationSignal();
 
     @TargetApi(Build.VERSION_CODES.M)
     public FingerprintView(Context context, LockView lv) {
@@ -86,6 +87,9 @@ public final class FingerprintView extends ImageView {
 
     @TargetApi(LOLLIPOP)
     private void handleFingerprintIndicator(@DrawableRes int id) {
+        if (MLPreferences.getPreferences(getContext()).getBoolean(Common.HIDE_FINGERPRINT_ICON, false)) {
+            return;
+        }
         if (getContext() != null) {
             Drawable fp = getContext().getDrawable(id);
             if (fp instanceof AnimatedVectorDrawable) {

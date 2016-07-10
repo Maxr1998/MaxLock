@@ -101,6 +101,7 @@
     <string name="pref_touch_visible">Berührungen sichtbar machen</string>
     <string name="pref_category_pattern_only">Nur Muster</string>
     <string name="pref_show_path">Muster zeigen</string>
+    <string name="pref_hide_fingerprint_icon">Fingerabruck Grafik verstecken</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">Sperr-Optionen</string>
     <string name="pref_category_logging">Logging</string>
