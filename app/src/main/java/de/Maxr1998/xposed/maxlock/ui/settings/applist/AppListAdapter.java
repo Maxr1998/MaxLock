@@ -337,7 +337,8 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
         }
     }
 
-    private class AppFilter extends Filter {
+    @SuppressWarnings("WeakerAccess")
+    class AppFilter extends Filter {
 
         @SuppressLint("DefaultLocale")
         @Override
