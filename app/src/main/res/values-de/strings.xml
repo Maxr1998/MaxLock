@@ -157,6 +157,10 @@
     <string name="menu_search">Suche</string>
     <string name="toggle_lock_on">An</string>
     <string name="toggle_lock_off">Aus</string>
+    <string name="known_problem_settings_message">Seit Android 6.0 kann die Einstellungen App nicht mehr vollständig gesperrt werden.
+        Der Grund dafür sind SELinux Änderungen in Android und fehlende Unterstützung dafür im Xposed Framework.
+        Möglicherweise kann dies durch Setzen des SELinux-Kontexts auf \"permissive\" behoben werden, allerdings wird dies NICHT OFFIZIELL EMPFOHLEN.</string>
+    <string name="more_information">Mehr Informationen</string>
     <string name="dialog_title_options">Optionen</string>
     <string-array name="dialog_multi_select_items_options">
         <item>App-Spezifisches Passwort</item>

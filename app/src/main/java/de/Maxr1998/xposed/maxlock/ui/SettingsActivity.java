@@ -138,7 +138,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 maxr1998Website.putParcelable(CustomTabsService.KEY_URL, Common.MAXR1998_URI);
                 Bundle technoSparksProfile = new Bundle();
                 technoSparksProfile.putParcelable(CustomTabsService.KEY_URL, Common.TECHNO_SPARKS_URI);
-                mSession.mayLaunchUrl(Common.WEBSITE_URI, null, Arrays.asList(technoSparksProfile, maxr1998Website));
+                Bundle knownProblemSettings = new Bundle();
+                knownProblemSettings.putParcelable(CustomTabsService.KEY_URL, Common.KNOWN_PROBLEM_SETTINGS_URI);
+                mSession.mayLaunchUrl(Common.WEBSITE_URI, null, Arrays.asList(technoSparksProfile, maxr1998Website, knownProblemSettings));
             }
 
             @Override

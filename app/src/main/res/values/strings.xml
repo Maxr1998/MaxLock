@@ -157,6 +157,10 @@
     <string name="menu_search">Search</string>
     <string name="toggle_lock_on">On</string>
     <string name="toggle_lock_off">Off</string>
+    <string name="known_problem_settings_message">On Android 6.0 and above, the settings app might not be fully locked when enabled.<!-- Translators: "the settings app can not be fully locked anymore" is also ok -->
+        The reason lies in the SELinux changes of Android and missing support from the Xposed framework.
+        You might be able to fix this by setting SELinux to permissive, but THIS ISN\'T OFFICIALLY RECOMMENDED.</string>
+    <string name="more_information">More information</string>
     <string name="dialog_title_options">Options</string>
     <string-array name="dialog_multi_select_items_options">
         <item>Custom password</item>
