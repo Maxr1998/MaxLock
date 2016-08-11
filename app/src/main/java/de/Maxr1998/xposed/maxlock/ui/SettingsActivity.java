@@ -287,7 +287,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     protected void onPause() {
         super.onPause();
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !UNLOCKED) {
-            Util.logFailedAuthentication(this, "Main App");
+            Util.logFailedAuthentication(this, getPackageName());
         }
     }
 
