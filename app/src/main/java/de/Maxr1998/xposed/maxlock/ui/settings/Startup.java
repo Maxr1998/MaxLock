@@ -30,9 +30,10 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -65,41 +66,59 @@ public class Startup extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
 
-        // Pro setup
+        // Non-pro setup
         if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
             prefs.edit().putBoolean(Common.ENABLE_LOGGING, false).apply();
             prefs.edit().putBoolean(Common.ENABLE_IMOD_DELAY_APP, false).apply();
             prefs.edit().putBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false).apply();
         }
+
         // Clean up
-        if (prefs.getInt(Common.LAST_VERSION_NUMBER, 0) != BuildConfig.VERSION_CODE) {
-            File backgroundFolder = new File(Util.dataDir(mContext), "background");
-            if (backgroundFolder.exists()) {
-                try {
-                    FileUtils.copyFile(new File(backgroundFolder, "image"), mContext.openFileOutput("background", 0));
-                    FileUtils.deleteQuietly(backgroundFolder);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            FileUtils.deleteQuietly(new File(mContext.getFilesDir(), "temps.json"));
-            FileUtils.deleteQuietly(new File(Util.dataDir(mContext) + "shared_prefs/activities.xml"));
-            FileUtils.deleteQuietly(new File(Util.dataDir(mContext) + "shared_prefs/temps.xml"));
-            FileUtils.deleteQuietly(new File(Util.dataDir(mContext) + "shared_prefs/imod_temp_values.xml"));
-            FileUtils.deleteQuietly(new File(Environment.getExternalStorageDirectory() + "/MaxLock_Backup/"));
-            File external = new File(Common.EXTERNAL_FILES_DIR);
-            File[] listExternal = external.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String filename) {
-                    return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
-                }
-            });
-            if (listExternal != null) {
-                for (File file : listExternal) {
-                    FileUtils.deleteQuietly(file);
-                }
+        File backgroundFolder = new File(Util.dataDir(mContext), "background");
+        if (backgroundFolder.exists()) {
+            try {
+                FileUtils.copyFile(new File(backgroundFolder, "image"), mContext.openFileOutput("background", 0));
+                FileUtils.deleteQuietly(backgroundFolder);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+
+        List<File> filesToDelete = new ArrayList<>();
+        File[] listPrefs = new File(Util.dataDir(mContext), "shared_prefs").listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return !Arrays.asList("com.google.android.gms.analytics.prefs.xml",
+                        "de.Maxr1998.xposed.maxlock_preferences.xml",
+                        "keys.xml", "packages.xml", "per_app_settings.xml",
+                        "WebViewChromiumPrefs.xml").contains(filename);
+            }
+        });
+        if (listPrefs != null) {
+            filesToDelete.addAll(Arrays.asList(listPrefs));
+        }
+        File[] listFiles = mContext.getFilesDir().listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return !Arrays.asList("background", "gaClientId", "gaClientIdData", "history.json").contains(filename);
+            }
+        });
+        if (listFiles != null) {
+            filesToDelete.addAll(Arrays.asList(listFiles));
+        }
+        File[] listExternal = new File(Common.EXTERNAL_FILES_DIR).listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
+            }
+        });
+        if (listExternal != null) {
+            filesToDelete.addAll(Arrays.asList(listExternal));
+        }
+        for (File f : filesToDelete) {
+            FileUtils.deleteQuietly(f);
+        }
+        FileUtils.deleteQuietly(new File(Environment.getExternalStorageDirectory() + "/MaxLock_Backup/"));
         return null;
     }
 
