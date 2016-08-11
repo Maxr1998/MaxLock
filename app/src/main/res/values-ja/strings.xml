@@ -14,6 +14,9 @@
 &#x2022; <i>MaxLock がクラッシュを起こした。お手数ですが、この画面の下部からバグレポートを送信してください</i></string>
     <string name="sb_no_locking_type">ロック方法が未設定です.</string>
     <string name="sb_no_locked_apps">ロックするアプリが未選択です.</string>
+    <string name="dialog_maxlock_updated">MaxLock が更新されました!</string>
+    <string name="dialog_button_whats_new">新着情報</string>
+    <string name="dialog_button_got_it">了解</string>
     <string name="dialog_like_app">このアプリはいかがですか?</string>
     <string name="dialog_like_app_text">もし気に入っていただけたら Play ストアに評価を投稿してください。また、寄付も受け付けています &#9786;</string>
     <string name="dialog_cb_never_again">再び表示しない</string>
@@ -58,6 +61,14 @@
     <string name="choose_knock_code">ノックコードを入力してください</string>
     <string name="knock_code_too_short">少なくとも 4 回タップしてください</string>
     <string name="confirm_knock_code">確認のためノックコードを再入力してください</string>
+
+    <string name="pref_category_fingerprint">指紋認証</string>
+    <string name="pref_disable_fingerprint">指紋認証によるロック解除の無効化</string>
+    <string name="pref_disable_fingerprint_summary">指紋認証によるロック解除は、端末に指紋が登録されているときデフォルトで有効になり、
+その他のロック解除方法と共に使用可能になります</string>
+    <string name="pref_fingerprint_summary_non_enrolled">\n現在、指紋は登録されていません。
+この機能を使用するには設定で指紋を少なくとも一つ登録してください</string>
+    <string name="pref_disable_fingerprint_summary_on">指紋認証によるロック解除は無効です</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">ロック画面</string>
     <string name="pref_open_theme_manager">Open Theme Manager</string>
@@ -90,8 +101,7 @@
     <string name="pref_touch_visible">画面タッチの視覚化</string>
     <string name="pref_category_pattern_only">パターン</string>
     <string name="pref_show_path">パターンの表示</string>
-    <string name="pref_category_fingerprint">指紋認証</string>
-    <string name="pref_disable_fingerprint">指紋認証によるロック解除の無効化</string>
+    <string name="pref_hide_fingerprint_icon">指紋認証アイコンの非表示</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">オプション</string>
     <string name="pref_category_logging">ログ</string>
@@ -148,6 +158,10 @@
     <string name="menu_search">検索</string>
     <string name="toggle_lock_on">On</string>
     <string name="toggle_lock_off">Off</string>
+    <string name="known_problem_settings_message">Android 6.0 以降では、設定アプリを完全にロックすることはできません。
+Android の SELinux に変更があり、これが Xposed framework でサポートされていないからです。
+SELinux を permissive に設定することで問題を解決できるかもしれませんが、おすすめしません</string>
+    <string name="more_information">追加情報</string>
     <string name="dialog_title_options">設定</string>
     <string-array name="dialog_multi_select_items_options">
         <item>アプリ個別のロック画面</item>
@@ -164,7 +178,8 @@
     <string name="pref_use_dark_style">暗色スタイル</string>
     <string name="pref_use_amoled_black">AMOLED ブラック</string>
     <string name="pref_use_amoled_black_summary">AMOLED ディスプレイでバッテリーを節約するために背景を完全に黒色にします</string>
-    <string name="pref_widget_background_color">ウィジェットの背景色</string>
+    <string name="pref_new_app_notification">新規アプリの通知</string>
+    <string name="pref_new_app_notification_summary">アプリを新規にインストールした際にロックするか否か尋ねます</string>
     <!-- About information -->
     <string name="pref_category_about">このアプリについて</string>
     <string name="pref_about_summary">タップすると詳細情報を表示します</string>
