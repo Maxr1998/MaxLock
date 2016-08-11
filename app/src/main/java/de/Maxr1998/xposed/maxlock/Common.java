@@ -127,9 +127,9 @@ public abstract class Common {
     public static final String BACKUP_DIR = EXTERNAL_FILES_DIR + "Backup/";
 
     // URLS //
-    public static final Uri WEBSITE_URI = Uri.parse("http://maxlock.maxr1998.de/?client=inapp&lang=" + Util.getLanguageCode());
-    public static final Uri MAXR1998_URI = Uri.parse("http://maxr1998.de/");
-    public static final Uri TECHNO_SPARKS_URI = Uri.parse("http://www.technosparks.net/");
+    public static final Uri WEBSITE_URI = Uri.parse("https://maxlock.maxr1998.de/?client=inapp&lang=" + Util.getLanguageCode());
+    public static final Uri MAXR1998_URI = Uri.parse("https://maxr1998.de/");
+    public static final Uri TECHNO_SPARKS_URI = Uri.parse("https://www.technosparks.net/");
 
     public static final Uri KNOWN_PROBLEM_SETTINGS_URI = Uri.parse("https://maxlock.maxr1998.de/pages/general/known-problems#Incompatibility");
 }
