@@ -44,6 +44,7 @@ import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_IAB;
@@ -195,7 +196,7 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
         Log.i(LOG_TAG_IAB, "Loaded.");
         List<String> products = bp.listOwnedProducts();
         if (products.size() > 0) {
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Common.DONATED, true).commit();
+            MLPreferences.getPreferences(this).edit().putBoolean(Common.DONATED, true).apply();
             donationStatusText.setText(R.string.donate_status_donated);
         } else {
             donationStatusText.setText(R.string.donate_status_not_donated);
