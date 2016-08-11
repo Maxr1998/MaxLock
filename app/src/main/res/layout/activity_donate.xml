@@ -33,7 +33,24 @@
     <ListView
         android:id="@+id/donate_products_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
+    <Button
+        android:id="@+id/donate_paypal"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/donate_paypal" />
 
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:text="@string/donate_paypal_alert"
+        android:textStyle="italic" />
 </LinearLayout>

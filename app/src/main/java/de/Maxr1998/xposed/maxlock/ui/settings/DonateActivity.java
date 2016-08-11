@@ -18,12 +18,18 @@
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
+import android.support.customtabs.CustomTabsCallback;
+import android.support.customtabs.CustomTabsClient;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.customtabs.CustomTabsServiceConnection;
+import android.support.customtabs.CustomTabsSession;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -66,6 +73,9 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
     private BillingProcessor bp;
     private TextView donationStatusText;
 
+    private CustomTabsServiceConnection mConnection;
+    private CustomTabsSession mSession;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Util.setTheme(this);
@@ -87,6 +97,36 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
                 return null;
             }
         }.execute();
+
+        Button donatePayPal = (Button) findViewById(R.id.donate_paypal);
+        donatePayPal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomTabsIntent intent = new CustomTabsIntent.Builder(mSession)
+                        .setShowTitle(true)
+                        .enableUrlBarHiding()
+                        .setToolbarColor(Color.WHITE)
+                        .build();
+                intent.launchUrl(DonateActivity.this, Common.PAYPAL_DONATE_URI);
+            }
+        });
+
+        mConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
+                customTabsClient.warmup(0);
+                mSession = customTabsClient.newSession(new CustomTabsCallback());
+                if (mSession == null) {
+                    return;
+                }
+                mSession.mayLaunchUrl(Common.PAYPAL_DONATE_URI, null, null);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+            }
+        };
+        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", mConnection);
     }
 
     @Override
@@ -207,6 +247,9 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
     protected void onDestroy() {
         if (bp != null) {
             bp.release();
+        }
+        if (mConnection != null) {
+            unbindService(mConnection);
         }
         super.onDestroy();
     }

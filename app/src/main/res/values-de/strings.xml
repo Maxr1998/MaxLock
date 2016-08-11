@@ -194,6 +194,8 @@
     <string name="donate_status_not_donated">Ziehe in Erwägung zu spenden, um zukünftige Entwicklung zu untersützen. Vielen Dank :)</string>
     <string name="dialog_message_already_bought">Du hast diese Spendeoption schon genutzt.
         Du kannst ein anderes Produkt wählen, oder das gewählte entfernen und neu kaufen.\n\nNeu kaufen?</string>
+    <string name="donate_paypal">Spende über PayPal</string>
+    <string name="donate_paypal_alert">Eine PayPal Spende entsperrt nicht die volle Pro-Version</string>
     <string name="pref_enable_pro">Pro aktivieren</string>
     <string name="pref_enable_pro_summary">Alle weiteren Funktionen aktivieren, selbst wenn MaxLock Pro nicht gekauft wurde</string>
     <string name="pref_prevent_uninstall">Schütze App vor Deinstallation</string>
