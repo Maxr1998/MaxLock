@@ -61,7 +61,7 @@ repositories {
 dependencies {
     // From JCenter or other repositories
     //-- 3rd-party
-    compile 'com.anjlab.android.iab.v3:library:1.0.27@aar'
+    compile 'com.anjlab.android.iab.v3:library:1.0.32@aar'
     compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     compile 'com.github.Maxr1998:material-intro:20044f88e8'
     compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
@@ -72,14 +72,14 @@ dependencies {
     provided 'de.robv.android.xposed:api:81'
     provided 'de.robv.android.xposed:api:81:sources'
     //-- Android support and Google Services
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:customtabs:24.0.0'
-    compile 'com.android.support:gridlayout-v7:24.0.0'
-    compile 'com.android.support:palette-v7:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.google.android.gms:play-services-base:9.0.2'
-    compile 'com.google.android.gms:play-services-analytics:9.0.2'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:customtabs:24.1.1'
+    compile 'com.android.support:gridlayout-v7:24.1.1'
+    compile 'com.android.support:palette-v7:24.1.1'
+    compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.google.android.gms:play-services-base:9.2.1'
+    compile 'com.google.android.gms:play-services-analytics:9.2.1'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
