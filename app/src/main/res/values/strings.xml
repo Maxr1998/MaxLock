@@ -71,10 +71,10 @@
     <string name="pref_disable_fingerprint_summary_on">Fingerprint unlock disabled</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">Lockscreen UI</string>
-    <string name="pref_open_theme_manager">Open Theme Manager</string>
+    <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
     <string name="pref_open_theme_manager_summary_none">No theme applied</string>
     <string name="pref_open_theme_manager_summary_applied">Applied: </string>
-    <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>
+    <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>-->
     <string name="pref_background">Background image</string>
     <string-array name="background_types">
         <item>Wallpaper</item>
@@ -194,7 +194,6 @@
     <string name="donate_status_not_donated">Consider donating to support further development. Thanks :)</string>
     <string name="dialog_message_already_bought">You already own this donation option.
         You can cancel and pick another product or purchase this one again with consuming (removing) the current purchase in before.\n\nConsume and repurchase?</string>
-    <string name="toast_no_network_connected">You\'re currently not connected to any network</string>
     <string name="pref_enable_pro">Enable Pro</string>
     <string name="pref_enable_pro_summary">This will enable pro-features even if you haven\'t bought MaxLock Pro</string>
     <string name="pref_prevent_uninstall">Protect app from being uninstalled</string>

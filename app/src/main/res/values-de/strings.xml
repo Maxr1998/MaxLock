@@ -71,10 +71,10 @@
     <string name="pref_disable_fingerprint_summary_on">Fingerabdruckentsperrung deaktiviert</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">Sperrbildschirm</string>
-    <string name="pref_open_theme_manager">Öffne Theme Manager</string>
+    <!--<string name="pref_open_theme_manager">Öffne Theme Manager</string>
     <string name="pref_open_theme_manager_summary_none">Kein Thema festgelegt</string>
     <string name="pref_open_theme_manager_summary_applied">Thema: </string>
-    <string name="pref_summary_overridden_by_theme">(Überschrieben durch Thema)</string>
+    <string name="pref_summary_overridden_by_theme">(Überschrieben durch Thema)</string>-->
     <string name="pref_background">Hintergrundbild</string>
     <string-array name="background_types">
         <item>Systemhintergrund</item>
@@ -194,7 +194,6 @@
     <string name="donate_status_not_donated">Ziehe in Erwägung zu spenden, um zukünftige Entwicklung zu untersützen. Vielen Dank :)</string>
     <string name="dialog_message_already_bought">Du hast diese Spendeoption schon genutzt.
         Du kannst ein anderes Produkt wählen, oder das gewählte entfernen und neu kaufen.\n\nNeu kaufen?</string>
-    <string name="toast_no_network_connected">Sie sind momentan mit keinem Netwerk verbunden</string>
     <string name="pref_enable_pro">Pro aktivieren</string>
     <string name="pref_enable_pro_summary">Alle weiteren Funktionen aktivieren, selbst wenn MaxLock Pro nicht gekauft wurde</string>
     <string name="pref_prevent_uninstall">Schütze App vor Deinstallation</string>
