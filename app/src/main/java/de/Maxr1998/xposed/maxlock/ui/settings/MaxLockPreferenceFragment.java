@@ -168,7 +168,10 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 if (prefs.getBoolean(Common.DONATED, false)) {
                     pro.setEnabled(false);
                     pro.setSummary("");
-                    prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+                    if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
+                        prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
+                        prefs.edit().putBoolean(Common.ENABLE_LOGGING, true).apply();
+                    }
                 }
                 break;
             case TYPE:
@@ -291,7 +294,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         launchFragment(Screen.UI.getScreen(), true, this);
                         return true;
                     case Common.LOCKING_OPTIONS:
-                        prefs.edit().putBoolean(Common.ENABLE_LOGGING, prefs.getBoolean(Common.ENABLE_PRO, false)).apply();
                         launchFragment(Screen.OPTIONS.getScreen(), true, this);
                         return true;
                     case Common.IMOD_OPTIONS:
