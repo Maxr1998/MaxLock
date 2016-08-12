@@ -53,7 +53,7 @@ public abstract class Common {
 
     public static final String LOCKING_UI_SETTINGS = "locking_ui_settings";
     /* UI */
-    public static final String OPEN_THEME_MANAGER = "open_theme_manager";
+    //public static final String OPEN_THEME_MANAGER = "open_theme_manager";
     public static final String BACKGROUND = "background";
     public static final String BACKGROUND_COLOR = "background_color";
     public static final String HIDE_STATUS_BAR = "hide_status_bar";
@@ -115,7 +115,7 @@ public abstract class Common {
     public static final String PREFS_KEY = "keys";
     public static final String PREFS_APPS = "packages";
     public static final String PREFS_KEYS_PER_APP = "per_app_settings";
-    public static final String PREFS_THEME = "theme";
+    //public static final String PREFS_THEME = "theme";
 
     // Modes //
     public static final String LOCK_ACTIVITY_MODE = "la_mode";
