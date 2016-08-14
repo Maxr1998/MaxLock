@@ -99,7 +99,7 @@ public class TaskerEventQueryReceiver extends BroadcastReceiver {
             return;
         }
         if (taskerQueries.isNull(messageId) || data == null // Process valid request with data only
-                || System.currentTimeMillis() - taskerQueries.optLong(messageId) > 500) { // Don't allow timed out requests
+                || System.currentTimeMillis() - taskerQueries.optLong(messageId) > 800) { // Don't allow timed out requests
             Log.d(Util.LOG_TAG, "Timeout or wrong request for event");
             setResultCode(RESULT_CONDITION_UNSATISFIED);
             return;
