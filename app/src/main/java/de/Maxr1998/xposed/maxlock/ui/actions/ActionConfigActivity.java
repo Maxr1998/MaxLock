@@ -32,6 +32,8 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE;
+import static com.twofortyfouram.locale.api.Intent.EXTRA_STRING_BLURB;
 import static de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper.ACTION_EXTRA_KEY;
 import static de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper.getKey;
 
@@ -48,18 +50,18 @@ public class ActionConfigActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Util.setTheme(this);
         super.onCreate(savedInstanceState);
-        if (getCallingActivity() != null && !BundleScrubber.scrub(getIntent())) {
-            if (getCallingActivity().getPackageName().startsWith("net.dinglisch.android.taskerm") || getCallingActivity().getPackageName().startsWith("com.twofortyfouram.locale")) {
-                taskerMode = true;
-            }
-        } else {
+        if (getCallingActivity() == null || BundleScrubber.scrub(getIntent())) {
             finish();
             return;
         }
-        final Bundle extra = getIntent().getBundleExtra("com.twofortyfouram.locale.intent.extra.BUNDLE");
+        final Bundle extra = getIntent().getBundleExtra(EXTRA_BUNDLE);
         if (BundleScrubber.scrub(extra)) {
             finish();
             return;
+        }
+
+        if (getCallingActivity().getPackageName().startsWith("net.dinglisch.android.taskerm") || getCallingActivity().getPackageName().startsWith("com.twofortyfouram.locale")) {
+            taskerMode = true;
         }
 
         setContentView(R.layout.activity_action_config);
@@ -82,8 +84,8 @@ public class ActionConfigActivity extends AppCompatActivity {
                 if (taskerMode) {
                     Bundle resultBundle = new Bundle();
                     resultBundle.putInt(ACTION_EXTRA_KEY, ActionsHelper.getKey(checked));
-                    result.putExtra("com.twofortyfouram.locale.intent.extra.BUNDLE", resultBundle);
-                    result.putExtra("com.twofortyfouram.locale.intent.extra.BLURB", ((RadioButton) findViewById(checked)).getText().toString());
+                    result.putExtra(EXTRA_BUNDLE, resultBundle);
+                    result.putExtra(EXTRA_STRING_BLURB, ((RadioButton) findViewById(checked)).getText().toString());
                 } else {
                     Intent shortcut = new Intent(ActionConfigActivity.this, ActionActivity.class);
                     shortcut.putExtra(ACTION_EXTRA_KEY, getKey(checked));

@@ -38,6 +38,7 @@ public abstract class Common {
     public static final String APP_KEY_PREFERENCE = "_key";
     public static final String FAILED_ATTEMPTS_COUNTER = "failed_attempts_counter";
     public static final String FAILED_ATTEMPTS_TIMER = "failed_attempts_timer";
+    public static final String TASKER_QUERIES = "tasker_queries";
     public static final String THEME_PKG = "theme_pkg";
 
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";

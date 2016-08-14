@@ -16,7 +16,8 @@
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="de.Maxr1998.xposed.maxlock">
+    package="de.Maxr1998.xposed.maxlock"
+    android:installLocation="internalOnly">
 
     <uses-sdk tools:overrideLibrary="xyz.danoz.recyclerviewfastscroller" />
 
@@ -150,6 +151,50 @@
             tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".ui.actions.tasker.TaskerEventConfigActivity"
+            android:exported="true"
+            android:taskAffinity="" />
+
+        <activity-alias
+            android:name=".ui.actions.tasker.EventUnlockAttempt"
+            android:exported="true"
+            android:label="Unlock Attempt"
+            android:targetActivity=".ui.actions.tasker.TaskerEventConfigActivity">
+            <intent-filter>
+                <action android:name="net.dinglisch.android.tasker.ACTION_EDIT_EVENT" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".ui.actions.tasker.EventUnlockSuccess"
+            android:exported="true"
+            android:label="Unlock Success"
+            android:targetActivity=".ui.actions.tasker.TaskerEventConfigActivity">
+            <intent-filter>
+                <action android:name="net.dinglisch.android.tasker.ACTION_EDIT_EVENT" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".ui.actions.tasker.EventUnlockFailed"
+            android:exported="true"
+            android:label="Unlock Failed"
+            android:targetActivity=".ui.actions.tasker.TaskerEventConfigActivity">
+            <intent-filter>
+                <action android:name="net.dinglisch.android.tasker.ACTION_EDIT_EVENT" />
+            </intent-filter>
+        </activity-alias>
+
+        <receiver
+            android:name=".ui.actions.tasker.TaskerEventQueryReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
             </intent-filter>
         </receiver>
 
