@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.Iterator;
 
+import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.lib.TaskerPlugin;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
@@ -86,7 +87,8 @@ public class TaskerEventQueryReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(Util.LOG_TAG, "Received Tasker intent");
+        if (BuildConfig.DEBUG)
+            Log.d(Util.LOG_TAG_TASKER, "Received Tasker intent");
 
         String messageId = String.valueOf(TaskerPlugin.Event.retrievePassThroughMessageID(intent));
         Bundle data = TaskerPlugin.Event.retrievePassThroughData(intent);
@@ -100,16 +102,14 @@ public class TaskerEventQueryReceiver extends BroadcastReceiver {
         }
         if (taskerQueries.isNull(messageId) || data == null // Process valid request with data only
                 || System.currentTimeMillis() - taskerQueries.optLong(messageId) > 800) { // Don't allow timed out requests
-            Log.d(Util.LOG_TAG, "Timeout or wrong request for event");
+            if (BuildConfig.DEBUG)
+                Log.d(Util.LOG_TAG_TASKER, "Timeout or wrong request for event");
             setResultCode(RESULT_CONDITION_UNSATISFIED);
             return;
         }
         Bundle bundleExtra = intent.getBundleExtra(EXTRA_BUNDLE);
         int config = bundleExtra.getInt(EVENT_TYPE_EXTRA_KEY);
         boolean successful = data.getBoolean(EXTRA_ATTEMPT_SUCCESSFUL);
-
-        Log.i(Util.LOG_TAG, String.format("%1$d %2$s", config, successful));
-
         if (config == EVENT_UNLOCK_ATTEMPT || (config == EVENT_UNLOCK_SUCCESS && successful) || (config == EVENT_UNLOCK_FAILED && !successful)) {
             Bundle result = new Bundle();
             if (TaskerPlugin.Condition.hostSupportsVariableReturn(intent.getExtras())) {

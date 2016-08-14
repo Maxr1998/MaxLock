@@ -81,6 +81,7 @@ public abstract class Util {
     public static final String LOG_TAG = "MaxLock";
     public static final String LOG_TAG_STARTUP = "ML-Startup";
     public static final String LOG_TAG_LOCKSCREEN = "ML-Lockscreen";
+    public static final String LOG_TAG_TASKER = "ML-Tasker";
     public static final String LOG_TAG_ADMIN = "ML-DeviceAdmin";
     public static final String LOG_TAG_IAB = "ML-IAB";
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
