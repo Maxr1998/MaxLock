@@ -50,6 +50,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerEventQueryReceiver;
@@ -83,7 +84,10 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         } catch (ClassCastException e) {
             throw new RuntimeException(getActivity().getClass().getSimpleName() + "must implement AuthenticationSucceededListener to use this fragment", e);
         }
-        mPackageName = packageName;
+
+        String title = packageName.equals(Common.MASTER_SWITCH_ON) ? getResources().getString(R.string.unlock_master_switch) :
+                Util.getApplicationNameFromPackage(packageName, getContext());
+        mPackageName = packageName.equals(Common.MASTER_SWITCH_ON) ? BuildConfig.APPLICATION_ID : packageName;
         mActivityName = activityName;
 
         mLockingType = getPreferencesKeysPerApp(getContext()).getString(mPackageName, getPrefs().getString(Common.LOCKING_TYPE, ""));
@@ -194,7 +198,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         if (getPrefs().getBoolean(Common.HIDE_TITLE_BAR, false)) {
             mTitleTextView.setVisibility(View.GONE);
         } else {
-            mTitleTextView.setText(Util.getApplicationNameFromPackage(mPackageName, getContext()));
+            mTitleTextView.setText(title);
             mTitleTextView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(mPackageName, getContext()), null, null, null);
             mTitleTextView.setOnLongClickListener(this);
         }
