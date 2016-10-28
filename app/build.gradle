@@ -1,14 +1,17 @@
 apply plugin: 'com.android.application'
+
+ext.supportLibraryVersion = "24.2.0";
+
 android {
     signingConfigs {
         main
     }
-    compileSdkVersion 24
-    buildToolsVersion '24.0.0'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 44
         versionName "6.4"
         resConfigs "de", "es", "fa", "fr", "it", "ja", "ru", "zh-rCN", "zh-rTW"
@@ -73,14 +76,14 @@ dependencies {
     provided 'de.robv.android.xposed:api:81'
     provided 'de.robv.android.xposed:api:81:sources'
     //-- Android support and Google Services
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support:customtabs:24.1.1'
-    compile 'com.android.support:gridlayout-v7:24.1.1'
-    compile 'com.android.support:palette-v7:24.1.1'
-    compile 'com.android.support:recyclerview-v7:24.1.1'
-    compile 'com.android.support:support-v4:24.1.1'
-    compile 'com.google.android.gms:play-services-base:9.2.1'
-    compile 'com.google.android.gms:play-services-analytics:9.2.1'
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:customtabs:$supportLibraryVersion"
+    compile "com.android.support:gridlayout-v7:$supportLibraryVersion"
+    compile "com.android.support:palette-v7:$supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    compile "com.android.support:support-v4:$supportLibraryVersion"
+    compile 'com.google.android.gms:play-services-base:9.8.0'
+    compile 'com.google.android.gms:play-services-analytics:9.8.0'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
