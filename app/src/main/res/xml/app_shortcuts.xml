@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutId="toggle_masterswitch"
+        android:shortcutShortLabel="@string/action_toggle_ms">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="de.Maxr1998.xposed.maxlock.ui.actions.DeprecatedMasterSwitch"
+            android:targetPackage="de.Maxr1998.xposed.maxlock" />
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_settings_36dp"
+        android:shortcutId="apps"
+        android:shortcutShortLabel="@string/pref_choose_apps">
+        <intent
+            android:action="de.Maxr1998.xposed.maxlock.VIEW_APPS"
+            android:targetClass="de.Maxr1998.xposed.maxlock.ui.SettingsActivity"
+            android:targetPackage="de.Maxr1998.xposed.maxlock" />
+    </shortcut>
+</shortcuts>

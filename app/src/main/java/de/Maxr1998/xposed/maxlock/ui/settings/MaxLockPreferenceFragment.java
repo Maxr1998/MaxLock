@@ -46,7 +46,6 @@ import android.support.annotation.XmlRes;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.preference.PreferenceFragmentCompat;
@@ -90,14 +89,14 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     private SharedPreferences prefs;
     private Screen screen;
 
-    public static void launchFragment(@NonNull Fragment fragment, boolean fromRoot, @NonNull Fragment from) {
+    public static void launchFragment(@NonNull FragmentManager manager, @NonNull Fragment fragment, boolean fromRoot) {
         if (fromRoot) {
-            from.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
-        FragmentTransaction ft = from.getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_pop_in, R.anim.fragment_pop_out);
-        ft.replace(R.id.fragment_container, fragment, fragment instanceof AppListFragment ? "AppListFragment" : null).addToBackStack(null).commit();
-        ((SettingsActivity) from.getActivity()).showMultipane();
+        manager.beginTransaction()
+                .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_pop_in, R.anim.fragment_pop_out)
+                .replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+        SettingsActivity.showMultipane(manager);
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -252,17 +251,18 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setTitle();
-        if (screen != Screen.MAIN) {
-            //noinspection ConstantConditions
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        //noinspection ConstantConditions
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(screen != Screen.MAIN || getFragmentManager().getBackStackEntryCount() > 0);
     }
 
     private void setTitle() {
-        if (screen == Screen.MAIN) {
-            getActivity().setTitle(getName());
-        } else {
-            getActivity().setTitle(screen.title);
+        // Only apply title for main screen if back stack is empty (prevent multipane from setting title)
+        if ((getFragmentManager().getBackStackEntryCount() == 0 && screen == Screen.MAIN) || screen != Screen.MAIN) {
+            if (screen == Screen.MAIN) {
+                getActivity().setTitle(getName());
+            } else {
+                getActivity().setTitle(screen.title);
+            }
         }
     }
 
@@ -288,19 +288,19 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case MAIN:
                 switch (preference.getKey()) {
                     case Common.LOCKING_TYPE_SETTINGS:
-                        launchFragment(Screen.TYPE.getScreen(), true, this);
+                        launchFragment(getFragmentManager(), Screen.TYPE.getScreen(), true);
                         return true;
                     case Common.LOCKING_UI_SETTINGS:
-                        launchFragment(Screen.UI.getScreen(), true, this);
+                        launchFragment(getFragmentManager(), Screen.UI.getScreen(), true);
                         return true;
                     case Common.LOCKING_OPTIONS:
-                        launchFragment(Screen.OPTIONS.getScreen(), true, this);
+                        launchFragment(getFragmentManager(), Screen.OPTIONS.getScreen(), true);
                         return true;
                     case Common.IMOD_OPTIONS:
-                        launchFragment(Screen.IMOD.getScreen(), true, this);
+                        launchFragment(getFragmentManager(), Screen.IMOD.getScreen(), true);
                         return true;
                     case Common.CHOOSE_APPS:
-                        launchFragment(new AppListFragment(), true, this);
+                        launchFragment(getFragmentManager(), new AppListFragment(), true);
                         return true;
                     case Common.HIDE_APP_FROM_LAUNCHER:
                         TwoStatePreference hideApp = (TwoStatePreference) preference;
@@ -319,7 +319,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         ((SettingsActivity) getActivity()).restart();
                         return true;
                     case Common.ABOUT:
-                        launchFragment(Screen.ABOUT.getScreen(), true, this);
+                        launchFragment(getFragmentManager(), Screen.ABOUT.getScreen(), true);
                         return true;
                     case Common.DONATE:
                         startActivity(new Intent(getActivity(), DonateActivity.class));
@@ -372,10 +372,10 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         Util.setPassword(getActivity(), null);
                         return true;
                     case Common.LOCKING_TYPE_PIN:
-                        launchFragment(new PinSetupFragment(), false, this);
+                        launchFragment(getFragmentManager(), new PinSetupFragment(), false);
                         return true;
                     case Common.LOCKING_TYPE_KNOCK_CODE:
-                        launchFragment(new KnockCodeSetupFragment(), false, this);
+                        launchFragment(getFragmentManager(), new KnockCodeSetupFragment(), false);
                         return true;
                     case Common.LOCKING_TYPE_PATTERN:
                         Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, getActivity(), LockPatternActivity.class);
@@ -386,7 +386,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case OPTIONS:
                 switch (preference.getKey()) {
                     case Common.VIEW_LOGS:
-                        launchFragment(new LogViewerFragment(), false, this);
+                        launchFragment(getFragmentManager(), new LogViewerFragment(), false);
                         return true;
                 }
                 break;

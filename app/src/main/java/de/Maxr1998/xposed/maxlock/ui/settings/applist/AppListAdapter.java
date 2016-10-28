@@ -154,7 +154,7 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                                                                             Bundle b = new Bundle(1);
                                                                             b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
                                                                             frag.setArguments(b);
-                                                                            MaxLockPreferenceFragment.launchFragment(frag, false, mFragment);
+                                                                            MaxLockPreferenceFragment.launchFragment(mFragment.getFragmentManager(), frag, false);
                                                                         }
                                                                     }).show();
                                                 } else {

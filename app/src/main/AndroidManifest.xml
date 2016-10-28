@@ -222,6 +222,11 @@
             android:name="xposedminversion"
             android:value="42" />
 
+        <!-- App shortcuts -->
+        <meta-data
+            android:name="android.app.shortcuts"
+            android:resource="@xml/app_shortcuts" />
+
         <!-- Status bar tinting below Android Lollipop -->
         <meta-data
             android:name="override_tinted_status_bar_defaults"
