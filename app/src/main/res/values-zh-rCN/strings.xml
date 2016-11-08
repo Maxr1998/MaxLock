@@ -27,7 +27,7 @@
     <string name="notification_lock_new_app_action_lock">锁定应用</string>
     <string name="toast_lock_new_app_locked_successfully">已成功锁定</string>
     <string name="dialog_text_restart_required">MaxLock需要重新启动以让更改生效</string>
-    <string name="toast_pro_required">使用此功能需要专业版本！</string>
+    <string name="toast_pro_required">使用此功能需要专业版本!</string>
     <!-- First start screens-->
     <string name="fs_welcome_maxlock">欢迎使用MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock将保护您的应用免受未经授权访问</string>
@@ -35,7 +35,7 @@
     <string name="fs_app_settings">设置</string>
     <string name="fs_app_xposed_installer">Xposed安装器</string>
     <string name="fs_recommended_apps">通过锁定这些应用能进一步保护</string>
-    <string name="fs_recommended_apps_summary">您应该勾选这些应用，以确保MaxLock不能被禁用或卸载</string>
+    <string name="fs_recommended_apps_summary">您应该勾选这些应用,以确保MaxLock不能被禁用或卸载</string>
     <!-- Locking type settings -->
     <string name="pref_category_locking">锁定设置</string>
     <string name="pref_screen_locking_type">锁定类型</string>
@@ -45,10 +45,10 @@
     <string name="pref_locking_type_pattern">图案</string>
 
     <string name="pref_set_password">设置密码</string>
-    <string name="toast_password_inconsistent">密码不一致！</string>
-    <string name="toast_password_null">密码不能为空！</string>
-    <string name="toast_password_changed">密码已更改！</string>
-    <string name="toast_password_incorrect">密码不正确！</string>
+    <string name="toast_password_inconsistent">密码不一致!</string>
+    <string name="toast_password_null">密码不能为空!</string>
+    <string name="toast_password_changed">密码已更改!</string>
+    <string name="toast_password_incorrect">密码不正确!</string>
     <string name="dialog_text_password">密码: </string>
     <string name="dialog_text_re_password">确认密码: </string>
 
@@ -61,12 +61,20 @@
     <string name="choose_knock_code">输入您的轻敲代码</string>
     <string name="knock_code_too_short">轻敲代码必须至少4点</string>
     <string name="confirm_knock_code">再次确认轻敲代码</string>
-    <!-- Locking UI settings -->
+	
+	<string name="pref_category_fingerprint">指纹</string>
+    <string name="pref_disable_fingerprint">禁用指纹解锁</string>
+    <string name="pref_disable_fingerprint_summary">当您将指纹录入到设备时,默认情况下会启用指纹解锁
+         并且可以与上述任何锁定类型一起使用</string>
+    <string name="pref_fingerprint_summary_non_enrolled">.\n当前没有录入指纹
+		 在设置中至少录入一个来使用该功能</string>
+    <string name="pref_disable_fingerprint_summary_on">指纹解锁已禁用</string>
+	<!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">锁屏界面</string>
-    <string name="pref_open_theme_manager">打开主题管理</string>
+    <!--<string name="pref_open_theme_manager">打开主题管理</string>
     <string name="pref_open_theme_manager_summary_none">没有主题应用</string>
     <string name="pref_open_theme_manager_summary_applied">应用: </string>
-    <string name="pref_summary_overridden_by_theme">(覆盖主题)</string>
+    <string name="pref_summary_overridden_by_theme">(覆盖主题)</string>-->
     <string name="pref_background">背景图片</string>
     <string-array name="background_types">
         <item>墙纸</item>
@@ -93,8 +101,7 @@
     <string name="pref_touch_visible">让触摸可见</string>
     <string name="pref_category_pattern_only">仅图案</string>
     <string name="pref_show_path">图案可见</string>
-    <string name="pref_category_fingerprint">指纹</string>
-    <string name="pref_disable_fingerprint">禁用指纹解锁</string>
+    <string name="pref_hide_fingerprint_icon">隐藏指纹图标</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">锁定设置</string>
     <string name="pref_category_logging">日志记录</string>
@@ -151,6 +158,10 @@
     <string name="menu_search">搜索</string>
     <string name="toggle_lock_on">开</string>
     <string name="toggle_lock_off">关</string>
+    <string name="known_problem_settings_message">在Android 6.0及更高版本中,启用设置应用可能不能完全锁定<!-- Translators: "the settings app can not be fully locked anymore" is also ok -->
+        原因在于Android的SELinux更改和Xposed框架缺少支持
+        你可以通过将SELinux设置为permissive模式来解决这个问题,但这不是正式建议</string>
+    <string name="more_information">更多信息</string>
     <string name="dialog_title_options">设置</string>
     <string-array name="dialog_multi_select_items_options">
         <item>自定义密码</item>
@@ -167,7 +178,8 @@
     <string name="pref_use_dark_style">使用黑色风格</string>
     <string name="pref_use_amoled_black">使用纯黑AMOLED</string>
     <string name="pref_use_amoled_black_summary">低能耗AMOLED显示屏可使用黑色主题作为一个纯黑背景</string>
-    <string name="pref_widget_background_color">小部件背景颜色</string>
+    <string name="pref_new_app_notification">新应用通知</string>
+    <string name="pref_new_app_notification_summary">询问是否锁定新安装的应用</string>
     <!-- About information -->
     <string name="pref_category_about">关于</string>
     <string name="pref_about_summary">点击这里查看贡献,使用的库和许可证!</string>
@@ -182,7 +194,8 @@
     <string name="donate_status_not_donated">考虑捐赠以支持进一步开发, 谢谢:）</string>
     <string name="dialog_message_already_bought">你已经拥有这个捐赠选项
 	您可以取消和选择其它产品或再次消费(删除)目前的购买,再次购买一个,\n\n消费和回购?</string>
-    <string name="toast_no_network_connected">您目前没有连接到任何网络</string>
+	<string name="donate_paypal">通过PayPal捐款</string>
+    <string name="donate_paypal_alert">PayPal捐款并不会解锁完整专业版</string>
     <string name="pref_enable_pro">开启专业版</string>
     <string name="pref_enable_pro_summary">即使您没有购买也可以使用专业版功能</string>
     <string name="pref_prevent_uninstall">保护应用程序被卸载</string>
