@@ -16,7 +16,8 @@
             android:title="@string/pref_screen_locking_options" />
         <PreferenceScreen
             android:key="intika_imod"
-            android:title="@string/pref_screen_locking_intika" />
+            android:summary="@string/pref_screen_delayed_relock_summary"
+            android:title="@string/pref_screen_delayed_relock" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_apps">

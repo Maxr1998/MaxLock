@@ -2,43 +2,44 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:maxlock="http://schemas.android.com/apk/res-auto"
     xmlns:robobunny="http://robobunny.com">
-    <PreferenceCategory android:title="@string/pref_category_intika">
+    <PreferenceCategory android:title="@string/pref_category_delay_general">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_delaygeneral"
-            android:summary="@string/pref_locking_delay_general_summary"
-            android:title="@string/pref_locking_delay_general" />
+            android:summary="@string/pref_delay_general_summary"
+            android:title="@string/pref_delay_general" />
         <de.Maxr1998.xposed.maxlock.preference.SeekBarPreference
             android:defaultValue="600000"
             android:dependency="enable_delaygeneral"
             android:key="delay_inputgeneral"
             android:max="3600000"
             android:numeric="integer|decimal"
-            android:summary="@string/pref_delay_input_general_summary"
-            android:title="@string/pref_delay_input_general"
+            android:summary="@string/pref_delay_general_input_summary"
+            android:title="@string/pref_delay_general_input"
             robobunny:interval="30000"
             robobunny:min="60000" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
-    <PreferenceCategory android:title="@string/pref_category_intika2">
+    <PreferenceCategory android:title="@string/pref_category_delay_per_app">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_delayperapp"
-            android:summary="@string/pref_locking_delay_perapp_summary"
-            android:title="@string/pref_locking_delay_perapp" />
+            android:summary="@string/pref_delay_per_app_summary"
+            android:title="@string/pref_delay_per_app" />
         <de.Maxr1998.xposed.maxlock.preference.SeekBarPreference
             android:defaultValue="600000"
             android:dependency="enable_delayperapp"
             android:key="delay_inputperapp"
             android:max="3600000"
             android:numeric="integer|decimal"
-            android:summary="@string/pref_delay_input_perapp_summary"
-            android:title="@string/pref_delay_input_perapp"
+            android:summary="@string/pref_delay_per_app_input_summary"
+            android:title="@string/pref_delay_per_app_input"
             robobunny:interval="30000"
             robobunny:min="60000" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
-    <PreferenceCategory android:title="@string/pref_category_other">
+    <PreferenceCategory android:title="@string/pref_category_reset_relock_timer">
+        <Preference android:summary="@string/pref_reset_relock_timer_description" />
         <CheckBoxPreference
             android:key="imod_show_reset_notification"
             android:summary="@string/pref_show_reset_notification_summary"
@@ -47,8 +48,12 @@
             android:key="reset_imod_screen_off"
             android:summary="@string/pref_reset_screen_off_summary"
             android:title="@string/pref_reset_screen_off" />
+    </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
+    <PreferenceCategory android:title="@string/pref_category_other">
         <CheckBoxPreference
             android:key="hide_recents_thumbnails"
+            android:summary="@string/pref_hide_recents_thumbnails_summary"
             android:title="@string/pref_hide_recents_thumbnails" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
