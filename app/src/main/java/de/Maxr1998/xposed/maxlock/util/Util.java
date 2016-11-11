@@ -74,7 +74,7 @@ import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferences;
 import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeys;
 import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeysPerApp;
 
-public abstract class Util {
+public final class Util {
 
     public static final int PATTERN_CODE = 48;
     public static final int PATTERN_CODE_APP = 5;
@@ -87,6 +87,8 @@ public abstract class Util {
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     private static SoftReference<Drawable> WALLPAPER = new SoftReference<>(null);
+
+    private Util() {}
 
     // UI
 
