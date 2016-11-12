@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import java.lang.ref.WeakReference;
@@ -44,7 +45,8 @@ public class MLPreferences {
     @SuppressWarnings("deprecation")
     public static SharedPreferences getPrefsApps(Context context) {
         if (PREFS_APPS.get() == null) {
-            PREFS_APPS = new WeakReference<>(context.getSharedPreferences(Common.PREFS_APPS, Context.MODE_WORLD_READABLE));
+            PREFS_APPS = new WeakReference<>(context.getSharedPreferences(Common.PREFS_APPS, Build.VERSION.SDK_INT < Build.VERSION_CODES.N ?
+                    Context.MODE_WORLD_READABLE : Context.MODE_PRIVATE));
         }
         return PREFS_APPS.get();
     }

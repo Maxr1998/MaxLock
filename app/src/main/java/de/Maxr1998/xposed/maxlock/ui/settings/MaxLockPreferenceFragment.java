@@ -114,7 +114,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         if (screen == Screen.IMOD) {
             getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
         }
-        getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
         addPreferencesFromResource(screen.preferenceXML);
         switch (screen) {
             case MAIN:
@@ -525,7 +526,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         TYPE(R.string.pref_screen_locking_type, R.xml.preferences_locking_type),
         UI(R.string.pref_screen_locking_ui, R.xml.preferences_locking_ui),
         OPTIONS(R.string.pref_screen_locking_options, R.xml.preferences_locking_options),
-        IMOD(R.string.pref_screen_locking_intika, R.xml.preferences_locking_imod),
+        IMOD(R.string.pref_screen_delayed_relock, R.xml.preferences_locking_imod),
         ABOUT(R.string.pref_screen_about, R.xml.preferences_about);
 
         public static String KEY = "screen";

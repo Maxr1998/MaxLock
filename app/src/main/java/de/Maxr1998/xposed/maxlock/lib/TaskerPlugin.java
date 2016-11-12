@@ -31,10 +31,6 @@ package de.Maxr1998.xposed.maxlock.lib;
 // v1.7 20160619
 // null check for getCallingActivity() in hostSupportsOnFireVariableReplacement( Activity editActivity )
 
-import java.net.URISyntaxException;
-import java.security.SecureRandom;
-import java.util.regex.Pattern;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -44,6 +40,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+
+import java.net.URISyntaxException;
+import java.security.SecureRandom;
+import java.util.regex.Pattern;
  
 public class TaskerPlugin {
 

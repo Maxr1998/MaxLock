@@ -28,7 +28,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.actions.widget.MasterSwitchWidget;
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
