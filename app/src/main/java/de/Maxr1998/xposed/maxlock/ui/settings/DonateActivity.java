@@ -25,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -67,7 +68,7 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
     private static final int[] productIcons = {
             R.drawable.ic_coke_48dp,
             R.drawable.ic_beer_48dp,
-            R.drawable.ic_favorite_36dp,
+            R.drawable.ic_favorite_small_48dp,
             R.drawable.ic_favorite_48dp
     };
     private BillingProcessor bp;
@@ -146,8 +147,9 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
     public void onBillingInitialized() {
         reloadBilling();
         ArrayAdapter<String> productsAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, android.R.id.text1, productIds) {
+            @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
                 TextView tv = (TextView) v.findViewById(android.R.id.text1);
                 String title;
