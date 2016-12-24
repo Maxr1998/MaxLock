@@ -62,14 +62,14 @@
     <string name="knock_code_too_short">轻敲代码必须至少4点</string>
     <string name="confirm_knock_code">再次确认轻敲代码</string>
 	
-	<string name="pref_category_fingerprint">指纹</string>
+    <string name="pref_category_fingerprint">指纹</string>
     <string name="pref_disable_fingerprint">禁用指纹解锁</string>
     <string name="pref_disable_fingerprint_summary">当您将指纹录入到设备时,默认情况下会启用指纹解锁
          并且可以与上述任何锁定类型一起使用</string>
     <string name="pref_fingerprint_summary_non_enrolled">.\n当前没有录入指纹
-		 在设置中至少录入一个来使用该功能</string>
+	 在设置中至少录入一个来使用该功能</string>
     <string name="pref_disable_fingerprint_summary_on">指纹解锁已禁用</string>
-	<!-- Locking UI settings -->
+    <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">锁屏界面</string>
     <!--<string name="pref_open_theme_manager">打开主题管理</string>
     <string name="pref_open_theme_manager_summary_none">没有主题应用</string>
@@ -120,23 +120,28 @@
     <string name="pref_fake_crash_passphrase_summary">用户需要在对话框中输入短语才能打开锁屏</string>
     <string name="pref_enable_tasker">启用Tasker集成</string>
     <!-- I.Mod settings -->
-    <string name="pref_screen_delayed_relock">Delayed re-lock options</string>
-    <string name="pref_category_delay_general">Intika I.Mod - 宽限期 - 全局应用</string>
-    <string name="pref_category_delay_per_app">Intika I.Mod - 宽限期 - 每个应用</string>
-    <string name="pref_delay_general">全局延迟重新锁定</string>
+    <string name="pref_screen_delayed_relock">延迟重新锁定选项</string>
+    <string name="pref_screen_delayed_relock_summary">在特定时间段内不重新锁定应用 - 之前称为Intika I.Mod</string>
+    <string name="pref_category_delay_general">一般</string>
+    <string name="pref_delay_general">一般延迟重新锁定</string>
     <string name="pref_delay_general_summary">避免在一段时间内再次要求解锁应用</string>
-    <string name="pref_delay_general_input">全局延迟重新锁定计时器</string>
+    <string name="pref_delay_general_input">一般延迟重锁定时器</string>
     <string name="pref_delay_general_input_summary">给全局锁定输入一个数字指定延迟时间,值为分钟</string>
+    <string name="pref_category_delay_per_app">每个应用</string>
     <string name="pref_delay_per_app">每个应用延迟重新锁定</string>
     <string name="pref_delay_per_app_summary">防止在一定时间内为每个应用再次解锁,分开而不管其它受保护的应用</string>
     <string name="pref_delay_per_app_input">每个应用重新锁定计时器</string>
     <string name="pref_delay_per_app_input_summary">输入一个数字指定延迟时间,值为分钟,重新锁定每个应用</string>
     <string name="pref_delay_needpro">延迟重新锁定 - 专业版</string>
+    <string name="pref_category_reset_relock_timer">重置计时器选项</string>
+    <string name="pref_reset_relock_timer_description">该选项用于在下一个应用启动时立即请求身份验证而不是等待通过计时器重新锁定</string>
+	
     <string name="pref_show_reset_notification">显示通知</string>
     <string name="pref_show_reset_notification_summary">在I.Mod计时器复位时显示一个通知</string>
     <string name="pref_reset_screen_off">自动复位I.Mod</string>
     <string name="pref_reset_screen_off_summary">在关闭屏幕时复位I.Mod计时器</string>
     <string name="pref_hide_recents_thumbnails">隐藏最近缩略图</string>
+    <string name="pref_hide_recents_thumbnails_summary">在最近任务中移除锁定应用的预览缩略图</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">锁定应用</string>
     <string name="pref_choose_apps">锁定应用</string>
@@ -160,7 +165,7 @@
     <string name="toggle_lock_off">关</string>
     <string name="known_problem_settings_message">在Android 6.0及更高版本中,启用设置应用可能不能完全锁定<!-- Translators: "the settings app can not be fully locked anymore" is also ok -->
         原因在于Android的SELinux更改和Xposed框架缺少支持
-        你可以通过将SELinux设置为permissive模式来解决这个问题,但这不是正式建议</string>
+        你可以通过将SELinux设置为permissive模式来解决这个问题,但这不是正式建议</string>	
     <string name="more_information">更多信息</string>
     <string name="dialog_title_options">设置</string>
     <string-array name="dialog_multi_select_items_options">
@@ -194,7 +199,7 @@
     <string name="donate_status_not_donated">考虑捐赠以支持进一步开发, 谢谢:）</string>
     <string name="dialog_message_already_bought">你已经拥有这个捐赠选项
 	您可以取消和选择其它产品或再次消费(删除)目前的购买,再次购买一个,\n\n消费和回购?</string>
-	<string name="donate_paypal">通过PayPal捐款</string>
+    <string name="donate_paypal">通过PayPal捐款</string>
     <string name="donate_paypal_alert">PayPal捐款并不会解锁完整专业版</string>
     <string name="pref_enable_pro">开启专业版</string>
     <string name="pref_enable_pro_summary">即使您没有购买也可以使用专业版功能</string>
