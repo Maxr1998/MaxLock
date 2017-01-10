@@ -5,20 +5,21 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:fitsSystemWindows="false"
+    android:fitsSystemWindows="true"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="@dimen/mi_baseline">
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
         android:id="@id/mi_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mi_baseline"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:ignore="UnusedAttribute"
         tools:text="Lorem ipsum" />
 
     <include layout="@layout/fs_information_box" />

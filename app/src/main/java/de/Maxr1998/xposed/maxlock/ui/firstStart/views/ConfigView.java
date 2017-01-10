@@ -26,17 +26,17 @@ import android.content.pm.PackageManager;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
-public class ConfigView extends RelativeLayout implements CompoundButton.OnCheckedChangeListener {
+public class ConfigView extends LinearLayout implements CompoundButton.OnCheckedChangeListener {
 
     private final String[] app_names = {getPackageInstallerID(), "com.android.settings", "de.robv.android.xposed.installer"};
-    private final DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
-    private final ComponentName deviceAdmin = new ComponentName(getContext(), SettingsActivity.UninstallProtectionReceiver.class);
+    private final DevicePolicyManager devicePolicyManager = isInEditMode() ? null : (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+    private final ComponentName deviceAdmin = isInEditMode() ? null : new ComponentName(getContext(), SettingsActivity.UninstallProtectionReceiver.class);
 
     public ConfigView(Context context) {
         this(context, null);
@@ -53,6 +53,8 @@ public class ConfigView extends RelativeLayout implements CompoundButton.OnCheck
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        if (isInEditMode())
+            return;
         CheckBox[] app_cbs = {
                 (CheckBox) findViewById(R.id.first_start_app_package),
                 (CheckBox) findViewById(R.id.first_start_app_settings),
@@ -95,6 +97,8 @@ public class ConfigView extends RelativeLayout implements CompoundButton.OnCheck
 
     private String getPackageInstallerID() {
         try {
+            if (isInEditMode())
+                return "";
             return getContext().getPackageManager().getPackageInfo("com.google.android.packageinstaller", 0).packageName;
         } catch (PackageManager.NameNotFoundException e) {
             return "com.android.packageinstaller";

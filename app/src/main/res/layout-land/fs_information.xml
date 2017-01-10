@@ -37,9 +37,5 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             tools:ignore="UnusedAttribute"
             tools:text="Lorem ipsum" />
-
-        <android.support.v4.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/mi_pager_margin_bottom" />
     </LinearLayout>
 </LinearLayout>

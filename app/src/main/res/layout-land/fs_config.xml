@@ -6,8 +6,10 @@
     android:baselineAligned="false"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:fitsSystemWindows="false"
-    android:padding="@dimen/mi_baseline">
+    android:fitsSystemWindows="true"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,7 +24,6 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/mi_pager_margin_bottom"
         android:layout_weight="1">
 
         <LinearLayout
@@ -35,18 +36,19 @@
                 android:id="@id/mi_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/mi_baseline"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="0dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                tools:ignore="UnusedAttribute"
                 tools:text="Lorem ipsum" />
 
             <TextView
                 android:id="@id/mi_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/mi_baseline"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_marginTop="0dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …" />
