@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
-ext.supportLibraryVersion = "24.2.0";
+ext.supportLibraryVersion = "25.1.0";
 
 android {
     signingConfigs {
         main
     }
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 16
@@ -66,10 +66,9 @@ dependencies {
     //-- 3rd-party
     compile 'com.anjlab.android.iab.v3:library:1.0.32@aar'
     compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
-    compile 'com.github.HeinrichReimer:material-intro:1.6@aar'
     compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
     compile 'com.google.guava:guava:19.0-rc1'
-    //compile 'com.heinrichreimersoftware:material-intro:1.2.1'
+    compile 'com.heinrichreimersoftware:material-intro:1.6'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     compile 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
     compile 'commons-io:commons-io:2.4'
@@ -82,8 +81,8 @@ dependencies {
     compile "com.android.support:palette-v7:$supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     compile "com.android.support:support-v4:$supportLibraryVersion"
-    compile 'com.google.android.gms:play-services-base:9.8.0'
-    compile 'com.google.android.gms:play-services-analytics:9.8.0'
+    compile 'com.google.android.gms:play-services-base:10.0.1'
+    compile 'com.google.android.gms:play-services-analytics:10.0.1'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
