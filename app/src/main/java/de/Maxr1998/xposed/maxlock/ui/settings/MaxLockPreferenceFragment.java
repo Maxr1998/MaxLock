@@ -44,6 +44,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.XmlRes;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -89,6 +90,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     private SharedPreferences prefs;
     private Screen screen;
 
+    private Snackbar snackCache;
+
     public static void launchFragment(@NonNull FragmentManager manager, @NonNull Fragment fragment, boolean fromRoot) {
         if (fromRoot) {
             manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -97,6 +100,17 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_pop_in, R.anim.fragment_pop_out)
                 .replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
         SettingsActivity.showMultipane(manager);
+    }
+
+    private void setTitle() {
+        // Only apply title for main screen if back stack is empty (prevent multipane from setting title)
+        if ((getFragmentManager().getBackStackEntryCount() == 0 && screen == Screen.MAIN) || screen != Screen.MAIN) {
+            if (screen == Screen.MAIN) {
+                getActivity().setTitle(getName());
+            } else {
+                getActivity().setTitle(screen.title);
+            }
+        }
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -246,6 +260,39 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             protectOrUninstall.setTitle(R.string.pref_uninstall);
             protectOrUninstall.setSummary("");
         }
+
+        // Show Snackbars if no password and/or packages set up
+        if (screen == Screen.MAIN && !isSecondPane(this)) {
+            @StringRes int stringId = 0;
+            Fragment fragment = null;
+            if (prefs.getString(Common.LOCKING_TYPE, "").equals("")) {
+                stringId = R.string.sb_no_locking_type;
+                fragment = Screen.TYPE.getScreen();
+            } else if (!new File(Util.dataDir(getContext()) + "shared_prefs" + File.separator + Common.PREFS_APPS + ".xml").exists()) {
+                stringId = R.string.sb_no_locked_apps;
+                fragment = new AppListFragment();
+            }
+            if (stringId != 0 && fragment != null) {
+                final Fragment copyFragment = fragment;
+                snackCache = Snackbar.make(getActivity().findViewById(android.R.id.content), stringId, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.sb_action_setup, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                launchFragment(getFragmentManager(), copyFragment, true);
+                            }
+                        });
+                snackCache.show();
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (screen == Screen.MAIN && snackCache != null) {
+            snackCache.dismiss();
+            snackCache = null;
+        }
     }
 
     @Override
@@ -256,14 +303,14 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(screen != Screen.MAIN || getFragmentManager().getBackStackEntryCount() > 0);
     }
 
-    private void setTitle() {
-        // Only apply title for main screen if back stack is empty (prevent multipane from setting title)
-        if ((getFragmentManager().getBackStackEntryCount() == 0 && screen == Screen.MAIN) || screen != Screen.MAIN) {
-            if (screen == Screen.MAIN) {
-                getActivity().setTitle(getName());
-            } else {
-                getActivity().setTitle(screen.title);
-            }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        getListView().setPadding(0, 0, 0, 0);
+        getListView().setOverscrollFooter(new ColorDrawable(v.getContext().obtainStyledAttributes(new int[]{R.attr.windowBackground}).getColor(0, ContextCompat.getColor(v.getContext(), R.color.default_window_background))));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            getListView().setSelector(v.getContext().obtainStyledAttributes(new int[]{R.attr.highlightDrawable}).getDrawable(0));
+            ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_edge", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
+            ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_glow", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -416,17 +463,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 break;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
-    }
-
-    @Override
-    public void onViewCreated(View v, Bundle savedInstanceState) {
-        getListView().setPadding(0, 0, 0, 0);
-        getListView().setOverscrollFooter(new ColorDrawable(v.getContext().obtainStyledAttributes(new int[]{R.attr.windowBackground}).getColor(0, ContextCompat.getColor(v.getContext(), R.color.default_window_background))));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            getListView().setSelector(v.getContext().obtainStyledAttributes(new int[]{R.attr.highlightDrawable}).getDrawable(0));
-            ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_edge", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
-            ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_glow", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
-        }
     }
 
     @Override

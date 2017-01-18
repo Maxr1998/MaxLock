@@ -14,6 +14,7 @@
     &#x2022; <i>MaxLock ist beim Start in Xposed abgestürzt. Sende mir bitte einen Fehlerbericht über den Eintrag ganz unten.</i></string>
     <string name="sb_no_locking_type">Keine Sperrart festgelegt</string>
     <string name="sb_no_locked_apps">Keine zu sperrenden Apps ausgewählt</string>
+    <string name="sb_action_setup">FESTLEGEN</string>
     <string name="dialog_maxlock_updated">MaxLock wurde aktualisiert!</string>
     <string name="dialog_button_whats_new">Was ist neu</string>
     <string name="dialog_button_got_it">Verstanden</string>

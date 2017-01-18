@@ -64,7 +64,7 @@ repositories {
 dependencies {
     // From JCenter or other repositories
     //-- 3rd-party
-    compile 'com.anjlab.android.iab.v3:library:1.0.32@aar'
+    compile 'com.anjlab.android.iab.v3:library:1.0.38@aar'
     compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
     compile 'com.google.guava:guava:19.0-rc1'
@@ -77,10 +77,11 @@ dependencies {
     //-- Android support and Google Services
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:customtabs:$supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:gridlayout-v7:$supportLibraryVersion"
-    compile "com.android.support:palette-v7:$supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    compile "com.android.support:support-v4:$supportLibraryVersion"
+    /* includes all other support-v4 libraries */
+    compile "com.android.support:support-fragment:$supportLibraryVersion"
     compile 'com.google.android.gms:play-services-base:10.0.1'
     compile 'com.google.android.gms:play-services-analytics:10.0.1'
     // Local files
