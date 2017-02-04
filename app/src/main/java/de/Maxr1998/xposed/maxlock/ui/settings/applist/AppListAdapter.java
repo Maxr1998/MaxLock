@@ -264,7 +264,7 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                                                     .enableUrlBarHiding()
                                                     .setToolbarColor(v.getResources().getColor(R.color.primary_red))
                                                     .build();
-                                            knownProblemSettings.launchUrl(((SettingsActivity) v.getContext()), Common.KNOWN_PROBLEM_SETTINGS_URI);
+                                            knownProblemSettings.launchUrl(v.getContext(), Common.KNOWN_PROBLEM_SETTINGS_URI);
                                         }
                                     })
                                     .setPositiveButton(android.R.string.ok, null)
@@ -374,26 +374,30 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                 for (int i = 0; i < backup.size(); i++) {
                     boolean add = false;
                     if (search.length() != 0) {
-                        String title = backup.get(i).loadLabel(mContext.getPackageManager()).toString().toLowerCase();
-                        if (title.startsWith(search)) {
+                        if (search.equals(backup.get(i).packageName.toLowerCase())) {
                             add = true;
+                        } else {
+                            String title = backup.get(i).loadLabel(mContext.getPackageManager()).toString().toLowerCase();
+                            if (title.startsWith(search)) {
+                                add = true;
+                            }
+                            // Spaces/multiple words in title
+                            if (!add)
+                                for (String titlePart : title.split(" ")) {
+                                    if (titlePart.startsWith(search)) {
+                                        add = true;
+                                        break;
+                                    }
+                                }
+                            // Spaces/multiple words in search
+                            if (!add)
+                                for (String searchPart : search.split(" ")) {
+                                    if (title.startsWith(searchPart)) {
+                                        add = true;
+                                        break;
+                                    }
+                                }
                         }
-                        // Spaces/multiple words in title
-                        if (!add)
-                            for (String titlePart : title.split(" ")) {
-                                if (titlePart.startsWith(search)) {
-                                    add = true;
-                                    break;
-                                }
-                            }
-                        // Spaces/multiple words in search
-                        if (!add)
-                            for (String searchPart : search.split(" ")) {
-                                if (title.startsWith(searchPart)) {
-                                    add = true;
-                                    break;
-                                }
-                            }
                     } else {
                         add = true;
                     }

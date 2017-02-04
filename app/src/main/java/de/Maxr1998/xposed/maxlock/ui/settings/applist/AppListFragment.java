@@ -114,7 +114,10 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         if (data != null) {
             ListHolder.getInstance().setItems(data);
         }
-        mAdapter.getFilter().filter("");
+        String pkg = getActivity().getIntent().getStringExtra("pkg");
+        if (pkg == null)
+            pkg = "";
+        mAdapter.getFilter().filter(pkg);
         rootView.findViewById(android.R.id.progress).setVisibility(View.GONE);
     }
 
