@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">MaxLock</string>
-    <string name="name_pro"> Pro</string>
-    <string name="name_pseudo_pro"> PseudoPro</string>
-    <string name="placeholder">Placeholder</string>
-
     <string name="maxlock_inactive">MaxLock is not active</string>
     <string name="dialog_message_not_active">MaxLock could not hook the Android System methods needed for it to work. This may have several reasons:\n
     &#x2022; <i>Xposed Framework is not installed</i>\n
@@ -144,10 +138,10 @@
     <string name="pref_hide_recents_thumbnails">Hide recents thumbnails</string>
     <string name="pref_hide_recents_thumbnails_summary">Remove preview thumbnails from locked apps from the recents screen</string>
     <!-- Apps settings -->
-    <string name="pref_category_apps">Choose apps</string>
+    <string name="pref_category_apps">Apps</string>
     <string name="pref_choose_apps">Choose apps</string>
     <string name="pref_choose_apps_summary">Select apps to be locked</string>
-    <string name="pref_screen_apps">Apps</string>
+    <string name="pref_screen_apps">@string/pref_category_apps</string>
 
     <string name="menu_backup_list">Backup list</string>
     <string name="menu_restore_list">Restore list</string>
@@ -254,5 +248,4 @@
     <string name="content_description_applist_options">Change locking options of %s</string>
     <string name="content_description_applist_toggle_off">Lock %s</string>
     <string name="content_description_applist_toggle_on">Unlock %s</string>
-
 </resources>

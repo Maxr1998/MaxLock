@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
+ext.languages = ["de", "es", "fa", "fr", "it", "ja", "pl", "ru", "zh-rCN", "zh-rTW"];
 ext.supportLibraryVersion = "25.3.0";
+ext.c_languages = ["", "es-ES", "fa", "fr", "it", "ja", "pl", "ru", "zh-CN", "zh-TW"];
+ext.crowdinKey = null;
 
 android {
     signingConfigs {
@@ -14,7 +17,7 @@ android {
         targetSdkVersion 25
         versionCode 45
         versionName "6.4.1"
-        resConfigs "de", "es", "fa", "fr", "it", "ja", "ru", "zh-rCN", "zh-rTW"
+        resConfigs languages
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -50,6 +53,7 @@ if (propFile.exists()) {
     android.signingConfigs.main.storePassword props.keyStorePassword
     android.signingConfigs.main.keyAlias props.keyAlias
     android.signingConfigs.main.keyPassword props.keyPassword
+    ext.crowdinKey = props.crowdinKey
 }
 
 repositories {
@@ -86,4 +90,20 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:10.2.0'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
+}
+
+task updateTranslations() << {
+    if (crowdinKey == null)
+        return;
+    for (int i = 0; i < c_languages.size(); i++) {
+        String c_lang = c_languages[i];
+        if (c_lang == "")
+            continue;
+        String lang = languages[i];
+        String file = "\$PWD/src/main/res/values-$lang/strings.xml";
+        exec {
+            executable "bash"
+            args "-c", "wget -O \"$file\" \"https://api.crowdin.com/api/project/MaxLock/export-file?file=strings.xml&language=$c_lang&key=$crowdinKey\""
+        }
+    }
 }

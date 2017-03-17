@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">MaxLock</string>
+    <string name="name_pro"> Pro</string>
+    <string name="name_pseudo_pro"> PseudoPro</string>
+    <string name="placeholder">Placeholder</string>
+
     <string-array name="background_type_values" translateable="false">
         <item>wallpaper</item>
         <item>color</item>
