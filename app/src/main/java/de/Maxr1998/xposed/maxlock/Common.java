@@ -24,6 +24,8 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 public abstract class Common {
 
+    public static final String MAXLOCK_PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
+
     public static final String INTENT_EXTRAS_NAMES = "intent_extras_pkg_name";
     public static final String INTENT_EXTRAS_CUSTOM_APP = "custom_app";
 
@@ -40,6 +42,8 @@ public abstract class Common {
     public static final String FAILED_ATTEMPTS_TIMER = "failed_attempts_timer";
     public static final String TASKER_QUERIES = "tasker_queries";
     public static final String THEME_PKG = "theme_pkg";
+
+    public static final String ML_IMPLEMENTATION = "ml_implementation";
 
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";
     /* TYPE */

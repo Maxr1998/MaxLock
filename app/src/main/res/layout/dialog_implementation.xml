@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
+
+    <TextView
+        android:id="@+id/xposed_success_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:drawableLeft="@drawable/ic_check_circle_green_24dp"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/ic_check_circle_green_24dp"
+        android:gravity="center_vertical"
+        android:text="@string/xposed_success_information"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/success"
+        android:visibility="gone" />
+
+    <RadioGroup
+        android:id="@+id/implementation_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/implementation_item_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/implementation_default" />
+
+        <RadioButton
+            android:id="@+id/implementation_item_no_xposed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/implementation_no_xposed" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/implementation_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:text="@string/implementation_alert"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/accessibility_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:drawableLeft="@drawable/ic_error_outline_red_24dp"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/ic_error_outline_red_24dp"
+        android:gravity="center_vertical"
+        android:text="@string/accessibility_error"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/error"
+        android:visibility="gone" />
+</LinearLayout>

@@ -27,7 +27,7 @@ import android.widget.TextView;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-import static de.Maxr1998.xposed.maxlock.hooks.Main.MAXLOCK_PACKAGE_NAME;
+import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;

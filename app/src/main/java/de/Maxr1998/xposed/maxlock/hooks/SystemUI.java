@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,12 +32,13 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.CLOSE_OBJECT_KEY;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.PACKAGE_HISTORY_ARRAY_KEY;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.PROCESS_HISTORY_ARRAY_KEY;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.getDefault;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.readFile;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.writeFile;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.CLOSE_OBJECT_KEY;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.PACKAGE_HISTORY_ARRAY_KEY;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.PROCESS_HISTORY_ARRAY_KEY;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getDefault;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.readFile;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
@@ -46,12 +48,12 @@ class SystemUI {
 
     static final String PACKAGE_NAME = "com.android.systemui";
     static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
-    private static final String IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off";
     private static final String HIDE_RECENTS_THUMBNAILS = "hide_recents_thumbnails";
     private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
 
     static void init(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
         try {
+            @ColorInt final int color = true ? Color.WHITE : Color.BLACK; // TODO
             if (LOLLIPOP) {
                 findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "rebindToTask", PACKAGE_NAME + ".recents.model.Task", new XC_MethodHook() {
                     @Override
@@ -62,11 +64,11 @@ class SystemUI {
                         if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
                             Bitmap replacement;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                replacement = Bitmap.createBitmap(new int[]{Color.WHITE}, 1, 1, Bitmap.Config.RGB_565);
+                                replacement = Bitmap.createBitmap(new int[]{color}, 1, 1, Bitmap.Config.RGB_565);
                             } else {
                                 Bitmap thumbnail = ((Bitmap) getObjectField(task, "thumbnail"));
                                 replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
-                                replacement.eraseColor(Color.WHITE);
+                                replacement.eraseColor(color);
                             }
                             setObjectField(task, "thumbnail", replacement);
                         }
@@ -78,7 +80,7 @@ class SystemUI {
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         prefsApps.reload();
                         if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
-                            param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(Color.WHITE) : Bitmap.createBitmap(new int[]{Color.WHITE}, 1, 1, Bitmap.Config.RGB_565));
+                            param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(color) : Bitmap.createBitmap(new int[]{color}, 1, 1, Bitmap.Config.RGB_565));
                         }
                     }
                 });

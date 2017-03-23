@@ -17,25 +17,16 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
-import org.json.JSONObject;
-
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.CLOSE_OBJECT_KEY;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.IMOD_LAST_UNLOCK_GLOBAL;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.IMOD_OBJECT_KEY;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.addToHistory;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.getDefault;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.readFile;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.writeFile;
-import static de.Maxr1998.xposed.maxlock.hooks.Main.MAXLOCK_PACKAGE_NAME;
+import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getDefault;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
-import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 class MaxLock {
@@ -44,25 +35,17 @@ class MaxLock {
 
     static void init(final XC_LoadPackage.LoadPackageParam lPParam) {
         try {
-            XposedHelpers.setStaticBooleanField(findClass(PACKAGE_NAME + ".ui.SettingsActivity", lPParam.classLoader), "IS_ACTIVE", true);
+            findAndHookMethod(PACKAGE_NAME + ".MLImplementation", lPParam.classLoader, "isXposedActive", new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    param.setResult(true);
+                }
+            });
             findAndHookMethod(PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onAuthenticationSucceeded", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    JSONObject history = readFile();
-                    addToHistory(Apps.UNLOCK_ID, lPParam.packageName, history);
-                    history.put(IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis());
                     String[] names = (String[]) getObjectField(param.thisObject, "names");
-                    history.optJSONObject(IMOD_OBJECT_KEY).put(names[0], System.currentTimeMillis());
-                    writeFile(history);
                     logD("ML|Unlocked " + names[1]);
-                }
-            });
-            findAndHookMethod(PACKAGE_NAME + ".ui.LockActivity", lPParam.classLoader, "onBackPressed", new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    JSONObject history = readFile();
-                    history.optJSONObject(CLOSE_OBJECT_KEY).put(((String[]) getObjectField(param.thisObject, "names"))[0], System.currentTimeMillis());
-                    writeFile(history);
                 }
             });
             findAndHookMethod(PACKAGE_NAME + ".ui.actions.ActionsHelper", lPParam.classLoader, "clearImod", new XC_MethodReplacement() {

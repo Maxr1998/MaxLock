@@ -15,4 +15,7 @@
     <color name="first_start_page1">@color/accent</color>
     <color name="first_start_page2">#ffd600</color>
     <color name="first_start_page3">#ff3d00</color>
+
+    <color name="success">#4caf50</color>
+    <color name="error">@color/primary_red</color>
 </resources>

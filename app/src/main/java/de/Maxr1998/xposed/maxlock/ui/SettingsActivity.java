@@ -28,7 +28,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Keep;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
@@ -57,6 +56,7 @@ import java.util.Arrays;
 
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity;
@@ -75,9 +75,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     private static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     private static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
     private static final String TAG_LOCK_FRAGMENT = "LockFragment";
-    @Keep
-    @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
-    private static boolean IS_ACTIVE = false;
     private static boolean UNLOCKED = false;
 
     static {
@@ -246,9 +243,15 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 getSupportActionBar().show();
             }
         }
-        if (!IS_ACTIVE) {
+        updateXposedStatusAlert();
+    }
+
+    public void updateXposedStatusAlert() {
+        //noinspection ConstantConditions
+        if (!MLImplementation.isXposedActive()) {
+            boolean showWarning = MLImplementation.getImplementation(MLPreferences.getPreferences(this)) == MLImplementation.DEFAULT;
             //noinspection ConstantConditions
-            findViewById(R.id.xposed_active).setVisibility(View.VISIBLE);
+            findViewById(R.id.xposed_active).setVisibility(showWarning ? View.VISIBLE : View.GONE);
             //noinspection ConstantConditions
             findViewById(R.id.xposed_active_message).setOnClickListener(new View.OnClickListener() {
                 @Override

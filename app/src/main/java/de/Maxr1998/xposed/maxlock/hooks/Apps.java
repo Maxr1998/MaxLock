@@ -17,7 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -26,42 +25,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.annotation.NonNull;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-import static de.Maxr1998.xposed.maxlock.hooks.Main.MAXLOCK_PACKAGE_NAME;
+import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.close;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.readFile;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 class Apps {
-
-    static final String PROCESS_HISTORY_ARRAY_KEY = "procs";
-    static final String PACKAGE_HISTORY_ARRAY_KEY = "pkgs";
-    static final int UNLOCK_ID = -0x3A8;
-    static final String IMOD_OBJECT_KEY = "iModPerApp";
-    static final String CLOSE_OBJECT_KEY = "close";
-    static final String IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer";
-    @SuppressLint("SdCardPath")
-    private static final String HISTORY_PATH = "/data/data/" + Main.MAXLOCK_PACKAGE_NAME + "/files/history.json";
-    private static final String IMOD_DELAY_APP = "delay_inputperapp";
-    private static final String IMOD_DELAY_GLOBAL = "delay_inputgeneral";
 
     static void initLogging(final XC_LoadPackage.LoadPackageParam lPParam) {
         try {
@@ -85,8 +68,7 @@ class Apps {
                     String activityName = activity.getClass().getName();
                     logD("ML|Started " + activityName + " at " + System.currentTimeMillis());
                     JSONObject history = readFile();
-                    JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
-                    if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName) <= 800) {
+                    if (close(history, lPParam.packageName)) {
                         activity.finish();
                         logD("ML|Finish " + activityName);
                         return;
@@ -97,7 +79,7 @@ class Apps {
                         return;
                     }
                     Intent it = new Intent();
-                    it.setComponent(new ComponentName(Main.MAXLOCK_PACKAGE_NAME, Main.MAXLOCK_PACKAGE_NAME + ".ui.LockActivity"));
+                    it.setComponent(new ComponentName(MAXLOCK_PACKAGE_NAME, MAXLOCK_PACKAGE_NAME + ".ui.LockActivity"));
                     it.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     if (prefsApps.getBoolean(lPParam.packageName + "_fake", false)) {
                         it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH);
@@ -110,9 +92,7 @@ class Apps {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if ((boolean) param.args[0]) {
-                        JSONObject history = readFile();
-                        JSONObject close = history.optJSONObject(CLOSE_OBJECT_KEY);
-                        if (close != null && System.currentTimeMillis() - close.optLong(lPParam.packageName) <= 800) {
+                        if (close(readFile(), lPParam.packageName)) {
                             final Activity activity = (Activity) param.thisObject;
                             activity.finish();
                             logD("ML|Finish " + activity.getClass().getName());
@@ -144,107 +124,5 @@ class Apps {
         } catch (Throwable t) {
             log(t);
         }
-    }
-
-    private static boolean pass(int taskId, @NonNull String packageName, String activityName, @NonNull JSONObject history, @NonNull XSharedPreferences prefs) throws Throwable {
-        writeFile(addToHistory(taskId, packageName, history));
-        // MasterSwitch disabled
-        if (!prefs.getBoolean(Common.MASTER_SWITCH_ON, true)) {
-            return true;
-        }
-        // Activity got launched/closed
-        if (history.getJSONArray(PROCESS_HISTORY_ARRAY_KEY).optInt(1) == UNLOCK_ID) {
-            return true;
-        }
-
-        // Activity not locked
-        if (!prefs.getBoolean(activityName, true)) {
-            return true;
-        }
-
-        // I.Mod active
-        boolean iModDelayGlobalEnabled = prefs.getBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false);
-        boolean iModDelayAppEnabled = prefs.getBoolean(Common.ENABLE_IMOD_DELAY_APP, false);
-        long iModLastUnlockGlobal = history.optLong(IMOD_LAST_UNLOCK_GLOBAL);
-        JSONObject iModPerApp = history.optJSONObject(IMOD_OBJECT_KEY);
-        long iModLastUnlockApp = 0;
-        if (iModPerApp != null) {
-            iModLastUnlockApp = iModPerApp.optLong(packageName);
-        }
-
-        return (iModDelayGlobalEnabled && (iModLastUnlockGlobal != 0 &&
-                System.currentTimeMillis() - iModLastUnlockGlobal <=
-                        prefs.getInt(IMOD_DELAY_GLOBAL, 600000)))
-                || iModDelayAppEnabled && (iModLastUnlockApp != 0 &&
-                System.currentTimeMillis() - iModLastUnlockApp <=
-                        prefs.getInt(IMOD_DELAY_APP, 600000));
-    }
-
-    static JSONObject getDefault() throws Throwable {
-        JSONObject history = new JSONObject();
-        JSONArray procs = new JSONArray();
-        JSONArray pkgs = new JSONArray();
-        JSONObject iMod = new JSONObject();
-        JSONObject close = new JSONObject();
-        history.put(PROCESS_HISTORY_ARRAY_KEY, procs)
-                .put(PACKAGE_HISTORY_ARRAY_KEY, pkgs)
-                .put(IMOD_OBJECT_KEY, iMod)
-                .put(CLOSE_OBJECT_KEY, close);
-        return history;
-    }
-
-    static JSONObject readFile() throws Throwable {
-        JSONObject history;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(HISTORY_PATH), 50);
-            String json = reader.readLine();
-            reader.close();
-            try {
-                history = new JSONObject(json);
-            } catch (JSONException | NullPointerException e) {
-                return getDefault();
-            }
-            if (!(history.has(PROCESS_HISTORY_ARRAY_KEY) && history.has(PACKAGE_HISTORY_ARRAY_KEY) && history.has(IMOD_OBJECT_KEY) && history.has(CLOSE_OBJECT_KEY))) {
-                return getDefault();
-            }
-        } catch (FileNotFoundException e) {
-            log("ML: File not found: " + e.getLocalizedMessage());
-            return getDefault();
-        }
-        return history;
-    }
-
-    static void writeFile(@NonNull JSONObject history) throws Throwable {
-        try {
-            File JSONFile = new File(HISTORY_PATH);
-            if (!JSONFile.exists()) {
-                throw new FileNotFoundException("File could not be written, as it doesn't exist.");
-            }
-            FileWriter bw = new FileWriter(HISTORY_PATH);
-            bw.write(history.toString());
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static JSONObject addToHistory(int taskId, String packageName, JSONObject history) throws Throwable {
-        JSONArray procs = history.optJSONArray(PROCESS_HISTORY_ARRAY_KEY);
-        JSONArray pkgs = history.optJSONArray(PACKAGE_HISTORY_ARRAY_KEY);
-        // Only add task id if new task got launched
-        if (taskId != procs.optInt(0)) {
-            // If new task doesn't have same package name, keep (shift back) the previous task id
-            if (!packageName.equals(pkgs.optString(0))) {
-                procs.put(1, procs.optInt(0));
-            }
-            procs.put(0, taskId);
-        }
-        pkgs
-                .put(2, pkgs.optString(1))
-                .put(1, pkgs.optString(0))
-                .put(0, packageName);
-
-        history.put(PROCESS_HISTORY_ARRAY_KEY, procs).put(PACKAGE_HISTORY_ARRAY_KEY, pkgs);
-        return history;
     }
 }

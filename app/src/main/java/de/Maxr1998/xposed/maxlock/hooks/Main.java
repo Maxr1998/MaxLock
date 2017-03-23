@@ -25,14 +25,19 @@ import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.getDefault;
-import static de.Maxr1998.xposed.maxlock.hooks.Apps.writeFile;
+import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getDefault;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
-    static final String MAXLOCK_PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
     private static XSharedPreferences prefsApps;
+
+    static void logD(String message) {
+        if (BuildConfig.DEBUG)
+            log(message);
+    }
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -64,10 +69,5 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         } else {
             Apps.initLogging(lPParam);
         }
-    }
-
-    static void logD(String message) {
-        if (BuildConfig.DEBUG)
-            log(message);
     }
 }

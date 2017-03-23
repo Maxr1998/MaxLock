@@ -36,12 +36,21 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
+import de.Maxr1998.xposed.maxlock.util.AppLockHelpers;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
+
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.CLOSE_OBJECT_KEY;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.readFile;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
 
 public class LockActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
@@ -175,14 +184,31 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
 
     @Override
     public void onAuthenticationSucceeded() {
+        try {
+            JSONObject history = readFile();
+            addToHistory(AppLockHelpers.UNLOCK_ID, Common.MAXLOCK_PACKAGE_NAME, history);
+            history.put(AppLockHelpers.IMOD_LAST_UNLOCK_GLOBAL, System.currentTimeMillis());
+            history.optJSONObject(AppLockHelpers.IMOD_OBJECT_KEY).put(names[0], System.currentTimeMillis());
+            writeFile(history);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         unlocked = true;
         NotificationHelper.postIModNotification(this);
         finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
     public void onBackPressed() {
         Log.d(Util.LOG_TAG_LOCKSCREEN, "Pressed back.");
+        try {
+            JSONObject history = readFile();
+            history.optJSONObject(CLOSE_OBJECT_KEY).put(names[0], System.currentTimeMillis());
+            writeFile(history);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         super.onBackPressed();
     }
 

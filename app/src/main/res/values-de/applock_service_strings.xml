@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ml_implementation">MaxLock Implementierung</string>
+
+    <string name="applock_service_description">Dienst, der das Sperren deiner Apps ermöglicht</string>
+
+    <string name="implementation_default">Standard - benötigt Xposed</string>
+    <string name="implementation_no_xposed">Kein \"root\"/Xposed</string>
+    <string name="xposed_success_information">Xposed installiert &amp; Modul aktiviert, super!</string>
+    <string name="implementation_alert">Da die nicht-Xposed Version einen Bedienungshilfen-Dienst verwendet, funktioniert sie auf jedem Gerät ohne
+        Modifikationen am System, allerdings verwendet sie auch mehr RAM und belastet den Akku stärker.\n
+        Aus diesen Gründen wird empfohlen, die Standardimplementierung zu verwenden, solange die Möglichkeit besteht,
+        Xposed zu installieren (oder es bereits installiert ist).</string>
+    <string name="accessibility_error">Bedienungshilfen-Dienst nicht aktiviert. Hier klicken um ihn in den Einstellungen zu aktivieren,
+        ohne funktioniert die App-Sperre nicht!</string>
+</resources>

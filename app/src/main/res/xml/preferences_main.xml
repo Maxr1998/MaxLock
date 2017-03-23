@@ -2,6 +2,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:maxlock="http://schemas.android.com/apk/res-auto"
     android:key="main">
+    <Preference
+        android:key="ml_implementation"
+        android:title="@string/ml_implementation" />
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory xmlns:tools="http://schemas.android.com/tools"
         android:title="@string/pref_category_locking"
         tools:ignore="UnusedAttribute">

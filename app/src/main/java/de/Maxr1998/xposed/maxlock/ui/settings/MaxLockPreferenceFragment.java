@@ -73,6 +73,7 @@ import java.util.zip.ZipOutputStream;
 
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
@@ -335,6 +336,20 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         switch (screen) {
             case MAIN:
                 switch (preference.getKey()) {
+                    case Common.ML_IMPLEMENTATION:
+                        AlertDialog implementation = new AlertDialog.Builder(getContext())
+                                .setTitle(preference.getTitle())
+                                .setView(MLImplementation.createImplementationDialog(getContext()))
+                                .setNegativeButton(android.R.string.ok, null)
+                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        ((SettingsActivity) getActivity()).updateXposedStatusAlert();
+                                    }
+                                })
+                                .create();
+                        implementation.show();
+                        return true;
                     case Common.LOCKING_TYPE_SETTINGS:
                         launchFragment(getFragmentManager(), Screen.TYPE.getScreen(), true);
                         return true;

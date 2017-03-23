@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ml_implementation">MaxLock implementation</string>
+
+    <string name="applock_service_description">Service which allows you to lock your apps</string>
+
+    <string name="implementation_default">Default - needs Xposed</string>
+    <string name="implementation_no_xposed">No \"root\"/Xposed</string>
+    <string name="xposed_success_information">Xposed installed &amp; active, awesome!</string>
+    <string name="implementation_alert">Since the no-Xposed version uses an accessibility service, it works on every device without system modifications,
+        but also consumes a lot more RAM (system memory) and battery.\nIt\'s therefore highly recommended to use the default implementation if you have
+        the possibility to install Xposed or already have it installed!</string>
+    <string name="accessibility_error">Accessibility service is not enabled. Tap here to enable in settings, without it, app locking won\'t work!</string>
+</resources>
