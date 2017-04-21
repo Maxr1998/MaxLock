@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.DimenRes;
@@ -199,7 +200,10 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
             mTitleTextView.setVisibility(View.GONE);
         } else {
             mTitleTextView.setText(title);
-            mTitleTextView.setCompoundDrawablesWithIntrinsicBounds(Util.getApplicationIconFromPackage(mPackageName, getContext()), null, null, null);
+            Drawable icon = Util.getApplicationIconFromPackage(mPackageName, getContext());
+            if (icon != null)
+                icon.setBounds(0, 0, getDimens(R.dimen.title_icon_size), getDimens(R.dimen.title_icon_size));
+            mTitleTextView.setCompoundDrawables(icon, null, null, null);
             mTitleTextView.setOnLongClickListener(this);
         }
 
