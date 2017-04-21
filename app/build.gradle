@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
-ext.languages = ["de", "es", "fa", "fr", "it", "ja", "pl", "ru", "zh-rCN", "zh-rTW"];
-ext.supportLibraryVersion = "25.3.0";
-ext.c_languages = ["", "es-ES", "fa", "fr", "it", "ja", "pl", "ru", "zh-CN", "zh-TW"];
-ext.crowdinKey = null;
+ext.languages = ["de", "es", "fa", "fr", "it", "ja", "pl", "ru", "zh-rCN", "zh-rTW"]
+ext.supportLibraryVersion = "25.3.1"
+ext.c_languages = ["", "es-ES", "fa", "fr", "it", "ja", "pl", "ru", "zh-CN", "zh-TW"]
+ext.crowdinKey = null
 
 android {
     signingConfigs {
@@ -71,7 +71,7 @@ dependencies {
     compile 'com.anjlab.android.iab.v3:library:1.0.38@aar'
     compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
-    compile 'com.google.guava:guava:20.0'
+    compile 'com.google.guava:guava:21.0'
     compile 'com.heinrichreimersoftware:material-intro:1.6'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     compile 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
@@ -86,21 +86,21 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     compile "com.android.support:support-fragment:$supportLibraryVersion"
-    compile 'com.google.android.gms:play-services-base:10.2.0'
-    compile 'com.google.android.gms:play-services-analytics:10.2.0'
+    compile 'com.google.android.gms:play-services-base:10.2.1'
+    compile 'com.google.android.gms:play-services-analytics:10.2.1'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
 
 task updateTranslations() << {
     if (crowdinKey == null)
-        return;
+        return
     for (int i = 0; i < c_languages.size(); i++) {
-        String c_lang = c_languages[i];
+        String c_lang = c_languages[i]
         if (c_lang == "")
-            continue;
-        String lang = languages[i];
-        String file = "\$PWD/src/main/res/values-$lang/strings.xml";
+            continue
+        String lang = languages[i]
+        String file = "\$PWD/src/main/res/values-$lang/strings.xml"
         exec {
             executable "bash"
             args "-c", "wget -O \"$file\" \"https://api.crowdin.com/api/project/MaxLock/export-file?file=strings.xml&language=$c_lang&key=$crowdinKey\""
