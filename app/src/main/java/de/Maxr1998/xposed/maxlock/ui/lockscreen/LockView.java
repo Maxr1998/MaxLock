@@ -279,11 +279,10 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         return false;
     }
 
-    public boolean handleAuthenticationSuccess() {
+    public void handleAuthenticationSuccess() {
         getPrefs().edit().putInt(Common.FAILED_ATTEMPTS_COUNTER, 0).apply();
         authenticationSucceededListener.onAuthenticationSucceeded();
         TaskerEventQueryReceiver.sendRequest(getActivity(), true, mPackageName);
-        return true;
     }
 
     public void handleFailedAttempt() {
