@@ -73,68 +73,65 @@ public class KnockCodeHelper {
         } else {
             touchColorLegacy = null;
         }
-        mContainer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent e) {
-                if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    if (touchColorLegacy != null) {
-                        float x = e.getRawX(), y = e.getRawY();
-                        touchColorLegacy.setShader(new RadialGradient(x - containerX, y - containerY, 200,
-                                ContextCompat.getColor(mContext, R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
-                        Canvas c = new Canvas(highlightLegacy);
-                        c.drawCircle(x - containerX, y - containerY, 100, touchColorLegacy);
-                        mContainer.invalidate();
-                    }
+        mContainer.setOnTouchListener((v, e) -> {
+            if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                if (touchColorLegacy != null) {
+                    float x = e.getRawX(), y = e.getRawY();
+                    touchColorLegacy.setShader(new RadialGradient(x - containerX, y - containerY, 200,
+                            ContextCompat.getColor(mContext, R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                    Canvas c = new Canvas(highlightLegacy);
+                    c.drawCircle(x - containerX, y - containerY, 100, touchColorLegacy);
+                    mContainer.invalidate();
+                }
 
-                    // Center values
-                    int viewCenterX = containerX + mContainer.getWidth() / 2;
-                    int viewCenterY = containerY + mContainer.getHeight() / 2;
+                // Center values
+                int viewCenterX = containerX + mContainer.getWidth() / 2;
+                int viewCenterY = containerY + mContainer.getHeight() / 2;
 
-                    // Track touch positions
-                    knockCodeX.add(e.getRawX());
-                    knockCodeY.add(e.getRawY());
-                    if (knockCodeX.size() != knockCodeY.size()) {
-                        throw new RuntimeException("The amount of the X and Y coordinates doesn't match!");
-                    }
+                // Track touch positions
+                knockCodeX.add(e.getRawX());
+                knockCodeY.add(e.getRawY());
+                if (knockCodeX.size() != knockCodeY.size()) {
+                    throw new RuntimeException("The amount of the X and Y coordinates doesn't match!");
+                }
 
-                    // Calculate center
-                    float centerX;
-                    float differenceX = Collections.max(knockCodeX) - Collections.min(knockCodeX);
-                    if (differenceX > 50) {
-                        centerX = Collections.min(knockCodeX) + differenceX / 2;
-                    } else centerX = viewCenterX;
+                // Calculate center
+                float centerX;
+                float differenceX = Collections.max(knockCodeX) - Collections.min(knockCodeX);
+                if (differenceX > 50) {
+                    centerX = Collections.min(knockCodeX) + differenceX / 2;
+                } else centerX = viewCenterX;
 
-                    float centerY;
-                    float differenceY = Collections.max(knockCodeY) - Collections.min(knockCodeY);
-                    if (differenceY > 50) {
-                        centerY = Collections.min(knockCodeY) + differenceY / 2;
-                    } else centerY = viewCenterY;
+                float centerY;
+                float differenceY = Collections.max(knockCodeY) - Collections.min(knockCodeY);
+                if (differenceY > 50) {
+                    centerY = Collections.min(knockCodeY) + differenceY / 2;
+                } else centerY = viewCenterY;
 
-                    // Calculate key
-                    StringBuilder b = new StringBuilder(5);
-                    for (int i = 0; i < knockCodeX.size(); i++) {
-                        float x = knockCodeX.get(i), y = knockCodeY.get(i);
-                        if (x < centerX && y < centerY) {
-                            b.append('1');
-                        } else if (x > centerX && y < centerY) {
-                            b.append('2');
-                        } else if (x < centerX && y > centerY) {
-                            b.append('3');
-                        } else if (x > centerX && y > centerY) {
-                            b.append('4');
-                        }
-                    }
-                    mLockView.setKey(b.toString(), false);
-                    mLockView.appendToInput("\u2022");
-                    mLockView.checkInput();
-                } else if (e.getActionMasked() == MotionEvent.ACTION_UP) {
-                    if (mLockView.getPrefs().getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                        highlightLegacy.eraseColor(Color.TRANSPARENT);
-                        mContainer.invalidate();
+                // Calculate key
+                StringBuilder b = new StringBuilder(5);
+                for (int i = 0; i < knockCodeX.size(); i++) {
+                    float x = knockCodeX.get(i), y = knockCodeY.get(i);
+                    if (x < centerX && y < centerY) {
+                        b.append('1');
+                    } else if (x > centerX && y < centerY) {
+                        b.append('2');
+                    } else if (x < centerX && y > centerY) {
+                        b.append('3');
+                    } else if (x > centerX && y > centerY) {
+                        b.append('4');
                     }
                 }
-                return false;
+                mLockView.setKey(b.toString(), false);
+                mLockView.appendToInput("\u2022");
+                mLockView.checkInput();
+            } else if (e.getActionMasked() == MotionEvent.ACTION_UP) {
+                if (mLockView.getPrefs().getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    highlightLegacy.eraseColor(Color.TRANSPARENT);
+                    mContainer.invalidate();
+                }
             }
+            return false;
         });
         if (mLockView.getPrefs().getBoolean(Common.SHOW_KC_DIVIDER, true) && !mLockView.isLandscape()) {
             View divider = new View(mContext);

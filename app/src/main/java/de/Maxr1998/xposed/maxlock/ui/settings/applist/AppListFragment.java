@@ -19,7 +19,6 @@ package de.Maxr1998.xposed.maxlock.ui.settings.applist;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -44,7 +43,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -141,12 +139,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         super.onCreateOptionsMenu(menu, inflater);
         menu.setGroupVisible(R.id.menu_group_default, false);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_search));
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menu.setGroupVisible(R.id.menu_group_hide_on_search, false);
-            }
-        });
+        searchView.setOnSearchClickListener(v -> menu.setGroupVisible(R.id.menu_group_hide_on_search, false));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -160,12 +153,9 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 return true;
             }
         });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                menu.setGroupVisible(R.id.menu_group_hide_on_search, true);
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            menu.setGroupVisible(R.id.menu_group_hide_on_search, true);
+            return false;
         });
         filterIcon(menu.findItem(R.id.toolbar_filter_activated));
         menu.findItem(R.id.toolbar_load_all).setTitle(LOAD_ALL ? R.string.menu_only_openable : R.string.menu_all_apps);
@@ -263,45 +253,37 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 AlertDialog restoreDialog = new AlertDialog.Builder(getActivity())
                         .setTitle(R.string.dialog_text_restore_list)
                         .setNegativeButton(android.R.string.cancel, null)
-                        .setAdapter(restoreAdapter, new DialogInterface.OnClickListener() {
-                            @SuppressWarnings("deprecation")
-                            @SuppressLint("InlinedApi")
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                File restorePackagesFile = new File(Common.BACKUP_DIR + restoreAdapter.getItem(i) + File.separator + prefsAppsName);
-                                File restorePerAppFile = new File(Common.BACKUP_DIR + restoreAdapter.getItem(i) + File.separator + prefsPerAppName);
-                                try {
-                                    if (restorePackagesFile.exists()) {
-                                        FileUtils.deleteQuietly(prefsAppsFile);
-                                        FileUtils.copyFile(restorePackagesFile, prefsAppsFile);
-                                    }
-                                    if (restorePerAppFile.exists()) {
-                                        FileUtils.deleteQuietly(prefsPerAppFile);
-                                        FileUtils.copyFile(restorePerAppFile, prefsPerAppFile);
-                                    }
-                                } catch (IOException e) {
-                                    Toast.makeText(getActivity(), R.string.toast_no_files_to_restore, Toast.LENGTH_SHORT).show();
+                        .setAdapter(restoreAdapter, (dialogInterface, i) -> {
+                            File restorePackagesFile = new File(Common.BACKUP_DIR + restoreAdapter.getItem(i) + File.separator + prefsAppsName);
+                            File restorePerAppFile = new File(Common.BACKUP_DIR + restoreAdapter.getItem(i) + File.separator + prefsPerAppName);
+                            try {
+                                if (restorePackagesFile.exists()) {
+                                    FileUtils.deleteQuietly(prefsAppsFile);
+                                    FileUtils.copyFile(restorePackagesFile, prefsAppsFile);
                                 }
-                                getActivity().getSharedPreferences(Common.PREFS_APPS, Context.MODE_MULTI_PROCESS);
-                                getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_MULTI_PROCESS);
-                                Toast.makeText(getActivity(), R.string.toast_restore_success, Toast.LENGTH_SHORT).show();
-                                ((SettingsActivity) getActivity()).restart();
+                                if (restorePerAppFile.exists()) {
+                                    FileUtils.deleteQuietly(prefsPerAppFile);
+                                    FileUtils.copyFile(restorePerAppFile, prefsPerAppFile);
+                                }
+                            } catch (IOException e) {
+                                Toast.makeText(getActivity(), R.string.toast_no_files_to_restore, Toast.LENGTH_SHORT).show();
                             }
+                            getActivity().getSharedPreferences(Common.PREFS_APPS, Context.MODE_MULTI_PROCESS);
+                            getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_MULTI_PROCESS);
+                            Toast.makeText(getActivity(), R.string.toast_restore_success, Toast.LENGTH_SHORT).show();
+                            ((SettingsActivity) getActivity()).restart();
                         })
                         .show();
-                restoreDialog.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        try {
-                            FileUtils.deleteDirectory(new File(Common.BACKUP_DIR + restoreAdapter.getItem(i)));
-                            restoreAdapter.remove(restoreAdapter.getItem(i));
-                            restoreAdapter.notifyDataSetChanged();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                        return true;
+                restoreDialog.getListView().setOnItemLongClickListener((adapterView, view, i, l) -> {
+                    try {
+                        FileUtils.deleteDirectory(new File(Common.BACKUP_DIR + restoreAdapter.getItem(i)));
+                        restoreAdapter.remove(restoreAdapter.getItem(i));
+                        restoreAdapter.notifyDataSetChanged();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return false;
                     }
+                    return true;
                 });
                 break;
         }

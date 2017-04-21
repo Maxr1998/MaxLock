@@ -97,21 +97,13 @@ public final class MLImplementation {
 
                 group.check(getImplementation(MLPreferences.getPreferences(c)) == DEFAULT ? R.id.implementation_item_default : R.id.implementation_item_no_xposed);
 
-                group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                        updateView();
-                    }
-                });
+                group.setOnCheckedChangeListener((radioGroup, i) -> updateView());
 
-                accessibilityError.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            c.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-                        } catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                accessibilityError.setOnClickListener(v -> {
+                    try {
+                        c.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
                     }
                 });
 

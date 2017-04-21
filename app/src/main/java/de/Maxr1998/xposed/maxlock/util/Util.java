@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -271,40 +270,32 @@ public final class Util {
                 .create();
         dialog.show();
         ((ViewGroup) dialogView.getParent()).setPadding(10, 10, 10, 10);
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText p1 = (EditText) dialogView.findViewById(R.id.edt_password);
-                EditText p2 = (EditText) dialogView.findViewById(R.id.edt_re_password);
-                String v1 = p1.getText().toString();
-                String v2 = p2.getText().toString();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            EditText p1 = (EditText) dialogView.findViewById(R.id.edt_password);
+            EditText p2 = (EditText) dialogView.findViewById(R.id.edt_re_password);
+            String v1 = p1.getText().toString();
+            String v2 = p2.getText().toString();
 
-                if (!v1.equals(v2)) {
-                    p1.setText("");
-                    p2.setText("");
-                    Toast.makeText(context, R.string.toast_password_inconsistent, Toast.LENGTH_SHORT)
-                            .show();
-                } else if (v1.length() == 0) {
-                    Toast.makeText(context, R.string.toast_password_null, Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    dialog.dismiss();
-                    if (app == null) {
-                        getPreferencesKeys(context).edit().putString(Common.KEY_PREFERENCE, shaHash(v1)).apply();
-                        getPreferences(context).edit().putString(Common.LOCKING_TYPE, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).apply();
-                    } else {
-                        getPreferencesKeysPerApp(context).edit().putString(app, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
-                    }
-                    Toast.makeText(context, R.string.toast_password_changed, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if (!v1.equals(v2)) {
+                p1.setText("");
+                p2.setText("");
+                Toast.makeText(context, R.string.toast_password_inconsistent, Toast.LENGTH_SHORT)
+                        .show();
+            } else if (v1.length() == 0) {
+                Toast.makeText(context, R.string.toast_password_null, Toast.LENGTH_SHORT)
+                        .show();
+            } else {
                 dialog.dismiss();
+                if (app == null) {
+                    getPreferencesKeys(context).edit().putString(Common.KEY_PREFERENCE, shaHash(v1)).apply();
+                    getPreferences(context).edit().putString(Common.LOCKING_TYPE, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).apply();
+                } else {
+                    getPreferencesKeysPerApp(context).edit().putString(app, v1.matches("[0-9]+") ? Common.PREF_VALUE_PASS_PIN : Common.PREF_VALUE_PASSWORD).putString(app + Common.APP_KEY_PREFERENCE, shaHash(v1)).apply();
+                }
+                Toast.makeText(context, R.string.toast_password_changed, Toast.LENGTH_SHORT).show();
             }
         });
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> dialog.dismiss());
     }
 
     public static void logFailedAuthentication(Context context, String pkg) {
@@ -330,12 +321,7 @@ public final class Util {
         if (ContextCompat.checkSelfPermission(fragment.getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             new AlertDialog.Builder(fragment.getActivity())
                     .setMessage(description)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            fragment.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, code);
-                        }
-                    })
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> fragment.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, code))
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show();
         } else {

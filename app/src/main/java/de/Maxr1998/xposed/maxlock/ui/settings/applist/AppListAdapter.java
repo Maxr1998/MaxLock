@@ -19,7 +19,6 @@ package de.Maxr1998.xposed.maxlock.ui.settings.applist;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -43,7 +42,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -104,92 +102,73 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
         hld.toggle.setChecked(locked);
         hld.toggle.setContentDescription(mContext.getString(locked ? R.string.content_description_applist_toggle_on : R.string.content_description_applist_toggle_off, hld.appName.getText()));
 
-        hld.options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder optionsDialog = new AlertDialog.Builder(mContext)
-                        .setTitle(mContext.getString(R.string.dialog_title_options))
-                        .setIcon(ListHolder.getInstance().get(hld.getAdapterPosition()).loadIcon(mContext.getPackageManager()))
-                        .setMultiChoiceItems(R.array.dialog_multi_select_items_options,
-                                new boolean[]{
-                                        prefsKeysPerApp.contains(key),
-                                        prefsApps.getBoolean(key + "_fake", false),
-                                        prefsApps.getBoolean(key + "_notif_content", false),
-                                },
-                                new DialogInterface.OnMultiChoiceClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                        String curKey = null;
-                                        switch (which) {
-                                            case 0:
-                                                if (isChecked) {
-                                                    dialog.dismiss();
-                                                    new AlertDialog.Builder(mContext)
-                                                            .setItems(new CharSequence[]{
-                                                                            mContext.getString(R.string.pref_locking_type_password),
-                                                                            mContext.getString(R.string.pref_locking_type_pin),
-                                                                            mContext.getString(R.string.pref_locking_type_knockcode),
-                                                                            mContext.getString(R.string.pref_locking_type_pattern)
-                                                                    },
-                                                                    new DialogInterface.OnClickListener() {
-                                                                        @Override
-                                                                        public void onClick(DialogInterface dialog, int i) {
-                                                                            dialog.dismiss();
-                                                                            Fragment frag = new Fragment();
-                                                                            switch (i) {
-                                                                                case 0:
-                                                                                    Util.setPassword(mContext, key);
-                                                                                    return;
-                                                                                case 1:
-                                                                                    frag = new PinSetupFragment();
-                                                                                    break;
-                                                                                case 2:
-                                                                                    frag = new KnockCodeSetupFragment();
-                                                                                    break;
-                                                                                case 3:
-                                                                                    Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, mContext, LockPatternActivity.class);
-                                                                                    mFragment.startActivityForResult(intent, Util.getPatternCode(hld.getAdapterPosition()));
-                                                                                    return;
-                                                                            }
-                                                                            Bundle b = new Bundle(1);
-                                                                            b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
-                                                                            frag.setArguments(b);
-                                                                            MaxLockPreferenceFragment.launchFragment(mFragment.getFragmentManager(), frag, false);
-                                                                        }
-                                                                    }).show();
-                                                } else {
-                                                    prefsKeysPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();
-                                                }
-                                                return;
-                                            case 1:
-                                                curKey = key + "_fake";
-                                                break;
-                                            case 2:
-                                                curKey = key + "_notif_content";
-                                                break;
+        hld.options.setOnClickListener(v -> {
+            AlertDialog.Builder optionsDialog = new AlertDialog.Builder(mContext)
+                    .setTitle(mContext.getString(R.string.dialog_title_options))
+                    .setIcon(ListHolder.getInstance().get(hld.getAdapterPosition()).loadIcon(mContext.getPackageManager()))
+                    .setMultiChoiceItems(R.array.dialog_multi_select_items_options,
+                            new boolean[]{
+                                    prefsKeysPerApp.contains(key),
+                                    prefsApps.getBoolean(key + "_fake", false),
+                                    prefsApps.getBoolean(key + "_notif_content", false),
+                            },
+                            (dialog, which, isChecked) -> {
+                                String curKey = null;
+                                switch (which) {
+                                    case 0:
+                                        if (isChecked) {
+                                            dialog.dismiss();
+                                            new AlertDialog.Builder(mContext)
+                                                    .setItems(new CharSequence[]{
+                                                                    mContext.getString(R.string.pref_locking_type_password),
+                                                                    mContext.getString(R.string.pref_locking_type_pin),
+                                                                    mContext.getString(R.string.pref_locking_type_knockcode),
+                                                                    mContext.getString(R.string.pref_locking_type_pattern)
+                                                            },
+                                                            (dialog1, i) -> {
+                                                                dialog1.dismiss();
+                                                                Fragment frag = new Fragment();
+                                                                switch (i) {
+                                                                    case 0:
+                                                                        Util.setPassword(mContext, key);
+                                                                        return;
+                                                                    case 1:
+                                                                        frag = new PinSetupFragment();
+                                                                        break;
+                                                                    case 2:
+                                                                        frag = new KnockCodeSetupFragment();
+                                                                        break;
+                                                                    case 3:
+                                                                        Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, mContext, LockPatternActivity.class);
+                                                                        mFragment.startActivityForResult(intent, Util.getPatternCode(hld.getAdapterPosition()));
+                                                                        return;
+                                                                }
+                                                                Bundle b = new Bundle(1);
+                                                                b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
+                                                                frag.setArguments(b);
+                                                                MaxLockPreferenceFragment.launchFragment(mFragment.getFragmentManager(), frag, false);
+                                                            }).show();
+                                        } else {
+                                            prefsKeysPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();
                                         }
-                                        if (curKey != null) {
-                                            if (isChecked)
-                                                prefsApps.edit().putBoolean(curKey, true).commit();
-                                            else
-                                                prefsApps.edit().remove(curKey).commit();
-                                        }
-                                    }
-                                })
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNeutralButton(R.string.dialog_button_exclude_activities, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                new ActivityLoader().execute(key);
-                            }
-                        });
-                optionsDialog.create().show();
-            }
+                                        return;
+                                    case 1:
+                                        curKey = key + "_fake";
+                                        break;
+                                    case 2:
+                                        curKey = key + "_notif_content";
+                                        break;
+                                }
+                                if (curKey != null) {
+                                    if (isChecked)
+                                        prefsApps.edit().putBoolean(curKey, true).commit();
+                                    else
+                                        prefsApps.edit().remove(curKey).commit();
+                                }
+                            })
+                    .setPositiveButton(android.R.string.ok, (dialog, id) -> dialog.dismiss())
+                    .setNeutralButton(R.string.dialog_button_exclude_activities, (dialogInterface, i) -> new ActivityLoader().execute(key));
+            optionsDialog.create().show();
         });
     }
 
@@ -230,73 +209,64 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
             toggle = (ToggleButton) itemView.findViewById(R.id.toggleLock);
 
             // Launch app when tapping icon
-            appIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent launch = v.getContext().getPackageManager().getLaunchIntentForPackage(tag);
-                    if (launch == null) {
-                        return;
-                    }
-                    launch.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    v.getContext().startActivity(launch);
+            appIcon.setOnClickListener(v -> {
+                Intent launch = v.getContext().getPackageManager().getLaunchIntentForPackage(tag);
+                if (launch == null) {
+                    return;
                 }
+                launch.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(launch);
             });
 
             // Turn lock on/off
-            toggle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    boolean value = ((ToggleButton) v).isChecked();
-                    if (value) {
-                        prefsApps.edit().putBoolean(tag, true).commit();
-                        AnimationSet in = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings);
-                        options.startAnimation(in);
-                        options.setVisibility(View.VISIBLE);
+            toggle.setOnClickListener(v -> {
+                boolean value = ((ToggleButton) v).isChecked();
+                if (value) {
+                    prefsApps.edit().putBoolean(tag, true).commit();
+                    AnimationSet in = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings);
+                    options.startAnimation(in);
+                    options.setVisibility(View.VISIBLE);
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && tag.equals("com.android.settings")) {
-                            new AlertDialog.Builder(v.getContext())
-                                    .setMessage(R.string.known_problem_settings_message)
-                                    .setNeutralButton(R.string.more_information, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface d, int i) {
-                                            @SuppressWarnings("deprecation") CustomTabsIntent knownProblemSettings = new CustomTabsIntent.Builder(((SettingsActivity) v.getContext()).getSession())
-                                                    .setShowTitle(true)
-                                                    .enableUrlBarHiding()
-                                                    .setToolbarColor(v.getResources().getColor(R.color.primary_red))
-                                                    .build();
-                                            knownProblemSettings.launchUrl(v.getContext(), Common.KNOWN_PROBLEM_SETTINGS_URI);
-                                        }
-                                    })
-                                    .setPositiveButton(android.R.string.ok, null)
-                                    .create().show();
-                        }
-                    } else {
-                        prefsApps.edit().remove(tag).commit();
-                        AnimationSet out = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings_out);
-                        out.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 0.0f);
-                                animation.setDuration(1);
-                                options.startAnimation(animation);
-                                options.setVisibility(View.GONE);
-                                options.clearAnimation();
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                        options.startAnimation(out);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && tag.equals("com.android.settings")) {
+                        new AlertDialog.Builder(v.getContext())
+                                .setMessage(R.string.known_problem_settings_message)
+                                .setNeutralButton(R.string.more_information, (d, i) -> {
+                                    @SuppressWarnings("deprecation") CustomTabsIntent knownProblemSettings = new CustomTabsIntent.Builder(((SettingsActivity) v.getContext()).getSession())
+                                            .setShowTitle(true)
+                                            .enableUrlBarHiding()
+                                            .setToolbarColor(v.getResources().getColor(R.color.primary_red))
+                                            .build();
+                                    knownProblemSettings.launchUrl(v.getContext(), Common.KNOWN_PROBLEM_SETTINGS_URI);
+                                })
+                                .setPositiveButton(android.R.string.ok, null)
+                                .create().show();
                     }
-                    toggle.setContentDescription(v.getContext().getString(value ? R.string.content_description_applist_toggle_on : R.string.content_description_applist_toggle_off, appName.getText()));
+                } else {
+                    prefsApps.edit().remove(tag).commit();
+                    AnimationSet out = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings_out);
+                    out.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 0.0f);
+                            animation.setDuration(1);
+                            options.startAnimation(animation);
+                            options.setVisibility(View.GONE);
+                            options.clearAnimation();
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    options.startAnimation(out);
                 }
+                toggle.setContentDescription(v.getContext().getString(value ? R.string.content_description_applist_toggle_on : R.string.content_description_applist_toggle_off, appName.getText()));
             });
         }
     }
@@ -324,16 +294,13 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
             String name = activities.get(lvh.getLayoutPosition());
             lvh.switchCompat.setChecked(prefsApps.getBoolean(name, true));
             lvh.switchCompat.setText(name);
-            lvh.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    String now = activities.get(lvh.getLayoutPosition());
-                    System.out.println(now + " new Value: " + b);
-                    if (b) {
-                        prefsApps.edit().remove(now).commit();
-                    } else {
-                        prefsApps.edit().putBoolean(now, false).commit();
-                    }
+            lvh.switchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
+                String now = activities.get(lvh.getLayoutPosition());
+                System.out.println(now + " new Value: " + b);
+                if (b) {
+                    prefsApps.edit().remove(now).commit();
+                } else {
+                    prefsApps.edit().putBoolean(now, false).commit();
                 }
             });
         }

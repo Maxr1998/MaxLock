@@ -19,7 +19,6 @@ package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -39,7 +38,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -100,16 +98,13 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
         }.execute();
 
         Button donatePayPal = (Button) findViewById(R.id.donate_paypal);
-        donatePayPal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomTabsIntent intent = new CustomTabsIntent.Builder(mSession)
-                        .setShowTitle(true)
-                        .enableUrlBarHiding()
-                        .setToolbarColor(Color.WHITE)
-                        .build();
-                intent.launchUrl(DonateActivity.this, Common.PAYPAL_DONATE_URI);
-            }
+        donatePayPal.setOnClickListener(view -> {
+            CustomTabsIntent intent = new CustomTabsIntent.Builder(mSession)
+                    .setShowTitle(true)
+                    .enableUrlBarHiding()
+                    .setToolbarColor(Color.WHITE)
+                    .build();
+            intent.launchUrl(DonateActivity.this, Common.PAYPAL_DONATE_URI);
         });
 
         mConnection = new CustomTabsServiceConnection() {
@@ -171,28 +166,22 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
         ListView productsList = (ListView) findViewById(R.id.donate_products_list);
         assert productsList != null;
         productsList.setAdapter(productsAdapter);
-        productsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                bp.loadOwnedPurchasesFromGoogle();
-                if (!bp.isPurchased(productIds[position])) {
-                    bp.purchase(DonateActivity.this, productIds[position]);
-                } else {
-                    AlertDialog.Builder b = new AlertDialog.Builder(DonateActivity.this);
-                    b.setMessage(R.string.dialog_message_already_bought);
-                    b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.i(LOG_TAG_IAB, bp.listOwnedProducts().toString());
-                            if (bp.consumePurchase(productIds[position])) {
-                                Log.i(LOG_TAG_IAB, bp.listOwnedProducts().toString());
-                                bp.purchase(DonateActivity.this, productIds[position]);
-                            }
-                        }
-                    });
-                    b.setNegativeButton(android.R.string.cancel, null);
-                    b.show();
-                }
+        productsList.setOnItemClickListener((parent, view, position, id) -> {
+            bp.loadOwnedPurchasesFromGoogle();
+            if (!bp.isPurchased(productIds[position])) {
+                bp.purchase(DonateActivity.this, productIds[position]);
+            } else {
+                AlertDialog.Builder b = new AlertDialog.Builder(DonateActivity.this);
+                b.setMessage(R.string.dialog_message_already_bought);
+                b.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    Log.i(LOG_TAG_IAB, bp.listOwnedProducts().toString());
+                    if (bp.consumePurchase(productIds[position])) {
+                        Log.i(LOG_TAG_IAB, bp.listOwnedProducts().toString());
+                        bp.purchase(DonateActivity.this, productIds[position]);
+                    }
+                });
+                b.setNegativeButton(android.R.string.cancel, null);
+                b.show();
             }
         });
     }
@@ -202,12 +191,7 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
      */
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                reloadBilling();
-            }
-        }, 200);
+        new Handler().postDelayed(this::reloadBilling, 200);
     }
 
     /**

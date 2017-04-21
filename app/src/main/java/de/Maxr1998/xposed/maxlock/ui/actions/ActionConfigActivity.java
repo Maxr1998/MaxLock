@@ -76,25 +76,22 @@ public class ActionConfigActivity extends AppCompatActivity {
 
         final RadioGroup options = (RadioGroup) findViewById(R.id.tasker_config_options);
         final Button apply = (Button) findViewById(R.id.tasker_apply_button);
-        apply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int checked = options.getCheckedRadioButtonId();
-                result = new Intent();
-                if (taskerMode) {
-                    Bundle resultBundle = new Bundle();
-                    resultBundle.putInt(ACTION_EXTRA_KEY, ActionsHelper.getKey(checked));
-                    result.putExtra(EXTRA_BUNDLE, resultBundle);
-                    result.putExtra(EXTRA_STRING_BLURB, ((RadioButton) findViewById(checked)).getText().toString());
-                } else {
-                    Intent shortcut = new Intent(ActionConfigActivity.this, ActionActivity.class);
-                    shortcut.putExtra(ACTION_EXTRA_KEY, getKey(checked));
-                    result.putExtra(Intent.EXTRA_SHORTCUT_NAME, ((RadioButton) findViewById(checked)).getText().toString());
-                    result.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
-                    result.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
-                }
-                finish();
+        apply.setOnClickListener(view -> {
+            int checked = options.getCheckedRadioButtonId();
+            result = new Intent();
+            if (taskerMode) {
+                Bundle resultBundle = new Bundle();
+                resultBundle.putInt(ACTION_EXTRA_KEY, ActionsHelper.getKey(checked));
+                result.putExtra(EXTRA_BUNDLE, resultBundle);
+                result.putExtra(EXTRA_STRING_BLURB, ((RadioButton) findViewById(checked)).getText().toString());
+            } else {
+                Intent shortcut = new Intent(ActionConfigActivity.this, ActionActivity.class);
+                shortcut.putExtra(ACTION_EXTRA_KEY, getKey(checked));
+                result.putExtra(Intent.EXTRA_SHORTCUT_NAME, ((RadioButton) findViewById(checked)).getText().toString());
+                result.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
+                result.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
             }
+            finish();
         });
     }
 

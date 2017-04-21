@@ -28,7 +28,6 @@ import android.util.Log;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,33 +84,18 @@ public class Startup extends AsyncTask<Void, Void, Void> {
         }
 
         List<File> filesToDelete = new ArrayList<>();
-        File[] listPrefs = new File(Util.dataDir(mContext), "shared_prefs").listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return !Arrays.asList("com.google.android.gms.analytics.prefs.xml",
-                        "de.Maxr1998.xposed.maxlock_preferences.xml",
-                        "keys.xml", "packages.xml", "per_app_settings.xml",
-                        "WebViewChromiumPrefs.xml").contains(filename);
-            }
-        });
+        File[] listPrefs = new File(Util.dataDir(mContext), "shared_prefs").listFiles((dir, filename) -> !Arrays.asList("com.google.android.gms.analytics.prefs.xml",
+                "de.Maxr1998.xposed.maxlock_preferences.xml",
+                "keys.xml", "packages.xml", "per_app_settings.xml",
+                "WebViewChromiumPrefs.xml").contains(filename));
         if (listPrefs != null) {
             filesToDelete.addAll(Arrays.asList(listPrefs));
         }
-        File[] listFiles = mContext.getFilesDir().listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return !Arrays.asList("background", "gaClientId", "gaClientIdData", "history.json").contains(filename);
-            }
-        });
+        File[] listFiles = mContext.getFilesDir().listFiles((dir, filename) -> !Arrays.asList("background", "gaClientId", "gaClientIdData", "history.json").contains(filename));
         if (listFiles != null) {
             filesToDelete.addAll(Arrays.asList(listFiles));
         }
-        File[] listExternal = new File(Common.EXTERNAL_FILES_DIR).listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return !Arrays.asList("Backup", "dev_mode.key").contains(filename);
-            }
-        });
+        File[] listExternal = new File(Common.EXTERNAL_FILES_DIR).listFiles((dir, filename) -> !Arrays.asList("Backup", "dev_mode.key").contains(filename));
         if (listExternal != null) {
             filesToDelete.addAll(Arrays.asList(listExternal));
         }

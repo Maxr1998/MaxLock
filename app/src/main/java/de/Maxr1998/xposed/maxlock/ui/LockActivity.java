@@ -17,7 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -113,63 +112,37 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
         String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
         AlertDialog.Builder fakeDieDialogBuilder = new AlertDialog.Builder(this);
         fakeDieDialog = fakeDieDialogBuilder.setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
-                .setNeutralButton(R.string.dialog_button_report, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (prefs.getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
-                            fakeDieDialog.dismiss();
-                            launchLockView();
-                            finish();
-                        } else {
-                            fakeDieDialog.dismiss();
-                            final EditText input = new EditText(LockActivity.this);
-                            input.setMinLines(2);
-                            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                            AlertDialog.Builder reportDialogBuilder = new AlertDialog.Builder(LockActivity.this);
-                            reportDialog = reportDialogBuilder.setView(input)
-                                    .setTitle(R.string.dialog_title_report_problem)
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (input.getText().toString().equals(prefs.getString(Common.FAKE_CRASH_INPUT, "start"))) {
-                                                reportDialog.dismiss();
-                                                launchLockView();
-                                                finish();
-                                            } else {
-                                                Toast.makeText(LockActivity.this, "Thanks for your feedback", Toast.LENGTH_SHORT).show();
-                                                onBackPressed();
-                                            }
-                                        }
-                                    })
-                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            onBackPressed();
-                                        }
-                                    })
-                                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                        @Override
-                                        public void onCancel(DialogInterface dialogInterface) {
-                                            onBackPressed();
-                                        }
-                                    })
-                                    .create();
-                            reportDialog.show();
-                        }
+                .setNeutralButton(R.string.dialog_button_report, (dialogInterface, i) -> {
+                    if (prefs.getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
+                        fakeDieDialog.dismiss();
+                        launchLockView();
+                        finish();
+                    } else {
+                        fakeDieDialog.dismiss();
+                        final EditText input = new EditText(LockActivity.this);
+                        input.setMinLines(2);
+                        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                        AlertDialog.Builder reportDialogBuilder = new AlertDialog.Builder(LockActivity.this);
+                        reportDialog = reportDialogBuilder.setView(input)
+                                .setTitle(R.string.dialog_title_report_problem)
+                                .setPositiveButton(android.R.string.ok, (dialogInterface1, i1) -> {
+                                    if (input.getText().toString().equals(prefs.getString(Common.FAKE_CRASH_INPUT, "start"))) {
+                                        reportDialog.dismiss();
+                                        launchLockView();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(LockActivity.this, "Thanks for your feedback", Toast.LENGTH_SHORT).show();
+                                        onBackPressed();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, (dialogInterface12, i12) -> onBackPressed())
+                                .setOnCancelListener(dialogInterface13 -> onBackPressed())
+                                .create();
+                        reportDialog.show();
                     }
                 })
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        onBackPressed();
-                    }
-                })
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        onBackPressed();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> onBackPressed())
+                .setOnCancelListener(dialogInterface -> onBackPressed())
                 .create();
         fakeDieDialog.show();
     }

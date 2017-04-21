@@ -22,7 +22,6 @@ import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -50,7 +49,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import java.util.Arrays;
 
@@ -176,13 +174,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_master_switch));
         //noinspection deprecation
         master_switch.setChecked(MLPreferences.getPrefsApps(this).getBoolean(Common.MASTER_SWITCH_ON, true));
-        master_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @SuppressLint({"CommitPrefEdits"})
-            @Override
-            public void onCheckedChanged(CompoundButton button, boolean b) {
-                MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit();
-            }
-        });
+        master_switch.setOnCheckedChangeListener((button, b) -> MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit());
         Fragment lockScreen = getSupportFragmentManager().findFragmentByTag(TAG_LOCK_FRAGMENT);
         if (getSupportActionBar() != null && !getSupportActionBar().isShowing() && (lockScreen == null || !lockScreen.isVisible())) {
             getSupportActionBar().show();
@@ -253,15 +245,12 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             //noinspection ConstantConditions
             findViewById(R.id.xposed_active).setVisibility(showWarning ? View.VISIBLE : View.GONE);
             //noinspection ConstantConditions
-            findViewById(R.id.xposed_active_message).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog help = new AlertDialog.Builder(SettingsActivity.this)
-                            .setTitle(R.string.maxlock_inactive)
-                            .setMessage(R.string.dialog_message_not_active)
-                            .create();
-                    help.show();
-                }
+            findViewById(R.id.xposed_active_message).setOnClickListener(v -> {
+                AlertDialog help = new AlertDialog.Builder(SettingsActivity.this)
+                        .setTitle(R.string.maxlock_inactive)
+                        .setMessage(R.string.dialog_message_not_active)
+                        .create();
+                help.show();
             });
         }
     }
@@ -300,14 +289,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_text_restart_required);
         builder.setTitle(R.string.app_name)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = getIntent();
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        finish();
-                        startActivity(intent);
-                    }
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                    Intent intent = getIntent();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    finish();
+                    startActivity(intent);
                 }).create().show();
     }
 

@@ -99,12 +99,7 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
         } else if (value.equals(okString) && !mLockView.checkInput()) {
             mLockView.setKey(null, false);
             if (hapticFeedback) {
-                getHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        performHapticFeedback(VIRTUAL_KEY, FLAG_IGNORE_VIEW_SETTING | FLAG_IGNORE_GLOBAL_SETTING);
-                    }
-                }, 120);
+                getHandler().postDelayed(() -> performHapticFeedback(VIRTUAL_KEY, FLAG_IGNORE_VIEW_SETTING | FLAG_IGNORE_GLOBAL_SETTING), 120);
             }
             v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
             mLockView.handleFailedAttempt();

@@ -34,7 +34,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,21 +128,18 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                 } else {
                     mInputTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
-                mInputTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            if (checkInput()) {
-                                Util.hideKeyboardFromWindow(getActivity(), LockView.this);
-                            } else {
-                                setKey(null, false);
-                                v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
-                                handleFailedAttempt();
-                            }
-                            return true;
+                mInputTextView.setOnEditorActionListener((v, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        if (checkInput()) {
+                            Util.hideKeyboardFromWindow(getActivity(), LockView.this);
+                        } else {
+                            setKey(null, false);
+                            v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
+                            handleFailedAttempt();
                         }
-                        return false;
+                        return true;
                     }
+                    return false;
                 });
                 mInputTextView.addTextChangedListener(new TextWatcher() {
                     @Override

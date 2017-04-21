@@ -26,7 +26,6 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,12 +41,7 @@ import static android.os.Build.VERSION_CODES.LOLLIPOP;
 public final class FingerprintView extends ImageView {
 
     private final LockView mLockView;
-    private final OnClickListener mNotAllowedToast = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(getContext(), R.string.message_fingerprint_disabled, Toast.LENGTH_SHORT).show();
-        }
-    };
+    private final OnClickListener mNotAllowedToast = v -> Toast.makeText(getContext(), R.string.message_fingerprint_disabled, Toast.LENGTH_SHORT).show();
     private CancellationSignal mCancelFingerprint = new CancellationSignal();
     private final FingerprintManagerCompat.AuthenticationCallback mFPAuthenticationCallback = new FingerprintManagerCompat.AuthenticationCallback() {
         @Override
@@ -65,12 +59,7 @@ public final class FingerprintView extends ImageView {
         public void onAuthenticationFailed() {
             handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_fp_to_error_state_animation);
             if (mLockView.allowFingerprint()) {
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation);
-                    }
-                }, 800);
+                postDelayed(() -> handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation), 800);
             } else {
                 mCancelFingerprint.cancel();
                 setOnClickListener(mNotAllowedToast);

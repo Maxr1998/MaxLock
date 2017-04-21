@@ -145,24 +145,21 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 .putLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()).apply();
                         @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
                         @SuppressWarnings("ResourceType") final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.dialog_cb_never_again);
-                        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (checkBox.isChecked()) {
-                                    prefs.edit().putBoolean(Common.RATING_DIALOG_SHOW_NEVER, true).apply();
-                                }
-                                switch (i) {
-                                    case -3:
-                                        try {
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
-                                        } catch (ActivityNotFoundException e) {
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
-                                        }
-                                        break;
-                                    case -1:
-                                        startActivity(new Intent(getActivity(), DonateActivity.class));
-                                        break;
-                                }
+                        DialogInterface.OnClickListener onClickListener = (dialogInterface, i) -> {
+                            if (checkBox.isChecked()) {
+                                prefs.edit().putBoolean(Common.RATING_DIALOG_SHOW_NEVER, true).apply();
+                            }
+                            switch (i) {
+                                case -3:
+                                    try {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
+                                    } catch (ActivityNotFoundException e) {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                                    }
+                                    break;
+                                case -1:
+                                    startActivity(new Intent(getActivity(), DonateActivity.class));
+                                    break;
                             }
                         };
                         new AlertDialog.Builder(getActivity())
@@ -214,21 +211,18 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }*/
                 ListPreference lp = (ListPreference) findPreference(Common.BACKGROUND);
                 findPreference(Common.BACKGROUND_COLOR).setEnabled(lp.getValue().equals("color"));
-                lp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        if (preference.getKey().equals(Common.BACKGROUND)) {
-                            if (newValue.toString().equals("custom")) {
-                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                intent.setType("image/*");
-                                startActivityForResult(intent, WALLPAPER_REQUEST_CODE);
-                            } else {
-                                FileUtils.deleteQuietly(new File(getActivity().getFilesDir(), "background"));
-                            }
-                            findPreference(Common.BACKGROUND_COLOR).setEnabled(newValue.toString().equals("color"));
+                lp.setOnPreferenceChangeListener((preference, newValue) -> {
+                    if (preference.getKey().equals(Common.BACKGROUND)) {
+                        if (newValue.toString().equals("custom")) {
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, WALLPAPER_REQUEST_CODE);
+                        } else {
+                            FileUtils.deleteQuietly(new File(getActivity().getFilesDir(), "background"));
                         }
-                        return true;
+                        findPreference(Common.BACKGROUND_COLOR).setEnabled(newValue.toString().equals("color"));
                     }
+                    return true;
                 });
                 break;
             case OPTIONS:
@@ -276,12 +270,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             if (stringId != 0 && fragment != null) {
                 final Fragment copyFragment = fragment;
                 snackCache = Snackbar.make(getActivity().findViewById(android.R.id.content), stringId, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.sb_action_setup, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                launchFragment(getFragmentManager(), copyFragment, true);
-                            }
-                        });
+                        .setAction(R.string.sb_action_setup, v -> launchFragment(getFragmentManager(), copyFragment, true));
                 snackCache.show();
             }
         }
@@ -341,12 +330,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 .setTitle(preference.getTitle())
                                 .setView(MLImplementation.createImplementationDialog(getContext()))
                                 .setNegativeButton(android.R.string.ok, null)
-                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialog) {
-                                        ((SettingsActivity) getActivity()).updateXposedStatusAlert();
-                                    }
-                                })
+                                .setOnDismissListener(dialog -> ((SettingsActivity) getActivity()).updateXposedStatusAlert())
                                 .create();
                         implementation.show();
                         return true;
@@ -530,12 +514,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     }
                     new AlertDialog.Builder(getActivity())
                             .setMessage(R.string.dialog_message_bugreport_finished_select_email)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    startActivity(Intent.createChooser(intent, getString(R.string.share_menu_title_send_email)));
-                                }
-                            }).create().show();
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> startActivity(Intent.createChooser(intent, getString(R.string.share_menu_title_send_email)))).create().show();
                 }
                 break;
         }
@@ -549,12 +528,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     private void showUpdatedMessage() {
         AlertDialog message = new AlertDialog.Builder(getActivity())
                 .setMessage(R.string.dialog_maxlock_updated)
-                .setNegativeButton(R.string.dialog_button_whats_new, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        showChangelog();
-                    }
-                })
+                .setNegativeButton(R.string.dialog_button_whats_new, (dialog, which) -> showChangelog())
                 .setPositiveButton(R.string.dialog_button_got_it, null)
                 .create();
         message.setCanceledOnTouchOutside(false);

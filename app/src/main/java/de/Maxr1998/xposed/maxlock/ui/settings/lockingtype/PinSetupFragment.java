@@ -26,7 +26,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,19 +84,16 @@ public class PinSetupFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-        mSetupPinInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_NULL
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || actionId == EditorInfo.IME_ACTION_NEXT) {
-                    if (mSetupPinInput.getText().length() > 3) {
-                        handleStage();
-                    }
-                    return true;
+        mSetupPinInput.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_NULL
+                    || actionId == EditorInfo.IME_ACTION_DONE
+                    || actionId == EditorInfo.IME_ACTION_NEXT) {
+                if (mSetupPinInput.getText().length() > 3) {
+                    handleStage();
                 }
-                return false;
+                return true;
             }
+            return false;
         });
         Button mCancelButton = (Button) rootView.findViewById(R.id.button_cancel);
         mCancelButton.setOnClickListener(this);
