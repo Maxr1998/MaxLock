@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ml_implementation">MaxLock の動作モード</string>
+
+    <string name="applock_service_description">アプリに起動ロックをかけるサービスです</string>
+
+    <string name="implementation_default">デフォルト - Xposed が必要です</string>
+    <string name="implementation_no_xposed">Root/Xposed なし</string>
+    <string name="xposed_success_information">Xposed がインストール済みで動作しています。素晴らしい!</string>
+    <string name="implementation_alert">Root/Xposed なしモードではアクセシビリティサービスを使用します。
+このモードはシステムを変更することなくすべての端末で動作しますが、より多くのメモリとバッテリーを消費します。
+それなので、Xposed がインストール済みかインストール可能な場合はデフォルトモードでの使用を強くおすすめします!</string>
+    <string name="accessibility_error">アクセシビリティサービスが有効になっていません。ここをタップしてシステム設定で有効にしてください。有効にしないとアプリのロックが機能しません!</string>
+</resources>
