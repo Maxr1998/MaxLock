@@ -134,7 +134,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(screen.preferenceXML);
         switch (screen) {
             case MAIN:
-                setRetainInstance(true);
                 // Show changelog and rating dialog
                 if (BuildConfig.VERSION_CODE > prefs.getInt(Common.LAST_VERSION_NUMBER, 0)) {
                     showUpdatedMessage();
@@ -363,7 +362,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     case Common.USE_DARK_STYLE:
                     case Common.USE_AMOLED_BLACK:
                     case Common.ENABLE_PRO:
-                        ((SettingsActivity) getActivity()).restart();
+                        getActivity().recreate();
                         return true;
                     case Common.ABOUT:
                         launchFragment(getFragmentManager(), Screen.ABOUT.getScreen(), true);
