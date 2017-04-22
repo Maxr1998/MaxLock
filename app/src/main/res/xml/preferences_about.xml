@@ -42,6 +42,9 @@
             android:summary="@string/translation_german"
             maxlock:language="de" />
         <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_indonesian"
+            maxlock:language="in" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
             android:summary="@string/translation_italian"
             maxlock:language="it" />
         <de.Maxr1998.xposed.maxlock.preference.TranslationPreference

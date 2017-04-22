@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
-ext.languages = ["de", "es", "fa", "fr", "it", "ja", "pl", "ru", "zh-rCN", "zh-rTW"]
+ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "ru", "zh-rCN", "zh-rTW"]
 ext.supportLibraryVersion = "25.3.1"
-ext.c_languages = ["", "es-ES", "fa", "fr", "it", "ja", "pl", "ru", "zh-CN", "zh-TW"]
+ext.c_languages = ["", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "ru", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
 android {
