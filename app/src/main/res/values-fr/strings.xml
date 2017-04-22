@@ -61,8 +61,6 @@
     <string name="pref_view_logs">Voir les logs</string>
     <string name="menu_delete_log">Supprimer les logs</string>
     <string name="pref_category_other">Autres</string>
-    <string name="pref_fake_crash_passphrase">\"Fausse erreur\" entrée</string>
-    <string name="pref_fake_crash_passphrase_summary">L\'expression que l\'utilisateur doit entrer dans la boîte de dialogue pour afficher l\'ecran de verrouillage</string>
     <!-- I.Mod settings -->
     <string name="pref_category_delay_general">Delayed re-lock options</string>
     <string name="pref_delay_general">Activez le reverrouillage intélligent général</string>

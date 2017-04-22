@@ -89,12 +89,6 @@
     <string name="menu_delete_log">Borrar logs</string>
     <string name="logs_empty_text">No hay entradas de log</string>
     <string name="pref_category_other">Otros</string>
-    <string name="pref_fake_crash_all_apps">Cuelgue falso para todas las aplicaciones</string>
-    <string name="pref_fake_crash_all_apps_summary">Esto anula la configuración de la lista de aplicaciones para todas las aplicaciones</string>
-    <string name="pref_fake_unlock">Desbloquear directamente al apretar Reportar</string>
-    <string name="pref_fake_unlock_summary">Al activarlo, la pantalla de bloqueo aparecerá luego de apretar el botón <i>"Lamentablemente, X se ha detenido."</i></string>
-    <string name="pref_fake_crash_passphrase">Palabra clave del cuelgue falso</string>
-    <string name="pref_fake_crash_passphrase_summary">La frase que el usuario debe escribir en Reportar para que aparezca la pantalla de desbloqueo</string>
     <string name="pref_enable_tasker">Habilitar integración con Tasker</string>
     <!-- I.Mod settings -->
     <string name="pref_category_delay_general">Intika I.Mod - Periodo de gracia - Global</string>

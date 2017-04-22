@@ -101,12 +101,6 @@
     <string name="menu_delete_log">删除日志</string>
     <string name="logs_empty_text">没有日志记录</string>
     <string name="pref_category_other">其它</string>
-    <string name="pref_fake_crash_all_apps">假死所有应用</string>
-    <string name="pref_fake_crash_all_apps_summary">这将会覆盖从应用列表中的所有应用设置</string>
-    <string name="pref_fake_unlock">假死直接解锁</string>
-    <string name="pref_fake_unlock_summary">当启用锁屏假死对话框中按下报告按钮后显示</string>
-    <string name="pref_fake_crash_passphrase">假死输入</string>
-    <string name="pref_fake_crash_passphrase_summary">用户需要在对话框中输入短语才能打开锁屏</string>
     <string name="pref_enable_tasker">启用Tasker集成</string>
     <!-- I.Mod settings -->
     <string name="pref_screen_delayed_relock">延迟重新锁定选项</string>

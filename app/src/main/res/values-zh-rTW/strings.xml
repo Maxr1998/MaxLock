@@ -91,12 +91,6 @@
     <string name="menu_delete_log">刪除日誌</string>
     <string name="logs_empty_text">沒有日誌記錄</string>
     <string name="pref_category_other">其他</string>
-    <string name="pref_fake_crash_all_apps">假死所有應用程式</string>
-    <string name="pref_fake_crash_all_apps_summary">這將會覆蓋從應用程式清單中的所有應用程式設定</string>
-    <string name="pref_fake_unlock">假死直接解鎖</string>
-    <string name="pref_fake_unlock_summary">當啟用鎖定螢幕假死對話框中按下報告按鈕後顯示\“應用程式已崩潰&#8230;\”<i>\“不幸的是，X已經停止”</i></string>
-    <string name="pref_fake_crash_passphrase">假死輸入</string>
-    <string name="pref_fake_crash_passphrase_summary">用戶需要在對話框中輸入短語才能打開鎖定螢幕</string>
     <string name="pref_enable_tasker">啟用Tasker集成</string>
     <!-- I.Mod settings -->
     <string name="pref_category_delay_general">Intika I.Mod - 寬限期 - 全局</string>

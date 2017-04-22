@@ -17,12 +17,12 @@
     <string name="dialog_cb_never_again">Nie pokazuj tego ponownie</string>
     <string name="dialog_button_donate">Dotacja</string>
     <string name="dialog_button_rate">Oceń</string>
-    <string name="notification_lock_new_app_title">Blokuj nowo instalowane aplikacje?</string>
+    <string name="notification_lock_new_app_title">Zablokuj nowo zainstalowaną aplikację?</string>
     <string name="notification_lock_new_app_action_never_again">Nie pokazuj tego ponownie</string>
     <string name="notification_lock_new_app_action_lock">Blokada aplikacji</string>
     <string name="toast_lock_new_app_locked_successfully">Zablokowano pomyślnie</string>
     <string name="dialog_text_restart_required">MaxLock wymaga ponownego uruchomienia, aby zmiany odniosły skutek</string>
-    <string name="toast_pro_required">Wersja Pro jest wymagana, aby korzystać z tej funkcji!</string>
+    <string name="toast_pro_required">Wersja Pro jest wymagana, aby skorzystać z tej funkcji!</string>
     <!-- First start screens-->
     <string name="fs_welcome_maxlock">Witamy w MaxLock!</string>
     <string name="fs_maxlock_description">MaxLock będzie chronić aplikacje przed niepowołanym dostępem</string>
@@ -61,7 +61,7 @@
         Zapisz co najmniej jeden w ustawieniach, aby korzystać z tej funkcji.</string>
     <string name="pref_disable_fingerprint_summary_on">Odblokowanie odciskiem palca wyłączone</string>
     <!-- Locking UI settings -->
-    <string name="pref_screen_locking_ui">Interfejs ekranu odblokowania</string>
+    <string name="pref_screen_locking_ui">Ekran odblokowania</string>
     <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
       <string name="pref_open_theme_manager_summary_none">No theme applied</string>
       <string name="pref_open_theme_manager_summary_applied">Applied: </string>
@@ -74,9 +74,9 @@
         <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">Wybierz kolor</string>
-    <string name="pref_hide_status_bar">Ukryj pasek stanu/Pełny ekran</string>
-    <string name="pref_invert_color">Odwróć kolory elementów interfejsu</string>
-    <string name="pref_invert_color_summary">Ustawi to kolor tekstu i separatorów na czarny</string>
+    <string name="pref_hide_status_bar">Ukryj pasek stanu / Pełny ekran</string>
+    <string name="pref_invert_color">Odwróć kolory elementów</string>
+    <string name="pref_invert_color_summary">Zmieni kolor tekstu i separatorów na czarny</string>
     <string name="pref_hide_title_bar">Ukryj pasek tytułu</string>
     <string name="pref_category_password_and_pin">Hasło i PIN</string>
     <string name="pref_quick_unlock">Szybkie odblokowanie</string>
@@ -95,20 +95,14 @@
     <string name="pref_hide_fingerprint_icon">Ukryj ikonę odcisku palca</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">Opcje blokowania</string>
-    <string name="pref_category_logging">Rejestr</string>
-    <string name="pref_enable_logging">Włącz rejestr</string>
-    <string name="pref_enable_logging_summary">Rejestr nie powiódł się/nieskończone próby odblokowania</string>
-    <string name="pref_view_logs">Podgląd rejestru</string>
-    <string name="pref_screen_logs">Rejestr</string>
+    <string name="pref_category_logging">Rejestrowanie</string>
+    <string name="pref_enable_logging">Włącz rejestrowanie</string>
+    <string name="pref_enable_logging_summary">Rejestr nie powiódł się / nieskończone próby odblokowania</string>
+    <string name="pref_view_logs">Podgląd rejestrów</string>
+    <string name="pref_screen_logs">Rejestr (Log)</string>
     <string name="menu_delete_log">Usuń rejestr</string>
     <string name="logs_empty_text">Brak wpisów w dzienniku</string>
     <string name="pref_category_other">Inne</string>
-    <string name="pref_fake_crash_all_apps">Fałszywe zatrzymanie dla wszystkich aplikacji</string>
-    <string name="pref_fake_crash_all_apps_summary">Zastępuje ustawienie z listy aplikacji dla wszystkich aplikacji</string>
-    <string name="pref_fake_unlock">Odblokowanie po fałszywym zatrzymaniu</string>
-    <string name="pref_fake_unlock_summary">Gdy włączone, ekran odblokowania jest wyświetlany bezpośrednio po wciśnięciu przycisku <i>"Niestety, X została zatrzymana."</i> w oknie \"Aplikacja zatrzymana&#8230;\"</string>
-    <string name="pref_fake_crash_passphrase">Fraza fałszywego zatrzymania</string>
-    <string name="pref_fake_crash_passphrase_summary">Fraza jaką trzeba wprowadzić w oknie, aby otworzyć ekran odblokowania</string>
     <string name="pref_enable_tasker">Włącz integrację z Taskerem</string>
     <!-- I.Mod settings -->
     <string name="pref_screen_delayed_relock">Opóżnione ponowne blokowanie - Opcje</string>
@@ -116,27 +110,27 @@
     <string name="pref_category_delay_general">Ogólne</string>
     <string name="pref_delay_general">Opóżnione blokowanie - Ogólne</string>
     <string name="pref_delay_general_summary">Nie pytaj o ponowne odblokowanie przez pewien okres czasu od którego aplikacja została odblokowana</string>
-    <string name="pref_delay_general_input">Wył. czasowy opóżnionego blokowania - Ogólne</string>
+    <string name="pref_delay_general_input">Wł. czasowy opóżnionego blokowania - Ogólne</string>
     <string name="pref_delay_general_input_summary">Ustaw czas (w minutach) po którym aplikacje zostaną ponownie zablokowane</string>
     <string name="pref_category_delay_per_app">Dla aplikacji</string>
     <string name="pref_delay_per_app">Opóżnione ponowne blokowanie - Aplikacja</string>
     <string name="pref_delay_per_app_summary">Nie pytaj o ponowne odblokowanie aplikacji w określonym czasie, po którym aplikacja została odblokowana</string>
-    <string name="pref_delay_per_app_input">Wył. czasowy opóznionego blokowania - Aplikacja</string>
+    <string name="pref_delay_per_app_input">Wł. czasowy opóznionego blokowania - Aplikacja</string>
     <string name="pref_delay_per_app_input_summary">Ustaw czas (w minutach) po którym aplikacja zostanie ponownie zablokowana</string>
     <string name="pref_delay_needpro">Opóżnione ponowne blokowanie - wersja Pro</string>
-    <string name="pref_category_reset_relock_timer">Opcje resetowania wył. czasowego</string>
+    <string name="pref_category_reset_relock_timer">Opcje resetowania wł. czasowego</string>
     <string name="pref_reset_relock_timer_description">Opcje te mogą być użyte, aby zapytać o uwierzytelnianie natychmiast przy następnym uruchomieniu aplikacji
         zamiast poczekać na minięcie czasu ponownego blokowania</string>
     <string name="pref_show_reset_notification">Pokaż powiadomienie</string>
-    <string name="pref_show_reset_notification_summary">Pokaż powiadomienie, aby zresetować wył. czasowy I.Mod</string>
+    <string name="pref_show_reset_notification_summary">Pokaż powiadomienie, aby zresetować wł. czasowy I.Mod</string>
     <string name="pref_reset_screen_off">Autoreset I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Resetuj wył. czasowy I.Mod po wyłączeniu ekranu</string>
+    <string name="pref_reset_screen_off_summary">Zresetuj wł. czasowy I.Mod po wyłączeniu ekranu</string>
     <string name="pref_hide_recents_thumbnails">Ukryj miniatury ostatnich aplikacji</string>
     <string name="pref_hide_recents_thumbnails_summary">Usuń podgląd miniatur z zablokowanych aplikacji na ekranie ostatnich aplikacji</string>
     <!-- Apps settings -->
     <string name="pref_category_apps">Aplikacje</string>
     <string name="pref_choose_apps">Wybierz aplikacje</string>
-    <string name="pref_choose_apps_summary">Wybierz aplikacje, które mają być zablokowane</string>
+    <string name="pref_choose_apps_summary">Wybierz aplikacje do zablokowania</string>
     <string name="menu_backup_list">Kopia zapasowa - lista</string>
     <string name="menu_restore_list">Przywróć - lista</string>
     <string name="menu_clear_list">Wyczyść listę</string>
@@ -169,7 +163,7 @@
     <string name="pref_category_ui">Ustawienia</string>
     <string name="pref_hide_from_launcher">Ukryj aplikację na liście</string>
     <string name="reboot_required">Ponowne uruchomienie jest wymagane, aby zastosować zmiany</string>
-    <string name="pref_use_dark_style">Użyj ciemnego stylu</string>
+    <string name="pref_use_dark_style">Użyj ciemnego motywu</string>
     <string name="pref_use_amoled_black">Użyj czarnego AMOLED-a</string>
     <string name="pref_use_amoled_black_summary">Pełne czarne tło w ciemnym motywie, co skutkuje niskim zużyciem energii dla wyświetlaczy AMOLED</string>
     <string name="pref_new_app_notification">Powiadomienie nowej aplikacji</string>
@@ -178,11 +172,11 @@
     <string name="pref_category_about">O aplikacji</string>
     <string name="pref_about_summary">Kliknij, aby zobaczyć podziękowania, użyte biblioteki i licencje.</string>
     <string name="pref_visit_website">Odwiedź stronę Maxr1998</string>
-    <string name="pref_show_changelog">Pokaż rejestr zmian</string>
+    <string name="pref_show_changelog">Pokaż listę zmian</string>
     <string name="pref_category_credits">Podziękowania</string>
     <string name="pref_category_translations">Tłumaczenia</string>
     <string name="pref_category_licenses">Licencje</string>
-    <string name="pref_donate_upgrade_pro">Dotacja, aby zaktualizować do wersji Pro</string>
+    <string name="pref_donate_upgrade_pro">Wesprzyj, aby zaktualizować do wersji Pro</string>
     <string name="donate_status_donated">Dotacja wykonana pomyślnie.</string>
     <string name="donate_status_not_donated">Rozważ dotację, aby wesprzeć dalszy rozwój. Dzięki :)</string>
     <string name="dialog_message_already_bought">Skorzystałeś z opcji dotacji.
@@ -190,10 +184,10 @@
     <string name="donate_paypal">Dotacja przez PayPal</string>
     <string name="donate_paypal_alert">Dotacja PayPal nie odblokowuje pełnej wersji Pro</string>
     <string name="pref_enable_pro">Włącz Pro</string>
-    <string name="pref_enable_pro_summary">Włącza funkcje wersji Pro, nawet jeśli nie zakupiłeś MaxLock Pro</string>
-    <string name="pref_prevent_uninstall">Chroń aplikacje przed odinstalowaniem</string>
+    <string name="pref_enable_pro_summary">Włącza funkcje wersji Pro, nawet jeśli nie dokonano zakupu MaxLock Pro</string>
+    <string name="pref_prevent_uninstall">Chroń aplikację przed odinstalowaniem</string>
     <string name="pref_prevent_uninstall_summary">Wymaga uprawnień administratora urządzenia dla MaxLock, aby aplikacje nie zostały odinstalowane.
-        Trzeba odinstalować aplikację lub dezaktywować administratora w \"Ustawienia → Zabezpieczenia → Administratorzy urządzenia\" i wtedy odinstalować</string>
+        Należy odinstalować aplikację lub dezaktywować administratora w \"Ustawienia → Zabezpieczenia → Administratorzy urządzenia\" i wtedy odinstalować</string>
     <string name="pref_uninstall">Odinstaluj</string>
     <string name="device_admin_description">Chroń MaxLock przed odinstalowaniem i wyłączeniem</string>
     <string name="pref_send_feedback">Wyślij opinię / Zgłoś błąd</string>

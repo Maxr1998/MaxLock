@@ -85,12 +85,6 @@
     <string name="menu_delete_log">Стереть записи</string>
     <string name="logs_empty_text">Список записей пуст</string>
     <string name="pref_category_other">Другие опции</string>
-    <string name="pref_fake_crash_all_apps">Имитация \'падения\'для всех приложений</string>
-    <string name="pref_fake_crash_all_apps_summary">Эта опция переназначит настройки. Вместо Вашего списка приложений будут задействованы все приложения</string>
-    <string name="pref_fake_unlock">Прямая разблокировка после имитации \'падения\'</string>
-    <string name="pref_fake_unlock_summary">Если включено, экран блокировки показывается сразу после нажатия кнопки<i>"К сожалению, приложение X остановлено."</i> в диалоге \"Падение приложения&#8230;\"</string>
-    <string name="pref_fake_crash_passphrase">Пароль имитации падения</string>
-    <string name="pref_fake_crash_passphrase_summary">Фраза, которую пользователь должен ввести в диалоге для появления экрана блокировки</string>
     <string name="pref_enable_tasker">Включить интеграцию с Tasker</string>
     <!-- I.Mod settings -->
     <string name="pref_category_delay_general">Intika I.Mod - Время, в течение которого приложения не блокируются повторно - Для всех приложений</string>
