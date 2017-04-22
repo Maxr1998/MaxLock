@@ -16,20 +16,23 @@
     <PreferenceCategory android:title="@string/pref_category_other">
         <CheckBoxPreference
             android:key="fake_crash_all_apps"
-            android:summary="@string/pref_fake_crash_all_apps_summary"
-            android:title="@string/pref_fake_crash_all_apps" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:disableDependentsState="true"
-            android:key="enable_direct_unlock"
-            android:summary="@string/pref_fake_unlock_summary"
-            android:title="@string/pref_fake_unlock" />
+            android:summary="@string/pref_fake_crash_enable_all_apps_summary"
+            android:title="@string/pref_fake_crash_enable_all_apps" />
         <de.Maxr1998.xposed.maxlock.preference.EditTextPreference
             android:defaultValue="start"
             android:dependency="enable_direct_unlock"
             android:key="fake_die_input"
             android:summary="@string/pref_fake_crash_passphrase_summary"
             android:title="@string/pref_fake_crash_passphrase" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:disableDependentsState="true"
+            android:key="enable_direct_unlock"
+            android:summary="@string/pref_fake_crash_instant_lockscreen_summary"
+            android:title="@string/pref_fake_crash_instant_lockscreen" />
+    </PreferenceCategory>
+    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
+    <PreferenceCategory android:title="@string/pref_category_other">
         <CheckBoxPreference
             android:key="enable_tasker_integration"
             android:title="@string/pref_enable_tasker" />

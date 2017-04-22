@@ -106,13 +106,14 @@
     <string name="pref_screen_logs">Logs</string>
     <string name="menu_delete_log">Logs löschen</string>
     <string name="logs_empty_text">Keine Log-Einträge vorhanden</string>
-    <string name="pref_category_other">Andere</string>
-    <string name="pref_fake_crash_all_apps">Vorgetäuschter Absturz alle Apps</string>
-    <string name="pref_fake_crash_all_apps_summary">Überschreibt Einstellung aus Anwendungsliste</string>
-    <string name="pref_fake_unlock">Vorgetäuschter Absturz direkt entsperren</string>
-    <string name="pref_fake_unlock_summary">Zeige Sperrbildschirm direkt nachdem \"Bericht\" geklickt wurde.</string>
-    <string name="pref_fake_crash_passphrase">\"Vorgetäuschter Absturz\" Eingabe</string>
+    <string name="pref_category_fake_crash">Vorgetäuschter Absturz</string>
+    <string name="pref_fake_crash_enable_all_apps">Für alle Apps aktivieren</string>
+    <string name="pref_fake_crash_enable_all_apps_summary">Überschreibt Einstellung aus Anwendungsliste für alle Apps</string>
+    <string name="pref_fake_crash_passphrase">\"Bericht\" Eingabe</string>
     <string name="pref_fake_crash_passphrase_summary">Die Phrase die der Nutzer in den Dialog eingeben muss um den Sperrbildschirm zu öffnen</string>
+    <string name="pref_fake_crash_instant_lockscreen">Sperrbildschirm sofort zeigen</string>
+    <string name="pref_fake_crash_instant_lockscreen_summary">Zeige den Sperrbildschirm direkt nachdem \"Bericht\" geklickt wurde.</string>
+    <string name="pref_category_other">Andere</string>
     <string name="pref_enable_tasker">Tasker Integration anschalten</string>
     <!-- I.Mod settings -->
     <string name="pref_screen_delayed_relock">Verzögerte Sperrung</string>

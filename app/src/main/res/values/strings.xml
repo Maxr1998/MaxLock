@@ -106,13 +106,14 @@
     <string name="pref_screen_logs">Logs</string>
     <string name="menu_delete_log">Delete logs</string>
     <string name="logs_empty_text">There are no log entries</string>
+    <string name="pref_category_fake_crash">Fake crash</string>
+    <string name="pref_fake_crash_enable_all_apps">Enable for all apps</string>
+    <string name="pref_fake_crash_enable_all_apps_summary">This overrides the setting from the app list for all apps</string>
+    <string name="pref_fake_crash_passphrase">\"Report\" Passphrase</string>
+    <string name="pref_fake_crash_passphrase_summary">The phrase the user needs to input in the dialog to open lockscreen</string>
+    <string name="pref_fake_crash_instant_lockscreen">Show lockscreen instantly</string>
+    <string name="pref_fake_crash_instant_lockscreen_summary">When enabled the lock screen is displayed directly after pushing the <i>\"Report"</i> button in the \"Unfortunately, X has stopped.\" dialog</string>
     <string name="pref_category_other">Others</string>
-    <string name="pref_fake_crash_all_apps">Fake crash for all apps</string>
-    <string name="pref_fake_crash_all_apps_summary">This overrides the setting from the app list for all apps</string>
-    <string name="pref_fake_unlock">Fake crash direct unlock</string>
-    <string name="pref_fake_unlock_summary">When enabled the lock screen is displayed directly after pushing the <i>\"Unfortunately, X has stopped."</i> button on the \"App crashed…\" dialog</string>
-    <string name="pref_fake_crash_passphrase">Fake crash passphrase</string>
-    <string name="pref_fake_crash_passphrase_summary">The phrase the user has to input in the dialog to open lockscreen</string>
     <string name="pref_enable_tasker">Enable Tasker integration</string>
     <!-- I.Mod settings -->
     <string name="pref_screen_delayed_relock">Delayed re-lock options</string>
