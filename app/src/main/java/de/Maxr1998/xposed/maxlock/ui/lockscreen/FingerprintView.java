@@ -26,7 +26,7 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
-import android.widget.ImageView;
+import android.support.v7.widget.AppCompatImageView;
 import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
@@ -38,7 +38,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 
 @SuppressLint("ViewConstructor")
-public final class FingerprintView extends ImageView {
+public final class FingerprintView extends AppCompatImageView {
 
     private final LockView mLockView;
     private final OnClickListener mNotAllowedToast = v -> Toast.makeText(getContext(), R.string.message_fingerprint_disabled, Toast.LENGTH_SHORT).show();
@@ -72,7 +72,7 @@ public final class FingerprintView extends ImageView {
     public FingerprintView(Context context, LockView lv) {
         super(context);
         mLockView = lv;
-        setScaleType(ImageView.ScaleType.CENTER);
+        setScaleType(AppCompatImageView.ScaleType.CENTER);
         setContentDescription(getResources().getString(android.R.string.fingerprint_icon_content_description));
     }
 
