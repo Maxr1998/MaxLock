@@ -26,7 +26,6 @@ import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,6 @@ import android.widget.RadioGroup;
 import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
-import de.Maxr1998.xposed.maxlock.util.Util;
 
 public final class MLImplementation {
 
@@ -123,7 +121,6 @@ public final class MLImplementation {
             }
 
             private void updateView() {
-                Log.d(Util.LOG_TAG, "Updated");
                 boolean defaultChecked = group.getCheckedRadioButtonId() == R.id.implementation_item_default;
 
                 MLPreferences.getPreferences(c).edit().putInt(Common.ML_IMPLEMENTATION, defaultChecked ? DEFAULT : NO_XPOSED).apply();
