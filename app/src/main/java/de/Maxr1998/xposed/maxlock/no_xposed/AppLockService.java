@@ -110,12 +110,12 @@ public class AppLockService extends AccessibilityService {
             return;
         }
 
-        String packageName = String.valueOf(accessibilityEvent.getPackageName());
+        final String packageName = String.valueOf(accessibilityEvent.getPackageName());
         if (packageName.equals("null") ||
                 accessibilityEvent.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
-                packageName.equals("android") || packageName.matches("com\\.(google\\.)?android\\.systemui") ||
-                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getWindowType(accessibilityEvent) == AccessibilityWindowInfo.TYPE_SYSTEM) ||
-                Settings.Secure.getString(getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD).startsWith(packageName)) {
+                ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getWindowType(accessibilityEvent) != AccessibilityWindowInfo.TYPE_APPLICATION) ||
+                        packageName.equals("android") || packageName.matches("com\\.(google\\.)?android\\.systemui") ||
+                        Settings.Secure.getString(getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD).startsWith(packageName))) {
             return;
         }
 
