@@ -6,9 +6,6 @@ ext.c_languages = ["", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "ru", "zh-CN
 ext.crowdinKey = null
 
 android {
-    signingConfigs {
-        main
-    }
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
     defaultConfig {
@@ -18,6 +15,8 @@ android {
         versionCode 45
         versionName "6.4.1"
         resConfigs languages
+        setProperty("archivesBaseName", "ML-$versionName")
+
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -26,14 +25,10 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //noinspection GroovyAssignabilityCheck
-            signingConfig signingConfigs.main
         }
         debug {
             debuggable true
             versionNameSuffix "-beta"
-            //noinspection GroovyAssignabilityCheck
-            signingConfig signingConfigs.main
         }
     }
     compileOptions {
@@ -47,13 +42,18 @@ android {
 
 def propFile = project.file("keyStore.properties")
 if (propFile.exists()) {
-    def props = new Properties()
+    Properties props = new Properties()
     props.load(new FileInputStream(propFile))
-    android.signingConfigs.main.storeFile project.file(props.keyStore)
-    android.signingConfigs.main.storePassword props.keyStorePassword
-    android.signingConfigs.main.keyAlias props.keyAlias
-    android.signingConfigs.main.keyPassword props.keyPassword
-    ext.crowdinKey = props.crowdinKey
+    def main = android.signingConfigs.create("main")
+    main.storeFile project.file(props["keyStore"])
+    main.storePassword props["keyStorePassword"]
+    main.keyAlias props["keyAlias"]
+    main.keyPassword props["keyPassword"]
+
+    android.buildTypes.release.signingConfig = main
+    android.buildTypes.debug.signingConfig = main
+
+    ext.crowdinKey = props["crowdinKey"]
 }
 
 repositories {
@@ -92,18 +92,20 @@ dependencies {
     compile(name: 'PatternLock', ext: 'aar')
 }
 
-task updateTranslations() << {
-    if (crowdinKey == null)
-        return
-    for (int i = 0; i < c_languages.size(); i++) {
-        String c_lang = c_languages[i]
-        if (c_lang == "")
-            continue
-        String lang = languages[i]
-        String file = "\$PWD/src/main/res/values-$lang/strings.xml"
-        exec {
-            executable "bash"
-            args "-c", "wget -O \"$file\" \"https://api.crowdin.com/api/project/MaxLock/export-file?file=strings.xml&language=$c_lang&key=$crowdinKey\""
+task updateTranslations() {
+    doLast {
+        if (crowdinKey == null)
+            return
+        for (int i = 0; i < c_languages.size(); i++) {
+            String c_lang = c_languages[i]
+            if (c_lang == "")
+                continue
+            String lang = languages[i]
+            String file = "\$PWD/src/main/res/values-$lang/strings.xml"
+            exec {
+                executable "bash"
+                args "-c", "wget -O \"$file\" \"https://api.crowdin.com/api/project/MaxLock/export-file?file=strings.xml&language=$c_lang&key=$crowdinKey\""
+            }
         }
     }
 }
