@@ -10,7 +10,7 @@ android {
         main
     }
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 16
@@ -86,8 +86,8 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     compile "com.android.support:support-fragment:$supportLibraryVersion"
-    compile 'com.google.android.gms:play-services-base:10.2.1'
-    compile 'com.google.android.gms:play-services-analytics:10.2.1'
+    compile 'com.google.android.gms:play-services-base:10.2.4'
+    compile 'com.google.android.gms:play-services-analytics:10.2.4'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
