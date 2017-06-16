@@ -1,17 +1,18 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.hugo'
 
 ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "ru", "zh-rCN", "zh-rTW"]
-ext.supportLibraryVersion = "25.3.1"
+ext.supportLibraryVersion = "26.0.0-beta2"
 ext.c_languages = ["", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "ru", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.0'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 45
         versionName "6.4.1"
         resConfigs languages
@@ -57,10 +58,6 @@ if (propFile.exists()) {
 }
 
 repositories {
-    jcenter()
-    maven {
-        url "https://jitpack.io"
-    }
     flatDir {
         dirs 'libs'
     }
@@ -71,13 +68,13 @@ dependencies {
     compile 'com.anjlab.android.iab.v3:library:1.0.38@aar'
     compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
-    compile 'com.google.guava:guava:21.0'
+    compile 'com.google.guava:guava:22.0-android'
     compile 'com.heinrichreimersoftware:material-intro:1.6'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     compile 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
     compile 'commons-io:commons-io:2.4'
-    provided 'de.robv.android.xposed:api:81'
-    provided 'de.robv.android.xposed:api:81:sources'
+    provided 'de.robv.android.xposed:api:82'
+    provided 'de.robv.android.xposed:api:82:sources'
     //-- Android support and Google Services
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:customtabs:$supportLibraryVersion"
@@ -86,8 +83,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     compile "com.android.support:support-fragment:$supportLibraryVersion"
-    compile 'com.google.android.gms:play-services-base:10.2.4'
-    compile 'com.google.android.gms:play-services-analytics:10.2.4'
+    compile 'com.google.android.gms:play-services-analytics:11.0.1'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
