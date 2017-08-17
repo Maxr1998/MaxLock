@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.hugo'
 
 ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "ru", "zh-rCN", "zh-rTW"]
-ext.supportLibraryVersion = "26.0.0-beta2"
+ext.supportLibraryVersion = "26.0.1"
 ext.c_languages = ["", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "ru", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
@@ -83,7 +83,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     compile "com.android.support:support-fragment:$supportLibraryVersion"
-    compile 'com.google.android.gms:play-services-analytics:11.0.1'
+    compile 'com.google.android.gms:play-services-analytics:11.2.0'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
