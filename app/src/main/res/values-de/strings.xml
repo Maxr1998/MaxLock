@@ -123,10 +123,10 @@
     <string name="pref_delay_general_summary">Frage innerhalb einer bestimmten Zeitspanne nicht mehr nach Authentifizierung</string>
     <string name="pref_delay_general_input">Allgemeiner Entsperrfrist Timer</string>
     <string name="pref_delay_general_input_summary">Zeitspanne, innerhalb welcher nicht mehr nach Authentifizierung gefragt wird</string>
-    <string name="pref_category_delay_per_app">Entsperrfrist - Per App</string>
-    <string name="pref_delay_per_app">Per App Entsperrfrist</string>
+    <string name="pref_category_delay_per_app">Entsperrfrist - Pro-App</string>
+    <string name="pref_delay_per_app">Pro-App Entsperrfrist</string>
     <string name="pref_delay_per_app_summary">Frage innerhalb einer bestimmten Zeitspanne nicht mehr nach Authentifizierung, für jede App getrennt</string>
-    <string name="pref_delay_per_app_input">Per App Entsperrfrist Timer</string>
+    <string name="pref_delay_per_app_input">Pro-App Entsperrfrist Timer</string>
     <string name="pref_delay_per_app_input_summary">@string/pref_delay_general_summary</string>
     <string name="pref_delay_needpro">Verzögertes Sperren - Pro Version</string>
     <string name="pref_category_reset_relock_timer">Vorzeitiges Zurücksetzen des Timers</string>
