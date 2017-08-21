@@ -17,22 +17,35 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 
+import com.crossbowffs.remotepreferences.RemotePreferences;
+
 import de.Maxr1998.xposed.maxlock.BuildConfig;
+import de.Maxr1998.xposed.maxlock.Common;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getDefault;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 
 public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
-    private static XSharedPreferences prefsApps;
+    private static SharedPreferences getRemotePreferences(String name) {
+        // #############################################################################
+        // Thanks to XposedGELSettings for the following snippet (https://git.io/vP2Gw):
+        Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
+        if (activityThread == null)
+            return null;
+        Context context = (Context) callMethod(activityThread, "getSystemContext");
+        // #############################################################################
+        return new RemotePreferences(context, Common.PREFERENCE_PROVIDER_AUTHORITY, name);
+    }
 
     static void logD(String message) {
         if (BuildConfig.DEBUG)
@@ -42,32 +55,33 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
         log("ML: Loaded Main class");
-        prefsApps = new XSharedPreferences(MAXLOCK_PACKAGE_NAME, "packages");
-        prefsApps.makeWorldReadable();
-        writeFile(getDefault());
     }
 
     @Override
     public void handleLoadPackage(final LoadPackageParam lPParam) throws Throwable {
+        SharedPreferences prefsApps = getRemotePreferences(Common.PREFS_APPS);
+        SharedPreferences prefsHistory = getRemotePreferences(Common.PREFS_HISTORY);
+        if (prefsApps == null || prefsHistory == null)
+            return;
         if (lPParam.packageName.equals(MaxLock.PACKAGE_NAME)) {
-            MaxLock.init(lPParam);
+            MaxLock.init(lPParam, prefsHistory);
         } else if (lPParam.packageName.equals(DeviceAdminProtection.PACKAGE_NAME)) {
             DeviceAdminProtection.init(lPParam);
         } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME)) {
-            SystemUI.init(prefsApps, lPParam);
+            SharedPreferences prefs = getRemotePreferences(Common.MAXLOCK_PACKAGE_NAME.concat("_preferences"));
+            SystemUI.init(lPParam, prefs, prefsApps);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                SystemUI.initScreenOff(prefsApps, lPParam);
+                SystemUI.initScreenOff(lPParam, prefsApps, prefsHistory);
             }
             return;
         } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME_KEYGUARD) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            SystemUI.initScreenOff(prefsApps, lPParam);
+            SystemUI.initScreenOff(lPParam, prefsApps, prefsHistory);
             return;
         }
-        prefsApps.reload();
         if (prefsApps.getBoolean(lPParam.packageName, false)) {
-            Apps.init(prefsApps, lPParam);
+            Apps.init(lPParam, prefsApps, prefsHistory);
         } else {
-            Apps.initLogging(lPParam);
+            Apps.initLogging(lPParam, prefsHistory);
         }
     }
 }

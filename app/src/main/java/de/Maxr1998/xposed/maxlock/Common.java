@@ -41,7 +41,7 @@ public abstract class Common {
     public static final String FAILED_ATTEMPTS_COUNTER = "failed_attempts_counter";
     public static final String FAILED_ATTEMPTS_TIMER = "failed_attempts_timer";
     public static final String TASKER_QUERIES = "tasker_queries";
-    public static final String THEME_PKG = "theme_pkg";
+    //public static final String THEME_PKG = "theme_pkg";
 
     public static final String ML_IMPLEMENTATION = "ml_implementation";
 
@@ -117,10 +117,13 @@ public abstract class Common {
     public static final String PREF_VALUE_PATTERN = "pattern";
 
     // Preference files //
+    public static final String PREFS_HISTORY = "history";
     public static final String PREFS_KEY = "keys";
     public static final String PREFS_APPS = "packages";
     public static final String PREFS_KEYS_PER_APP = "per_app_settings";
     //public static final String PREFS_THEME = "theme";
+
+    public static final String PREFERENCE_PROVIDER_AUTHORITY = "de.Maxr1998.xposed.maxlock.preferences";
 
     // Modes //
     public static final String LOCK_ACTIVITY_MODE = "la_mode";

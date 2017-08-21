@@ -18,27 +18,20 @@
 package de.Maxr1998.xposed.maxlock.hooks;
 
 import android.content.ComponentName;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.util.ColorSupplier;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.CLOSE_OBJECT_KEY;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.PACKAGE_HISTORY_ARRAY_KEY;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.PROCESS_HISTORY_ARRAY_KEY;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getDefault;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.readFile;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
@@ -51,24 +44,23 @@ class SystemUI {
     private static final String HIDE_RECENTS_THUMBNAILS = "hide_recents_thumbnails";
     private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
 
-    static void init(final XSharedPreferences prefsApps, XC_LoadPackage.LoadPackageParam lPParam) {
+    static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps) {
         try {
-            @ColorInt final int color = true ? Color.WHITE : Color.BLACK; // TODO
+            ColorSupplier color = () -> !prefs.getBoolean(Common.INVERT_COLOR, false) ? Color.WHITE : Color.BLACK;
             if (LOLLIPOP) {
                 findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "rebindToTask", PACKAGE_NAME + ".recents.model.Task", new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        prefsApps.reload();
                         Object task = param.args[0];
                         String packageName = ((ComponentName) getObjectField(getObjectField(getObjectField(task, "key"), "mComponentNameKey"), "component")).getPackageName();
                         if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
                             Bitmap replacement;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                replacement = Bitmap.createBitmap(new int[]{color}, 1, 1, Bitmap.Config.RGB_565);
+                                replacement = Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565);
                             } else {
                                 Bitmap thumbnail = ((Bitmap) getObjectField(task, "thumbnail"));
                                 replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
-                                replacement.eraseColor(color);
+                                replacement.eraseColor(color.getAsColor());
                             }
                             setObjectField(task, "thumbnail", replacement);
                         }
@@ -78,9 +70,8 @@ class SystemUI {
                 findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        prefsApps.reload();
                         if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
-                            param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(color) : Bitmap.createBitmap(new int[]{color}, 1, 1, Bitmap.Config.RGB_565));
+                            param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(color.getAsColor()) : Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565));
                         }
                     }
                 });
@@ -90,7 +81,7 @@ class SystemUI {
         }
     }
 
-    static void initScreenOff(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
+    static void initScreenOff(final XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
         // Resolve vars
         String hookedClass;
         try {
@@ -106,15 +97,11 @@ class SystemUI {
         final XC_MethodHook hook = new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                prefsApps.reload();
                 if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
-                    writeFile(getDefault());
+                    prefsHistory.edit().clear().apply();
                     log("ML: Screen turned off, locked apps.");
                 } else {
-                    writeFile(readFile()
-                            .put(PROCESS_HISTORY_ARRAY_KEY, new JSONArray())
-                            .put(PACKAGE_HISTORY_ARRAY_KEY, new JSONArray())
-                            .put(CLOSE_OBJECT_KEY, new JSONObject()));
+                    trim(prefsHistory);
                 }
             }
         };

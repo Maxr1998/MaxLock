@@ -17,7 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -38,7 +37,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 public class Startup extends AsyncTask<Void, Void, Void> {
 
-    private final Context mContext;
+    private final Context mContext; // TODO Prevent leaking Context
     private final SharedPreferences prefs;
 
     public Startup(Context context) {
@@ -46,24 +45,9 @@ public class Startup extends AsyncTask<Void, Void, Void> {
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint({"SetWorldReadable", "SetWorldWritable"})
     @Override
     protected Void doInBackground(Void... v) {
         prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) + 1).apply();
-
-        // Create ML Files
-        File historyF = new File(mContext.getFilesDir(), "history.json");
-        try {
-            if (historyF.getParentFile().mkdirs() || historyF.createNewFile()) {
-                Log.i(Util.LOG_TAG_STARTUP, "History created.");
-            }
-            historyF.setReadable(true, false);
-            historyF.setWritable(true, false);
-            historyF.setExecutable(true, false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         // Non-pro setup
         if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
@@ -85,9 +69,9 @@ public class Startup extends AsyncTask<Void, Void, Void> {
 
         List<File> filesToDelete = new ArrayList<>();
         File[] listPrefs = new File(Util.dataDir(mContext), "shared_prefs").listFiles((dir, filename) -> !Arrays.asList("com.google.android.gms.analytics.prefs.xml",
-                "de.Maxr1998.xposed.maxlock_preferences.xml",
-                "keys.xml", "packages.xml", "per_app_settings.xml",
-                "WebViewChromiumPrefs.xml").contains(filename));
+                xml(Common.MAXLOCK_PACKAGE_NAME.concat("_preferences")),
+                xml(Common.PREFS_KEY), xml(Common.PREFS_APPS), xml(Common.MAXLOCK_PACKAGE_NAME), xml(Common.PREFS_KEYS_PER_APP),
+                xml("WebViewChromiumPrefs")).contains(filename));
         if (listPrefs != null) {
             filesToDelete.addAll(Arrays.asList(listPrefs));
         }
@@ -111,5 +95,9 @@ public class Startup extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
         prefs.edit().putBoolean(Common.FIRST_START, false).apply();
         Log.i(Util.LOG_TAG, "Startup finished");
+    }
+
+    private String xml(String name) {
+        return name.concat(".xml");
     }
 }

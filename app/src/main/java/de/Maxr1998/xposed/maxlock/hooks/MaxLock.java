@@ -17,14 +17,14 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
+import android.content.SharedPreferences;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getDefault;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
@@ -33,7 +33,7 @@ class MaxLock {
 
     static final String PACKAGE_NAME = MAXLOCK_PACKAGE_NAME;
 
-    static void init(final XC_LoadPackage.LoadPackageParam lPParam) {
+    static void init(final XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefsHistory) {
         try {
             findAndHookMethod(PACKAGE_NAME + ".MLImplementation", lPParam.classLoader, "isXposedActive", new XC_MethodHook() {
                 @Override
@@ -51,7 +51,7 @@ class MaxLock {
             findAndHookMethod(PACKAGE_NAME + ".ui.actions.ActionsHelper", lPParam.classLoader, "clearImod", new XC_MethodReplacement() {
                 @Override
                 protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
-                    writeFile(getDefault());
+                    prefsHistory.edit().clear().apply();
                     return null;
                 }
             });

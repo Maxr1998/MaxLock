@@ -70,6 +70,7 @@ dependencies {
     // From JCenter or other repositories
     //-- 3rd-party
     compile 'com.anjlab.android.iab.v3:library:1.0.38@aar'
+    compile 'com.crossbowffs.remotepreferences:remotepreferences:0.5'
     compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
     compile 'com.google.guava:guava:22.0-android'

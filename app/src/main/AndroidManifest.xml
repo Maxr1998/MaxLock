@@ -92,12 +92,18 @@
             </intent-filter>
         </receiver>
 
+        <!-- Settings provider -->
+        <provider
+            android:name=".hooks.SharedPreferencesProvider"
+            android:authorities="de.Maxr1998.xposed.maxlock.preferences"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+
         <!-- Lock screen -->
         <activity
             android:name=".ui.LockActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:noHistory="true"
             android:taskAffinity=""
             android:theme="@style/TranslucentStatusBar" />
 

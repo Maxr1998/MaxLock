@@ -23,35 +23,31 @@ import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 
-import org.json.JSONObject;
-
 import de.Maxr1998.xposed.maxlock.Common;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.close;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.readFile;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.wasAppClosed;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 class Apps {
 
-    static void initLogging(final XC_LoadPackage.LoadPackageParam lPParam) {
+    static void initLogging(final XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefsHistory) {
         try {
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    writeFile(addToHistory(((Activity) param.thisObject).getTaskId(), lPParam.packageName, readFile()));
+                    addToHistory(((Activity) param.thisObject).getTaskId(), lPParam.packageName, prefsHistory);
                 }
             });
         } catch (Throwable t) {
@@ -59,7 +55,7 @@ class Apps {
         }
     }
 
-    static void init(final XSharedPreferences prefsApps, final XC_LoadPackage.LoadPackageParam lPParam) {
+    static void init(final XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
         try {
             findAndHookMethod(Activity.class, "onStart", new XC_MethodHook() {
                 @Override
@@ -67,15 +63,13 @@ class Apps {
                     final Activity activity = (Activity) param.thisObject;
                     String activityName = activity.getClass().getName();
                     logD("ML|Started " + activityName + " at " + System.currentTimeMillis());
-                    JSONObject history = readFile();
-                    if (close(history, lPParam.packageName)) {
+                    if (wasAppClosed(lPParam.packageName, prefsHistory)) {
                         activity.finish();
                         logD("ML|Finish " + activityName);
                         return;
                     }
-                    prefsApps.reload();
                     if (activityName.equals("android.app.Activity") ||
-                            pass(activity.getTaskId(), lPParam.packageName, activityName, history, prefsApps)) {
+                            pass(activity.getTaskId(), lPParam.packageName, activityName, prefsApps, prefsHistory)) {
                         return;
                     }
                     Intent it = new Intent();
@@ -92,7 +86,7 @@ class Apps {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if ((boolean) param.args[0]) {
-                        if (close(readFile(), lPParam.packageName)) {
+                        if (wasAppClosed(lPParam.packageName, prefsHistory)) {
                             final Activity activity = (Activity) param.thisObject;
                             activity.finish();
                             logD("ML|Finish " + activity.getClass().getName());
@@ -105,7 +99,6 @@ class Apps {
             findAndHookMethod(NotificationManager.class, "notify", String.class, int.class, Notification.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    prefsApps.reload();
                     Notification notification = (Notification) param.args[2];
                     if (prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) && prefsApps.getBoolean(lPParam.packageName + "_notif_content", false)) {
                         Context context = (Context) getObjectField(param.thisObject, "mContext");

@@ -30,26 +30,16 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.ui.LockActivity;
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.CLOSE_OBJECT_KEY;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.PACKAGE_HISTORY_ARRAY_KEY;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.PROCESS_HISTORY_ARRAY_KEY;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.close;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getDefault;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.readFile;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.writeFile;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.wasAppClosed;
 
 public class AppLockService extends AccessibilityService {
 
@@ -57,22 +47,16 @@ public class AppLockService extends AccessibilityService {
 
     private SharedPreferences prefs;
     private SharedPreferences prefsApps;
+    private SharedPreferences prefsHistory;
 
     private BroadcastReceiver screenOffReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            try {
-                if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
-                    writeFile(getDefault());
-                    Log.d(TAG, "Screen turned off, locked apps.");
-                } else {
-                    writeFile(readFile()
-                            .put(PROCESS_HISTORY_ARRAY_KEY, new JSONArray())
-                            .put(PACKAGE_HISTORY_ARRAY_KEY, new JSONArray())
-                            .put(CLOSE_OBJECT_KEY, new JSONObject()));
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, "Error in screenOffReceiver", e);
+            if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
+                prefsHistory.edit().clear().apply();
+                Log.d(TAG, "Screen turned off, locked apps.");
+            } else {
+                trim(prefsHistory);
             }
         }
     };
@@ -82,6 +66,7 @@ public class AppLockService extends AccessibilityService {
         super.onCreate();
         prefs = MLPreferences.getPreferences(this);
         prefsApps = MLPreferences.getPrefsApps(this);
+        prefsHistory = MLPreferences.getPrefsHistory(this);
 
         registerReceiver(screenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
     }
@@ -124,7 +109,7 @@ public class AppLockService extends AccessibilityService {
             if (prefsApps.getBoolean(packageName, false)) {
                 handlePackage(packageName);
             } else {
-                writeFile(addToHistory(-1, packageName, readFile()));
+                addToHistory(-1, packageName, prefsHistory);
             }
         } catch (Throwable t) {
             Log.e(TAG, "Error in handling event", t);
@@ -142,14 +127,12 @@ public class AppLockService extends AccessibilityService {
     }
 
     private void handlePackage(String packageName) throws Throwable {
-        JSONObject history = AppLockHelpers.readFile();
-
-        if (close(history, packageName)) {
+        if (wasAppClosed(packageName, prefsHistory)) {
             performGlobalAction(GLOBAL_ACTION_HOME);
             return;
         }
 
-        if (pass(-1, packageName, null, history, prefsApps)) {
+        if (pass(-1, packageName, null, prefsApps, prefsHistory)) {
             return;
         }
 
