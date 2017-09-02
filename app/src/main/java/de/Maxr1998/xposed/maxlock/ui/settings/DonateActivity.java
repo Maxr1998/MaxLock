@@ -17,10 +17,12 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
-import android.annotation.SuppressLint;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Loader;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,8 +48,6 @@ import android.widget.TextView;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 
-import java.util.List;
-
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
@@ -55,7 +55,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_IAB;
 
-public class DonateActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
+public class DonateActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<BillingProcessor>, BillingProcessor.IBillingHandler {
 
     private static final String[] productIds = {
             "donate_coke",
@@ -70,7 +70,6 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
             R.drawable.ic_favorite_48dp
     };
     private BillingProcessor bp;
-    private TextView donationStatusText;
 
     private CustomTabsServiceConnection mConnection;
     private CustomTabsSession mSession;
@@ -80,24 +79,15 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
         Util.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        donationStatusText = (TextView) findViewById(R.id.donation_status);
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                String licenseKey = getString(R.string.license_key);
-                if (BillingProcessor.isIabServiceAvailable(DonateActivity.this) && !licenseKey.equals("DUMMY") && licenseKey.startsWith("M")) {
-                    bp = new BillingProcessor(DonateActivity.this, licenseKey, DonateActivity.this);
-                }
-                return null;
-            }
-        }.execute();
 
-        Button donatePayPal = (Button) findViewById(R.id.donate_paypal);
+        getLoaderManager().initLoader(0, null, this);
+
+        Button donatePayPal = findViewById(R.id.donate_paypal);
         donatePayPal.setOnClickListener(view -> {
             CustomTabsIntent intent = new CustomTabsIntent.Builder(mSession)
                     .setShowTitle(true)
@@ -125,14 +115,29 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
         CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", mConnection);
     }
 
+    private void setDonationStatus() {
+        View progress = findViewById(android.R.id.progress);
+        assert progress != null;
+        progress.setVisibility(View.GONE);
+        Log.i(LOG_TAG_IAB, "Loaded.");
+        boolean donated = bp.listOwnedProducts().size() > 0;
+        MLPreferences.getPreferences(this).edit().putBoolean(Common.DONATED, donated).apply();
+        TextView donationStatusText = findViewById(R.id.donation_status);
+        donationStatusText.setText(donated ? R.string.donate_status_donated : R.string.donate_status_not_donated);
+    }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public Loader<BillingProcessor> onCreateLoader(int i, Bundle bundle) {
+        return new BillingProcessorLoader(DonateActivity.this, DonateActivity.this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<BillingProcessor> loader, BillingProcessor processor) {
+        bp = processor;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<BillingProcessor> loader) {
     }
 
     /**
@@ -140,13 +145,13 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
      */
     @Override
     public void onBillingInitialized() {
-        reloadBilling();
+        setDonationStatus();
         ArrayAdapter<String> productsAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, android.R.id.text1, productIds) {
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
-                TextView tv = (TextView) v.findViewById(android.R.id.text1);
+                TextView tv = v.findViewById(android.R.id.text1);
                 String title;
                 try {
                     title = bp.getPurchaseListingDetails(productIds[position]).title.replace(" (MaxLock)", "");
@@ -163,13 +168,14 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
                 return v;
             }
         };
-        ListView productsList = (ListView) findViewById(R.id.donate_products_list);
+        ListView productsList = findViewById(R.id.donate_products_list);
         assert productsList != null;
         productsList.setAdapter(productsAdapter);
         productsList.setOnItemClickListener((parent, view, position, id) -> {
-            bp.loadOwnedPurchasesFromGoogle();
             if (!bp.isPurchased(productIds[position])) {
-                bp.purchase(DonateActivity.this, productIds[position]);
+                if (Util.isDevMode()) {
+                    MLPreferences.getPreferences(this).edit().putBoolean(Common.DONATED, true).apply();
+                } else bp.purchase(DonateActivity.this, productIds[position]);
             } else {
                 AlertDialog.Builder b = new AlertDialog.Builder(DonateActivity.this);
                 b.setMessage(R.string.dialog_message_already_bought);
@@ -191,7 +197,12 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
      */
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
-        new Handler().postDelayed(this::reloadBilling, 200);
+        new Handler().postDelayed(() -> {
+            Log.i(LOG_TAG_IAB, "Loading…");
+            if (bp.loadOwnedPurchasesFromGoogle()) {
+                setDonationStatus();
+            }
+        }, 200);
     }
 
     /**
@@ -202,31 +213,22 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
         Log.e("ML-iab", "Error!");
     }
 
-    private void reloadBilling() {
-        Log.i(LOG_TAG_IAB, "Loading…");
-        if (bp.loadOwnedPurchasesFromGoogle()) {
-            onPurchaseHistoryRestored();
-        }
-    }
-
     /**
      * Called when purchase history was restored and the list of all owned PRODUCT ID's
      * was loaded from Google Play
      */
-    @SuppressLint("SetTextI18n")
     @Override
     public void onPurchaseHistoryRestored() {
-        View progress = findViewById(android.R.id.progress);
-        assert progress != null;
-        progress.setVisibility(View.GONE);
-        Log.i(LOG_TAG_IAB, "Loaded.");
-        List<String> products = bp.listOwnedProducts();
-        if (products.size() > 0) {
-            MLPreferences.getPreferences(this).edit().putBoolean(Common.DONATED, true).apply();
-            donationStatusText.setText(R.string.donate_status_donated);
-        } else {
-            donationStatusText.setText(R.string.donate_status_not_donated);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -238,5 +240,28 @@ public class DonateActivity extends AppCompatActivity implements BillingProcesso
             unbindService(mConnection);
         }
         super.onDestroy();
+    }
+
+    private static class BillingProcessorLoader extends AsyncTaskLoader<BillingProcessor> {
+        BillingProcessor.IBillingHandler billingHandler;
+
+        BillingProcessorLoader(Context context, BillingProcessor.IBillingHandler handler) {
+            super(context);
+            billingHandler = handler;
+        }
+
+        @Override
+        protected void onStartLoading() {
+            forceLoad();
+        }
+
+        @Override
+        public BillingProcessor loadInBackground() {
+            String licenseKey = getContext().getString(R.string.license_key);
+            if (BillingProcessor.isIabServiceAvailable(getContext()) && !licenseKey.equals("DUMMY") && licenseKey.startsWith("M")) {
+                return new BillingProcessor(getContext(), licenseKey, billingHandler);
+            }
+            return null;
+        }
     }
 }
