@@ -102,6 +102,13 @@
     <string name="pref_screen_logs">Rejestr (Log)</string>
     <string name="menu_delete_log">Usuń rejestr</string>
     <string name="logs_empty_text">Brak wpisów w dzienniku</string>
+    <string name="pref_category_fake_crash">Fałszywe zatrzymanie</string>
+    <string name="pref_fake_crash_enable_all_apps">Włącz dla wszystkich aplikacji</string>
+    <string name="pref_fake_crash_enable_all_apps_summary">Zmieni ustawienie z listy aplikacji dla wszystkich aplikacji</string>
+    <string name="pref_fake_crash_passphrase">\"Zgłoś\" zwrot</string>
+    <string name="pref_fake_crash_passphrase_summary">Zwrot jaki użytkownik musi wprowadzić w oknie, aby otworzyć ekran odblokowania</string>
+    <string name="pref_fake_crash_instant_lockscreen">Pokaż natychmiast ekran blokady</string>
+    <string name="pref_fake_crash_instant_lockscreen_summary">Gdy włączone, ekran blokady jest wyświetlany bezpośrednio po wciśnięciu przycisku <i>"Zgłoś"</i> w oknie \"Niestety, X została zatrzymana\"</string>
     <string name="pref_category_other">Inne</string>
     <string name="pref_enable_tasker">Włącz integrację z Taskerem</string>
     <!-- I.Mod settings -->

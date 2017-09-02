@@ -60,6 +60,9 @@
             android:summary="@string/translation_russian"
             maxlock:language="ru" />
         <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_turkish"
+            maxlock:language="tr" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
             android:summary="@string/translation_spanish"
             maxlock:language="es" />
     </PreferenceCategory>

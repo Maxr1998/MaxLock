@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.jakewharton.hugo'
 
-ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "ru", "zh-rCN", "zh-rTW"]
+ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "ru", "tr", "zh-rCN", "zh-rTW"]
 ext.supportLibraryVersion = "26.0.1"
-ext.c_languages = ["", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "ru", "zh-CN", "zh-TW"]
+ext.c_languages = ["", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "ru", "tr", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
 android {

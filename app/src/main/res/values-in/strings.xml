@@ -101,8 +101,11 @@
     <string name="menu_delete_log">Hapus Catatan</string>
     <string name="logs_empty_text">Tidak ada aktivitas</string>
     <string name="pref_category_fake_crash">Crash Palsu</string>
+    <string name="pref_fake_crash_enable_all_apps">Aktifkan untuk semua aplikasi</string>
     <string name="pref_fake_crash_enable_all_apps_summary">Hal ini menimpa pengaturan dari daftar aplikasi untuk semua aplikasi</string>
+    <string name="pref_fake_crash_passphrase">\"Laporkan\" Passphrase</string>
     <string name="pref_fake_crash_passphrase_summary">Frase pengguna harus dimasukkan dalam dialog untuk membuka layar kunci</string>
+    <string name="pref_fake_crash_instant_lockscreen">Tampilkan kunci layar langsung</string>
     <string name="pref_category_other">Lainnya</string>
     <string name="pref_enable_tasker">Aktifkan integrasi Tasker</string>
     <!-- I.Mod settings -->
