@@ -1,5 +1,6 @@
 # Generated files
 *build/
+captures/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -18,8 +19,6 @@ lint.xml
 
 # Gradle
 /.gradle/
-/gradle/
-/gradlew*
 
 # Gedit save files
 *.*~
