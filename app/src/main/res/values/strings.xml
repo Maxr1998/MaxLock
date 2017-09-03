@@ -184,7 +184,7 @@
     <string name="pref_new_app_notification_summary">Ask whether to lock a newly installed application</string>
     <!-- About information -->
     <string name="pref_category_about">About</string>
-    <string name="pref_about_summary">Click to see credits, used libs and license.</string>
+    <string name="pref_about_summary">Click to see credits, used libs and license</string>
     <string name="pref_screen_about">@string/pref_category_about</string>
     <string name="pref_visit_website">Visit Maxr1998\'s website</string>
     <string name="pref_show_changelog">Show changelog</string>
@@ -192,6 +192,8 @@
     <string name="pref_category_translations">Translations</string>
     <string name="pref_category_licenses">Licenses</string>
     <string name="pref_donate_upgrade_pro">Donate to upgrade to pro-version</string>
+    <string name="pref_donate_again_on_pro">Thanks for your donation!</string>
+    <string name="pref_donate_again_on_pro_summary">If you want, you can donate again here :)</string>
     <string name="donate_status_donated">Donated.</string>
     <string name="donate_status_not_donated">Consider donating to support further development. Thanks :)</string>
     <string name="dialog_message_already_bought">You already own this donation option.
