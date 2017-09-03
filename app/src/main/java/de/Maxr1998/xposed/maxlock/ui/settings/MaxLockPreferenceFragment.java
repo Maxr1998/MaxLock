@@ -182,16 +182,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     PreferenceCategory cat = (PreferenceCategory) findPreference(Common.CATEGORY_APPLICATION_UI);
                     cat.removePreference(findPreference(Common.USE_AMOLED_BLACK));
                 }
-                findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
-                Preference pro = findPreference(Common.ENABLE_PRO);
-                if (prefs.getBoolean(Common.DONATED, false)) {
-                    pro.setEnabled(false);
-                    pro.setSummary("");
-                    if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
-                        prefs.edit().putBoolean(Common.ENABLE_PRO, true).apply();
-                        prefs.edit().putBoolean(Common.ENABLE_LOGGING, true).apply();
-                    }
-                }
                 break;
             case TYPE:
                 FingerprintManagerCompat fpm = FingerprintManagerCompat.from(getActivity());
@@ -257,10 +247,23 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public void onStart() {
         super.onStart();
         setTitle();
-        if (screen == Screen.MAIN && ((SettingsActivity) getActivity()).isDeviceAdminActive()) {
-            Preference protectOrUninstall = findPreference(Common.UNINSTALL);
-            protectOrUninstall.setTitle(R.string.pref_uninstall);
-            protectOrUninstall.setSummary("");
+        if (screen == Screen.MAIN) {
+            findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
+            Preference pro = findPreference(Common.ENABLE_PRO);
+            if (prefs.getBoolean(Common.DONATED, false)) {
+                pro.setEnabled(false);
+                pro.setSummary("");
+                if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
+                    prefs.edit()
+                            .putBoolean(Common.ENABLE_PRO, true)
+                            .putBoolean(Common.ENABLE_LOGGING, true).apply();
+                }
+            }
+            if (((SettingsActivity) getActivity()).isDeviceAdminActive()) {
+                Preference protectOrUninstall = findPreference(Common.UNINSTALL);
+                protectOrUninstall.setTitle(R.string.pref_uninstall);
+                protectOrUninstall.setSummary("");
+            }
         }
 
         // Show Snackbars if no password and/or packages set up
