@@ -17,6 +17,7 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -33,7 +34,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.ui.NewAppInstalledBroadcastReceiver;
 import de.Maxr1998.xposed.maxlock.util.Util;
+
+import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DEFAULT;
+import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.O;
 
 public class Startup extends AsyncTask<Void, Void, Void> {
 
@@ -47,13 +54,18 @@ public class Startup extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... v) {
+        mContext.getPackageManager().setComponentEnabledSetting(
+                new ComponentName(Common.MAXLOCK_PACKAGE_NAME, NewAppInstalledBroadcastReceiver.class.getName()),
+                SDK_INT >= O ? COMPONENT_ENABLED_STATE_DISABLED : COMPONENT_ENABLED_STATE_DEFAULT, 0);
+
         prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) + 1).apply();
 
         // Non-pro setup
         if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
-            prefs.edit().putBoolean(Common.ENABLE_LOGGING, false).apply();
-            prefs.edit().putBoolean(Common.ENABLE_IMOD_DELAY_APP, false).apply();
-            prefs.edit().putBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false).apply();
+            prefs.edit()
+                    .putBoolean(Common.ENABLE_LOGGING, false)
+                    .putBoolean(Common.ENABLE_IMOD_DELAY_APP, false)
+                    .putBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false).apply();
         }
 
         // Clean up

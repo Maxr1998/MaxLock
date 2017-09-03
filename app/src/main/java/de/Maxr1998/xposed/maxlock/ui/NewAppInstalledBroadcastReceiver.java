@@ -17,11 +17,9 @@
 
 package de.Maxr1998.xposed.maxlock.ui;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
@@ -39,12 +37,14 @@ public class NewAppInstalledBroadcastReceiver extends BroadcastReceiver {
     public static final String EXTRA_PACKAGE_NAME = "package_name";
 
 
-    @SuppressLint("CommitPrefEdits")
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (intent.getAction() == null) {
+            return;
+        }
         switch (intent.getAction()) {
             case Intent.ACTION_PACKAGE_ADDED:
-                if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Common.NEW_APP_NOTIFICATION, true) ||
+                if (!MLPreferences.getPreferences(context).getBoolean(Common.NEW_APP_NOTIFICATION, true) ||
                         intent.getBooleanExtra(Intent.EXTRA_REPLACING, false) ||
                         intent.getData() == null || intent.getData().getSchemeSpecificPart().length() == 0) {
                     return;
@@ -57,18 +57,18 @@ public class NewAppInstalledBroadcastReceiver extends BroadcastReceiver {
             case MAXLOCK_ACTION_LOCK_APP:
                 String lockPackageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
                 if (lockPackageName != null) {
-                    MLPreferences.getPrefsApps(context).edit().putBoolean(lockPackageName, true).commit();
+                    MLPreferences.getPrefsApps(context).edit().putBoolean(lockPackageName, true).apply();
                     Toast.makeText(context, R.string.toast_lock_new_app_locked_successfully, Toast.LENGTH_SHORT).show();
                 }
                 NotificationManagerCompat.from(context).cancel(APP_INSTALLED_NOTIFICATION_ID);
                 break;
             case MAXLOCK_ACTION_NEVER_SHOW_AGAIN:
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(Common.NEW_APP_NOTIFICATION, false).commit();
+                MLPreferences.getPreferences(context).edit().putBoolean(Common.NEW_APP_NOTIFICATION, false).apply();
                 NotificationManagerCompat.from(context).cancel(APP_INSTALLED_NOTIFICATION_ID);
                 break;
             case Intent.ACTION_PACKAGE_FULLY_REMOVED:
                 if (intent.getData() != null && intent.getData().getSchemeSpecificPart().length() > 0) {
-                    MLPreferences.getPrefsApps(context).edit().remove(intent.getData().getSchemeSpecificPart()).commit();
+                    MLPreferences.getPrefsApps(context).edit().remove(intent.getData().getSchemeSpecificPart()).apply();
                 }
                 break;
         }

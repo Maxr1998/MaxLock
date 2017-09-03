@@ -177,10 +177,13 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
                     }
                 }
+                PreferenceCategory catAppUI = (PreferenceCategory) findPreference(Common.CATEGORY_APPLICATION_UI);
                 CheckBoxPreference useDark = (CheckBoxPreference) findPreference(Common.USE_DARK_STYLE);
                 if (!useDark.isChecked()) {
-                    PreferenceCategory cat = (PreferenceCategory) findPreference(Common.CATEGORY_APPLICATION_UI);
-                    cat.removePreference(findPreference(Common.USE_AMOLED_BLACK));
+                    catAppUI.removePreference(findPreference(Common.USE_AMOLED_BLACK));
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    catAppUI.removePreference(findPreference(Common.NEW_APP_NOTIFICATION));
                 }
                 break;
             case TYPE:
