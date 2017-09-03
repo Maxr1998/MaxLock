@@ -26,5 +26,4 @@ lint.xml
 # Private files
 app/src/main/res/values-v16/private.xml
 # KeyStore + Passwords
-sMaxr1998_key.jks
 keyStore.properties
