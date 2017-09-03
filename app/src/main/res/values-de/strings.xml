@@ -14,6 +14,7 @@
     <string name="dialog_button_got_it">Verstanden</string>
     <string name="dialog_like_app">Magst du die App?</string>
     <string name="dialog_like_app_text">Wenn ja, hinterlasse bitte eine Bewertung im Play Store und ziehe in Erwägung zu spenden :)</string>
+    <string name="dialog_like_app_text_pro">Wenn ja, hinterlasse bitte eine Bewertung im Play Store :)</string>
     <string name="dialog_cb_never_again">Nicht nochmal zeigen</string>
     <string name="dialog_button_donate">Spenden</string>
     <string name="dialog_button_rate">Bewerten</string>
