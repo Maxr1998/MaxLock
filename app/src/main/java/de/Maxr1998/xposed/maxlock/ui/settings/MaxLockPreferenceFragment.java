@@ -85,6 +85,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
+import static android.support.v4.content.FileProvider.getUriForFile;
 import static de.Maxr1998.xposed.maxlock.ui.SettingsActivity.isSecondPane;
 
 public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
@@ -421,7 +422,9 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 e.printStackTrace();
                             }
                             // Create zip
-                            File zipFile = new File(getActivity().getCacheDir(), "report.zip");
+                            File zipFile = new File(getActivity().getCacheDir() + File.separator + "export", "report.zip");
+                            zipFile.getParentFile().mkdir();
+                            FileUtils.deleteQuietly(zipFile);
                             ZipOutputStream stream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
                             Util.writeDirectoryToZip(tempDirectory, stream);
                             stream.close();
@@ -514,9 +517,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         switch (requestCode) {
             case BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    File zipFile = new File(getActivity().getCacheDir(), "report.zip");
-                    File external = new File(Common.EXTERNAL_FILES_DIR, zipFile.getName());
-                    FileUtils.deleteQuietly(external);
+                    File zipFile = new File(getActivity().getCacheDir() + File.separator + "export", "report.zip");
 
                     // Move files and send email
                     final Intent intent = new Intent(Intent.ACTION_SEND);
@@ -524,14 +525,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.dev_email)});
                     intent.putExtra(Intent.EXTRA_SUBJECT, "MaxLock feedback on " + Build.MODEL);
                     intent.putExtra(Intent.EXTRA_TEXT, "Please here describe your issue as DETAILED as possible!");
-                    try {
-                        FileUtils.moveFile(zipFile, external);
-                        FileUtils.deleteQuietly(zipFile);
-                        Uri uri = Uri.fromFile(external);
-                        intent.putExtra(Intent.EXTRA_STREAM, uri);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Uri uri = getUriForFile(getContext(), "de.Maxr1998.fileprovider", zipFile);
+                    intent.putExtra(Intent.EXTRA_STREAM, uri);
                     new AlertDialog.Builder(getActivity())
                             .setMessage(R.string.dialog_message_bugreport_finished_select_email)
                             .setPositiveButton(android.R.string.ok, (dialog, which) -> startActivity(Intent.createChooser(intent, getString(R.string.share_menu_title_send_email)))).create().show();
