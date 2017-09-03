@@ -414,8 +414,12 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             FileUtils.copyFileToDirectory(getActivity().getFileStreamPath("history.json"), tempDirectory);
                             Process process = Runtime.getRuntime().exec("logcat -d");
                             FileUtils.copyInputStreamToFile(process.getInputStream(), new File(tempDirectory, "logcat.txt"));
-                            FileUtils.copyFileToDirectory(new File(getActivity().getPackageManager()
-                                    .getApplicationInfo("de.robv.android.xposed.installer", 0).dataDir + "/log", "error.log"), tempDirectory);
+                            try {
+                                FileUtils.copyFileToDirectory(new File(getActivity().getPackageManager()
+                                        .getApplicationInfo("de.robv.android.xposed.installer", 0).dataDir + "/log", "error.log"), tempDirectory);
+                            } catch (PackageManager.NameNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             // Create zip
                             File zipFile = new File(getActivity().getCacheDir(), "report.zip");
                             ZipOutputStream stream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
@@ -423,7 +427,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             stream.close();
                             FileUtils.deleteQuietly(tempDirectory);
                             Util.checkForStoragePermission(this, BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE, R.string.dialog_storage_permission_bug_report);
-                        } catch (IOException | PackageManager.NameNotFoundException e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                         return true;
