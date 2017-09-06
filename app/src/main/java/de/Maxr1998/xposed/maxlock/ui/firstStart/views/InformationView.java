@@ -28,7 +28,7 @@ import de.Maxr1998.xposed.maxlock.R;
 
 public class InformationView extends RelativeLayout {
 
-    private static boolean WAS_VISIBLE = false;
+    private Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.first_start_lock_fly_in);
 
     public InformationView(Context context) {
         this(context, null);
@@ -45,19 +45,19 @@ public class InformationView extends RelativeLayout {
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-        if (WAS_VISIBLE)
-            onViewScreenVisibilityChanged(hasWindowFocus);
+        if (hasWindowFocus)
+            onViewGotVisible();
     }
 
-    public void onViewScreenVisibilityChanged(boolean visible) {
+    public void onViewGotVisible() {
         View lockIcon = findViewById(R.id.first_start_lock_icon);
-        if (visible && lockIcon.getVisibility() == GONE) {
-            Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.first_start_lock_fly_in);
-            lockIcon.startAnimation(anim);
-            lockIcon.setVisibility(VISIBLE);
-            WAS_VISIBLE = true;
-        } else if (lockIcon.getVisibility() == VISIBLE) {
+        if (lockIcon.getAnimation() == null) {
             lockIcon.setVisibility(GONE);
+            anim.reset();
+            lockIcon.postDelayed(() -> {
+                lockIcon.startAnimation(anim);
+                lockIcon.setVisibility(VISIBLE);
+            }, 800);
         }
     }
 }

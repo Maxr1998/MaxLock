@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:contentDescription="@string/content_description_fs_lock"
-            android:src="@drawable/ic_lock_on_72dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:srcCompat="@drawable/fs_ic_lock" />
     </de.Maxr1998.xposed.maxlock.ui.firstStart.views.InformationView>
 </merge>

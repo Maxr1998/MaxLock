@@ -62,8 +62,8 @@ public class FirstStartActivity extends IntroActivity {
             @Override
             public void onPageSelected(int position) {
                 View fragmentView = getItem(1).getView();
-                if (fragmentView != null) {
-                    ((InformationView) fragmentView.findViewById(R.id.information_view)).onViewScreenVisibilityChanged(position == 1);
+                if (fragmentView != null && position == 1) {
+                    ((InformationView) fragmentView.findViewById(R.id.information_view)).onViewGotVisible();
                 }
             }
 
