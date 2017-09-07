@@ -34,6 +34,7 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.ui.LockActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
+import hugo.weaving.DebugLog;
 
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory;
@@ -41,6 +42,7 @@ import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.wasAppClosed;
 
+@TargetApi(Build.VERSION_CODES.N)
 public class AppLockService extends AccessibilityService {
 
     public static final String TAG = "AppLockService";
@@ -96,11 +98,7 @@ public class AppLockService extends AccessibilityService {
         }
 
         final String packageName = String.valueOf(accessibilityEvent.getPackageName());
-        if (packageName.equals("null") ||
-                accessibilityEvent.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
-                ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getWindowType(accessibilityEvent) != AccessibilityWindowInfo.TYPE_APPLICATION) ||
-                        packageName.equals("android") || packageName.matches("com\\.(google\\.)?android\\.systemui") ||
-                        Settings.Secure.getString(getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD).startsWith(packageName))) {
+        if (ignoreEvent(accessibilityEvent, packageName)) {
             return;
         }
 
@@ -116,14 +114,23 @@ public class AppLockService extends AccessibilityService {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private int getWindowType(AccessibilityEvent accessibilityEvent) {
+    @DebugLog
+    private boolean ignoreEvent(AccessibilityEvent event, String packageName) {
+        return packageName.equals("null") ||
+                event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
+                event.getSource().getWindow() == null || !isApplication(event) ||
+                packageName.equals("android") || packageName.matches("com\\.(google\\.)?android\\.systemui") ||
+                Settings.Secure.getString(getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD).startsWith(packageName);
+    }
+
+    @DebugLog
+    private boolean isApplication(AccessibilityEvent accessibilityEvent) {
         for (AccessibilityWindowInfo info : getWindows()) {
             if (accessibilityEvent.getWindowId() == info.getId()) {
-                return info.getType();
+                return info.getType() == AccessibilityWindowInfo.TYPE_APPLICATION;
             }
         }
-        return AccessibilityWindowInfo.TYPE_APPLICATION;
+        return true;
     }
 
     private void handlePackage(String packageName) throws Throwable {
