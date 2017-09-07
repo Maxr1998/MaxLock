@@ -24,12 +24,12 @@ import org.json.JSONObject
 
 object AppLockHelpers {
 
-    val PROCESS_HISTORY_ARRAY = "procs"
-    val PACKAGE_HISTORY_ARRAY = "pkgs"
-    val UNLOCK_ID = -0x3A8
-    val IMOD_APPS = "iModPerApp"
-    val CLOSE_APPS = "close"
-    val IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer"
+    private val PROCESS_HISTORY_ARRAY = "procs"
+    private val PACKAGE_HISTORY_ARRAY = "pkgs"
+    private val UNLOCK_ID = -0x3A8
+    private val IMOD_APPS = "iModPerApp"
+    private val CLOSE_APPS = "close"
+    private val IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer"
     @JvmField val IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off"
     private val IMOD_DELAY_APP = "delay_inputperapp"
     private val IMOD_DELAY_GLOBAL = "delay_inputgeneral"
