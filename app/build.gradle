@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.jakewharton.hugo'
 
 ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "ru", "tr", "zh-rCN", "zh-rTW"]
-ext.supportLibraryVersion = "26.0.1"
+ext.supportLibraryVersion = "26.0.2"
 ext.c_languages = ["", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "ru", "tr", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
@@ -96,7 +96,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     compile "com.android.support:support-fragment:$supportLibraryVersion"
-    compile 'com.google.android.gms:play-services-analytics:11.2.0'
+    compile 'com.google.android.gms:play-services-analytics:11.2.2'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
