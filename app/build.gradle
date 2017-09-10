@@ -33,6 +33,14 @@ android {
             versionNameSuffix "-beta"
         }
     }
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    res.srcDirs.toArray()[0],
+                    "src/main/res/translations"
+            ]
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -102,7 +110,7 @@ task updateTranslations() {
             if (c_lang == "")
                 continue
             String lang = languages[i]
-            String file = "\$PWD/src/main/res/values-$lang/strings.xml"
+            String file = "\$PWD/src/main/res/translations/values-$lang/strings.xml"
             exec {
                 executable "bash"
                 args "-c", "wget -O \"$file\" \"https://api.crowdin.com/api/project/MaxLock/export-file?file=strings.xml&language=$c_lang&key=$crowdinKey\""
