@@ -13,7 +13,7 @@
             android:title="@string/pref_view_logs" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
-    <PreferenceCategory android:title="@string/pref_category_other">
+    <PreferenceCategory android:title="@string/pref_category_fake_crash">
         <CheckBoxPreference
             android:key="fake_crash_all_apps"
             android:summary="@string/pref_fake_crash_enable_all_apps_summary"
