@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 
@@ -33,6 +34,7 @@ public class MLPreferences {
     private static WeakReference<SharedPreferences> PREFS_KEY = new WeakReference<>(null);
     private static WeakReference<SharedPreferences> PREFS_KEYS_PER_APP = new WeakReference<>(null);
 
+    @NonNull
     public static SharedPreferences getPreferences(Context context) {
         if (PREFS.get() == null) {
             PREFS = new WeakReference<>(PreferenceManager.getDefaultSharedPreferences(context));
@@ -40,6 +42,7 @@ public class MLPreferences {
         return PREFS.get();
     }
 
+    @NonNull
     public static SharedPreferences getPrefsApps(Context context) {
         if (PREFS_APPS.get() == null) {
             PREFS_APPS = new WeakReference<>(context.getSharedPreferences(Common.PREFS_APPS, Context.MODE_PRIVATE));
@@ -47,6 +50,7 @@ public class MLPreferences {
         return PREFS_APPS.get();
     }
 
+    @NonNull
     public static SharedPreferences getPrefsHistory(Context context) {
         if (PREFS_HISTORY.get() == null) {
             PREFS_HISTORY = new WeakReference<>(context.getSharedPreferences(Common.PREFS_HISTORY, Context.MODE_PRIVATE));
@@ -54,6 +58,7 @@ public class MLPreferences {
         return PREFS_HISTORY.get();
     }
 
+    @NonNull
     public static SharedPreferences getPreferencesKeys(Context context) {
         if (PREFS_KEY.get() == null) {
             PREFS_KEY = new WeakReference<>(context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE));
@@ -61,6 +66,7 @@ public class MLPreferences {
         return PREFS_KEY.get();
     }
 
+    @NonNull
     public static SharedPreferences getPreferencesKeysPerApp(Context context) {
         if (PREFS_KEYS_PER_APP.get() == null) {
             PREFS_KEYS_PER_APP = new WeakReference<>(context.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE));
