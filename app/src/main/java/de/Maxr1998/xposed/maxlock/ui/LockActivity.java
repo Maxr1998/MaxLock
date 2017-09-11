@@ -23,7 +23,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Keep;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
@@ -43,6 +43,8 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.NotificationHelper;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static android.content.Intent.ACTION_MAIN;
+import static android.content.Intent.CATEGORY_HOME;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.appClosed;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.appUnlocked;
 
@@ -60,7 +62,7 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = MLPreferences.getPreferences(this);
         final String lockActivityMode = getIntent().getStringExtra(Common.LOCK_ACTIVITY_MODE);
         final boolean fakeCrash = (lockActivityMode != null && lockActivityMode.equals(Common.MODE_FAKE_CRASH)) ||
                 (prefs.getBoolean(Common.ENABLE_FAKE_CRASH_ALL_APPS, false) && (lockActivityMode == null || !lockActivityMode.equals(Common.MODE_UNLOCK)));
@@ -162,7 +164,13 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
     @Override
     public void onBackPressed() {
         Log.d(Util.LOG_TAG_LOCKSCREEN, "Pressed back.");
-        appClosed(names[0], MLPreferences.getPrefsHistory(this));
+        if (MLImplementation.getImplementation(prefs) == MLImplementation.DEFAULT) {
+            appClosed(names[0], MLPreferences.getPrefsHistory(this));
+        } else {
+            Intent home = new Intent(ACTION_MAIN)
+                    .addCategory(CATEGORY_HOME);
+            startActivity(home);
+        }
         super.onBackPressed();
     }
 

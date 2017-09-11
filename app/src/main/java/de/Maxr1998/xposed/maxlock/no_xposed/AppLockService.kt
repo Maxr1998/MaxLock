@@ -32,7 +32,6 @@ import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.wasAppClosed
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import hugo.weaving.DebugLog
 
@@ -119,11 +118,6 @@ class AppLockService : AccessibilityService() {
 
     @Throws(Throwable::class)
     private fun handlePackage(packageName: String) {
-        if (wasAppClosed(packageName, prefsHistory)) {
-            performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME)
-            return
-        }
-
         if (pass(-1, packageName, null, prefsApps, prefsHistory)) {
             return
         }
