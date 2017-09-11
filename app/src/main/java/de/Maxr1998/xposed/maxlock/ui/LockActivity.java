@@ -105,26 +105,28 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
         } catch (PackageManager.NameNotFoundException e) {
             requestPkgInfo = null;
         }
-
         String requestPkgFullName = (String) (requestPkgInfo != null ? pm.getApplicationLabel(requestPkgInfo) : "(unknown)");
-        AlertDialog.Builder fakeDieDialogBuilder = new AlertDialog.Builder(this);
-        fakeDieDialog = fakeDieDialogBuilder.setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
+        fakeDieDialog = new AlertDialog.Builder(this)
+                .setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
                 .setNeutralButton(R.string.dialog_button_report, (dialogInterface, i) -> {
                     if (prefs.getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
                         fakeDieDialog.dismiss();
+                        fakeDieDialog = null;
                         launchLockView();
                         finish();
                     } else {
                         fakeDieDialog.dismiss();
+                        fakeDieDialog = null;
                         final EditText input = new EditText(LockActivity.this);
                         input.setMinLines(2);
                         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                        AlertDialog.Builder reportDialogBuilder = new AlertDialog.Builder(LockActivity.this);
-                        reportDialog = reportDialogBuilder.setView(input)
+                        reportDialog = new AlertDialog.Builder(LockActivity.this)
+                                .setView(input)
                                 .setTitle(R.string.dialog_title_report_problem)
                                 .setPositiveButton(android.R.string.ok, (dialogInterface1, i1) -> {
                                     if (input.getText().toString().equals(prefs.getString(Common.FAKE_CRASH_INPUT, "start"))) {
                                         reportDialog.dismiss();
+                                        reportDialog = null;
                                         launchLockView();
                                         finish();
                                     } else {
@@ -176,11 +178,21 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
 
     @Override
     public void onPause() {
-        super.onPause();
         if (fakeDieDialog != null) {
             fakeDieDialog.dismiss();
         } else if (reportDialog != null) {
             reportDialog.dismiss();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (fakeDieDialog != null) {
+            fakeDieDialog.show();
+        } else if (reportDialog != null) {
+            reportDialog.show();
         }
     }
 
