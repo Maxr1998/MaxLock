@@ -72,14 +72,14 @@ class Apps {
                             pass(activity.getTaskId(), lPParam.packageName, activityName, prefsApps, prefsHistory)) {
                         return;
                     }
-                    Intent it = new Intent();
-                    it.setComponent(new ComponentName(MAXLOCK_PACKAGE_NAME, MAXLOCK_PACKAGE_NAME + ".ui.LockActivity"));
-                    it.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    Intent i = new Intent()
+                            .setComponent(new ComponentName(MAXLOCK_PACKAGE_NAME, MAXLOCK_PACKAGE_NAME + ".ui.LockActivity"))
+                            .setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            .putExtra(Common.INTENT_EXTRAS_NAMES, new String[]{lPParam.packageName, activityName});
                     if (prefsApps.getBoolean(lPParam.packageName + "_fake", false)) {
-                        it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH);
+                        i.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH);
                     }
-                    it.putExtra(Common.INTENT_EXTRAS_NAMES, new String[]{lPParam.packageName, activityName});
-                    activity.startActivity(it);
+                    activity.startActivity(i);
                 }
             });
             findAndHookMethod(Activity.class, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
