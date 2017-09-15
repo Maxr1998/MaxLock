@@ -36,20 +36,22 @@ import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.N;
+
 public final class MLImplementation {
 
     public static final int DEFAULT = 1;
-    public static final int NO_XPOSED = 2;
+    private static final int NO_XPOSED = 2;
 
     private MLImplementation() {
     }
 
     public static int getImplementation(@NonNull SharedPreferences prefs) {
-        //noinspection ConstantConditions
-        if (isXposedActive()) {
-            prefs.edit().putInt(Common.ML_IMPLEMENTATION, DEFAULT).apply(); // Force DEFAULT if Xposed installed and module activated
+        if (isXposedActive() || SDK_INT < N) {
+            prefs.edit().putInt(Common.ML_IMPLEMENTATION, DEFAULT).apply(); // Force DEFAULT if below N or Xposed is installed and module is activated
         }
-        return prefs.getInt(Common.ML_IMPLEMENTATION, isXposedInstalled() ? DEFAULT : NO_XPOSED); // Return NO_XPOSED only if Xposed isn't even installed, don't force anything
+        return prefs.getInt(Common.ML_IMPLEMENTATION, isXposedInstalled() ? DEFAULT : NO_XPOSED); // Return NO_XPOSED as default only if Xposed isn't even installed
     }
 
     public static boolean isXposedInstalled() {
@@ -89,7 +91,7 @@ public final class MLImplementation {
             @SuppressLint("InflateParams")
             public ImplementationDialog() {
                 implementationView = (ViewGroup) LayoutInflater.from(c).inflate(R.layout.dialog_implementation, null);
-                group = (RadioGroup) implementationView.findViewById(R.id.implementation_group);
+                group = implementationView.findViewById(R.id.implementation_group);
                 accessibilityAlert = implementationView.findViewById(R.id.implementation_alert);
                 accessibilityError = implementationView.findViewById(R.id.accessibility_error);
 
