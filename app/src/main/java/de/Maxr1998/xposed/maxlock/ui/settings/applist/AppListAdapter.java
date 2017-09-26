@@ -52,10 +52,12 @@ import com.haibison.android.lockpattern.LockPatternActivity;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
@@ -101,10 +103,13 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
         hld.toggle.setContentDescription(mContext.getString(locked ? R.string.content_description_applist_toggle_on : R.string.content_description_applist_toggle_off, hld.appName.getText()));
 
         hld.options.setOnClickListener(v -> {
+            CharSequence[] items = mContext.getResources().getTextArray(R.array.dialog_multi_select_items_options);
+            if (MLImplementation.getImplementation(MLPreferences.getPreferences(mContext)) != MLImplementation.DEFAULT)
+                items = Arrays.copyOf(items, items.length - 1);
             AlertDialog.Builder optionsDialog = new AlertDialog.Builder(mContext)
                     .setTitle(mContext.getString(R.string.dialog_title_options))
                     .setIcon(ListHolder.getInstance().get(hld.getAdapterPosition()).loadIcon(mContext.getPackageManager()))
-                    .setMultiChoiceItems(R.array.dialog_multi_select_items_options,
+                    .setMultiChoiceItems(items,
                             new boolean[]{
                                     prefsKeysPerApp.contains(key),
                                     prefsApps.getBoolean(key + "_fake", false),
@@ -164,9 +169,10 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                                         prefsApps.edit().remove(curKey).commit();
                                 }
                             })
-                    .setPositiveButton(android.R.string.ok, (dialog, id) -> dialog.dismiss())
-                    .setNeutralButton(R.string.dialog_button_exclude_activities, (dialogInterface, i) -> new ActivityLoader().execute(key));
-            optionsDialog.create().show();
+                    .setPositiveButton(android.R.string.ok, (dialog, id) -> dialog.dismiss());
+            if (MLImplementation.getImplementation(MLPreferences.getPreferences(mContext)) == MLImplementation.DEFAULT)
+                optionsDialog.setNeutralButton(R.string.dialog_button_exclude_activities, (dialogInterface, i) -> new ActivityLoader().execute(key));
+            optionsDialog.show();
         });
     }
 
