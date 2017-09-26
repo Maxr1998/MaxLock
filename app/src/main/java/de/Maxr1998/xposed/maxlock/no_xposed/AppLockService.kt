@@ -112,7 +112,7 @@ class AppLockService : AccessibilityService() {
     private fun isApplication(accessibilityEvent: AccessibilityEvent): Boolean {
         windows
                 .filter { it.id == accessibilityEvent.windowId }
-                .first { return it.type == AccessibilityWindowInfo.TYPE_APPLICATION }
+                .firstOrNull { return it == null || it.type == AccessibilityWindowInfo.TYPE_APPLICATION }
         return true
     }
 
