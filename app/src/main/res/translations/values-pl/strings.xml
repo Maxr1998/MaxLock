@@ -42,7 +42,6 @@
     <string name="toast_password_inconsistent">Hasło jest niezgodne!</string>
     <string name="toast_password_null">Hasło nie może być puste!</string>
     <string name="toast_password_changed">Hasło zostało zmienione!</string>
-    <string name="toast_password_incorrect">Hasło nieprawidłowe!</string>
     <string name="dialog_text_password">Hasło: </string>
     <string name="dialog_text_re_password">Wpisz ponownie hasło: </string>
     <string name="choose_pin">Wybierz PIN</string>
@@ -153,10 +152,6 @@
     <string name="menu_search">Szukaj</string>
     <string name="toggle_lock_on">Wł</string>
     <string name="toggle_lock_off">Wył</string>
-    <string name="known_problem_settings_message">W Android 6.0 i wyższym, aplikacja ustawień może nie być w pełni zablokowana, gdy włączone.<!-- Translators: "the settings app can not be fully locked anymore" is also ok -->
-        Przyczyna tkwi w zmianach Androida SELinux i brakującym wsparciu Xposed framework.
-        Możesz być w stanie rozwiązać ten problem przez ustawienie SELinux na pobłażliwy, ale NIE JEST TO OFICJALNIE REKOMENDOWANE.</string>
-    <string name="more_information">Więcej informacji</string>
     <string name="dialog_title_options">Opcje</string>
     <string-array name="dialog_multi_select_items_options">
         <item>Niestandardowe hasło</item>

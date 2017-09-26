@@ -42,7 +42,6 @@
     <string name="toast_password_inconsistent">パスワードが一致しません!</string>
     <string name="toast_password_null">パスワードが入力されていません!</string>
     <string name="toast_password_changed">パスワードを変更しました!</string>
-    <string name="toast_password_incorrect">パスワードが違います!</string>
     <string name="dialog_text_password">パスワード : </string>
     <string name="dialog_text_re_password">確認 : </string>
     <string name="choose_pin">暗証番号を入力してください</string>
@@ -153,10 +152,6 @@
     <string name="menu_search">検索</string>
     <string name="toggle_lock_on">On</string>
     <string name="toggle_lock_off">Off</string>
-    <string name="known_problem_settings_message">Android 6.0 以降では、設定アプリを完全にロックすることはできません。
-Android の SELinux に変更があり、これが Xposed framework でサポートされていないからです。
-SELinux を permissive に設定することで問題を解決できるかもしれませんが、おすすめしません</string>
-    <string name="more_information">追加情報</string>
     <string name="dialog_title_options">設定</string>
     <string-array name="dialog_multi_select_items_options">
         <item>アプリ個別のロック画面</item>

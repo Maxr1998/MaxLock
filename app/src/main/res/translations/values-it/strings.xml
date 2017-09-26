@@ -36,7 +36,6 @@
   <string name="toast_password_inconsistent">La password è incoerente!</string>
   <string name="toast_password_null">Il campo password non può essere vuoto!</string>
   <string name="toast_password_changed">La password è stata cambiata!</string>
-  <string name="toast_password_incorrect">La password è scorretta!</string>
   <string name="dialog_text_re_password">Digita nuovamente la password:</string>
   <string name="choose_pin">Scegli il tuo PIN</string>
   <string name="pin_too_short">Il PIN deve essere almeno di 4 cifre </string>

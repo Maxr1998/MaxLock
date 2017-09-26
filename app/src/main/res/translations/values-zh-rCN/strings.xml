@@ -40,7 +40,6 @@
     <string name="toast_password_inconsistent">密码不一致!</string>
     <string name="toast_password_null">密码不能为空!</string>
     <string name="toast_password_changed">密码已更改!</string>
-    <string name="toast_password_incorrect">密码不正确!</string>
     <string name="dialog_text_password">密码: </string>
     <string name="dialog_text_re_password">确认密码: </string>
     <string name="choose_pin">输入您的PIN</string>
@@ -142,10 +141,6 @@
     <string name="menu_search">搜索</string>
     <string name="toggle_lock_on">开</string>
     <string name="toggle_lock_off">关</string>
-    <string name="known_problem_settings_message">在Android 6.0及更高版本中,启用设置应用可能不能完全锁定<!-- Translators: "the settings app can not be fully locked anymore" is also ok -->
-        原因在于Android的SELinux更改和Xposed框架缺少支持
-        你可以通过将SELinux设置为permissive模式来解决这个问题,但这不是正式建议</string>
-    <string name="more_information">更多信息</string>
     <string name="dialog_title_options">设置</string>
     <string-array name="dialog_multi_select_items_options">
         <item>自定义密码</item>

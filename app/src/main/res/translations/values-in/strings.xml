@@ -42,7 +42,6 @@
     <string name="toast_password_inconsistent">Sandi tidak konsisten!</string>
     <string name="toast_password_null">Sandi tidak boleh kosong!</string>
     <string name="toast_password_changed">Sandi diubah!</string>
-    <string name="toast_password_incorrect">Sandi salah!</string>
     <string name="dialog_text_password">Kata Sandi: </string>
     <string name="dialog_text_re_password">Ketik ulang Sandi: </string>
     <string name="choose_pin">Pilih PIN kamu</string>
@@ -150,10 +149,6 @@
     <string name="menu_search">Cari</string>
     <string name="toggle_lock_on">Nyala</string>
     <string name="toggle_lock_off">Mati</string>
-    <string name="known_problem_settings_message">Di Android 6.0 dan ke atas, Aplikasi Setelan mungkin tidak sepenuhnya dikunci ketika diaktifkan.<!-- Translators: "the settings app can not be fully locked anymore" is also ok -->
-        Alasannya terletak pada perubahan SELinux Android dan hilangnya dukungan dari Xposed Framework.
-       Kamu mungkin bisa memperbaiki hal ini dengan menetapkan SELinux menjadi Permissive, tapi INI TIDAK RESMI DIANJURKAN.</string>
-    <string name="more_information">Informasi lainnya</string>
     <string name="dialog_title_options">Pilihan</string>
     <string-array name="dialog_multi_select_items_options">
         <item>Kustom Sandi</item>

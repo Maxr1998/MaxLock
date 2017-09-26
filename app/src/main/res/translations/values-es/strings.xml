@@ -42,7 +42,6 @@
   <string name="toast_password_inconsistent">La contraseña es inconsistente!</string>
   <string name="toast_password_null">La contraseña no puede ser vacía!</string>
   <string name="toast_password_changed">La contraseña fue cambiada!</string>
-  <string name="toast_password_incorrect">Contraseña incorrecta!</string>
   <string name="dialog_text_password">Contraseña: </string>
   <string name="dialog_text_re_password">Reescribir contraseña: </string>
   <string name="choose_pin">Elige tu PIN</string>
@@ -138,10 +137,6 @@
   <string name="menu_search">Buscar</string>
   <string name="toggle_lock_on">Encendido</string>
   <string name="toggle_lock_off">Apagado</string>
-  <string name="known_problem_settings_message">En Android 6.0 o superior, la aplicación de configuración puede no estar completamente bloqueada cuando está habilitada.
-La razón está en los cambios de SELinux de Android y el apoyo faltante del marco Xposed.
-Es posible que pueda solucionar esto estableciendo SELinux a permissive, pero NO ES OFICIALMENTE RECOMENDADO.</string>
-  <string name="more_information">Más información</string>
   <string name="dialog_title_options">Configuración</string>
   <string-array name="dialog_multi_select_items_options">
     <item>Contraseña personalizada</item>

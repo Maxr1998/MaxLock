@@ -36,7 +36,6 @@
     <string name="toast_password_inconsistent">密碼不一致！</string>
     <string name="toast_password_null">密碼不能為空！</string>
     <string name="toast_password_changed">密碼已更改！</string>
-    <string name="toast_password_incorrect">密碼不正確！</string>
     <string name="dialog_text_password">密碼： </string>
     <string name="dialog_text_re_password">重新輸入密碼：</string>
     <string name="choose_pin">輸入你的PIN</string>
