@@ -28,7 +28,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -58,7 +57,6 @@ import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
@@ -226,21 +224,6 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                     AnimationSet in = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings);
                     options.startAnimation(in);
                     options.setVisibility(View.VISIBLE);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && tag.equals("com.android.settings")) {
-                        new AlertDialog.Builder(v.getContext())
-                                .setMessage(R.string.known_problem_settings_message)
-                                .setNeutralButton(R.string.more_information, (d, i) -> {
-                                    @SuppressWarnings("deprecation") CustomTabsIntent knownProblemSettings = new CustomTabsIntent.Builder(((SettingsActivity) v.getContext()).getSession())
-                                            .setShowTitle(true)
-                                            .enableUrlBarHiding()
-                                            .setToolbarColor(v.getResources().getColor(R.color.primary_red))
-                                            .build();
-                                    knownProblemSettings.launchUrl(v.getContext(), Common.KNOWN_PROBLEM_SETTINGS_URI);
-                                })
-                                .setPositiveButton(android.R.string.ok, null)
-                                .create().show();
-                    }
                 } else {
                     prefsApps.edit().remove(tag).commit();
                     AnimationSet out = (AnimationSet) AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings_out);

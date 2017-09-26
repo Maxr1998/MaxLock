@@ -121,7 +121,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         deviceAdmin = new ComponentName(this, UninstallProtectionReceiver.class);
 
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Hide multipane view
@@ -155,9 +155,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 maxr1998Website.putParcelable(CustomTabsService.KEY_URL, Common.MAXR1998_URI);
                 Bundle technoSparksProfile = new Bundle();
                 technoSparksProfile.putParcelable(CustomTabsService.KEY_URL, Common.TECHNO_SPARKS_URI);
-                Bundle knownProblemSettings = new Bundle();
-                knownProblemSettings.putParcelable(CustomTabsService.KEY_URL, Common.KNOWN_PROBLEM_SETTINGS_URI);
-                mSession.mayLaunchUrl(Common.WEBSITE_URI, null, Arrays.asList(technoSparksProfile, maxr1998Website, knownProblemSettings));
+                mSession.mayLaunchUrl(Common.WEBSITE_URI, null, Arrays.asList(maxr1998Website, technoSparksProfile));
             }
 
             @Override

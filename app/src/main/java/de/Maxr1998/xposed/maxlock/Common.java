@@ -140,6 +140,4 @@ public abstract class Common {
     public static final Uri MAXR1998_URI = Uri.parse("https://maxr1998.de/");
     public static final Uri PAYPAL_DONATE_URI = Uri.parse("https://maxr1998.de/r/donate");
     public static final Uri TECHNO_SPARKS_URI = Uri.parse("https://www.technosparks.net/");
-
-    public static final Uri KNOWN_PROBLEM_SETTINGS_URI = Uri.parse("https://maxlock.maxr1998.de/pages/general/known-problems#Incompatibility");
 }
