@@ -114,6 +114,9 @@
     <string name="pref_fake_crash_passphrase_summary">The phrase the user needs to input in the dialog to open lockscreen</string>
     <string name="pref_fake_crash_instant_lockscreen">Show lockscreen instantly</string>
     <string name="pref_fake_crash_instant_lockscreen_summary">When enabled the lock screen is displayed directly after pushing the <i>\"Report"</i> button in the \"Unfortunately, X has stopped.\" dialog</string>
+    <string name="pref_fake_crash_enable_passphrase_unlock">Unlock through passphrase</string>
+    <string name="pref_fake_crash_enable_passphrase_unlock_summary">Directly unlock with the right passphrase, without showing lockscreen\n
+        (Note: the passphrase is stored as plain-text in the private app storage and thus potentially insecure)</string>
     <string name="pref_category_other">Others</string>
     <string name="pref_enable_tasker">Enable Tasker integration</string>
     <!-- I.Mod settings -->

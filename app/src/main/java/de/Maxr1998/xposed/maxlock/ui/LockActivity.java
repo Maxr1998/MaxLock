@@ -65,7 +65,7 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
         prefs = MLPreferences.getPreferences(this);
         final String lockActivityMode = getIntent().getStringExtra(Common.LOCK_ACTIVITY_MODE);
         final boolean fakeCrash = (lockActivityMode != null && lockActivityMode.equals(Common.MODE_FAKE_CRASH)) ||
-                (prefs.getBoolean(Common.ENABLE_FAKE_CRASH_ALL_APPS, false) && (lockActivityMode == null || !lockActivityMode.equals(Common.MODE_UNLOCK)));
+                (prefs.getBoolean(Common.FC_ENABLE_FOR_ALL_APPS, false) && (lockActivityMode == null || !lockActivityMode.equals(Common.MODE_UNLOCK)));
 
         if (!fakeCrash) {
             if (prefs.getBoolean(Common.HIDE_STATUS_BAR, false)) {
@@ -109,7 +109,7 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
         fakeDieDialog = new AlertDialog.Builder(this)
                 .setMessage(String.format(getResources().getString(R.string.dialog_text_fake_die_stopped), requestPkgFullName))
                 .setNeutralButton(R.string.dialog_button_report, (dialogInterface, i) -> {
-                    if (prefs.getBoolean(Common.ENABLE_DIRECT_UNLOCK, false)) {
+                    if (prefs.getBoolean(Common.FC_ENABLE_DIRECT_UNLOCK, false)) {
                         fakeDieDialog.dismiss();
                         fakeDieDialog = null;
                         launchLockView();
@@ -124,11 +124,15 @@ public class LockActivity extends AppCompatActivity implements AuthenticationSuc
                                 .setView(input)
                                 .setTitle(R.string.dialog_title_report_problem)
                                 .setPositiveButton(android.R.string.ok, (dialogInterface1, i1) -> {
-                                    if (input.getText().toString().equals(prefs.getString(Common.FAKE_CRASH_INPUT, "start"))) {
+                                    if (input.getText().toString().equals(prefs.getString(Common.FC_INPUT, "start"))) {
                                         reportDialog.dismiss();
                                         reportDialog = null;
-                                        launchLockView();
-                                        finish();
+                                        if (prefs.getBoolean(Common.FC_ENABLE_PASSPHRASE_UNLOCK, false)) {
+                                            onAuthenticationSucceeded();
+                                        } else {
+                                            launchLockView();
+                                            finish();
+                                        }
                                     } else {
                                         Toast.makeText(LockActivity.this, "Thanks for your feedback", Toast.LENGTH_SHORT).show();
                                         onBackPressed();

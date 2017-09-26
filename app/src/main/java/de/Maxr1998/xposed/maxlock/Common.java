@@ -78,9 +78,10 @@ public abstract class Common {
     public static final String ENABLE_LOGGING = "enable_logging";
     public static final String VIEW_LOGS = "view_logs";
     public static final String LOG_FILE = "log.txt";
-    public static final String ENABLE_FAKE_CRASH_ALL_APPS = "fake_crash_all_apps";
-    public static final String ENABLE_DIRECT_UNLOCK = "enable_direct_unlock";
-    public static final String FAKE_CRASH_INPUT = "fake_die_input";
+    public static final String FC_ENABLE_FOR_ALL_APPS = "fake_crash_all_apps";
+    public static final String FC_INPUT = "fake_die_input";
+    public static final String FC_ENABLE_DIRECT_UNLOCK = "enable_direct_unlock";
+    public static final String FC_ENABLE_PASSPHRASE_UNLOCK = "fc_enable_passphrase_unlock";
     public static final String ENABLE_TASKER = "enable_tasker_integration";
 
     public static final String IMOD_OPTIONS = "intika_imod";
