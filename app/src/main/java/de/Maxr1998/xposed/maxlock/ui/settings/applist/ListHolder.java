@@ -67,6 +67,11 @@ public class ListHolder {
         }
     }
 
+    public void wipe() {
+        mAppListBackup.clear();
+        mAppList.clear();
+    }
+
     public boolean initialized() {
         return !mAppList.isEmpty() || !mAppListBackup.isEmpty();
     }

@@ -31,7 +31,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -126,7 +125,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         // Setup layout
-        FastScrollRecyclerView recyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.app_list);
+        FastScrollRecyclerView recyclerView = rootView.findViewById(R.id.app_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
@@ -138,7 +137,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         inflater.inflate(R.menu.applist_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
         menu.setGroupVisible(R.id.menu_group_default, false);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_search));
+        final SearchView searchView = (SearchView) menu.findItem(R.id.toolbar_search).getActionView();
         searchView.setOnSearchClickListener(v -> menu.setGroupVisible(R.id.menu_group_hide_on_search, false));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -161,7 +160,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         menu.findItem(R.id.toolbar_load_all).setTitle(LOAD_ALL ? R.string.menu_only_openable : R.string.menu_all_apps);
     }
 
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint("ApplySharedPref")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -199,15 +198,14 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 return true;
             case R.id.toolbar_clear_list:
                 MLPreferences.getPrefsApps(getActivity()).edit().clear().commit();
-                getActivity().getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE).edit().clear().commit();
+                MLPreferences.getPreferencesKeysPerApp(getActivity()).edit().clear().commit();
                 ((SettingsActivity) getActivity()).restart();
                 return true;
             case R.id.toolbar_load_all:
                 LOAD_ALL = !LOAD_ALL;
                 item.setTitle(LOAD_ALL ? R.string.menu_only_openable : R.string.menu_all_apps);
                 // Clear up old data
-                ListHolder.getInstance().restore();
-                ListHolder.getInstance().setItems(null);
+                ListHolder.getInstance().wipe();
                 mAdapter.notifyDataSetChanged();
                 // Stop and restart loader
                 getLoaderManager().destroyLoader(0);

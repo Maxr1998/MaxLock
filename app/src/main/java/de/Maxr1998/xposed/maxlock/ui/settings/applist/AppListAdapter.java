@@ -65,7 +65,7 @@ import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-@SuppressLint("CommitPrefEdits")
+@SuppressLint("ApplySharedPref")
 class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHolder> implements Filterable, FastScrollRecyclerView.SectionedAdapter {
 
     private final Fragment mFragment;
@@ -203,10 +203,10 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
 
         AppsListViewHolder(View itemView) {
             super(itemView);
-            appIcon = (ImageView) itemView.findViewById(R.id.icon);
-            appName = (TextView) itemView.findViewById(R.id.title);
-            options = (ImageButton) itemView.findViewById(R.id.edit);
-            toggle = (ToggleButton) itemView.findViewById(R.id.toggleLock);
+            appIcon = itemView.findViewById(R.id.icon);
+            appName = itemView.findViewById(R.id.title);
+            options = itemView.findViewById(R.id.edit);
+            toggle = itemView.findViewById(R.id.toggleLock);
 
             // Launch app when tapping icon
             appIcon.setOnClickListener(v -> {
@@ -317,7 +317,7 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
 
         ActivityListViewHolder(View itemView) {
             super(itemView);
-            switchCompat = (SwitchCompat) itemView.findViewById(R.id.activity_switch);
+            switchCompat = itemView.findViewById(R.id.activity_switch);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 switchCompat.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             }
