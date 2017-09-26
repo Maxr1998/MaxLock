@@ -166,7 +166,7 @@
     <string name="pref_new_app_notification_summary">询问是否锁定新安装的应用</string>
     <!-- About information -->
     <string name="pref_category_about">关于</string>
-    <string name="pref_about_summary">点击这里查看贡献,使用的库和许可证!</string>
+    <string name="pref_about_summary">点击这里查看贡献, 使用的库和许可证!</string>
     <string name="pref_visit_website">访问Maxr1998网站</string>
     <string name="pref_show_changelog">显示更新日志</string>
     <string name="pref_category_credits">贡献</string>

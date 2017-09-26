@@ -26,18 +26,18 @@
     <string name="credits_intika_summary">I.Mod, other code contributions, support</string>
 
     <!-- Translators -->
-    <string name="translation_chinese_simple">liveasx (6.2.1)</string>
-    <string name="translation_chinese_traditional">alexking99 (6.2.1)</string>
-    <string name="translation_french">Intika (5.0.3)</string>
-    <string name="translation_german">Mihahn (2.0.1), Maxr1998 (6.4.1)</string>
-    <string name="translation_indonesian">BhianzMuhh (6.4.1)</string>
-    <string name="translation_italian">Sergio Marchesi (6.3)</string>
-    <string name="translation_japanese">t61p (6.2.1)</string>
-    <string name="translation_persian">Anonymous (2.0)</string>
-    <string name="translation_polish">pantinPL (6.4.1)</string>
-    <string name="translation_russian">Vernyak (6.2)</string>
-    <string name="translation_turkish">Ilker Binzet (6.4.1)</string>
-    <string name="translation_spanish">badkill (2.0), BeRniTo (6.2.1)</string>
+    <string name="translation_chinese_simple">liveasx</string>
+    <string name="translation_chinese_traditional">alexking99</string>
+    <string name="translation_french">Intika</string>
+    <string name="translation_german">Mihahn, Maxr1998</string>
+    <string name="translation_indonesian">BhianzMuhh, Aliefian Damarizky</string>
+    <string name="translation_italian">Sergio Marchesi</string>
+    <string name="translation_japanese">t61p</string>
+    <string name="translation_persian">Anonymous</string>
+    <string name="translation_polish">pantinPL</string>
+    <string name="translation_russian">Vernyak</string>
+    <string name="translation_turkish">Ilker Binzet</string>
+    <string name="translation_spanish">badkill, BeRniTo, eduard andres castellanos torres</string>
 
     <!-- Licenses -->
     <string name="android_in_app_billing_v3_name">Android In-App Billing v3 Library</string>

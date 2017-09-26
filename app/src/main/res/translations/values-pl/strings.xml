@@ -177,7 +177,7 @@
     <string name="pref_new_app_notification_summary">Zapytaj czy zablokować nowo zainstalowaną aplikację</string>
     <!-- About information -->
     <string name="pref_category_about">O aplikacji</string>
-    <string name="pref_about_summary">Kliknij, aby zobaczyć podziękowania, użyte biblioteki i licencje.</string>
+    <string name="pref_about_summary">Kliknij, aby zobaczyć podziękowania, użyte biblioteki i licencje</string>
     <string name="pref_visit_website">Odwiedź stronę Maxr1998</string>
     <string name="pref_show_changelog">Pokaż listę zmian</string>
     <string name="pref_category_credits">Podziękowania</string>

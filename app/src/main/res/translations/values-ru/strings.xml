@@ -136,7 +136,7 @@
     <string name="pref_use_amoled_black_summary">Использовать полностью чёрный фон в тёмной теме (для низкого энергопотребления экранами AMOLED)</string>
     <!-- About information -->
     <string name="pref_category_about">О приложении</string>
-    <string name="pref_about_summary">Нажмите, чтобы посмотреть благодарности, использованные библиотеки и лицензию.</string>
+    <string name="pref_about_summary">Нажмите, чтобы посмотреть благодарности, использованные библиотеки и лицензию</string>
     <string name="pref_visit_website">Посетите сайт Maxr1998\</string>
     <string name="pref_show_changelog">Показать изменения</string>
     <string name="pref_category_credits">Благодарности</string>

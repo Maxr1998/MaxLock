@@ -177,7 +177,7 @@
     <string name="pref_new_app_notification_summary">Yeni yüklenen bir uygulamayı kilitleyip kilitlemeyeceğini sorsun</string>
     <!-- About information -->
     <string name="pref_category_about">Hakkında</string>
-    <string name="pref_about_summary">Emeği geçenleri, kullanılan kütüphaneyi ve lisansı görmek için tıklayın.</string>
+    <string name="pref_about_summary">Emeği geçenleri, kullanılan kütüphaneyi ve lisansı görmek için tıklayın</string>
     <string name="pref_visit_website">Maxr1998\'in Web sitesini ziyaret edin</string>
     <string name="pref_show_changelog">Değişiklikler listesini göster</string>
     <string name="pref_category_credits">Emeği Geçenler</string>
