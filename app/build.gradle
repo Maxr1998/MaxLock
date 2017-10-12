@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jakewharton.hugo'
 
 ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "ru", "tr", "zh-rCN", "zh-rTW"]
-ext.supportLibraryVersion = "26.0.2"
+ext.supportLibraryVersion = "26.1.0"
 ext.c_languages = ["de", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "ru", "tr", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
@@ -85,7 +86,7 @@ dependencies {
     compile 'com.heinrichreimersoftware:material-intro:1.6'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     compile 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
-    compile 'commons-io:commons-io:2.4'
+    compile 'commons-io:commons-io:2.5'
     provided 'de.robv.android.xposed:api:82'
     provided 'de.robv.android.xposed:api:82:sources'
     //-- Android support and Google Services
@@ -96,7 +97,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     compile "com.android.support:support-fragment:$supportLibraryVersion"
-    compile 'com.google.android.gms:play-services-analytics:11.2.2'
+    compile 'com.google.android.gms:play-services-analytics:11.4.2'
     // Local files
     compile(name: 'PatternLock', ext: 'aar')
 }
