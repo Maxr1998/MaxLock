@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.Maxr1998.xposed.maxlock.ui.settings.LockSetupFragment">
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:gravity="center"
+        android:lines="2"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?android:textColorPrimary" />
+
+    <EditText
+        android:id="@+id/pin_input_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:ems="10"
+        android:imeOptions="actionNext"
+        android:inputType="numberPassword"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/knock_code_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="34sp"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    <View
+        android:id="@+id/divider_top"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="?dividerColor"
+        app:layout_constraintTop_toBottomOf="@+id/knock_code_text" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <Button
+        android:id="@+id/knock_button_1"
+        style="@style/KnockCodeSetupButton"
+        app:layout_constraintBottom_toTopOf="@+id/knock_button_3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_top" />
+
+    <Button
+        android:id="@+id/knock_button_3"
+        style="@style/KnockCodeSetupButton"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@id/split_container"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/knock_button_1" />
+
+    <Button
+        android:id="@+id/knock_button_2"
+        style="@style/KnockCodeSetupButton"
+        app:layout_constraintBottom_toTopOf="@id/knock_button_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/divider_top" />
+
+    <Button
+        android:id="@+id/knock_button_4"
+        style="@style/KnockCodeSetupButton"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/split_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/knock_button_2" />
+
+    <View
+        android:id="@+id/divider_center"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="?dividerColor"
+        app:layout_constraintBottom_toTopOf="@id/knock_button_3"
+        app:layout_constraintTop_toBottomOf="@id/knock_button_1" />
+
+    <View
+        android:id="@+id/divider_vertical"
+        android:layout_width="1px"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:background="?dividerColor"
+        app:layout_constraintBottom_toTopOf="@+id/split_container"
+        app:layout_constraintEnd_toEndOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/divider_top" />
+
+    <include
+        android:id="@+id/split_container"
+        layout="@layout/split_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.constraint.Group
+        android:id="@+id/knock_code_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="knock_button_1,knock_button_2,knock_button_3,knock_button_4,divider_top,divider_center,divider_vertical"
+        tools:visibility="visible" />
+</android.support.constraint.ConstraintLayout>

@@ -59,9 +59,8 @@ import java.util.List;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.ui.settings.LockSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
-import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
-import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -130,26 +129,26 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                                                             },
                                                             (dialog1, i) -> {
                                                                 dialog1.dismiss();
-                                                                Fragment frag = new Fragment();
+                                                                Bundle b = new Bundle(2);
                                                                 switch (i) {
                                                                     case 0:
                                                                         Util.setPassword(mContext, key);
                                                                         return;
                                                                     case 1:
-                                                                        frag = new PinSetupFragment();
+                                                                        b.putString(Common.LOCKING_TYPE, Common.LOCKING_TYPE_PIN);
                                                                         break;
                                                                     case 2:
-                                                                        frag = new KnockCodeSetupFragment();
+                                                                        b.putString(Common.LOCKING_TYPE, Common.LOCKING_TYPE_KNOCK_CODE);
                                                                         break;
                                                                     case 3:
                                                                         Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, mContext, LockPatternActivity.class);
                                                                         mFragment.startActivityForResult(intent, Util.getPatternCode(hld.getAdapterPosition()));
                                                                         return;
                                                                 }
-                                                                Bundle b = new Bundle(1);
                                                                 b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
-                                                                frag.setArguments(b);
-                                                                MaxLockPreferenceFragment.launchFragment(mFragment.getFragmentManager(), frag, false);
+                                                                LockSetupFragment lockSetup = new LockSetupFragment();
+                                                                lockSetup.setArguments(b);
+                                                                MaxLockPreferenceFragment.launchFragment(mFragment.getFragmentManager(), lockSetup, false);
                                                             }).show();
                                         } else {
                                             prefsKeysPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();

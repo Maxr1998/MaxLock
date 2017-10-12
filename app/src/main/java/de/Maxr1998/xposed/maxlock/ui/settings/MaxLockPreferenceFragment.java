@@ -78,8 +78,6 @@ import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
-import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.KnockCodeSetupFragment;
-import de.Maxr1998.xposed.maxlock.ui.settings.lockingtype.PinSetupFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -445,10 +443,18 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         Util.setPassword(getActivity(), null);
                         return true;
                     case Common.LOCKING_TYPE_PIN:
-                        launchFragment(getFragmentManager(), new PinSetupFragment(), false);
+                        LockSetupFragment lsp = new LockSetupFragment();
+                        Bundle b1 = new Bundle(1);
+                        b1.putString(Common.LOCKING_TYPE, Common.LOCKING_TYPE_PIN);
+                        lsp.setArguments(b1);
+                        launchFragment(getFragmentManager(), lsp, false);
                         return true;
                     case Common.LOCKING_TYPE_KNOCK_CODE:
-                        launchFragment(getFragmentManager(), new KnockCodeSetupFragment(), false);
+                        LockSetupFragment lsk = new LockSetupFragment();
+                        Bundle b2 = new Bundle(1);
+                        b2.putString(Common.LOCKING_TYPE, Common.LOCKING_TYPE_KNOCK_CODE);
+                        lsk.setArguments(b2);
+                        launchFragment(getFragmentManager(), lsk, false);
                         return true;
                     case Common.LOCKING_TYPE_PATTERN:
                         Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, getActivity(), LockPatternActivity.class);

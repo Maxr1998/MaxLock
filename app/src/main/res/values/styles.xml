@@ -129,6 +129,12 @@
         <item name="android:shouldDisableView">false</item>
     </style>
 
+    <style name="KnockCodeSetupButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">?highlightDrawable</item>
+    </style>
+
     <style name="SplitButtonContainer" parent="@android:style/Holo.SegmentedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -150,5 +156,4 @@
         <item name="android:ellipsize">marquee</item>
         <item name="android:singleLine">true</item>
     </style>
-
 </resources>
