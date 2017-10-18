@@ -164,7 +164,6 @@
         <receiver
             android:name=".ui.actions.tasker.TaskActionReceiver"
             android:exported="true"
-            android:process=":background"
             tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
