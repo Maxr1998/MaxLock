@@ -41,7 +41,6 @@ public abstract class Common {
     public static final String FAILED_ATTEMPTS_COUNTER = "failed_attempts_counter";
     public static final String FAILED_ATTEMPTS_TIMER = "failed_attempts_timer";
     public static final String TASKER_QUERIES = "tasker_queries";
-    //public static final String THEME_PKG = "theme_pkg";
 
     public static final String ML_IMPLEMENTATION = "ml_implementation";
 
@@ -58,7 +57,6 @@ public abstract class Common {
 
     public static final String LOCKING_UI_SETTINGS = "locking_ui_settings";
     /* UI */
-    //public static final String OPEN_THEME_MANAGER = "open_theme_manager";
     public static final String BACKGROUND = "background";
     public static final String BACKGROUND_COLOR = "background_color";
     public static final String HIDE_STATUS_BAR = "hide_status_bar";
@@ -122,7 +120,6 @@ public abstract class Common {
     public static final String PREFS_KEY = "keys";
     public static final String PREFS_APPS = "packages";
     public static final String PREFS_KEYS_PER_APP = "per_app_settings";
-    //public static final String PREFS_THEME = "theme";
 
     public static final String PREFERENCE_PROVIDER_AUTHORITY = "de.Maxr1998.xposed.maxlock.preferences";
 

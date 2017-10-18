@@ -201,16 +201,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }
                 break;
             case UI:
-                /*SharedPreferences prefsTheme = getActivity().getSharedPreferences(Common.PREFS_THEME, Context.MODE_WORLD_READABLE);
-                Preference[] overriddenByTheme = {findPreference(Common.BACKGROUND), findPreference(Common.HIDE_TITLE_BAR), findPreference(Common.HIDE_INPUT_BAR), findPreference(Common.SHOW_KC_DIVIDER), findPreference(Common.MAKE_KC_TOUCH_VISIBLE)};
-                if (prefsTheme.contains(Common.THEME_PKG)) {
-                    Preference themeManager = findPreference(Common.OPEN_THEME_MANAGER);
-                    themeManager.setSummary(getString(R.string.pref_open_theme_manager_summary_applied) + prefsTheme.getString(Common.THEME_PKG, ""));
-                    for (Preference preference : overriddenByTheme) {
-                        preference.setEnabled(false);
-                        preference.setSummary(preference.getSummary() != null ? preference.getSummary() : " " + getString(R.string.pref_summary_overridden_by_theme));
-                    }
-                }*/
                 ListPreference lp = (ListPreference) findPreference(Common.BACKGROUND);
                 findPreference(Common.BACKGROUND_COLOR).setEnabled(lp.getValue().equals("color"));
                 lp.setOnPreferenceChangeListener((preference, newValue) -> {

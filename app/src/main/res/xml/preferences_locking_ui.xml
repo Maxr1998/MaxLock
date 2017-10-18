@@ -2,10 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:maxlock="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/pref_screen_locking_ui">
-        <!--<Preference
-            android:key="open_theme_manager"
-            android:summary="@string/open_theme_manager_summary_none"
-            android:title="@string/open_theme_manager" />-->
         <ListPreference
             android:defaultValue="wallpaper"
             android:dialogTitle="@string/pref_background"
