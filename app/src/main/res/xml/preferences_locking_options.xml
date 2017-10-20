@@ -39,6 +39,10 @@
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_other">
         <CheckBoxPreference
+            android:key="hide_recents_thumbnails"
+            android:summary="@string/pref_hide_recents_thumbnails_summary"
+            android:title="@string/pref_hide_recents_thumbnails" />
+        <CheckBoxPreference
             android:key="enable_tasker_integration"
             android:title="@string/pref_enable_tasker" />
     </PreferenceCategory>

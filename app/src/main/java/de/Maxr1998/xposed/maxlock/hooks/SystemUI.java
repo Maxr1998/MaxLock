@@ -17,7 +17,7 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
-import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -27,13 +27,14 @@ import android.os.Build;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.util.ColorSupplier;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim;
+import static de.robv.android.xposed.XposedBridge.hookAllMethods;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
@@ -43,26 +44,29 @@ class SystemUI {
     static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
     private static final String HIDE_RECENTS_THUMBNAILS = "hide_recents_thumbnails";
     private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    private static final boolean MARSHMALLOW = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    private static final boolean OREO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
     static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps) {
         try {
             ColorSupplier color = () -> !prefs.getBoolean(Common.INVERT_COLOR, false) ? Color.WHITE : Color.BLACK;
             if (LOLLIPOP) {
-                findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "rebindToTask", PACKAGE_NAME + ".recents.model.Task", new XC_MethodHook() {
+                hookAllMethods(findClass(PACKAGE_NAME + ".recents.model.Task", lPParam.classLoader), "notifyTaskDataLoaded", new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        Object task = param.args[0];
-                        String packageName = ((ComponentName) getObjectField(getObjectField(getObjectField(task, "key"), "mComponentNameKey"), "component")).getPackageName();
-                        if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
+                        String packageName = ((Intent) getObjectField(getObjectField(param.thisObject, "key"), "baseIntent")).getComponent().getPackageName();
+                        if (prefs.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
                             Bitmap replacement;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (MARSHMALLOW) {
                                 replacement = Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565);
                             } else {
-                                Bitmap thumbnail = ((Bitmap) getObjectField(task, "thumbnail"));
+                                Bitmap thumbnail = (Bitmap) param.args[0];
                                 replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
                                 replacement.eraseColor(color.getAsColor());
                             }
-                            setObjectField(task, "thumbnail", replacement);
+                            if (OREO) {
+                                setObjectField(param.args[0], "thumbnail", replacement);
+                            } else param.args[0] = replacement;
                         }
                     }
                 });
@@ -70,7 +74,7 @@ class SystemUI {
                 findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        if (prefsApps.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
+                        if (prefs.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
                             param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(color.getAsColor()) : Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565));
                         }
                     }
@@ -87,7 +91,7 @@ class SystemUI {
         try {
             if (LOLLIPOP) throw new Error();
             // Handle MIUI Keyguard class
-            XposedHelpers.findClass(PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator", lPParam.classLoader);
+            findClass(PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator", lPParam.classLoader);
             hookedClass = PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator";
             log("ML: Recognized MIUI device.");
         } catch (Error e) {

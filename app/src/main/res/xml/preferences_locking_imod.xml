@@ -49,12 +49,5 @@
             android:summary="@string/pref_reset_screen_off_summary"
             android:title="@string/pref_reset_screen_off" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
-    <PreferenceCategory android:title="@string/pref_category_other">
-        <CheckBoxPreference
-            android:key="hide_recents_thumbnails"
-            android:summary="@string/pref_hide_recents_thumbnails_summary"
-            android:title="@string/pref_hide_recents_thumbnails" />
-    </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>
