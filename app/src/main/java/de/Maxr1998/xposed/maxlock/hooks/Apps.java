@@ -76,7 +76,7 @@ class Apps {
                             .setComponent(new ComponentName(MAXLOCK_PACKAGE_NAME, MAXLOCK_PACKAGE_NAME + ".ui.LockActivity"))
                             .setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             .putExtra(Common.INTENT_EXTRAS_NAMES, new String[]{lPParam.packageName, activityName});
-                    if (prefsApps.getBoolean(lPParam.packageName + "_fake", false)) {
+                    if (prefsApps.getBoolean(lPParam.packageName + Common.APP_FAKE_CRASH_PREFERENCE, false)) {
                         i.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH);
                     }
                     activity.startActivity(i);
@@ -100,17 +100,30 @@ class Apps {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     Notification notification = (Notification) param.args[2];
-                    if (prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) && prefsApps.getBoolean(lPParam.packageName + "_notif_content", false)) {
-                        Context context = (Context) getObjectField(param.thisObject, "mContext");
-                        String appName = context.getPackageManager().getApplicationInfo(lPParam.packageName, 0).loadLabel(context.getPackageManager()).toString();
-                        Resources modRes = context.getPackageManager().getResourcesForApplication(MAXLOCK_PACKAGE_NAME);
-                        String replacement = modRes.getString(modRes.getIdentifier("notification_hidden_by_maxlock", "string", MAXLOCK_PACKAGE_NAME));
-                        Notification.Builder b = new Notification.Builder(context).setContentTitle(appName).setContentText(replacement);
-                        notification.contentView = b.build().contentView;
-                        notification.bigContentView = null;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                            notification.headsUpContentView = null;
-                        notification.tickerText = replacement;
+                    if (prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)) {
+                        if (prefsApps.getBoolean(lPParam.packageName + Common.APP_HIDE_NOTIFICATIONS_PREFERENCE, false)) {
+                            logD("Blocked notification " + param.args[1] + " from " + lPParam.packageName);
+                            param.setResult(null);
+                        } else if (prefsApps.getBoolean(lPParam.packageName + Common.APP_HIDE_NOTIFICATION_CONTENT_PREFERENCE, false)) {
+                            logD("Hiding content for notification " + param.args[1] + " from " + lPParam.packageName);
+                            Context context = (Context) getObjectField(param.thisObject, "mContext");
+                            String appName = context.getPackageManager().getApplicationInfo(lPParam.packageName, 0).loadLabel(context.getPackageManager()).toString();
+                            Resources modRes = context.getPackageManager().getResourcesForApplication(MAXLOCK_PACKAGE_NAME);
+                            String replacementText = modRes.getString(modRes.getIdentifier("notification_hidden_by_maxlock", "string", MAXLOCK_PACKAGE_NAME));
+                            Notification.Builder replacement = new Notification.Builder(context)
+                                    .setContentTitle(appName)
+                                    .setContentText(replacementText)
+                                    .setContentIntent(notification.contentIntent)
+                                    .setDeleteIntent(notification.deleteIntent)
+                                    .setWhen(notification.when);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                replacement.setColor(modRes.getColor(modRes.getIdentifier("primary_red", "color", MAXLOCK_PACKAGE_NAME)))
+                                        .setVisibility(Notification.VISIBILITY_SECRET);
+                            }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                replacement.setSmallIcon(notification.getSmallIcon());
+                            param.args[2] = replacement.build();
+                        }
                     }
                 }
             });

@@ -161,6 +161,7 @@
     <string-array name="dialog_multi_select_items_options">
         <item>Custom password</item>
         <item>Fake crash</item>
+        <item>Hide notifications</item>
         <item>Hide notification content</item>
     </string-array>
     <string name="notification_hidden_by_maxlock">Content hidden by MaxLock</string>

@@ -38,6 +38,9 @@ public abstract class Common {
     public static final String MASTER_SWITCH_ON = "master_switch_on";
     public static final String KEY_PREFERENCE = "key";
     public static final String APP_KEY_PREFERENCE = "_key";
+    public static final String APP_FAKE_CRASH_PREFERENCE = "_fake";
+    public static final String APP_HIDE_NOTIFICATIONS_PREFERENCE = "_hide_notifications";
+    public static final String APP_HIDE_NOTIFICATION_CONTENT_PREFERENCE = "_notif_content";
     public static final String FAILED_ATTEMPTS_COUNTER = "failed_attempts_counter";
     public static final String FAILED_ATTEMPTS_TIMER = "failed_attempts_timer";
     public static final String TASKER_QUERIES = "tasker_queries";

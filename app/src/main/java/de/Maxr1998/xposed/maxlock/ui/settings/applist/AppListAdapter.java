@@ -104,15 +104,16 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
         hld.options.setOnClickListener(v -> {
             CharSequence[] items = mContext.getResources().getTextArray(R.array.dialog_multi_select_items_options);
             if (MLImplementation.getImplementation(MLPreferences.getPreferences(mContext)) != MLImplementation.DEFAULT)
-                items = Arrays.copyOf(items, items.length - 1);
+                items = Arrays.copyOf(items, items.length - 2);
             AlertDialog.Builder optionsDialog = new AlertDialog.Builder(mContext)
                     .setTitle(mContext.getString(R.string.dialog_title_options))
                     .setIcon(ListHolder.getInstance().get(hld.getAdapterPosition()).loadIcon(mContext.getPackageManager()))
                     .setMultiChoiceItems(items,
                             new boolean[]{
                                     prefsKeysPerApp.contains(key),
-                                    prefsApps.getBoolean(key + "_fake", false),
-                                    prefsApps.getBoolean(key + "_notif_content", false),
+                                    prefsApps.getBoolean(key + Common.APP_FAKE_CRASH_PREFERENCE, false),
+                                    prefsApps.getBoolean(key + Common.APP_HIDE_NOTIFICATIONS_PREFERENCE, false),
+                                    prefsApps.getBoolean(key + Common.APP_HIDE_NOTIFICATION_CONTENT_PREFERENCE, false),
                             },
                             (dialog, which, isChecked) -> {
                                 String curKey = null;
@@ -155,10 +156,13 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                                         }
                                         return;
                                     case 1:
-                                        curKey = key + "_fake";
+                                        curKey = key + Common.APP_FAKE_CRASH_PREFERENCE;
                                         break;
                                     case 2:
-                                        curKey = key + "_notif_content";
+                                        curKey = key + Common.APP_HIDE_NOTIFICATIONS_PREFERENCE;
+                                        break;
+                                    case 3:
+                                        curKey = key + Common.APP_HIDE_NOTIFICATION_CONTENT_PREFERENCE;
                                         break;
                                 }
                                 if (curKey != null) {
