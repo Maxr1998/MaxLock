@@ -59,16 +59,11 @@
     <string name="pref_disable_fingerprint_summary_on">指纹解锁已禁用</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">锁屏界面</string>
-    <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
-      <string name="pref_open_theme_manager_summary_none">No theme applied</string>
-      <string name="pref_open_theme_manager_summary_applied">Applied: </string>
-      <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>-->
     <string name="pref_background">背景图片</string>
     <string-array name="background_types">
         <item>墙纸</item>
         <item>@string/pref_custom_color</item>
         <item>自定义图片&#8230;</item>
-        <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">自定义颜色</string>
     <string name="pref_hide_status_bar">隐藏状态栏/全屏</string>
@@ -145,6 +140,7 @@
     <string-array name="dialog_multi_select_items_options">
         <item>自定义密码</item>
         <item>显示假死窗口</item>
+        <item>Hide notifications</item>
         <item>隐藏通知栏内容</item>
     </string-array>
     <string name="notification_hidden_by_maxlock">隐藏内容来自MaxLock</string>

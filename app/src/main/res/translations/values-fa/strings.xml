@@ -18,10 +18,6 @@
     <string name="confirm_knock_code">خود را تایید کنید knock code</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">تنظیمات Knock code</string>
-    <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
-      <string name="pref_open_theme_manager_summary_none">No theme applied</string>
-      <string name="pref_open_theme_manager_summary_applied">Applied: </string>
-      <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>-->
     <!-- Locking options settings -->
     <!-- I.Mod settings -->
     <!-- Apps settings -->

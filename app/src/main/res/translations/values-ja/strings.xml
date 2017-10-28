@@ -61,16 +61,11 @@
     <string name="pref_disable_fingerprint_summary_on">指紋認証によるロック解除は無効です</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">ロック画面</string>
-    <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
-      <string name="pref_open_theme_manager_summary_none">No theme applied</string>
-      <string name="pref_open_theme_manager_summary_applied">Applied: </string>
-      <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>-->
     <string name="pref_background">背景画像</string>
     <string-array name="background_types">
         <item>壁紙</item>
         <item>@string/pref_custom_color</item>
         <item>カスタム&#8230;</item>
-        <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">背景色</string>
     <string name="pref_hide_status_bar">ステータスバーの非表示</string>
@@ -156,6 +151,7 @@
     <string-array name="dialog_multi_select_items_options">
         <item>アプリ個別のロック画面</item>
         <item>アプリ強制終了の偽装</item>
+        <item>Hide notifications</item>
         <item>通知内容の非表示</item>
     </string-array>
     <string name="notification_hidden_by_maxlock">通知内容は MaxLock が非表示にしています</string>

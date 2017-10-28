@@ -34,10 +34,6 @@
     <string name="confirm_knock_code">Confirmez votre code de cliquetis</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">Interface de l\'écran de verrouillage</string>
-    <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
-      <string name="pref_open_theme_manager_summary_none">No theme applied</string>
-      <string name="pref_open_theme_manager_summary_applied">Applied: </string>
-      <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>-->
     <string name="pref_background">Image de fond</string>
     <string name="pref_custom_color">Couleur personnalisée</string>
     <string name="pref_invert_color">Inverser la couleur des éléments de l\'interface</string>
@@ -88,6 +84,7 @@
     <string-array name="dialog_multi_select_items_options">
         <item>Mot de passe personnalisé</item>
         <item>Fausse erreur</item>
+        <item>Hide notifications</item>
         <item>Hide notification content</item>
     </string-array>
     <string name="dialog_button_exclude_activities">Activités</string>

@@ -51,10 +51,6 @@
     <string name="pref_disable_fingerprint">Убрать разблокировку Отпечатком пальца</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">Интерфейс экрана блокировки</string>
-    <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
-      <string name="pref_open_theme_manager_summary_none">No theme applied</string>
-      <string name="pref_open_theme_manager_summary_applied">Applied: </string>
-      <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>-->
     <string name="pref_background">Фоновая картинка</string>
     <string name="pref_custom_color">Выберите цвет</string>
     <string name="pref_hide_status_bar">Скрыть status bar (строку состояния)/Полноэкранный режим</string>
@@ -122,6 +118,7 @@
     <string-array name="dialog_multi_select_items_options">
         <item>Личный пароль</item>
         <item>Имитация \'падения\' приложений</item>
+        <item>Hide notifications</item>
         <item>Hide notification content</item>
     </string-array>
     <string name="dialog_button_exclude_activities">Activities (Активити)</string>

@@ -50,16 +50,11 @@
     <string name="pref_disable_fingerprint">禁用指紋解鎖</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">鎖定螢幕介面</string>
-    <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
-      <string name="pref_open_theme_manager_summary_none">No theme applied</string>
-      <string name="pref_open_theme_manager_summary_applied">Applied: </string>
-      <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>-->
     <string name="pref_background">背景圖片</string>
     <string-array name="background_types">
         <item>桌布</item>
         <item>@string/pref_custom_color</item>
         <item>自訂圖片&#8230;</item>
-        <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">自訂顏色</string>
     <string name="pref_hide_status_bar">隱藏狀態欄/全螢幕</string>
@@ -130,6 +125,7 @@
     <string-array name="dialog_multi_select_items_options">
         <item>自訂密碼</item>
         <item>顯示假死視窗</item>
+        <item>Hide notifications</item>
         <item>隱藏通知列內容</item>
     </string-array>
     <string name="notification_hidden_by_maxlock">隱藏內容來自MaxLock</string>

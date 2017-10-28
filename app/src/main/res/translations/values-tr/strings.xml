@@ -61,16 +61,11 @@
     <string name="pref_disable_fingerprint_summary_on">Parmak izi kilidi devre dışı</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">Ekran kilidi Tasarımı</string>
-    <!--<string name="pref_open_theme_manager">Open Theme Manager</string>
-      <string name="pref_open_theme_manager_summary_none">No theme applied</string>
-      <string name="pref_open_theme_manager_summary_applied">Applied: </string>
-      <string name="pref_summary_overridden_by_theme">(Overridden by theme)</string>-->
     <string name="pref_background">Arka plan görüntüsü</string>
     <string-array name="background_types">
         <item>Duvar kağıdı</item>
         <item>@string/pref_custom_color</item>
         <item>Özel resim&#8230;</item>
-        <!--<item>Theme background</item>-->
     </string-array>
     <string name="pref_custom_color">Özel renk</string>
     <string name="pref_hide_status_bar">Durum çubuğunu gizle/Tam ekran</string>
@@ -156,6 +151,7 @@
     <string-array name="dialog_multi_select_items_options">
         <item>Özel parola</item>
         <item>Sahte çökme</item>
+        <item>Hide notifications</item>
         <item>Bildirim içeriğini gizle</item>
     </string-array>
     <string name="notification_hidden_by_maxlock">MaxLock tarafından gizlenen içerik</string>
