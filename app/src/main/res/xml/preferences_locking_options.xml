@@ -37,7 +37,9 @@
             android:title="@string/pref_fake_crash_enable_passphrase_unlock" />
     </PreferenceCategory>
     <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
-    <PreferenceCategory android:title="@string/pref_category_other">
+    <PreferenceCategory
+        android:key="cat_other"
+        android:title="@string/pref_category_other">
         <CheckBoxPreference
             android:key="hide_recents_thumbnails"
             android:summary="@string/pref_hide_recents_thumbnails_summary"

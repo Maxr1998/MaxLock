@@ -223,6 +223,10 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
                     el.setSummary(R.string.toast_pro_required);
                 }
+                if (MLImplementation.getImplementation(prefs) != MLImplementation.DEFAULT) {
+                    PreferenceCategory catOther = (PreferenceCategory) findPreference(Common.CATEGORY_OTHER);
+                    catOther.removePreference(findPreference(Common.HIDE_RECENTS_THUMBNAILS));
+                }
                 break;
             case IMOD:
                 //Intika I.Mod - Pro setup

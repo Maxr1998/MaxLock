@@ -42,7 +42,6 @@ class SystemUI {
 
     static final String PACKAGE_NAME = "com.android.systemui";
     static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
-    private static final String HIDE_RECENTS_THUMBNAILS = "hide_recents_thumbnails";
     private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     private static final boolean MARSHMALLOW = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     private static final boolean OREO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
@@ -55,7 +54,7 @@ class SystemUI {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         String packageName = ((Intent) getObjectField(getObjectField(param.thisObject, "key"), "baseIntent")).getComponent().getPackageName();
-                        if (prefs.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
+                        if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
                             Bitmap replacement;
                             if (MARSHMALLOW) {
                                 replacement = Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565);
@@ -74,7 +73,7 @@ class SystemUI {
                 findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        if (prefs.getBoolean(HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
+                        if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
                             param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(color.getAsColor()) : Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565));
                         }
                     }

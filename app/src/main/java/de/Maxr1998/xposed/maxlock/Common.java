@@ -83,6 +83,8 @@ public abstract class Common {
     public static final String FC_INPUT = "fake_die_input";
     public static final String FC_ENABLE_DIRECT_UNLOCK = "enable_direct_unlock";
     public static final String FC_ENABLE_PASSPHRASE_UNLOCK = "fc_enable_passphrase_unlock";
+    public static final String CATEGORY_OTHER = "cat_other";
+    public static final String HIDE_RECENTS_THUMBNAILS = "hide_recents_thumbnails";
     public static final String ENABLE_TASKER = "enable_tasker_integration";
 
     public static final String IMOD_OPTIONS = "intika_imod";
