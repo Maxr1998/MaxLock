@@ -175,7 +175,6 @@
     <string name="pref_category_translations">翻訳</string>
     <string name="pref_category_licenses">ライセンス</string>
     <string name="pref_donate_upgrade_pro">Pro 版にアップグレード (寄付)</string>
-    <string name="donate_status_donated">寄付済み</string>
     <string name="donate_status_not_donated">寄付で開発を支援してください。ありがとう ☺</string>
     <string name="dialog_message_already_bought">すでに寄付していただきましたが、
 現在の購入を取り消して再度購入することでさらに寄付していただけます。\n\n購入を取り消して再購入しますか?</string>

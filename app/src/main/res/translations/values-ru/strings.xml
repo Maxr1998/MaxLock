@@ -139,7 +139,6 @@
     <string name="pref_category_translations">Переводы</string>
     <string name="pref_category_licenses">Лицензии</string>
     <string name="pref_donate_upgrade_pro">Отблагодарить автора пиастрами и улучшить до версии Pro</string>
-    <string name="donate_status_donated">Пиастры получены.</string>
     <string name="donate_status_not_donated">Пожалуйста, рассмотрите возможность отблагодарить автора материально - для поддержки штанишек и будущего развития проекта. Благодарю :)</string>
     <string name="dialog_message_already_bought">Эта опция Вам уже предоставлена за поддержку автора.
         Вы можете отменить и выбрать другой продукт, или ещё раз купить этот с удалением информации о текущей покупке.\n\nКупить ещё раз?</string>

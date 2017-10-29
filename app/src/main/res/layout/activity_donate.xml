@@ -6,35 +6,32 @@
 
     <include layout="@layout/toolbar" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <ProgressBar
             android:id="@android:id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:maxHeight="24dp"
-            android:maxWidth="24dp"
-            android:minHeight="24dp"
-            android:minWidth="24dp" />
+            android:layout_centerInParent="true"
+            android:indeterminate="true" />
 
         <TextView
             android:id="@+id/donation_status"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
-    </LinearLayout>
+            android:layout_gravity="center_vertical"
+            android:layout_margin="16dp" />
 
-    <ListView
-        android:id="@+id/donate_products_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        <ListView
+            android:id="@+id/donate_products_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/donation_status" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/donate_paypal"

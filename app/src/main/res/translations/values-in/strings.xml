@@ -177,9 +177,7 @@
     <string name="pref_category_translations">Terjemahan</string>
     <string name="pref_category_licenses">Lisensi</string>
     <string name="pref_donate_upgrade_pro">Donasi untuk meng-upgrade ke versi Pro</string>
-    <string name="pref_donate_again_on_pro">Terima Kasih atas donasi anda!</string>
     <string name="pref_donate_again_on_pro_summary">Jika anda mau, anda dapat memberikan donasi lagi disini :)</string>
-    <string name="donate_status_donated">Disumbang.</string>
     <string name="donate_status_not_donated">Pertimbangkan menyumbang untuk mendukung pengembangan lebih lanjut. terima kasih :)</string>
     <string name="dialog_message_already_bought">Kamu telah memiliki pilihan donasi ini.
         Kamu dapat membatalkan dan memilih produk lain atau membeli satu lagi dengan memakai (menghapus) pembelian sebelumnya.\n\nMemakai dan membeli ulang?</string>

@@ -175,7 +175,6 @@
     <string name="pref_category_translations">Çeviriler</string>
     <string name="pref_category_licenses">Lisanslar</string>
     <string name="pref_donate_upgrade_pro">Pro sürümüne yükseltmek için bağış yapın</string>
-    <string name="donate_status_donated">Bağış yapıldı.</string>
     <string name="donate_status_not_donated">Daha fazla gelişmeyi desteklemek için bağış yapmayı düşünün. Teşekkürler :)</string>
     <string name="dialog_message_already_bought">Zaten bağış yapmışsınız.
         Daha önce satın aldığınız (kaldırdığınız) başka bir ürünü iptal edebilir ve alabilir veya satın alabilirsiniz.\n\nYeniden satın al ve harca?</string>

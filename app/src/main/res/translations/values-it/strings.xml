@@ -144,7 +144,6 @@
     <string name="pref_category_translations">Traduzioni</string>
     <string name="pref_category_licenses">Licenze</string>
     <string name="pref_donate_upgrade_pro">Fai una donazione per aggiornare alla versione Pro</string>
-    <string name="donate_status_donated">Donazione effettuata</string>
     <string name="donate_status_not_donated">Prendi in considerazione l\'idea di donare per sostenere ulteriori sviluppi. Grazie mille :)</string>
     <string name="dialog_message_already_bought">Ti sei già assicurato l\'opzione della donazione.
         Puoi annullarla e scegliere un altro prodotto oppure acquistare nuovamente questo rinunciando (rimuovendo) prima l\'acquisto attualmente presente.\n\nRinunci e acquisti nuovamente?</string>

@@ -164,7 +164,6 @@
     <string name="pref_category_translations">翻译人员</string>
     <string name="pref_category_licenses">许可证</string>
     <string name="pref_donate_upgrade_pro">捐赠后将升级为专业版</string>
-    <string name="donate_status_donated">已捐赠</string>
     <string name="donate_status_not_donated">考虑捐赠以支持进一步开发, 谢谢:）</string>
     <string name="dialog_message_already_bought">你已经拥有这个捐赠选项
 	您可以取消和选择其它产品或再次消费(删除)目前的购买,再次购买一个,\n\n消费和回购?</string>

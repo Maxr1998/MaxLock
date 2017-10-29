@@ -175,7 +175,6 @@
     <string name="pref_category_translations">Tłumaczenia</string>
     <string name="pref_category_licenses">Licencje</string>
     <string name="pref_donate_upgrade_pro">Wesprzyj, aby zaktualizować do wersji Pro</string>
-    <string name="donate_status_donated">Dotacja wykonana pomyślnie.</string>
     <string name="donate_status_not_donated">Rozważ dotację, aby wesprzeć dalszy rozwój. Dzięki :)</string>
     <string name="dialog_message_already_bought">Skorzystałeś z opcji dotacji.
         Możesz anulować i wybrać inny produkt lub zakupić ponownie ten przez usunięcie obecnego zakupu.\n\nUsunąć i odkupić?</string>

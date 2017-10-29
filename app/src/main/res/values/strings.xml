@@ -186,10 +186,11 @@
     <string name="pref_category_translations">Translations</string>
     <string name="pref_category_licenses">Licenses</string>
     <string name="pref_donate_upgrade_pro">Donate to upgrade to pro-version</string>
-    <string name="pref_donate_again_on_pro">Thanks for your donation!</string>
+    <string name="pref_donate_thanks_for_donation">Thanks for your donation!</string>
     <string name="pref_donate_again_on_pro_summary">If you want, you can donate again here :)</string>
-    <string name="donate_status_donated">Donated.</string>
+    <string name="donate_status_donated">@string/pref_donate_thanks_for_donation</string>
     <string name="donate_status_not_donated">Consider donating to support further development. Thanks :)</string>
+    <string name="donate_status_error">Error: Couldn\'t load available products.</string>
     <string name="dialog_message_already_bought">You already own this donation option.
         You can cancel and pick another product or purchase this one again with consuming (removing) the current purchase in before.\n\nConsume and repurchase?</string>
     <string name="donate_paypal">Donate via PayPal</string>

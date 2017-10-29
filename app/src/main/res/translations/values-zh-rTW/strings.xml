@@ -147,7 +147,6 @@
     <string name="pref_category_translations">翻譯</string>
     <string name="pref_category_licenses">許可證</string>
     <string name="pref_donate_upgrade_pro">捐贈可升級到專業版</string>
-    <string name="donate_status_donated">已捐贈。</string>
     <string name="donate_status_not_donated">考慮捐贈，以支持進一步發展。感謝：）</string>
     <string name="dialog_message_already_bought">你已經擁有此捐贈選項。
         您可以取消和選擇其他產品或再次消費（删除）目前的購買，再次購買一個，\n\n消費和回購？</string>

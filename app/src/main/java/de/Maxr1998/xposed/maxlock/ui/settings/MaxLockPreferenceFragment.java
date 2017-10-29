@@ -250,7 +250,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
             if (prefs.getBoolean(Common.DONATED, false)) {
                 Preference donate = findPreference(Common.DONATE);
-                donate.setTitle(R.string.pref_donate_again_on_pro);
+                donate.setTitle(R.string.pref_donate_thanks_for_donation);
                 donate.setSummary(R.string.pref_donate_again_on_pro_summary);
                 Preference pro = findPreference(Common.ENABLE_PRO);
                 pro.setEnabled(false);

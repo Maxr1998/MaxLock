@@ -179,9 +179,8 @@
     <string name="pref_category_translations">Übersetzungen</string>
     <string name="pref_category_licenses">Lizenzen</string>
     <string name="pref_donate_upgrade_pro">Spenden, um auf Pro-Version upzugraden</string>
-    <string name="pref_donate_again_on_pro">Vielen Dank für deine Spende!</string>
+    <string name="pref_donate_thanks_for_donation">Vielen Dank für deine Spende!</string>
     <string name="pref_donate_again_on_pro_summary">Wenn du möchtest, kannst du hier erneut spenden :) </string>
-    <string name="donate_status_donated">Gespendet.</string>
     <string name="donate_status_not_donated">Ziehe in Erwägung zu spenden, um zukünftige Entwicklung zu untersützen. Vielen Dank :)</string>
     <string name="dialog_message_already_bought">Du hast diese Spendeoption schon genutzt.
         Du kannst ein anderes Produkt wählen, oder das gewählte entfernen und neu kaufen.\n\nNeu kaufen?</string>
