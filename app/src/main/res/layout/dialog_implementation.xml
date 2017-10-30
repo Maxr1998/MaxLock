@@ -42,19 +42,7 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/implementation_alert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center_vertical"
-        android:text="@string/implementation_alert"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/accessibility_error"
+        android:id="@+id/implementation_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
@@ -64,8 +52,19 @@
         android:drawablePadding="4dp"
         android:drawableStart="@drawable/ic_error_outline_red_24dp"
         android:gravity="center_vertical"
-        android:text="@string/accessibility_error"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/error"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/implementation_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:text="@string/implementation_alert"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:visibility="gone" />
 </LinearLayout>

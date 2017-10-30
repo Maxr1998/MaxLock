@@ -54,7 +54,6 @@ import java.util.Arrays;
 
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
-import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity;
@@ -232,24 +231,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             if (getSupportActionBar() != null) {
                 getSupportActionBar().show();
             }
-        }
-        updateXposedStatusAlert();
-    }
-
-    public void updateXposedStatusAlert() {
-        //noinspection ConstantConditions
-        if (!MLImplementation.isXposedActive()) {
-            boolean showWarning = MLImplementation.getImplementation(MLPreferences.getPreferences(this)) == MLImplementation.DEFAULT;
-            //noinspection ConstantConditions
-            findViewById(R.id.xposed_active).setVisibility(showWarning ? View.VISIBLE : View.GONE);
-            //noinspection ConstantConditions
-            findViewById(R.id.xposed_active_message).setOnClickListener(v -> {
-                AlertDialog help = new AlertDialog.Builder(SettingsActivity.this)
-                        .setTitle(R.string.maxlock_inactive)
-                        .setMessage(R.string.dialog_message_not_active)
-                        .create();
-                help.show();
-            });
         }
     }
 

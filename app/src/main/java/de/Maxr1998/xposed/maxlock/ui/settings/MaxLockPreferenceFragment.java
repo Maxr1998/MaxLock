@@ -76,6 +76,7 @@ import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.preference.ImplementationPreference;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
@@ -176,9 +177,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
                     }
                 }
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                    getPreferenceScreen().removePreference(findPreference(Common.ML_IMPLEMENTATION));
-                }
+                updateImplementationStatus();
                 PreferenceCategory catAppUI = (PreferenceCategory) findPreference(Common.CATEGORY_APPLICATION_UI);
                 CheckBoxPreference useDark = (CheckBoxPreference) findPreference(Common.USE_DARK_STYLE);
                 if (!useDark.isChecked()) {
@@ -342,7 +341,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                 .setTitle(preference.getTitle())
                                 .setView(MLImplementation.createImplementationDialog(getContext()))
                                 .setNegativeButton(android.R.string.ok, null)
-                                .setOnDismissListener(dialog -> ((SettingsActivity) getActivity()).updateXposedStatusAlert())
+                                .setOnDismissListener(dialog -> updateImplementationStatus())
                                 .create();
                         implementation.show();
                         return true;
@@ -536,6 +535,13 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }
                 break;
         }
+    }
+
+    private void updateImplementationStatus() {
+        ImplementationPreference implementationPreference = (ImplementationPreference) findPreference(Common.ML_IMPLEMENTATION);
+        if (!MLImplementation.isAccessibilitySupported())
+            implementationPreference.setTitle(R.string.ml_status);
+        implementationPreference.setWarningVisible(!MLImplementation.isActiveAndWorking(getActivity(), prefs));
     }
 
     private boolean allowRatingDialog() {

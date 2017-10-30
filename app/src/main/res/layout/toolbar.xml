@@ -11,32 +11,4 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         tools:ignore="UnusedAttribute" />
-
-    <RelativeLayout
-        android:id="@+id/xposed_active"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute">
-
-        <TextView
-            android:id="@+id/xposed_active_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:drawableLeft="@drawable/ic_error_outline_24dp_wrapper"
-            android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_error_outline_24dp_wrapper"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="2dp"
-            android:text="@string/maxlock_inactive"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold|italic" />
-    </RelativeLayout>
 </merge>

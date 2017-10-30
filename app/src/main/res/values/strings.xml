@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="maxlock_inactive">MaxLock is not active</string>
-    <string name="dialog_message_not_active">MaxLock could not hook the Android System methods needed for it to work. This may have several reasons:\n
-    &#x2022; <i>Xposed Framework is not installed</i>\n
-    &#x2022; <i>Xposed is installed and active, but you didn\'t enable MaxLock in Xposed installer (\"Modules\" tab) or didn\'t reboot afterwards.</i>\n
-    &#x2022; <i>Xposed Framework got disabled by Xposed safemode. Look at the Xposed Thread on XDA for further information.</i>\n
-    &#x2022; <i>MaxLock may have encountered a crash. You should send me a bugreport from the bottom of this screen then.</i></string>
     <string name="sb_no_locking_type">No locking type specified</string>
     <string name="sb_no_locked_apps">No apps chosen to lock</string>
     <string name="sb_action_setup">SET UP</string>
