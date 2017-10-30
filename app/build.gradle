@@ -112,10 +112,12 @@ task updateTranslations() {
             if (c_lang == "")
                 continue
             String lang = languages[i]
-            String file = "\$PWD/src/main/res/translations/values-$lang/strings.xml"
-            exec {
-                executable "bash"
-                args "-c", "wget -O \"$file\" \"https://api.crowdin.com/api/project/MaxLock/export-file?file=strings.xml&language=$c_lang&key=$crowdinKey\""
+            for (String file : ["strings", "implementation_strings"]) {
+                String c_file = "\$PWD/src/main/res/translations/values-$lang/${file}.xml"
+                exec {
+                    executable "bash"
+                    args "-c", "wget -O \"$c_file\" \"https://api.crowdin.com/api/project/MaxLock/export-file?file=${file}.xml&language=$c_lang&key=$crowdinKey\""
+                }
             }
         }
     }
