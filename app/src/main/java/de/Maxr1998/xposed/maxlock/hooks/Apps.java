@@ -110,19 +110,24 @@ class Apps {
                             String appName = context.getPackageManager().getApplicationInfo(lPParam.packageName, 0).loadLabel(context.getPackageManager()).toString();
                             Resources modRes = context.getPackageManager().getResourcesForApplication(MAXLOCK_PACKAGE_NAME);
                             String replacementText = modRes.getString(modRes.getIdentifier("notification_hidden_by_maxlock", "string", MAXLOCK_PACKAGE_NAME));
-                            Notification.Builder replacement = new Notification.Builder(context)
+                            Notification.Builder replacementBuilder = new Notification.Builder(context)
                                     .setContentTitle(appName)
                                     .setContentText(replacementText)
+                                    .setSound(notification.sound)
                                     .setContentIntent(notification.contentIntent)
                                     .setDeleteIntent(notification.deleteIntent)
                                     .setWhen(notification.when);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                replacement.setColor(modRes.getColor(modRes.getIdentifier("primary_red", "color", MAXLOCK_PACKAGE_NAME)))
+                                replacementBuilder.setColor(modRes.getColor(modRes.getIdentifier("primary_red", "color", MAXLOCK_PACKAGE_NAME)))
+                                        .setSound(notification.sound, notification.audioAttributes)
                                         .setVisibility(Notification.VISIBILITY_SECRET);
                             }
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                                replacement.setSmallIcon(notification.getSmallIcon());
-                            param.args[2] = replacement.build();
+                                replacementBuilder.setSmallIcon(notification.getSmallIcon());
+                            Notification replacement = replacementBuilder.build();
+                            replacement.flags = notification.flags;
+                            // Replace notification
+                            param.args[2] = replacement;
                         }
                     }
                 }
