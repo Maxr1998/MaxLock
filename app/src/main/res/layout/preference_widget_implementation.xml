@@ -4,7 +4,7 @@
     android:id="@+id/status_icon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:contentDescription="@string/maxlock_inactive"
+    android:contentDescription="@string/ml_status"
     android:tint="@color/accent"
     android:visibility="gone"
     app:srcCompat="@drawable/ic_error_outline_24dp" />
