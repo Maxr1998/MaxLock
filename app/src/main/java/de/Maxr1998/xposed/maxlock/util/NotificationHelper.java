@@ -17,11 +17,14 @@
 
 package de.Maxr1998.xposed.maxlock.util;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
@@ -40,8 +43,20 @@ public final class NotificationHelper {
 
     public static final int IMOD_NOTIFICATION_ID = 0x130D;
     public static final int APP_INSTALLED_NOTIFICATION_ID = 0x2EE;
+    private static final String IMOD_CHANNEL = "notification_imod";
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void createNotificationChannels(Context context) {
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel iMod = new NotificationChannel(IMOD_CHANNEL, context.getString(R.string.pref_screen_delayed_relock), NotificationManager.IMPORTANCE_MIN);
+        nm.createNotificationChannel(iMod);
+    }
 
     public static void postIModNotification(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannels(context);
+        }
+
         NotificationManagerCompat nm = NotificationManagerCompat.from(context);
         if (!MLPreferences.getPrefsApps(context).getBoolean(Common.SHOW_IMOD_RESET_NOTIFICATION, false)) {
             nm.cancel(IMOD_NOTIFICATION_ID);
@@ -51,7 +66,7 @@ public final class NotificationHelper {
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notifyIntent.putExtra(ActionsHelper.ACTION_EXTRA_KEY, ActionsHelper.ACTION_IMOD_RESET);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, IMOD_CHANNEL)
                 .setContentTitle(context.getString(R.string.action_imod_reset))
                 .setContentText("")
                 .setSmallIcon(R.drawable.ic_apps_24dp)
@@ -83,7 +98,7 @@ public final class NotificationHelper {
             appName = packageName;
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        @SuppressWarnings("deprecation") NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentTitle(context.getString(R.string.notification_lock_new_app_title))
                 .setContentText(appName)
                 .setSmallIcon(R.drawable.ic_lock_48dp)
