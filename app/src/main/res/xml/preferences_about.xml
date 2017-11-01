@@ -57,6 +57,9 @@
             android:summary="@string/translation_polish"
             maxlock:language="pl" />
         <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
+            android:summary="@string/translation_portuguese"
+            maxlock:language="pt" />
+        <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
             android:summary="@string/translation_russian"
             maxlock:language="ru" />
         <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
