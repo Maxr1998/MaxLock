@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.BuildConfig;
+import de.Maxr1998.xposed.maxlock.util.KUtil;
 
 class SetupAppListLoader extends AsyncTaskLoader<List<ApplicationInfo>> {
 
@@ -51,9 +52,10 @@ class SetupAppListLoader extends AsyncTaskLoader<List<ApplicationInfo>> {
         final PackageManager pm = getContext().getPackageManager();
         final List<ApplicationInfo> mAllApps = pm.getInstalledApplications(0);
         final List<ApplicationInfo> result = new ArrayList<>();
+        final List<String> launcherPackages = KUtil.getLauncherPackages(pm);
         for (int i = 0; i < mAllApps.size(); i++) {
             ApplicationInfo ai = mAllApps.get(i);
-            if ((shouldLoad(pm, ai) && !ai.packageName.equals(BuildConfig.APPLICATION_ID)) || ai.packageName.matches("com.(google.)?android.packageinstaller")) {
+            if ((shouldLoad(pm, ai) && !ai.packageName.equals(BuildConfig.APPLICATION_ID)) && !launcherPackages.contains(ai.packageName) || ai.packageName.matches("com.(google.)?android.packageinstaller")) {
                 result.add(ai);
             }
         }
