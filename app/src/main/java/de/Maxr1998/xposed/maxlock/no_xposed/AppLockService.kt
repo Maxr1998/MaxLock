@@ -19,7 +19,10 @@ package de.Maxr1998.xposed.maxlock.no_xposed
 
 import android.accessibilityservice.AccessibilityService
 import android.annotation.TargetApi
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
@@ -40,9 +43,9 @@ class AppLockService : AccessibilityService() {
 
     private val TAG = "AppLockService"
 
-    private val prefs: SharedPreferences by lazy { MLPreferences.getPreferences(this) }
-    private val prefsApps: SharedPreferences by lazy { MLPreferences.getPrefsApps(this) }
-    private val prefsHistory: SharedPreferences by lazy { MLPreferences.getPrefsHistory(this) }
+    private val prefs by lazy { MLPreferences.getPreferences(this) }
+    private val prefsApps by lazy { MLPreferences.getPrefsApps(this) }
+    private val prefsHistory by lazy { MLPreferences.getPrefsHistory(this) }
 
     private val screenOffReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -63,9 +66,10 @@ class AppLockService : AccessibilityService() {
     override fun onServiceConnected() {
         Log.i(TAG, "Started up")
         try {
-            val currentPackage = rootInActiveWindow.packageName.toString()
-            if (prefsApps.getBoolean(currentPackage, false)) {
-                handlePackage(currentPackage)
+            rootInActiveWindow?.packageName?.toString()?.let {
+                if (prefsApps.getBoolean(it, false)) {
+                    handlePackage(it)
+                }
             }
         } catch (t: Throwable) {
             Log.e(TAG, "Error in handling startup poll", t)
@@ -136,7 +140,7 @@ class AppLockService : AccessibilityService() {
 
     override fun onDestroy() {
         unregisterReceiver(screenOffReceiver)
-        performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME)
+        performGlobalAction(GLOBAL_ACTION_HOME)
         super.onDestroy()
     }
 }
