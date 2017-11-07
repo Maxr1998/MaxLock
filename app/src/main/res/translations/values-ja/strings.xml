@@ -72,10 +72,10 @@
     <string name="pref_category_pin_only">PIN コード</string>
     <string name="pref_shuffle_pin">数字ボタンのシャッフル表示</string>
     <string name="pref_category_pin_and_knock_code">PIN コードとノックコード</string>
-    <string name="pref_hide_input_bar">入力バーの消去</string>
-    <string name="pref_hide_input_bar_summary">クリアボタンも消去されます!</string>
+    <string name="pref_hide_input_bar">入力バーの非表示</string>
+    <string name="pref_hide_input_bar_summary">消去ボタンも非表示になりますが、数字ボタンやノックコード入力部の長押しで消去できます</string>
     <string name="pref_category_pin_and_pattern">PIN コードとパターン</string>
-    <string name="pref_haptic_feedback">入力時の振動</string>
+    <string name="pref_haptic_feedback">入力時のバイブ</string>
     <string name="pref_category_knock_code_only">ノックコード</string>
     <string name="pref_show_dividers">分割線の表示</string>
     <string name="pref_touch_visible">画面タッチの視覚化</string>
@@ -93,11 +93,11 @@
     <string name="logs_empty_text">ログの記録はありません</string>
     <string name="pref_category_fake_crash">アプリ強制終了の偽装</string>
     <string name="pref_fake_crash_enable_all_apps">すべてのアプリで有効化</string>
-    <string name="pref_fake_crash_enable_all_apps_summary">有効にするとアプリ個別の設定を上書きして適用されます</string>
+    <string name="pref_fake_crash_enable_all_apps_summary">アプリ強制終了の偽装をすべてのアプリに適用します。アプリ個別の設定は上書きされます</string>
     <string name="pref_fake_crash_passphrase">偽装ダイアログへのパスフレーズ</string>
     <string name="pref_fake_crash_passphrase_summary">アプリ強制終了の偽装ダイアログからロック画面へ移行するためのパスフレーズを設定します</string>
     <string name="pref_fake_crash_instant_lockscreen">ロック画面の直接表示</string>
-    <string name="pref_fake_crash_instant_lockscreen_summary">「問題が発生したためアプリを終了します」ダイアログで、「レポート」ボタンをタップしたら直ぐにロック画面へ移行するようにします</string>
+    <string name="pref_fake_crash_instant_lockscreen_summary">「問題が発生したためアプリを終了します」ダイアログの「レポート」ボタンをタップしたら直ぐにロック画面へ移行するようにします</string>
     <string name="pref_fake_crash_enable_passphrase_unlock">パスフレーズでロック解除</string>
     <string name="pref_fake_crash_enable_passphrase_unlock_summary">正しいパスフレーズが入力されたらロック画面を経由せずに直ぐにロック解除するようにします\n
         (注意 : パスフレーズはアプリのプライベートストレージにプレーンテキストで保存されます。したがって潜在的に安全ではありません)</string>
@@ -132,7 +132,7 @@
     <string name="pref_choose_apps_summary">ロックするアプリを選択します</string>
     <string name="menu_backup_list">リストのバックアップ</string>
     <string name="menu_restore_list">リストの復元</string>
-    <string name="menu_clear_list">リストの消去</string>
+    <string name="menu_clear_list">リストの全消去</string>
     <string name="menu_all_apps">すべてのアプリ</string>
     <string name="menu_only_openable">起動可能アプリのみ</string>
     <string name="dialog_storage_permission_backup_restore">バックアップファイルの保存や読み込みには外部ストレージへのアクセスが必要です。続行しますか?</string>
@@ -222,8 +222,8 @@
     <string name="content_description_fs_lock">端末のロック</string>
     <string name="content_description_lockscreen_current_input">現在の入力文字列</string>
     <string name="content_description_lockscreen_delete">最後の入力の削除</string>
-    <string name="content_description_lockscreen_container">ノックコード コンテナ</string>
-    <string name="content_description_applist_filter">適用中のフィルタ %s</string>
+    <string name="content_description_lockscreen_container">ノックコード入力部</string>
+    <string name="content_description_applist_filter">フィルタ : %s</string>
     <string name="content_description_applist_filter_all_apps">すべてのアプリ</string>
     <string name="content_description_applist_filter_locked">ロックしたアプリ</string>
     <string name="content_description_applist_filter_unlocked">未ロックのアプリ</string>

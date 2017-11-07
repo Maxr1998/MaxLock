@@ -5,7 +5,7 @@
     <string name="applock_service_description">Serviço que permite bloquear seus aplicativos</string>
     <string name="implementation_default">Padrão - necessário Xposed</string>
     <string name="implementation_no_xposed">Sem \"Root\"/ Xposed</string>
-    <string name="xposed_success_information">Xposed instalado &amp; ativo, incrível!</string>
+    <string name="xposed_success_information">Xposed instalado &amp; ativo, que maravilha!</string>
     <string name="implementation_alert"><i>Uma vez que a versão não-Xposed usa um serviço de acessibilidade, ele funciona em todos os dispositivos sem modificações do sistema,
         mas também consome muito mais RAM (memória do sistema) e bateria.\nIt\'s portanto, altamente recomendado usar a implementação padrão se você tiver
         a possibilidade de instalar o Xposed ou já o tiver instalado!</i></string>
