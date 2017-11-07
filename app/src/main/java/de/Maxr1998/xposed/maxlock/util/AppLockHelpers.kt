@@ -17,7 +17,9 @@
 
 package de.Maxr1998.xposed.maxlock.util
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import de.Maxr1998.xposed.maxlock.Common
 import org.json.JSONArray
 import org.json.JSONObject
@@ -30,7 +32,10 @@ object AppLockHelpers {
     private val IMOD_APPS = "iModPerApp"
     private val CLOSE_APPS = "close"
     private val IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer"
-    @JvmField val IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off"
+    @JvmField
+    val IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off"
+    @JvmField
+    val IMOD_RESET_ON_HOMESCREEN = "imod_reset_on_homescreen"
     private val IMOD_DELAY_APP = "delay_inputperapp"
     private val IMOD_DELAY_GLOBAL = "delay_inputgeneral"
 
@@ -106,4 +111,8 @@ object AppLockHelpers {
     fun trim(prefsHistory: SharedPreferences) {
         prefsHistory.edit().remove(PROCESS_HISTORY_ARRAY).remove(PACKAGE_HISTORY_ARRAY).remove(CLOSE_APPS).apply()
     }
+
+    @JvmStatic
+    fun getLauncherPackage(packageManager: PackageManager): String =
+            Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).addCategory(Intent.CATEGORY_DEFAULT).resolveActivity(packageManager).packageName
 }

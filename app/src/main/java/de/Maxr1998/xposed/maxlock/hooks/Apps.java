@@ -28,6 +28,7 @@ import android.content.res.Resources;
 import android.os.Build;
 
 import de.Maxr1998.xposed.maxlock.Common;
+import de.Maxr1998.xposed.maxlock.util.AppLockHelpers;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -42,12 +43,21 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 class Apps {
 
+    private static String launcherPackage;
+
     static void initLogging(final XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefsHistory) {
         try {
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     addToHistory(((Activity) param.thisObject).getTaskId(), lPParam.packageName, prefsHistory);
+                    if (launcherPackage == null) {
+                        launcherPackage = AppLockHelpers.getLauncherPackage(((Activity) param.thisObject).getPackageManager());
+                    }
+                    if (lPParam.packageName.equals(launcherPackage)) {
+                        prefsHistory.edit().clear().apply();
+                        logD("ML: Returned to homescreen, locked apps");
+                    }
                 }
             });
         } catch (Throwable t) {

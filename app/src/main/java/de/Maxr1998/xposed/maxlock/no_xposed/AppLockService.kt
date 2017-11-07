@@ -31,8 +31,10 @@ import android.view.accessibility.AccessibilityWindowInfo
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.MLImplementation
 import de.Maxr1998.xposed.maxlock.ui.LockActivity
+import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_HOMESCREEN
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory
+import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getLauncherPackage
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
@@ -46,6 +48,8 @@ class AppLockService : AccessibilityService() {
     private val prefs by lazy { MLPreferences.getPreferences(this) }
     private val prefsApps by lazy { MLPreferences.getPrefsApps(this) }
     private val prefsHistory by lazy { MLPreferences.getPrefsHistory(this) }
+
+    private val launcherPackage by lazy { getLauncherPackage(packageManager) }
 
     private val screenOffReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -97,6 +101,10 @@ class AppLockService : AccessibilityService() {
                 handlePackage(packageName)
             } else {
                 addToHistory(-1, packageName, prefsHistory)
+                if (packageName == launcherPackage && prefsApps.getBoolean(IMOD_RESET_ON_HOMESCREEN, false)) {
+                    prefsHistory.edit().clear().apply()
+                    Log.d(TAG, "Returned to homescreen, locked apps")
+                }
             }
         } catch (t: Throwable) {
             Log.e(TAG, "Error in handling event", t)

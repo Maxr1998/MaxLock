@@ -122,12 +122,14 @@
     <string name="pref_delay_per_app_input_summary">Enter a number to specify the delay time value in minute for per app delayed re-lock</string>
     <string name="pref_delay_needpro">Delayed re-lock - Pro version</string>
     <string name="pref_category_reset_relock_timer">Reset timer options</string>
-    <string name="pref_reset_relock_timer_description">These options can be used to ask for authentication instantly at the next app start
-        instead of waiting for the re-lock timer to pass</string>
-    <string name="pref_show_reset_notification">Show notification</string>
-    <string name="pref_show_reset_notification_summary">Show a notification to reset I.Mod timer</string>
-    <string name="pref_reset_screen_off">Auto-reset I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Reset I.Mod Timer when turning screen off</string>
+    <string name="pref_reset_relock_timer_description">These options can be used to ask for authentication instantly on the next app start
+        instead of waiting for the re-lock timer to elapse</string>
+    <string name="pref_show_reset_notification">Show reset notification</string>
+    <string name="pref_show_reset_notification_summary">Show a notification to reset re-lock timer when clicked</string>
+    <string name="pref_reset_screen_off">Reset on screen-off</string>
+    <string name="pref_reset_screen_off_summary">Reset re-lock timer when the screen is turned off</string>
+    <string name="pref_imod_reset_on_homescreen">Reset on homescreen</string>
+    <string name="pref_imod_reset_on_homescreen_summary">Reset re-lock timer when navigating to the homescreen</string>
     <string name="pref_hide_recents_thumbnails">Hide recents thumbnails</string>
     <string name="pref_hide_recents_thumbnails_summary">Remove preview thumbnails from locked apps from the recents screen</string>
     <!-- Apps settings -->
