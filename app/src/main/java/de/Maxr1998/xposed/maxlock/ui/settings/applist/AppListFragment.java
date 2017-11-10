@@ -246,7 +246,10 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                     Toast.makeText(getActivity(), R.string.toast_backup_success, Toast.LENGTH_SHORT).show();
                 break;
             case RESTORE_STORAGE_PERMISSION_REQUEST_CODE:
-                List<String> list = new ArrayList<>(Arrays.asList(new File(Common.BACKUP_DIR).list()));
+                File backupDir = new File(Common.BACKUP_DIR);
+                //noinspection ResultOfMethodCallIgnored
+                backupDir.mkdirs();
+                List<String> list = new ArrayList<>(Arrays.asList(backupDir.list()));
                 restoreAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
                 AlertDialog restoreDialog = new AlertDialog.Builder(getActivity())
                         .setTitle(R.string.dialog_text_restore_list)
