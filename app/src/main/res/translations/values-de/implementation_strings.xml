@@ -2,7 +2,8 @@
 <resources>
     <string name="ml_implementation">MaxLock Implementierung</string>
     <string name="ml_status">MaxLock Status</string>
-    <string name="applock_service_description">Dienst, der das Sperren deiner Apps ermöglicht</string>
+    <string name="applock_accessibility_service_summary">Dienst, der das Sperren deiner Apps ermöglicht</string>
+    <string name="applock_accessibility_service_description">Wenn du MaxLock\'s \"kein Root/Xposed\"-Implementierung verwendest, wird dieser Bedienungshilfendienst verwendet, um App-Wechsel zu überwachen. Es können und werden zu keiner Zeit Daten von deinem Bildschirm aufgezeichnet oder verwendet.</string>
     <string name="implementation_default">Standard - benötigt Xposed</string>
     <string name="implementation_no_xposed">Kein \"root\"/Xposed</string>
     <string name="xposed_success_information">Xposed installiert &amp; Modul aktiviert, super!</string>

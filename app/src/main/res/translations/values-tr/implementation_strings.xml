@@ -2,7 +2,6 @@
 <resources>
     <string name="ml_implementation">MaxLock uygulaması</string>
     <string name="ml_status">MaxLock durumu</string>
-    <string name="applock_service_description">Uygulamalarınızı kilitlemenizi sağlayan hizmet</string>
     <string name="implementation_default">Varsayılan - Xposed\'a ihtiyaç duyar</string>
     <string name="implementation_no_xposed">Root veya Xposed yok</string>
     <string name="xposed_success_information">Xposed yüklü &amp; etkin, müthiş!</string>

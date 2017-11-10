@@ -2,7 +2,6 @@
 <resources>
     <string name="ml_implementation">Implementação do MaxLock</string>
     <string name="ml_status">Status do MaxLock</string>
-    <string name="applock_service_description">Serviço que permite bloquear seus aplicativos</string>
     <string name="implementation_default">Padrão - necessário Xposed</string>
     <string name="implementation_no_xposed">Sem \"Root\"/ Xposed</string>
     <string name="xposed_success_information">Xposed instalado &amp; ativo, que maravilha!</string>
