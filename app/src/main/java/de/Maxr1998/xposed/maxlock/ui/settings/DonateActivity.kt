@@ -124,7 +124,7 @@ class DonateActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Billin
                 override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                     val v = super.getView(position, convertView, parent)
                     val tv = v.findViewById<TextView>(android.R.id.text1)
-                    val productName = bp.getPurchaseListingDetails(productIds[position])?.title?.run { substring(0, indexOf(" (MaxLock")) }.orEmpty()
+                    val productName = bp.getPurchaseListingDetails(productIds[position])?.title?.run { substring(0, Math.abs(indexOf("(MaxLock")) - 1) }.orEmpty()
                     if (productName.isEmpty()) {
                         parent.visibility = View.INVISIBLE
                         donationStatusText.setText(R.string.donate_status_error)
