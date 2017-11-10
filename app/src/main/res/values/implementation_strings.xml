@@ -3,7 +3,9 @@
     <string name="ml_implementation">MaxLock implementation</string>
     <string name="ml_status">MaxLock status</string>
 
-    <string name="applock_service_description">Service which allows you to lock your apps</string>
+    <string name="applock_accessibility_service_summary">Service which allows you to lock your apps</string>
+    <string name="applock_accessibility_service_description">If you use MaxLock\'s no Xposed implementation, this accessibility service will be used
+        to monitor app changes. No data can or will be collected from your screen content in any situation.</string>
 
     <string name="implementation_default">Default - needs Xposed</string>
     <string name="implementation_no_xposed">No \"root\"/Xposed</string>
