@@ -42,7 +42,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -67,11 +66,9 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     private final int MAX_ATTEMPTS = 5;
 
     private final String mPackageName, mActivityName;
-    private final String mLockingType, mPassword;
+    private final String mPassword;
     private final Point screenSize = new Point();
     private final AuthenticationSucceededListener authenticationSucceededListener;
-    private final FrameLayout mContainer;
-    private final ViewGroup mInputBar;
     private StringBuilder mCurrentKey = new StringBuilder(10);
     private TextView mInputTextView;
     private TextView mMessageArea;
@@ -90,7 +87,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         mPackageName = packageName.equals(Common.MASTER_SWITCH_ON) ? BuildConfig.APPLICATION_ID : packageName;
         mActivityName = activityName;
 
-        mLockingType = getPreferencesKeysPerApp(getContext()).getString(mPackageName, getPrefs().getString(Common.LOCKING_TYPE, ""));
+        String lockingType = getPreferencesKeysPerApp(getContext()).getString(mPackageName, getPrefs().getString(Common.LOCKING_TYPE, ""));
 
         if (getPreferencesKeysPerApp(getContext()).contains(mPackageName)) {
             mPassword = getPreferencesKeysPerApp(getContext()).getString(mPackageName + Common.APP_KEY_PREFERENCE, null);
@@ -103,27 +100,27 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
         LayoutInflater.from(getContext()).inflate(R.layout.lock_view, this, true);
 
-        TextView mTitleTextView = (TextView) findViewById(R.id.title_view);
-        mInputBar = (ViewGroup) findViewById(R.id.input_bar);
-        mInputTextView = (TextView) findViewById(R.id.input_view);
-        ImageButton mDeleteButton = (ImageButton) findViewById(R.id.delete_input);
-        mMessageArea = (TextView) findViewById(R.id.message_area);
-        mContainer = (FrameLayout) findViewById(R.id.container);
+        TextView titleTextView = findViewById(R.id.title_view);
+        ViewGroup inputBar = findViewById(R.id.input_bar);
+        mInputTextView = findViewById(R.id.input_view);
+        ImageButton deleteButton = findViewById(R.id.delete_input);
+        mMessageArea = findViewById(R.id.message_area);
+        FrameLayout container = findViewById(R.id.container);
 
         // Background
-        Util.getBackground(getActivity(), (ImageView) findViewById(R.id.background));
+        Util.getBackground(getActivity(), findViewById(R.id.background));
 
         // Locking type view setup
-        switch (mLockingType) {
+        switch (lockingType) {
             case Common.PREF_VALUE_PASSWORD:
             case Common.PREF_VALUE_PASS_PIN:
-                mInputBar.removeAllViews();
+                inputBar.removeAllViews();
                 mInputTextView = new AppCompatEditText(getContext());
                 LinearLayout.LayoutParams mInputTextParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
                 mInputTextParams.weight = 1;
                 mInputTextView.setLayoutParams(mInputTextParams);
                 mInputTextView.setSingleLine();
-                if (mLockingType.equals(Common.PREF_VALUE_PASS_PIN)) {
+                if (lockingType.equals(Common.PREF_VALUE_PASS_PIN)) {
                     mInputTextView.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
                 } else {
                     mInputTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -160,31 +157,31 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                         }
                     }
                 });
-                mInputBar.addView(mInputTextView);
+                inputBar.addView(mInputTextView);
                 int dp16 = Util.dpToPx(getContext(), 16);
-                ((LinearLayout.LayoutParams) mInputBar.getLayoutParams()).setMargins(dp16, 0, dp16, 0);
+                ((LinearLayout.LayoutParams) inputBar.getLayoutParams()).setMargins(dp16, 0, dp16, 0);
                 removeView(findViewById(R.id.fingerprint_stub));
                 FrameLayout fingerprintStub = new FrameLayout(getContext());
                 fingerprintStub.setId(R.id.fingerprint_stub);
-                mInputBar.addView(fingerprintStub);
+                inputBar.addView(fingerprintStub);
                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 break;
             case Common.PREF_VALUE_PIN:
                 FrameLayout.LayoutParams pinParams = new FrameLayout.LayoutParams(getDimens(R.dimen.container_size), getDimens(R.dimen.container_size));
                 pinParams.gravity = isLandscape() ? Gravity.CENTER : Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
                 pinParams.bottomMargin = isLandscape() ? 0 : getDimens(R.dimen.fingerprint_margin);
-                mContainer.addView(new PinView(getContext(), this), pinParams);
+                container.addView(new PinView(getContext(), this), pinParams);
                 break;
             case Common.PREF_VALUE_KNOCK_CODE:
-                mKnockCodeHolder = new KnockCodeHelper(this, mContainer);
-                mContainer.setOnLongClickListener(this);
-                mContainer.setContentDescription(getResources().getString(R.string.content_description_lockscreen_container));
+                mKnockCodeHolder = new KnockCodeHelper(this, container);
+                container.setOnLongClickListener(this);
+                container.setContentDescription(getResources().getString(R.string.content_description_lockscreen_container));
                 break;
             case Common.PREF_VALUE_PATTERN:
-                mInputBar.setVisibility(View.GONE);
+                inputBar.setVisibility(View.GONE);
                 FrameLayout.LayoutParams patternParams = new FrameLayout.LayoutParams(getDimens(R.dimen.container_size), getDimens(R.dimen.container_size));
                 patternParams.gravity = Gravity.CENTER;
-                mContainer.addView(new PatternView(getContext(), this), patternParams);
+                container.addView(new PatternView(getContext(), this), patternParams);
                 break;
             default:
                 handleAuthenticationSuccess();
@@ -193,24 +190,24 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
         // Title
         if (getPrefs().getBoolean(Common.HIDE_TITLE_BAR, false)) {
-            mTitleTextView.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.GONE);
         } else {
-            mTitleTextView.setText(title);
+            titleTextView.setText(title);
             Drawable icon = Util.getApplicationIconFromPackage(mPackageName, getContext());
             if (icon != null)
                 icon.setBounds(0, 0, getDimens(R.dimen.title_icon_size), getDimens(R.dimen.title_icon_size));
-            mTitleTextView.setCompoundDrawables(icon, null, null, null);
-            mTitleTextView.setOnLongClickListener(this);
+            titleTextView.setCompoundDrawables(icon, null, null, null);
+            titleTextView.setOnLongClickListener(this);
         }
 
         //Input
-        if (!mLockingType.equals(Common.PREF_VALUE_PASSWORD) && !mLockingType.equals(Common.PREF_VALUE_PASS_PIN)) {
+        if (!lockingType.equals(Common.PREF_VALUE_PASSWORD) && !lockingType.equals(Common.PREF_VALUE_PASS_PIN)) {
             if (getPrefs().getBoolean(Common.HIDE_INPUT_BAR, false)) {
-                mInputBar.setVisibility(View.GONE);
+                inputBar.setVisibility(View.GONE);
             } else {
                 mInputTextView.setText("");
-                mDeleteButton.setOnClickListener(this);
-                mDeleteButton.setOnLongClickListener(this);
+                deleteButton.setOnClickListener(this);
+                deleteButton.setOnLongClickListener(this);
             }
         }
 
@@ -228,6 +225,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     /**
      * Must be used as ContextThemeWrapper context for this LockView
      */
+    @SuppressLint("RestrictedApi")
     public static ContextThemeWrapper getThemedContext(Context baseContext) {
         return new ContextThemeWrapper(baseContext, MLPreferences.getPreferences(baseContext).getBoolean(Common.INVERT_COLOR, false) ? R.style.AppTheme : R.style.AppTheme_Dark);
     }

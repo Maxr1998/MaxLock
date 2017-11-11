@@ -19,10 +19,10 @@ package de.Maxr1998.xposed.maxlock.ui.lockscreen;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
-public class PinDigit extends TextView {
+public class PinDigit extends AppCompatTextView {
 
     private String mValue;
 

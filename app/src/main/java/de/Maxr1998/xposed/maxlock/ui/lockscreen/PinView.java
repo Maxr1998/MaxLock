@@ -66,7 +66,7 @@ public class PinView extends GridLayout implements View.OnClickListener, View.On
         for (int i = 0; i < values.size(); i++) {
             View v;
             if (values.get(i) != null) {
-                PinDigit p = new PinDigit(new ContextThemeWrapper(getContext(), R.style.Widget_TextView_NumPadKey));
+                @SuppressLint("RestrictedApi") PinDigit p = new PinDigit(new ContextThemeWrapper(getContext(), R.style.Widget_TextView_NumPadKey));
                 p.setValue(values.get(i));
                 p.setOnClickListener(this);
                 if (values.get(i).length() == 1) {

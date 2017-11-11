@@ -164,7 +164,7 @@ public class KnockCodeHelper {
         });
     }
 
-    public void setHighlightLegacy() {
+    private void setHighlightLegacy() {
         highlightLegacy = Bitmap.createBitmap(mContainer.getWidth(), mContainer.getHeight(), Bitmap.Config.ARGB_8888);
         mContainer.setBackground(new BitmapDrawable(mContainer.getResources(), highlightLegacy));
     }

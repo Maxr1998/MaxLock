@@ -65,7 +65,7 @@ public class ActionConfigActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_action_config);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(getString(R.string.app_name) + " Actions");
         if (taskerMode && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_TASKER, false)) {
@@ -74,8 +74,8 @@ public class ActionConfigActivity extends AppCompatActivity {
             return;
         }
 
-        final RadioGroup options = (RadioGroup) findViewById(R.id.tasker_config_options);
-        final Button apply = (Button) findViewById(R.id.tasker_apply_button);
+        final RadioGroup options = findViewById(R.id.tasker_config_options);
+        final Button apply = findViewById(R.id.tasker_apply_button);
         apply.setOnClickListener(view -> {
             int checked = options.getCheckedRadioButtonId();
             result = new Intent();
