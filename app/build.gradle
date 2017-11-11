@@ -75,32 +75,32 @@ repositories {
 
 dependencies {
     // Kotlin support
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     // From JCenter or other repositories
     //-- 3rd-party
-    compile 'com.anjlab.android.iab.v3:library:1.0.38@aar'
-    compile 'com.crossbowffs.remotepreferences:remotepreferences:0.5'
-    compile 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
-    compile 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
-    compile 'com.google.guava:guava:22.0-android'
-    compile 'com.heinrichreimersoftware:material-intro:1.6'
-    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
-    compile 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
-    compile 'commons-io:commons-io:2.5'
-    provided 'de.robv.android.xposed:api:82'
-    provided 'de.robv.android.xposed:api:82:sources'
+    implementation 'com.anjlab.android.iab.v3:library:1.0.38@aar'
+    implementation 'com.crossbowffs.remotepreferences:remotepreferences:0.5'
+    implementation 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
+    implementation 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
+    implementation 'com.google.guava:guava:22.0-android'
+    implementation 'com.heinrichreimersoftware:material-intro:1.6'
+    implementation 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
+    implementation 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
+    implementation 'commons-io:commons-io:2.5'
+    compileOnly 'de.robv.android.xposed:api:82'
+    compileOnly 'de.robv.android.xposed:api:82:sources'
     //-- Android support and Google Services
-    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
-    compile "com.android.support:customtabs:$supportLibraryVersion"
-    compile "com.android.support:design:$supportLibraryVersion"
-    compile "com.android.support:gridlayout-v7:$supportLibraryVersion"
-    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
+    implementation "com.android.support:customtabs:$supportLibraryVersion"
+    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "com.android.support:gridlayout-v7:$supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
-    compile "com.android.support:support-fragment:$supportLibraryVersion"
-    compile 'com.google.android.gms:play-services-analytics:11.4.2'
+    implementation "com.android.support:support-fragment:$supportLibraryVersion"
+    implementation 'com.google.android.gms:play-services-analytics:11.6.0'
     // Local files
-    compile(name: 'PatternLock', ext: 'aar')
+    implementation(name: 'PatternLock', ext: 'aar')
 }
 
 task updateTranslations() {
