@@ -62,8 +62,8 @@ public class LogViewerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setTitle(getString(R.string.pref_screen_logs));
         View rootView = inflater.inflate(R.layout.fragment_logs, container, false);
-        mLogRecycler = (RecyclerView) rootView.findViewById(R.id.log_recycler);
-        mEmptyText = (TextView) rootView.findViewById(R.id.logs_empty_text);
+        mLogRecycler = rootView.findViewById(R.id.log_recycler);
+        mEmptyText = rootView.findViewById(R.id.logs_empty_text);
         List<String> text = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(getActivity().getApplicationInfo().dataDir + File.separator + Common.LOG_FILE));
@@ -159,9 +159,9 @@ public class LogViewerFragment extends Fragment {
 
             public LogViewHolder(View itemView) {
                 super(itemView);
-                mDate = (TextView) itemView.findViewById(R.id.log_item_date);
-                mTime = (TextView) itemView.findViewById(R.id.log_item_time);
-                mAppName = (TextView) itemView.findViewById(R.id.log_item_app_name);
+                mDate = itemView.findViewById(R.id.log_item_date);
+                mTime = itemView.findViewById(R.id.log_item_time);
+                mAppName = itemView.findViewById(R.id.log_item_app_name);
             }
         }
     }

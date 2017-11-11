@@ -42,7 +42,7 @@ public class EditTextPreference extends android.preference.EditTextPreference {
 
     @Override
     protected void onAddEditTextToDialogView(@NonNull View dialogView, @NonNull EditText editText) {
-        ViewGroup container = (ViewGroup) dialogView.findViewById(R.id.edittext_container);
+        ViewGroup container = dialogView.findViewById(R.id.edittext_container);
         if (container != null) {
             container.addView(editText, ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);

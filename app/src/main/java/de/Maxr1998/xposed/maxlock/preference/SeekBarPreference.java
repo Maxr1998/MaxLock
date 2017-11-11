@@ -89,7 +89,7 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
         try {
             View summary = view.findViewById(android.R.id.summary);
             ViewParent oldContainer = mSeekBar.getParent();
-            ViewGroup newContainer = (ViewGroup) view.findViewById(R.id.seekBarPrefBarContainer);
+            ViewGroup newContainer = view.findViewById(R.id.seekBarPrefBarContainer);
 
             summary.setPadding(0, 0, (int) view.getContext().getResources().getDisplayMetrics().density * 16, 0);
             View textContainer = ((View) summary.getParent());
@@ -121,7 +121,7 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
      */
     private void updateView(View view) {
         try {
-            mStatusText = (TextView) view.findViewById(R.id.seekBarPrefValue);
+            mStatusText = view.findViewById(R.id.seekBarPrefValue);
             mSeekBar.setProgress(mCurrentValue - mMinValue);
             setText();
         } catch (Exception e) {

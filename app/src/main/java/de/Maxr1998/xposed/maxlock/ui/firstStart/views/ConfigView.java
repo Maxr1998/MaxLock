@@ -56,10 +56,10 @@ public class ConfigView extends LinearLayout implements CompoundButton.OnChecked
         if (isInEditMode())
             return;
         CheckBox[] app_cbs = {
-                (CheckBox) findViewById(R.id.first_start_app_package),
-                (CheckBox) findViewById(R.id.first_start_app_settings),
-                (CheckBox) findViewById(R.id.first_start_app_xposed),
-                (CheckBox) findViewById(R.id.first_start_app_device_admin)
+                findViewById(R.id.first_start_app_package),
+                findViewById(R.id.first_start_app_settings),
+                findViewById(R.id.first_start_app_xposed),
+                findViewById(R.id.first_start_app_device_admin)
         };
         for (int i = 0; i < 3; i++) {
             app_cbs[i].setChecked(MLPreferences.getPrefsApps(getContext()).getBoolean(app_names[i], false));

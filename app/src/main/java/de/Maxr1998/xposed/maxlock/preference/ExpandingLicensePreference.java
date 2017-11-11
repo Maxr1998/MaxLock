@@ -48,7 +48,7 @@ public class ExpandingLicensePreference extends Preference {
         this.view = (LinearLayout) view;
         super.onBindView(view);
         expandIcon = view.findViewById(android.R.id.icon1);
-        licenseTextView = (TextView) view.findViewById(android.R.id.text1);
+        licenseTextView = view.findViewById(android.R.id.text1);
         if (licenseTextView != null) {
             licenseTextView.setText(licenseText);
         }
