@@ -34,6 +34,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_HOMESCREEN;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.wasAppClosed;
@@ -45,7 +46,7 @@ class Apps {
 
     private static String launcherPackage;
 
-    static void initLogging(final XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefsHistory) {
+    static void initLogging(final XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
         try {
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
                 @Override
@@ -54,7 +55,7 @@ class Apps {
                     if (launcherPackage == null) {
                         launcherPackage = AppLockHelpers.getLauncherPackage(((Activity) param.thisObject).getPackageManager());
                     }
-                    if (lPParam.packageName.equals(launcherPackage)) {
+                    if (lPParam.packageName.equals(launcherPackage) && prefsApps.getBoolean(IMOD_RESET_ON_HOMESCREEN, false)) {
                         prefsHistory.edit().clear().apply();
                         logD("ML: Returned to homescreen, locked apps");
                     }

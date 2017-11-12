@@ -81,7 +81,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (prefsApps.getBoolean(lPParam.packageName, false)) {
             Apps.init(lPParam, prefsApps, prefsHistory);
         } else {
-            Apps.initLogging(lPParam, prefsHistory);
+            Apps.initLogging(lPParam, prefsApps, prefsHistory);
         }
     }
 }
