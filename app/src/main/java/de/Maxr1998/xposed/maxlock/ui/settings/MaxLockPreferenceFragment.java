@@ -69,6 +69,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipOutputStream;
 
@@ -79,6 +80,7 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.preference.ImplementationPreference;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
+import de.Maxr1998.xposed.maxlock.util.KUtil;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -405,7 +407,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             FileUtils.writeStringToFile(new File(tempDirectory, "device-info.txt"),
                                     "App Version: " + BuildConfig.VERSION_NAME + "\n\n" +
                                             "Device: " + Build.MANUFACTURER + " " + Build.MODEL + " (" + Build.PRODUCT + ")\n" +
-                                            "API: " + Build.VERSION.SDK_INT + ", Fingerprint: " + Build.FINGERPRINT);
+                                            "API: " + Build.VERSION.SDK_INT + ", Fingerprint: " + Build.FINGERPRINT,
+                                    Charset.forName("UTF-8"));
                             FileUtils.copyFileToDirectory(getActivity().getFileStreamPath("history.json"), tempDirectory);
                             Process process = Runtime.getRuntime().exec("logcat -d");
                             FileUtils.copyInputStreamToFile(process.getInputStream(), new File(tempDirectory, "logcat.txt"));
@@ -451,7 +454,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         return true;
                     case Common.LOCKING_TYPE_PATTERN:
                         Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, getActivity(), LockPatternActivity.class);
-                        startActivityForResult(intent, Util.getPatternCode(-1));
+                        startActivityForResult(intent, KUtil.getPatternCode(-1));
                         return true;
                 }
                 break;

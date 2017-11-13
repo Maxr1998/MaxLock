@@ -61,6 +61,7 @@ import de.Maxr1998.xposed.maxlock.MLImplementation;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.settings.LockSetupFragment;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
+import de.Maxr1998.xposed.maxlock.util.KUtil;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -143,7 +144,7 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                                                                         break;
                                                                     case 3:
                                                                         Intent intent = new Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, mContext, LockPatternActivity.class);
-                                                                        mFragment.startActivityForResult(intent, Util.getPatternCode(hld.getAdapterPosition()));
+                                                                        mFragment.startActivityForResult(intent, KUtil.getPatternCode(hld.getAdapterPosition()));
                                                                         return;
                                                                 }
                                                                 b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);

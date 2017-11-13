@@ -36,6 +36,8 @@ import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
+import kotlinx.android.synthetic.main.fragment_lock_setup.view.*
+import kotlinx.android.synthetic.main.split_button.view.*
 import java.util.*
 
 
@@ -66,13 +68,12 @@ class LockSetupFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_lock_setup, container, false) as ViewGroup
-        descriptionText = rootView.findViewById(R.id.description)
+        descriptionText = rootView.description
 
         if (isPin()) setupPin(rootView) else setupKnockCode(rootView)
 
-        val cancelButton = rootView.findViewById<Button>(R.id.button_cancel)
-        cancelButton.setOnClickListener(this)
-        nextButton = rootView.findViewById(R.id.button_positive)
+        rootView.button_cancel.setOnClickListener(this)
+        nextButton = rootView.button_positive
         nextButton.setOnClickListener(this)
 
         updateUi()

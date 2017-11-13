@@ -19,7 +19,6 @@ package de.Maxr1998.xposed.maxlock.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -31,7 +30,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
@@ -55,7 +53,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.ref.SoftReference;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -85,9 +82,8 @@ public final class Util {
     public static final String LOG_TAG_IAB = "ML-IAB";
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
-    private static SoftReference<Drawable> WALLPAPER = new SoftReference<>(null);
-
-    private Util() {}
+    private Util() {
+    }
 
     // UI
 
@@ -172,29 +168,13 @@ public final class Util {
                 activity.getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Drawable>() {
                     @Override
                     public Loader<Drawable> onCreateLoader(int id, Bundle args) {
-                        return new AsyncTaskLoader<Drawable>(background.getContext()) {
-                            @Override
-                            protected void onStartLoading() {
-                                super.onStartLoading();
-                                forceLoad();
-                            }
-
-                            @Override
-                            public Drawable loadInBackground() {
-                                if (WALLPAPER.get() != null)
-                                    return WALLPAPER.get();
-                                else
-                                    return WallpaperManager.getInstance(getContext()).getFastDrawable();
-                            }
-                        };
+                        return new WallpaperDrawableLoader(background.getContext());
                     }
 
                     @Override
                     public void onLoadFinished(Loader<Drawable> loader, Drawable data) {
                         if (data != null) {
                             background.setImageDrawable(data);
-                            if (WALLPAPER.get() == null)
-                                WALLPAPER = new SoftReference<>(data);
                         } else {
                             background.setImageDrawable(new ColorDrawable(ContextCompat.getColor(background.getContext(), R.color.accent)));
                             Toast.makeText(background.getContext(), "Failed to load system wallpaper!", Toast.LENGTH_SHORT).show();
@@ -245,16 +225,6 @@ public final class Util {
             getPreferencesKeys(context).edit().putString(Common.KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
         } else {
             getPreferencesKeysPerApp(context).edit().putString(app, Common.PREF_VALUE_PATTERN).putString(app + Common.APP_KEY_PREFERENCE, Util.shaHash(patternKey.toString())).apply();
-        }
-    }
-
-    public static int getPatternCode(int app) {
-        if (app == -1) {
-            return PATTERN_CODE;
-        } else {
-            int code = Integer.valueOf(String.valueOf(PATTERN_CODE_APP) + String.valueOf(app));
-            System.out.println(code);
-            return code;
         }
     }
 
@@ -357,10 +327,10 @@ public final class Util {
     public static String getLanguageCode() {
         String language = Locale.getDefault().getLanguage();
         String country = Locale.getDefault().getCountry();
-        if (language.equals("")) {
+        if (language.isEmpty()) {
             return "en-GB";
         }
-        if (!country.equals("")) {
+        if (!country.isEmpty()) {
             return language + "-" + country;
         } else return language;
     }

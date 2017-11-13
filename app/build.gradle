@@ -49,6 +49,9 @@ android {
     lintOptions {
         abortOnError false
     }
+    androidExtensions {
+        experimental = true
+    }
 }
 
 def propFile = project.file("keyStore.properties")
