@@ -85,7 +85,7 @@ dependencies {
     implementation 'com.crossbowffs.remotepreferences:remotepreferences:0.5'
     implementation 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     implementation 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
-    implementation 'com.google.guava:guava:22.0-android'
+    implementation 'com.google.guava:guava:22.0'
     implementation 'com.heinrichreimersoftware:material-intro:1.6'
     implementation 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     implementation 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
