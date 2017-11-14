@@ -150,7 +150,7 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
                                                                 b.putString(Common.INTENT_EXTRAS_CUSTOM_APP, key);
                                                                 LockSetupFragment lockSetup = new LockSetupFragment();
                                                                 lockSetup.setArguments(b);
-                                                                MaxLockPreferenceFragment.launchFragment(mFragment.getFragmentManager(), lockSetup, false);
+                                                                MaxLockPreferenceFragment.launchFragment(mFragment, lockSetup, false);
                                                             }).show();
                                         } else {
                                             prefsKeysPerApp.edit().remove(key).remove(key + Common.APP_KEY_PREFERENCE).apply();

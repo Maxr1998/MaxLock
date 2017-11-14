@@ -33,6 +33,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ import java.util.List;
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
+import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerEventQueryReceiver;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
@@ -60,7 +62,6 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeys;
 import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeysPerApp;
 
-@SuppressLint("ViewConstructor")
 public final class LockView extends RelativeLayout implements View.OnClickListener, View.OnLongClickListener {
 
     private final int MAX_ATTEMPTS = 5;
@@ -74,8 +75,13 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     private TextView mMessageArea;
     private KnockCodeHelper mKnockCodeHolder;
 
-    public LockView(ContextThemeWrapper context, String packageName, String activityName) {
-        super(context);
+    // For use in app layouts
+    public LockView(Context context, AttributeSet attributeSet) {
+        this(context, attributeSet, context.getApplicationContext().getPackageName(), SettingsActivity.class.getName());
+    }
+
+    public LockView(Context context, AttributeSet attributeSet, String packageName, String activityName) {
+        super(getThemedContext(context), attributeSet);
         try {
             authenticationSucceededListener = (AuthenticationSucceededListener) getActivity();
         } catch (ClassCastException e) {

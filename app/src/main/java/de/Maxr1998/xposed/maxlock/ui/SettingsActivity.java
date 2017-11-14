@@ -17,6 +17,7 @@
 
 package de.Maxr1998.xposed.maxlock.ui;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
@@ -26,8 +27,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -37,18 +36,19 @@ import android.support.customtabs.CustomTabsSession;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import java.util.Arrays;
 
@@ -69,9 +69,8 @@ import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
+    public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
     private static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
-    private static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
-    private static final String TAG_LOCK_FRAGMENT = "LockFragment";
     private static boolean UNLOCKED = false;
 
     static {
@@ -79,33 +78,28 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     }
 
     public ComponentName deviceAdmin;
-    private Fragment mSettingsFragment;
+    private Toolbar toolbar;
+    private LockView lockscreen;
+    private FrameLayout secondFragmentContainer;
     private DevicePolicyManager devicePolicyManager;
     private CustomTabsServiceConnection mConnection;
     private CustomTabsSession mSession;
 
-    public static boolean isSecondPane(Fragment f) {
-        return f.getTag() != null && f.getTag().equals(TAG_PREFERENCE_FRAGMENT_SECOND_PANE);
-    }
-
-    /**
-     * Show second pane if available
-     */
-    public static void showMultipane(FragmentManager manager) {
-        Fragment secondPane = manager.findFragmentByTag(TAG_PREFERENCE_FRAGMENT_SECOND_PANE);
-        if (secondPane != null) {
-            manager.beginTransaction().show(secondPane).commit();
+    public static void showMultipaneIfInLandscape(SettingsActivity activity) {
+        if (activity.secondFragmentContainer != null) {
+            activity.secondFragmentContainer.setVisibility(View.VISIBLE);
+            FragmentManager manager = activity.getSupportFragmentManager();
+            Fragment secondPane = manager.findFragmentByTag(TAG_PREFERENCE_FRAGMENT_SECOND_PANE);
+            if (secondPane == null) {
+                secondPane = MaxLockPreferenceFragment.Screen.MAIN.getScreen();
+            }
+            if (!secondPane.isAdded())
+                manager.beginTransaction().replace(R.id.second_fragment_container, secondPane, TAG_PREFERENCE_FRAGMENT_SECOND_PANE).commit();
         }
     }
 
-    /**
-     * Hide second pane if visible
-     */
-    public static void hideMultipane(FragmentManager manager) {
-        Fragment secondPane = manager.findFragmentByTag(TAG_PREFERENCE_FRAGMENT_SECOND_PANE);
-        if (secondPane != null) {
-            manager.beginTransaction().hide(secondPane).commit();
-        }
+    public boolean inLandscape() {
+        return secondFragmentContainer != null;
     }
 
     @Override
@@ -120,26 +114,28 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         deviceAdmin = new ComponentName(this, UninstallProtectionReceiver.class);
 
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        ViewGroup contentView = findViewById(R.id.content_view_settings);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        secondFragmentContainer = findViewById(R.id.second_fragment_container);
 
-        // Hide multipane view
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            hideMultipane(getSupportFragmentManager());
-        }
-        mSettingsFragment = getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT);
-        if (mSettingsFragment == null) {
-            // Main fragment not visible → app just opened
-            if (getSupportFragmentManager().findFragmentByTag(TAG_LOCK_FRAGMENT) == null) {
-                // Lockscreen not visible as well → run startup & show lockscreen
-                new Startup(this).execute();
-                UNLOCKED = false;
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Lockscreen(), TAG_LOCK_FRAGMENT).commit();
-            }
-            // Hide Action bar
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().hide();
-            }
+        Fragment settingsFragment = getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT);
+        if (settingsFragment == null) {
+            // Main fragment doesn't exist, app just opened
+            // → Show lockscreen
+            UNLOCKED = false;
+            lockscreen = new LockView(this, null);
+            contentView.addView(lockscreen, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            // → Create and display settings
+            settingsFragment = getIntent().getAction() != null && getIntent().getAction().equals(BuildConfig.APPLICATION_ID + ".VIEW_APPS") ?
+                    new AppListFragment() : MaxLockPreferenceFragment.Screen.MAIN.getScreen();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settingsFragment, TAG_PREFERENCE_FRAGMENT).commit();
+
+            // → Hide Action bar
+            toolbar.setTranslationY(-getResources().getDimensionPixelSize(R.dimen.toolbar_height));
+            // Run startup
+            new Startup(this).execute();
         }
 
         mConnection = new CustomTabsServiceConnection() {
@@ -168,21 +164,16 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_master_switch));
-        //noinspection deprecation
+        SwitchCompat master_switch = (SwitchCompat) menu.findItem(R.id.toolbar_master_switch).getActionView();
         master_switch.setChecked(MLPreferences.getPrefsApps(this).getBoolean(Common.MASTER_SWITCH_ON, true));
-        master_switch.setOnCheckedChangeListener((button, b) -> MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).commit());
-        Fragment lockScreen = getSupportFragmentManager().findFragmentByTag(TAG_LOCK_FRAGMENT);
-        if (getSupportActionBar() != null && !getSupportActionBar().isShowing() && (lockScreen == null || !lockScreen.isVisible())) {
-            getSupportActionBar().show();
-        }
+        master_switch.setOnCheckedChangeListener((button, b) -> MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).apply());
         return super.onCreateOptionsMenu(menu);
     }
 
     @SuppressLint("WorldReadableFiles")
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        SwitchCompat master_switch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.toolbar_master_switch));
+        SwitchCompat master_switch = (SwitchCompat) menu.findItem(R.id.toolbar_master_switch).getActionView();
         master_switch.setChecked(MLPreferences.getPrefsApps(SettingsActivity.this).getBoolean(Common.MASTER_SWITCH_ON, true));
         return super.onPrepareOptionsMenu(menu);
     }
@@ -209,9 +200,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-                hideMultipane(getSupportFragmentManager());
-            }
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1 && inLandscape())
+                secondFragmentContainer.setVisibility(View.GONE);
             getSupportFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
@@ -221,17 +211,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     public void onAuthenticationSucceeded() {
         UNLOCKED = true;
-        if (mSettingsFragment == null) {
-            mSettingsFragment = getIntent().getAction().equals(BuildConfig.APPLICATION_ID + ".VIEW_APPS") ?
-                    new AppListFragment() : MaxLockPreferenceFragment.Screen.MAIN.getScreen();
-            getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out)
-                    .replace(R.id.fragment_container, mSettingsFragment, TAG_PREFERENCE_FRAGMENT)
-                    .commit();
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().show();
-            }
-        }
+        lockscreen.removeAllViews();
+        ObjectAnimator animator = ObjectAnimator.ofFloat(toolbar, "translationY", 0f);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.setDuration(200);
+        animator.start();
     }
 
     @Override
@@ -251,7 +235,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     protected void onPause() {
         super.onPause();
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Common.ENABLE_LOGGING, false) && !UNLOCKED) {
+        if (!UNLOCKED && MLPreferences.getPreferences(this).getBoolean(Common.ENABLE_LOGGING, false)) {
             Util.logFailedAuthentication(this, getPackageName());
         }
     }
@@ -294,14 +278,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         public void onEnabled(Context context, Intent intent) {
             super.onEnabled(context, intent);
             Log.i(LOG_TAG_ADMIN, "Device admin is now active!");
-        }
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public static class Lockscreen extends Fragment {
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            return new LockView(LockView.getThemedContext(getActivity()), getActivity().getApplicationContext().getPackageName(), SettingsActivity.class.getName());
         }
     }
 }
