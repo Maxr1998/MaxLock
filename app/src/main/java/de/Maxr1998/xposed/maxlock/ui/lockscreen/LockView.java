@@ -19,7 +19,6 @@ package de.Maxr1998.xposed.maxlock.ui.lockscreen;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -365,7 +364,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
     // Helpers
     public AppCompatActivity getActivity() {
-        return (AppCompatActivity) ((ContextWrapper) getContext()).getBaseContext();
+        return (AppCompatActivity) ((ContextThemeWrapper) getContext()).getBaseContext();
     }
 
     public int getDimens(@DimenRes int id) {
