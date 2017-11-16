@@ -49,7 +49,7 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     static void logD(String message) {
         if (BuildConfig.DEBUG)
-            log(message);
+            log("ML: " + message);
     }
 
     @Override

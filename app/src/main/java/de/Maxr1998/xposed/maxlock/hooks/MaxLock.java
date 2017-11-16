@@ -45,7 +45,7 @@ class MaxLock {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     String[] names = (String[]) getObjectField(param.thisObject, "names");
-                    logD("ML|Unlocked " + names[1]);
+                    logD("Unlocked " + names[1]);
                 }
             });
             findAndHookMethod(PACKAGE_NAME + ".ui.actions.ActionsHelper", lPParam.classLoader, "clearImod", new XC_MethodReplacement() {

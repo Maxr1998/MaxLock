@@ -57,7 +57,7 @@ class Apps {
                     }
                     if (lPParam.packageName.equals(launcherPackage) && prefsApps.getBoolean(IMOD_RESET_ON_HOMESCREEN, false)) {
                         prefsHistory.edit().clear().apply();
-                        logD("ML: Returned to homescreen, locked apps");
+                        logD("Returned to homescreen, locked apps");
                     }
                 }
             });
@@ -73,16 +73,17 @@ class Apps {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     final Activity activity = (Activity) param.thisObject;
                     String activityName = activity.getClass().getName();
-                    logD("ML|Started " + activityName + " at " + System.currentTimeMillis());
+                    logD("Started " + activityName + " at " + System.currentTimeMillis());
                     if (wasAppClosed(lPParam.packageName, prefsHistory)) {
                         activity.finish();
-                        logD("ML|Finish " + activityName);
+                        logD("Finished " + activityName);
                         return;
                     }
                     if (activityName.equals("android.app.Activity") ||
                             pass(activity.getTaskId(), lPParam.packageName, activityName, prefsApps, prefsHistory)) {
                         return;
                     }
+                    logD("Show lockscreen for " + activityName);
                     Intent i = new Intent()
                             .setComponent(new ComponentName(MAXLOCK_PACKAGE_NAME, MAXLOCK_PACKAGE_NAME + ".ui.LockActivity"))
                             .setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -100,7 +101,7 @@ class Apps {
                         if (wasAppClosed(lPParam.packageName, prefsHistory)) {
                             final Activity activity = (Activity) param.thisObject;
                             activity.finish();
-                            logD("ML|Finish " + activity.getClass().getName());
+                            logD("Closed " + activity.getClass().getName());
                         }
                     }
                 }
