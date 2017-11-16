@@ -25,6 +25,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 public abstract class Common {
 
     public static final String MAXLOCK_PACKAGE_NAME = "de.Maxr1998.xposed.maxlock";
+    public static final String XPOSED_PACKAGE_NAME = "de.robv.android.xposed.installer";
 
     public static final String INTENT_EXTRAS_NAMES = "intent_extras_pkg_name";
     public static final String INTENT_EXTRAS_CUSTOM_APP = "custom_app";

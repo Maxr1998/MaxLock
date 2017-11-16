@@ -428,8 +428,11 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             Process process = Runtime.getRuntime().exec("logcat -d");
                             FileUtils.copyInputStreamToFile(process.getInputStream(), new File(tempDirectory, "logcat.txt"));
                             try {
-                                FileUtils.copyFileToDirectory(new File(getActivity().getPackageManager()
-                                        .getApplicationInfo("de.robv.android.xposed.installer", 0).dataDir + "/log", "error.log"), tempDirectory);
+                                String xposedDir = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? "/data/user_de/0/" + Common.XPOSED_PACKAGE_NAME :
+                                        getActivity().getPackageManager().getApplicationInfo(Common.XPOSED_PACKAGE_NAME, 0).dataDir;
+                                File xposedLog = new File(xposedDir + "/log", "error.log");
+                                if (xposedLog.exists())
+                                    FileUtils.copyFileToDirectory(xposedLog, tempDirectory);
                             } catch (PackageManager.NameNotFoundException e) {
                                 e.printStackTrace();
                             }
