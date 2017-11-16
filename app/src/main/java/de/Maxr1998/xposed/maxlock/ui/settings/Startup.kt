@@ -59,6 +59,17 @@ class Startup(context: Context) : AsyncTaskLoader<Void>(context) {
                     .putBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false).apply()
         }
 
+        // Default activity customizations
+        val prefsApps = MLPreferences.getPrefsApps(context)
+        val prefsAppsEditor = prefsApps.edit()
+        arrayOf(
+                "com.instagram.mainactivity.MainTabActivity"
+        ).forEach {
+            if (!prefsApps.contains(it))
+                prefsAppsEditor.putBoolean(it, false)
+        }
+        prefsAppsEditor.apply()
+
         // Clean up
         val backgroundFolder = File(Util.dataDir(context), "background")
         if (backgroundFolder.exists()) {
