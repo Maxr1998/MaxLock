@@ -143,4 +143,9 @@ public abstract class Common {
     public static final Uri MAXR1998_URI = Uri.parse("https://maxr1998.de/");
     public static final Uri PAYPAL_DONATE_URI = Uri.parse("https://maxr1998.de/r/donate");
     public static final Uri TECHNO_SPARKS_URI = Uri.parse("https://www.technosparks.net/");
+
+    // LOADER IDS //
+    public static final int STARTUP_LOADER = 0;
+    public static final int WALLPAPER_LOADER = STARTUP_LOADER + 1;
+    public static final int APPLIST_LOADER = WALLPAPER_LOADER + 1;
 }

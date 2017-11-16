@@ -35,7 +35,9 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -67,7 +69,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
-public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
+public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener, LoaderManager.LoaderCallbacks<Void> {
 
     public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
     private static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
@@ -135,7 +137,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             // → Hide Action bar
             toolbar.setTranslationY(-getResources().getDimensionPixelSize(R.dimen.toolbar_height));
             // Run startup
-            new Startup(this).execute();
         }
 
         mConnection = new CustomTabsServiceConnection() {
@@ -158,6 +159,20 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             }
         };
         CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", mConnection);
+        getSupportLoaderManager().initLoader(Common.STARTUP_LOADER, null, this);
+    }
+
+    @Override
+    public Loader<Void> onCreateLoader(int id, Bundle args) {
+        return new Startup(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Void data) {
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
     }
 
     @SuppressLint("WorldReadableFiles")

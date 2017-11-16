@@ -165,7 +165,7 @@ public final class Util {
                 }
                 break;
             default:
-                activity.getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Drawable>() {
+                activity.getSupportLoaderManager().initLoader(Common.WALLPAPER_LOADER, null, new LoaderManager.LoaderCallbacks<Drawable>() {
                     @Override
                     public Loader<Drawable> onCreateLoader(int id, Bundle args) {
                         return new WallpaperDrawableLoader(background.getContext());

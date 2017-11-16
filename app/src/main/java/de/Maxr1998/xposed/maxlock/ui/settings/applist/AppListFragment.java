@@ -94,7 +94,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
     private void startLoading() {
         rootView.findViewById(android.R.id.progress).setVisibility(View.VISIBLE);
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(Common.APPLIST_LOADER, null, this);
     }
 
     @Override
