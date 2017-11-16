@@ -125,6 +125,7 @@ class Apps {
                             Notification.Builder replacementBuilder = new Notification.Builder(context)
                                     .setContentTitle(appName)
                                     .setContentText(replacementText)
+                                    .setLights(notification.ledARGB, notification.ledOnMS, notification.ledOffMS)
                                     .setSound(notification.sound)
                                     .setContentIntent(notification.contentIntent)
                                     .setDeleteIntent(notification.deleteIntent)
