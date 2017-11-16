@@ -28,13 +28,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
+import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class ConfigView extends LinearLayout implements CompoundButton.OnCheckedChangeListener {
 
-    private final String[] app_names = {getPackageInstallerID(), "com.android.settings", "de.robv.android.xposed.installer"};
+    private final String[] app_names = {getPackageInstallerID(), Common.SETTINGS_PACKAGE_NAME, Common.XPOSED_PACKAGE_NAME};
     private final DevicePolicyManager devicePolicyManager = isInEditMode() ? null : (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
     private final ComponentName deviceAdmin = isInEditMode() ? null : new ComponentName(getContext(), SettingsActivity.UninstallProtectionReceiver.class);
 

@@ -24,6 +24,7 @@ import android.content.res.Resources;
 import android.widget.Button;
 import android.widget.TextView;
 
+import de.Maxr1998.xposed.maxlock.Common;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -35,7 +36,7 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 class DeviceAdminProtection {
 
-    static final String PACKAGE_NAME = "com.android.settings";
+    static final String PACKAGE_NAME = Common.SETTINGS_PACKAGE_NAME;
 
     static void init(XC_LoadPackage.LoadPackageParam lPParam) {
         try {

@@ -18,7 +18,6 @@
 package de.Maxr1998.xposed.maxlock.ui.firstStart;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -27,6 +26,7 @@ import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.firstStart.views.InformationView;
+import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class FirstStartActivity extends IntroActivity {
 
@@ -75,7 +75,7 @@ public class FirstStartActivity extends IntroActivity {
 
     @Override
     public void finish() {
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(FIRST_START_LAST_VERSION_KEY, FIRST_START_LATEST_VERSION).apply();
+        MLPreferences.getPreferences(this).edit().putInt(FIRST_START_LAST_VERSION_KEY, FIRST_START_LATEST_VERSION).apply();
         super.finish();
     }
 }

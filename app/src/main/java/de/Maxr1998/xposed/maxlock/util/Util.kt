@@ -23,6 +23,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.support.v4.content.AsyncTaskLoader
+import de.Maxr1998.xposed.maxlock.Common.SETTINGS_PACKAGE_NAME
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE_APP
 import java.lang.ref.SoftReference
@@ -31,7 +32,7 @@ object KUtil {
     @JvmStatic
     fun getLauncherPackages(pm: PackageManager): List<String> {
         return pm.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), PackageManager.MATCH_DEFAULT_ONLY)
-                .mapTo(ArrayList<String>(), { it.activityInfo.packageName }).apply { remove("com.android.settings") }
+                .mapTo(ArrayList<String>(), { it.activityInfo.packageName }).apply { remove(SETTINGS_PACKAGE_NAME) }
     }
 
     @JvmStatic
@@ -46,7 +47,6 @@ class WallpaperDrawableLoader(context: Context) : AsyncTaskLoader<Drawable>(cont
         forceLoad()
     }
 
-    override fun loadInBackground(): Drawable {
-        return WALLPAPER.get() ?: WallpaperManager.getInstance(context).fastDrawable.also { WALLPAPER = SoftReference(it) }
-    }
+    override fun loadInBackground(): Drawable =
+            WALLPAPER.get() ?: WallpaperManager.getInstance(context).fastDrawable.also { WALLPAPER = SoftReference(it) }
 }
