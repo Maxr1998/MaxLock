@@ -43,8 +43,8 @@ import java.util.*
 
 class LockSetupFragment : Fragment(), View.OnClickListener {
 
-    private val lockType by lazy { arguments.getString(Common.LOCKING_TYPE, null) }
-    private val customApp: String  by lazy { arguments.getString(Common.INTENT_EXTRAS_CUSTOM_APP, "") }
+    private val lockType by lazy { arguments?.getString(Common.LOCKING_TYPE, null) }
+    private val customApp: String  by lazy { arguments?.getString(Common.INTENT_EXTRAS_CUSTOM_APP, "") ?: "" }
     private val prefs: SharedPreferences by lazy { MLPreferences.getPreferences(activity) }
     private val prefsKey: SharedPreferences by lazy { MLPreferences.getPreferencesKeys(activity) }
     private val prefsPerApp: SharedPreferences by lazy { MLPreferences.getPreferencesKeysPerApp(activity) }
@@ -82,7 +82,7 @@ class LockSetupFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity.title = if (lockType == Common.LOCKING_TYPE_PIN) getString(R.string.pref_locking_type_pin) else getString(R.string.pref_locking_type_knockcode)
+        activity!!.title = if (lockType == Common.LOCKING_TYPE_PIN) getString(R.string.pref_locking_type_pin) else getString(R.string.pref_locking_type_knockcode)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -139,7 +139,7 @@ class LockSetupFragment : Fragment(), View.OnClickListener {
             R.id.button_positive -> handleStage()
             R.id.button_cancel -> {
                 Util.hideKeyboardFromWindow(activity, getView())
-                activity.onBackPressed()
+                activity?.onBackPressed()
             }
             else -> {
                 if (currentValue.length < 20 || view.id == R.id.knock_code_text)
@@ -198,10 +198,10 @@ class LockSetupFragment : Fragment(), View.OnClickListener {
                             .putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(currentValue)).apply()
                 }
             } else {
-                Toast.makeText(activity, activity.resources.getString(R.string.toast_password_inconsistent), Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, activity!!.resources.getString(R.string.toast_password_inconsistent), Toast.LENGTH_SHORT).show()
             }
             Util.hideKeyboardFromWindow(activity, view)
-            activity.onBackPressed()
+            activity?.onBackPressed()
         }
     }
 

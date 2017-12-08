@@ -4,17 +4,17 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jakewharton.hugo'
 
 ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "pt", "ru", "tr", "zh-rCN", "zh-rTW"]
-ext.supportLibraryVersion = "26.1.0"
+ext.supportLibraryVersion = "27.0.2"
 ext.c_languages = ["de", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "pt-PT", "ru", "tr", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '26.0.3'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 49
         versionName "7.0-RC3"
         resConfigs languages
@@ -101,7 +101,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     implementation "com.android.support:support-fragment:$supportLibraryVersion"
-    implementation 'com.google.android.gms:play-services-analytics:11.6.0'
+    implementation 'com.google.android.gms:play-services-analytics:11.6.2'
     // Local files
     implementation(name: 'PatternLock', ext: 'aar')
 }
