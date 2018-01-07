@@ -23,6 +23,6 @@
     &#x2022; <i>Xposed Framework is not installed</i>\n
     &#x2022; <i>Xposed is installed and active, but you didn\'t enable MaxLock in Xposed installer (\"Modules\" tab) or didn\'t reboot afterwards.</i>\n
     &#x2022; <i>Xposed Framework got disabled by Xposed safemode. Look at the Xposed Thread on XDA for further information.</i>\n
-    &#x2022; <i>MaxLock may have encountered a crash. You should send me a bugreport from the bottom of this screen then.</i></string>
+    &#x2022; <i>MaxLock may have encountered a crash. You should send me a bug report from the bottom of this screen then.</i></string>
     <string name="accessibility_inactive_warning">Accessibility service is not enabled. Tap here to enable in settings, without it, app locking won\'t work!</string>
 </resources>
