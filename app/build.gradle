@@ -10,7 +10,7 @@ ext.crowdinKey = null
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '26.0.3'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 16
@@ -94,14 +94,14 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82:sources'
     //-- Android support and Google Services
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
     implementation "com.android.support:customtabs:$supportLibraryVersion"
     implementation "com.android.support:design:$supportLibraryVersion"
     implementation "com.android.support:gridlayout-v7:$supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     implementation "com.android.support:support-fragment:$supportLibraryVersion"
-    implementation 'com.google.android.gms:play-services-analytics:11.6.2'
+    implementation 'com.google.android.gms:play-services-analytics:11.8.0'
     // Local files
     implementation(name: 'PatternLock', ext: 'aar')
 }
