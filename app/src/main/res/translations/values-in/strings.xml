@@ -116,12 +116,6 @@
     <string name="pref_delay_per_app_input_summary">Masukkan angka untuk menentukan nilai waktu penundaan dalam menit untuk per app tunda kembali mengunci</string>
     <string name="pref_delay_needpro">Tunda mengunci kembali - Versi Pro</string>
     <string name="pref_category_reset_relock_timer">Pilihan reset timer</string>
-    <string name="pref_reset_relock_timer_description">Pilihan ini dapat digunakan untuk meminta otentikasi langsung pada awal app berikutnya
-        alih-alih menunggu timer re-lock untuk melewati</string>
-    <string name="pref_show_reset_notification">Tampilkan Pemberitahuan</string>
-    <string name="pref_show_reset_notification_summary">Tampilkan pemberitahuan untuk me-reset I.Mod timer</string>
-    <string name="pref_reset_screen_off">Auto-reset I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Reset I.Mod Timer ketika mematikan layar</string>
     <string name="pref_hide_recents_thumbnails">Sembunyikan thumbnail terkini</string>
     <string name="pref_hide_recents_thumbnails_summary">Hapus thumbnail pratinjau aplikasi terkunci dari layar recents</string>
     <!-- Apps settings -->

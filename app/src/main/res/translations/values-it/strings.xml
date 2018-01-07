@@ -91,10 +91,6 @@
     <string name="pref_delay_per_app_input">Timer di ritardo di nuovo blocco per app</string>
     <string name="pref_delay_per_app_input_summary">Inserisci un numero per specificare il ritardo di tempo in minuti per ogni app con ritardo di nuovo blocco</string>
     <string name="pref_delay_needpro">Ritardo di nuovo blocco - versione Pro</string>
-    <string name="pref_show_reset_notification">Mostra notifiche</string>
-    <string name="pref_show_reset_notification_summary">Mostra una notifica per reimpostare il timer I.Mod</string>
-    <string name="pref_reset_screen_off">Auto-reimposta I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Reimposta il timer I.Mod quando lo schermo si spegne</string>
     <string name="pref_hide_recents_thumbnails">Nascondi le miniature recenti</string>
     <!-- Apps settings -->
     <string name="pref_choose_apps">Scegli le app</string>

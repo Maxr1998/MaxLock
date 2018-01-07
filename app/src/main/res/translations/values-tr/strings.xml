@@ -118,12 +118,6 @@
     <string name="pref_delay_per_app_input_summary">Uygulama başına gecikmeli yeniden kilit için gecikme zamanı değerini dakika olarak belirtmek için bir sayı girin</string>
     <string name="pref_delay_needpro">Gecikmeli tekrar kilitlenme - Pro sürümü</string>
     <string name="pref_category_reset_relock_timer">Zamanlayıcı seçeneklerini sıfırla</string>
-    <string name="pref_reset_relock_timer_description">Bu seçenekler, bir sonraki uygulama başlangıcında anında kimlik doğrulama istemek için kullanılabilir
-        yeniden kilitleme zamanlayıcısının geçmesini beklemek yerine</string>
-    <string name="pref_show_reset_notification">Bildirim göster</string>
-    <string name="pref_show_reset_notification_summary">I.Mod zamanlayıcısını sıfırlamak için bildirim göster</string>
-    <string name="pref_reset_screen_off">Oto-sıfırlama I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Ekran kapandığında I.Mod Zamanlayıcısını sıfırla</string>
     <string name="pref_hide_recents_thumbnails">En yeni küçük resimleri gizle</string>
     <string name="pref_hide_recents_thumbnails_summary">Kilitli uygulamalardan önizlenen küçük resimlerini en yeni ekranlardan kaldır</string>
     <!-- Apps settings -->

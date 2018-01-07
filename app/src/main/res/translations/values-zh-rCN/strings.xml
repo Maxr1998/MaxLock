@@ -117,11 +117,6 @@
     <string name="pref_delay_per_app_input_summary">输入一个数字指定延迟时间,值为分钟,重新锁定每个应用</string>
     <string name="pref_delay_needpro">延迟重新锁定 - 专业版</string>
     <string name="pref_category_reset_relock_timer">重置计时器选项</string>
-    <string name="pref_reset_relock_timer_description">该选项用于在下一个应用启动时立即请求身份验证而不是等待通过计时器重新锁定</string>
-    <string name="pref_show_reset_notification">显示通知</string>
-    <string name="pref_show_reset_notification_summary">在I.Mod计时器复位时显示一个通知</string>
-    <string name="pref_reset_screen_off">自动复位I.Mod</string>
-    <string name="pref_reset_screen_off_summary">在关闭屏幕时复位I.Mod计时器</string>
     <string name="pref_hide_recents_thumbnails">隐藏最近缩略图</string>
     <string name="pref_hide_recents_thumbnails_summary">在最近任务中移除锁定应用的预览缩略图</string>
     <!-- Apps settings -->

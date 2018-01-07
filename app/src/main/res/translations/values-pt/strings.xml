@@ -11,7 +11,7 @@
     <string name="dialog_like_app_text_pro">Se gosta, deixe um comentário na Play Store :)</string>
     <string name="dialog_cb_never_again">Não mostrar isso novamente</string>
     <string name="dialog_button_donate">Fazer doação</string>
-    <string name="dialog_button_rate">Taxa</string>
+    <string name="dialog_button_rate">Avaliar</string>
     <string name="notification_lock_new_app_title">Bloquear o aplicativo recém-instalado?</string>
     <string name="notification_lock_new_app_action_never_again">Não mostrar novamente</string>
     <string name="notification_lock_new_app_action_lock">Bloquear aplicativo</string>
@@ -118,12 +118,6 @@
     <string name="pref_delay_per_app_input_summary">Digite um número para especificar o valor do tempo de atraso em minuto para o re-bloqueio por aplicativo</string>
     <string name="pref_delay_needpro">Atraso de re-bloqueio- versão Pro</string>
     <string name="pref_category_reset_relock_timer">Redefinir opções do temporizador</string>
-    <string name="pref_reset_relock_timer_description">Essas opções podem ser usadas para pedir autenticação instantaneamente no próximo inicio
-        do aplicativo, em vez de aguardar o fim do temporizador de re-bloqueio</string>
-    <string name="pref_show_reset_notification">Mostrar notificação</string>
-    <string name="pref_show_reset_notification_summary">Mostrar uma notificação para reiniciar I.Mod Temporizador</string>
-    <string name="pref_reset_screen_off">Auto-resetar I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Reinicie I.Mod Temporizador quando desligar a tela</string>
     <string name="pref_hide_recents_thumbnails">Ocultar miniaturas recentes</string>
     <string name="pref_hide_recents_thumbnails_summary">Remova as miniaturas de visualização de aplicativos bloqueados na tela de recentes</string>
     <!-- Apps settings -->
@@ -156,7 +150,7 @@
     <string name="dialog_button_exclude_activities">Atividades</string>
     <string name="dialog_title_exclude_activities">Excluir \"Atividades\" do bloqueio</string>
     <!-- UI settings -->
-    <string name="pref_category_ui">Configurações de UI</string>
+    <string name="pref_category_ui">Configurações de Interface</string>
     <string name="pref_hide_from_launcher">Esconder aplicativo no launcher</string>
     <string name="reboot_required">Pode ser necessária uma reinicialização para aplicar alterações</string>
     <string name="pref_use_dark_style">Usar estilo escuro</string>

@@ -87,10 +87,6 @@
     <string name="pref_delay_per_app_input">Таймер повторной блокировки ДЛЯ КАЖДОГО ПРИЛОЖЕНИЯ ОТДЕЛЬНО</string>
     <string name="pref_delay_per_app_input_summary">Введите число в минутах, на которое будет отложена повторная блокировка ДЛЯ КАЖДОГО ПРИЛОЖЕНИЯ ОТДЕЛЬНО</string>
     <string name="pref_delay_needpro">Повторная блокировка - версия Pro</string>
-    <string name="pref_show_reset_notification">Показывать уведомление</string>
-    <string name="pref_show_reset_notification_summary">Показывать уведомление, чтобы сбрасывать таймер I.Mod</string>
-    <string name="pref_reset_screen_off">Автосброс таймера I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Сбросить таймер I.Mod при выключении экрана</string>
     <string name="pref_hide_recents_thumbnails">Скрыть приложения в \'Недавних\'</string>
     <!-- Apps settings -->
     <string name="pref_choose_apps">Выбрать приложения</string>

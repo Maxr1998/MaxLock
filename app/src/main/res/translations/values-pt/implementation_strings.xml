@@ -2,16 +2,17 @@
 <resources>
     <string name="ml_implementation">Implementação do MaxLock</string>
     <string name="ml_status">Status do MaxLock</string>
-    <string name="implementation_default">Padrão - necessário Xposed</string>
-    <string name="implementation_no_xposed">Sem \"Root\"/ Xposed</string>
+    <string name="applock_accessibility_service_summary">Serviço que permite que você proteja seus aplicativos</string>
+    <string name="implementation_default">Padrão - Xposed necessário</string>
+    <string name="implementation_no_xposed">Sem Root/ Xposed</string>
     <string name="xposed_success_information">Xposed instalado &amp; ativo, que maravilha!</string>
-    <string name="implementation_alert"><i>Uma vez que a versão não-Xposed usa um serviço de acessibilidade, ele funciona em todos os dispositivos sem modificações do sistema,
-        mas também consome muito mais RAM (memória do sistema) e bateria.\nIt\'s portanto, altamente recomendado usar a implementação padrão se você tiver
+    <string name="implementation_alert"><i>Uma vez que a versão sem Xposed usa um serviço de acessibilidade, ele funciona em todos os dispositivos sem modificações do sistema,
+        mas também consome muito mais RAM (memória do sistema) e bateria.\nPortanto, é altamente recomendado usar a implementação padrão se você tiver
         a possibilidade de instalar o Xposed ou já o tiver instalado!</i></string>
-    <string name="xposed_inactive_warning">O MaxLock não conseguiu conectar os métodos do sistema Android necessários para que ele funcionasse. Isso pode ter várias razões:\n
-    &#x2022; <i>Xposed Framework não está instalado</i>\n
-    &#x2022; <i>Xposed está instalado e ativo, mas você não habilitou o MaxLock no instalador Xposed (guia "Módulos") ou não foi reiniciado depois.</i>\n
-    &#x2022; <i>O Framework Xposed foi desabilitado pelo modo de segurança Xposed. Olhe para o tópico Xposed Thread no XDA para obter mais informações.</i>\n
-    &#x2022; <i>MaxLock pode ter encontrado uma falha. Você deve me enviar um relatório de erro da parte inferior desta tela.</i></string>
+    <string name="xposed_inactive_warning">O MaxLock não conseguiu interceptar os métodos do sistema Android necessários para que seu funcionamento. Isso pode acontecer por vários motivos:\n
+    &#x2022; <i>O Xposed Framework não está instalado</i>\n
+    &#x2022; <i>Xposed está instalado e ativo, mas você não habilitou o MaxLock no Xposed Installer (na aba "Módulos") ou seu dispositivo não foi reiniciado depois da ativação do MaxLock.</i>\n
+    &#x2022; <i>O Framework Xposed foi desabilitado pelo Modo de Segurança do próprio  Xposed. Dê uma olhada no tópico do Xposed no XDA para obter mais informações.</i>\n
+    &#x2022; <i>O MaxLock pode ter encontrado uma falha. Você deve me enviar um relatório de erro na parte inferior desta tela.</i></string>
     <string name="accessibility_inactive_warning">O serviço de acessibilidade não está habilitado. Toque aqui para ativar nas configurações, sem isso, o bloqueio do aplicativo não funcionará!</string>
 </resources>

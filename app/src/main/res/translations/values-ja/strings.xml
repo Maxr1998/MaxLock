@@ -118,12 +118,6 @@
     <string name="pref_delay_per_app_input_summary">アプリの再ロック延期時間(分)を設定してください</string>
     <string name="pref_delay_needpro">再ロックの延期 - Pro 版</string>
     <string name="pref_category_reset_relock_timer">再ロックの延期のリセット</string>
-    <string name="pref_reset_relock_timer_description">これらのオプションを有効にすると、再ロック延期時間が経過するまで待つことなく、
-直ちにアプリをロックできるようになります</string>
-    <string name="pref_show_reset_notification">通知領域からリセット</string>
-    <string name="pref_show_reset_notification_summary">通知領域から再ロックの延期をリセットできるようにします</string>
-    <string name="pref_reset_screen_off">画面オフでリセット</string>
-    <string name="pref_reset_screen_off_summary">画面をオフにしたら再ロックの延期をリセットします</string>
     <string name="pref_hide_recents_thumbnails">アプリ履歴のサムネイルの非表示</string>
     <string name="pref_hide_recents_thumbnails_summary">ロックしたアプリのプレビュー画面(サムネイル)をアプリ履歴に表示しないようにします</string>
     <!-- Apps settings -->

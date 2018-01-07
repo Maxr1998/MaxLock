@@ -118,12 +118,13 @@
     <string name="pref_delay_per_app_input_summary">@string/pref_delay_general_summary</string>
     <string name="pref_delay_needpro">Verzögertes Sperren - Pro Version</string>
     <string name="pref_category_reset_relock_timer">Vorzeitiges Zurücksetzen des Timers</string>
-    <string name="pref_reset_relock_timer_description">Diese Optionen können verwendet werden, um Apps sofort beim nächsten Start zu sperren,
-        statt auf ein Ablaufen der Entsperrfrist zu warten</string>
+    <string name="pref_reset_relock_timer_description">Diese Optionen können verwendet werden, um Apps sofort beim nächsten Start zu sperren, statt auf ein Ablaufen der Entsperrfrist zu warten</string>
     <string name="pref_show_reset_notification">Zeige Benachrichtigung</string>
     <string name="pref_show_reset_notification_summary">Zeige eine Benachrichtigung zum Zurücksetzen des Timers</string>
     <string name="pref_reset_screen_off">Timer automatisch zurücksetzen</string>
     <string name="pref_reset_screen_off_summary">Timer beim Ausschalten des Displays zurücksetzen</string>
+    <string name="pref_imod_reset_on_homescreen">Auf Startbildschirm zurücksetzen</string>
+    <string name="pref_imod_reset_on_homescreen_summary">Timer zurücksetzen, wenn der Startbildschirm aufgerufen wurde</string>
     <string name="pref_hide_recents_thumbnails">Vorschauen verstecken</string>
     <string name="pref_hide_recents_thumbnails_summary">Verstecke Vorschaubilder im \"Zuletzt geöffnete Apps\" Bildschirm des Android Systems</string>
     <!-- Apps settings -->

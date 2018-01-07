@@ -92,10 +92,6 @@
     <string name="pref_delay_per_app_input">每個應用程式重新鎖定計時器</string>
     <string name="pref_delay_per_app_input_summary">給每個應用程式重新鎖定輸入一個數字指定延遲時間,值為分鐘</string>
     <string name="pref_delay_needpro">延遲重新鎖定 - 專業版</string>
-    <string name="pref_show_reset_notification">顯示通知</string>
-    <string name="pref_show_reset_notification_summary">在I.Mod計時器重置時顯示一個通知</string>
-    <string name="pref_reset_screen_off">自動重置I.Mod</string>
-    <string name="pref_reset_screen_off_summary">關閉螢幕時重置I.Mod計時器</string>
     <string name="pref_hide_recents_thumbnails">隱藏最近的縮略圖</string>
     <!-- Apps settings -->
     <string name="pref_choose_apps">選擇應用程式</string>

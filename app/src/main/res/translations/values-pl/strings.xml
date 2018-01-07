@@ -114,12 +114,6 @@
     <string name="pref_delay_per_app_input_summary">Ustaw czas (w minutach) po którym aplikacja zostanie ponownie zablokowana</string>
     <string name="pref_delay_needpro">Opóżnione ponowne blokowanie - wersja Pro</string>
     <string name="pref_category_reset_relock_timer">Opcje resetowania wł. czasowego</string>
-    <string name="pref_reset_relock_timer_description">Opcje te mogą być użyte, aby zapytać o uwierzytelnianie natychmiast przy następnym uruchomieniu aplikacji
-        zamiast poczekać na minięcie czasu ponownego blokowania</string>
-    <string name="pref_show_reset_notification">Pokaż powiadomienie</string>
-    <string name="pref_show_reset_notification_summary">Pokaż powiadomienie, aby zresetować wł. czasowy I.Mod</string>
-    <string name="pref_reset_screen_off">Autoreset I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Zresetuj wł. czasowy I.Mod po wyłączeniu ekranu</string>
     <string name="pref_hide_recents_thumbnails">Ukryj miniatury ostatnich aplikacji</string>
     <string name="pref_hide_recents_thumbnails_summary">Usuń podgląd miniatur z zablokowanych aplikacji na ekranie ostatnich aplikacji</string>
     <!-- Apps settings -->

@@ -8,6 +8,7 @@
     <string name="dialog_button_got_it">Lo tengo</string>
     <string name="dialog_like_app">¿Te gusta la aplicación?</string>
     <string name="dialog_like_app_text">Si te gusta, por favor deja una reseña en el Play Store y considera realizar una donación :)</string>
+    <string name="dialog_like_app_text_pro">Si quieres, por favor deja un comentario en Play Store :) &lt;3</string>
     <string name="dialog_cb_never_again">No mostrar de nuevo</string>
     <string name="dialog_button_donate">Donar</string>
     <string name="dialog_button_rate">Puntuar</string>
@@ -50,6 +51,8 @@
     <string name="pref_disable_fingerprint">Desactivar desbloqueo por huella</string>
     <string name="pref_disable_fingerprint_summary">El desbloqueo de huellas dactilares está habilitado de forma predeterminada cuando tiene huellas dactilares registradas en su dispositivo
          y se puede utilizar con cualquiera de los tipos de bloqueo anteriores</string>
+    <string name="pref_fingerprint_summary_non_enrolled">\nActualmente, no hay huellas digitales registradas.
+        Inscriba al menos uno en la configuración para usar esta función.</string>
     <string name="pref_disable_fingerprint_summary_on">Desbloqueo de huellas dactilares inhabilitado</string>
     <!-- Locking UI settings -->
     <string name="pref_screen_locking_ui">UI de la pantalla de bloqueo</string>
@@ -81,17 +84,28 @@
     <string name="pref_hide_fingerprint_icon">Ocultar icono de huella dactilar</string>
     <!-- Locking options settings -->
     <string name="pref_screen_locking_options">Opciones de bloqueo</string>
+    <string name="pref_category_logging">Logging</string>
     <string name="pref_enable_logging">Activar logging</string>
     <string name="pref_enable_logging_summary">Falló el log/intentos de desbloqueo sin terminar</string>
     <string name="pref_view_logs">Ver logs</string>
+    <string name="pref_screen_logs">Registros</string>
     <string name="menu_delete_log">Borrar logs</string>
     <string name="logs_empty_text">No hay entradas de log</string>
     <string name="pref_category_fake_crash">Accidente falso</string>
     <string name="pref_fake_crash_enable_all_apps">Habilitar para todas las aplicaciones</string>
     <string name="pref_fake_crash_enable_all_apps_summary">Esto reemplaza la configuración de la lista de aplicaciones para todas las aplicaciones</string>
+    <string name="pref_fake_crash_passphrase">Frase del \"Reporte\"</string>
+    <string name="pref_fake_crash_passphrase_summary">Es la frase que el usuario necesita ingresar en el cuadro de diálogo, para abrir la pantalla de bloqueo</string>
+    <string name="pref_fake_crash_instant_lockscreen">Mostrar la pantalla de bloqueo al instante</string>
+    <string name="pref_fake_crash_instant_lockscreen_summary">Cuando se habilita la pantalla de bloqueo, se muestra directamente después de presionar el botón <i>"Reportar"</i> en \"lamentablemente, X se ha detenido\"</string>
+    <string name="pref_fake_crash_enable_passphrase_unlock">Desbloquear a través de la frase de contraseña</string>
+    <string name="pref_fake_crash_enable_passphrase_unlock_summary">Desbloquear directamente con la frase de contraseña correcta, sin mostrar la pantalla de bloqueo\n
+        (Nota: la frase de contraseña se almacena como texto sin formato en el almacenamiento de la aplicación privada y, por lo tanto, es potencialmente insegura)</string>
     <string name="pref_category_other">Otros</string>
     <string name="pref_enable_tasker">Habilitar integración con Tasker</string>
     <!-- I.Mod settings -->
+    <string name="pref_screen_delayed_relock">Opciones retrasadas de re-bloqueo</string>
+    <string name="pref_screen_delayed_relock_summary">No vuelva a bloquear las aplicaciones hasta que haya transcurrido un cierto intervalo de tiempo, previamente llamado Intika I.Mod</string>
     <string name="pref_category_delay_general">Intika I.Mod - Periodo de gracia - Global</string>
     <string name="pref_delay_general">Retraso de rebloqueo global</string>
     <string name="pref_delay_general_summary">revenir reiterar el pedido de desbloqueo por un periodo de tiempo para todas las aplicaciones bloqueadas.</string>
@@ -103,12 +117,11 @@
     <string name="pref_delay_per_app_input">Temporizador del retraso de rebloqueo por aplicación</string>
     <string name="pref_delay_per_app_input_summary">Ingrese un número para especificar el tiempo de retraso en minutos para el rebloqueo por aplicación</string>
     <string name="pref_delay_needpro">Retraso de rebloqueo - versión Pro</string>
-    <string name="pref_show_reset_notification">Mostrar notificación</string>
-    <string name="pref_show_reset_notification_summary">Mostrar una notificación para resetear el temporizador I.Mod</string>
-    <string name="pref_reset_screen_off">Reseteo automático de I.Mod</string>
-    <string name="pref_reset_screen_off_summary">Resetear automáticamente el temporizador I.Mod cuando se apaga la pantalla</string>
+    <string name="pref_category_reset_relock_timer">Restablecer opciones</string>
     <string name="pref_hide_recents_thumbnails">Ocultar miniaturas recientes</string>
+    <string name="pref_hide_recents_thumbnails_summary">Elimina la vista previa de las miniaturas de las aplicaciones bloqueadas en la multitarea</string>
     <!-- Apps settings -->
+    <string name="pref_category_apps">Aplicaciones</string>
     <string name="pref_choose_apps">Elegir aplicaciones</string>
     <string name="pref_choose_apps_summary">Seleccionar aplicaciones a ser bloqueadas</string>
     <string name="menu_backup_list">Respaldar lista</string>
@@ -130,7 +143,7 @@
     <string-array name="dialog_multi_select_items_options">
         <item>Contraseña personalizada</item>
         <item>Cuelgue falso</item>
-        <item>Hide notifications</item>
+        <item>Ocultar notificaciones</item>
         <item>Ocultar contenido de la notificación</item>
     </string-array>
     <string name="notification_hidden_by_maxlock">Contenido oculto por MaxLock</string>
@@ -154,7 +167,10 @@
     <string name="pref_category_translations">Traducciones</string>
     <string name="pref_category_licenses">Licencias</string>
     <string name="pref_donate_upgrade_pro">Donar para actualizar a la versión Pro</string>
+    <string name="pref_donate_thanks_for_donation">¡Gracias por tu donación!</string>
+    <string name="pref_donate_again_on_pro_summary">Si lo desea, puede donar de nuevo aquí :)</string>
     <string name="donate_status_not_donated">Considera donar para apoyar el desarrollo. Gracias :)</string>
+    <string name="donate_status_error">Error: no se pudieron cargar los productos disponibles.</string>
     <string name="dialog_message_already_bought">Ya tienes esta opción de donación.
         Puedes cancelar y elegir otro producto o comprar este nuevamente consumiéndolo previamente.\n\nConsumir y comprar nuevamente?</string>
     <string name="donate_paypal">Donar vía PayPal</string>
