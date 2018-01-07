@@ -5,7 +5,13 @@
 
     <string name="applock_accessibility_service_summary">Service which allows you to lock your apps</string>
     <string name="applock_accessibility_service_description">If you use MaxLock\'s no Xposed implementation, this accessibility service will be used
-        to monitor app changes. No data can or will be collected from your screen content in any situation.</string>
+        to detect app changes. No data can or will be collected from your screen content in any situation.\n
+        Although this service doesn\'t provide any accessibility features, it is strongly needed for the core feature of the app to work,
+        if you don't use the default Xposed implementation.\n
+        \n
+        Permissions:
+        - Observe your actions: This permission is requested by default for all accessibility services, and isn't directly needed by MaxLock.
+    </string>
 
     <string name="implementation_default">Default - needs Xposed</string>
     <string name="implementation_no_xposed">No \"root\"/Xposed</string>

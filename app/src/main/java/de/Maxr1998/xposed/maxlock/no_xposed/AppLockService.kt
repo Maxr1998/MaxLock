@@ -114,8 +114,7 @@ class AppLockService : AccessibilityService() {
     @DebugLog
     private fun ignoreEvent(event: AccessibilityEvent, packageName: String): Boolean {
         return packageName.isEmpty() ||
-                event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
-                event.source?.window == null || !isApplication(event) ||
+                event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || !isApplication(event) ||
                 packageName == "android" || packageName.matches("com\\.(google\\.)?android\\.systemui".toRegex()) ||
                 Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD).startsWith(packageName)
     }

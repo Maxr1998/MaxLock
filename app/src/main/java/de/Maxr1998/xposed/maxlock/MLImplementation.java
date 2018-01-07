@@ -37,6 +37,8 @@ import java.util.List;
 
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
+import static android.accessibilityservice.AccessibilityServiceInfo.FEEDBACK_GENERIC;
+import static android.accessibilityservice.AccessibilityServiceInfo.FEEDBACK_VISUAL;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.N;
 
@@ -75,9 +77,9 @@ public final class MLImplementation {
 
     private static boolean isAccessibilityEnabled(Context c) {
         AccessibilityManager manager = (AccessibilityManager) c.getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> infos = manager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        List<AccessibilityServiceInfo> infos = manager.getEnabledAccessibilityServiceList(FEEDBACK_GENERIC | FEEDBACK_VISUAL);
         for (int i = 0; i < infos.size(); i++) {
-            String packageName = infos.get(i).getResolveInfo().serviceInfo.packageName; // Ugh. Isn't there sth better? Def a // TODO
+            String packageName = infos.get(i).getResolveInfo().serviceInfo.packageName; // Ugh. Isn't there sth better? Definitely a // TODO
             if (packageName.equals(BuildConfig.APPLICATION_ID)) {
                 return true;
             }
