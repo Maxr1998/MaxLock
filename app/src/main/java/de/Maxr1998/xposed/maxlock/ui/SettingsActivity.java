@@ -50,7 +50,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import java.util.Arrays;
 
@@ -81,6 +80,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     public ComponentName deviceAdmin;
     private Toolbar toolbar;
+    private ViewGroup contentView;
     private LockView lockscreen;
     private FrameLayout secondFragmentContainer;
     private DevicePolicyManager devicePolicyManager;
@@ -116,7 +116,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         deviceAdmin = new ComponentName(this, UninstallProtectionReceiver.class);
 
         setContentView(R.layout.activity_settings);
-        ViewGroup contentView = findViewById(R.id.content_view_settings);
+        contentView = findViewById(R.id.content_view_settings);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         secondFragmentContainer = findViewById(R.id.second_fragment_container);
@@ -126,17 +126,16 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             // Main fragment doesn't exist, app just opened
             // → Show lockscreen
             UNLOCKED = false;
-            lockscreen = new LockView(this, null);
-            contentView.addView(lockscreen, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            if (!MLPreferences.getPreferences(this).getString(Common.LOCKING_TYPE, "").isEmpty()) {
+                contentView.addView(lockscreen = new LockView(this, null), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
+                // → Hide Action bar
+                toolbar.setTranslationY(-getResources().getDimensionPixelSize(R.dimen.toolbar_height));
+            } else UNLOCKED = true;
             // → Create and display settings
             settingsFragment = getIntent().getAction() != null && getIntent().getAction().equals(BuildConfig.APPLICATION_ID + ".VIEW_APPS") ?
                     new AppListFragment() : MaxLockPreferenceFragment.Screen.MAIN.getScreen();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settingsFragment, TAG_PREFERENCE_FRAGMENT).commit();
-
-            // → Hide Action bar
-            toolbar.setTranslationY(-getResources().getDimensionPixelSize(R.dimen.toolbar_height));
-            // Run startup
         }
 
         mConnection = new CustomTabsServiceConnection() {
@@ -226,7 +225,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     public void onAuthenticationSucceeded() {
         UNLOCKED = true;
-        lockscreen.removeAllViews();
+        contentView.removeView(lockscreen);
         ObjectAnimator animator = ObjectAnimator.ofFloat(toolbar, "translationY", 0f);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.setDuration(200);

@@ -189,8 +189,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                 container.addView(new PatternView(getContext(), this), patternParams);
                 break;
             default:
-                handleAuthenticationSuccess();
-                return;
+                throw new UnsupportedOperationException("LockView cannot be created without a locking type set");
         }
 
         // Title
