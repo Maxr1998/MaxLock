@@ -17,12 +17,15 @@
 
 package de.Maxr1998.xposed.maxlock.util
 
+import android.Manifest
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.Drawable
 import android.support.v4.content.AsyncTaskLoader
+import android.support.v4.content.ContextCompat
 import de.Maxr1998.xposed.maxlock.Common.SETTINGS_PACKAGE_NAME
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE_APP
@@ -48,5 +51,7 @@ class WallpaperDrawableLoader(context: Context) : AsyncTaskLoader<Drawable>(cont
     }
 
     override fun loadInBackground(): Drawable =
-            WALLPAPER.get() ?: WallpaperManager.getInstance(context).fastDrawable.also { WALLPAPER = SoftReference(it) }
+            WALLPAPER.get() ?: WallpaperManager.getInstance(context).run {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED) fastDrawable else drawable
+            }.also { WALLPAPER = SoftReference(it) }
 }
