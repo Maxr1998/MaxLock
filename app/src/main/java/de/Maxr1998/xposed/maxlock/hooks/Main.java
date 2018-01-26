@@ -29,6 +29,8 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
+import static de.Maxr1998.xposed.maxlock.Common.PREFS_APPS;
+import static de.Maxr1998.xposed.maxlock.Common.PREFS_HISTORY;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
@@ -59,29 +61,32 @@ public class Main implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(final LoadPackageParam lPParam) throws Throwable {
-        SharedPreferences prefsApps = getRemotePreferences(Common.PREFS_APPS);
-        SharedPreferences prefsHistory = getRemotePreferences(Common.PREFS_HISTORY);
+        switch (lPParam.packageName) {
+            case SystemUI.PACKAGE_NAME:
+                SharedPreferences prefs = getRemotePreferences(Common.MAXLOCK_PACKAGE_NAME.concat("_preferences"));
+                SharedPreferences prefsApps = getRemotePreferences(PREFS_APPS);
+                SystemUI.init(lPParam, prefs, prefsApps);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    SystemUI.initScreenOff(lPParam, prefsApps, getRemotePreferences(PREFS_HISTORY));
+                }
+                return;
+            case SystemUI.PACKAGE_NAME_KEYGUARD:
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    SystemUI.initScreenOff(lPParam, getRemotePreferences(PREFS_APPS), getRemotePreferences(PREFS_HISTORY));
+                    return;
+                }
+                break;
+            case MaxLock.PACKAGE_NAME:
+                MaxLock.init(lPParam, getRemotePreferences(PREFS_HISTORY));
+                break;
+            case DeviceAdminProtection.PACKAGE_NAME:
+                DeviceAdminProtection.init(lPParam);
+                break;
+        }
+        SharedPreferences prefsApps = getRemotePreferences(PREFS_APPS);
+        SharedPreferences prefsHistory = getRemotePreferences(PREFS_HISTORY);
         if (prefsApps == null || prefsHistory == null)
             return;
-        if (lPParam.packageName.equals(MaxLock.PACKAGE_NAME)) {
-            MaxLock.init(lPParam, prefsHistory);
-        } else if (lPParam.packageName.equals(DeviceAdminProtection.PACKAGE_NAME)) {
-            DeviceAdminProtection.init(lPParam);
-        } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME)) {
-            SharedPreferences prefs = getRemotePreferences(Common.MAXLOCK_PACKAGE_NAME.concat("_preferences"));
-            SystemUI.init(lPParam, prefs, prefsApps);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                SystemUI.initScreenOff(lPParam, prefsApps, prefsHistory);
-            }
-            return;
-        } else if (lPParam.packageName.equals(SystemUI.PACKAGE_NAME_KEYGUARD) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            SystemUI.initScreenOff(lPParam, prefsApps, prefsHistory);
-            return;
-        }
-        if (prefsApps.getBoolean(lPParam.packageName, false)) {
-            Apps.init(lPParam, prefsApps, prefsHistory);
-        } else {
-            Apps.initLogging(lPParam, prefsApps, prefsHistory);
-        }
+        Apps.init(lPParam, prefsApps, prefsHistory);
     }
 }
