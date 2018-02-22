@@ -62,11 +62,14 @@ class Startup(context: Context) : AsyncTaskLoader<Void>(context) {
         // Default activity customizations
         val prefsApps = MLPreferences.getPrefsApps(context)
         val prefsAppsEditor = prefsApps.edit()
-        arrayOf(
-                "com.instagram.mainactivity.MainTabActivity"
-        ).forEach {
-            if (!prefsApps.contains(it))
-                prefsAppsEditor.putBoolean(it, false)
+        val defaultCustomisations = arrayOf(
+                "com.instagram.mainactivity.MainTabActivity",
+                "com.whatsapp.Main"
+        )
+        @Suppress("LoopToCallChain")
+        for (item in defaultCustomisations) {
+            if (!prefsApps.contains(item))
+                prefsAppsEditor.putBoolean(item, false)
         }
         prefsAppsEditor.apply()
 
@@ -88,19 +91,13 @@ class Startup(context: Context) : AsyncTaskLoader<Void>(context) {
                     xml(Common.MAXLOCK_PACKAGE_NAME + "_preferences"),
                     xml(Common.PREFS_KEY), xml(Common.PREFS_APPS), xml(Common.MAXLOCK_PACKAGE_NAME), xml(Common.PREFS_KEYS_PER_APP),
                     xml("WebViewChromiumPrefs")).contains(filename)
-        }?.let {
-            filesToDelete.addAll(Arrays.asList(*it))
-        }
+        }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
         context.filesDir.listFiles { _, filename ->
             !Arrays.asList("background", "gaClientId", "gaClientIdData", "history.json").contains(filename)
-        }?.let {
-            filesToDelete.addAll(Arrays.asList(*it))
-        }
+        }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
         File(Common.EXTERNAL_FILES_DIR).listFiles { _, filename ->
             !Arrays.asList("Backup", "dev_mode.key").contains(filename)
-        }?.let {
-            filesToDelete.addAll(Arrays.asList(*it))
-        }
+        }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
         for (f in filesToDelete) {
             FileUtils.deleteQuietly(f)
         }
