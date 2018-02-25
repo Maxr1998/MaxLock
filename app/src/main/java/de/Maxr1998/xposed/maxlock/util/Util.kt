@@ -42,7 +42,7 @@ object KUtil {
     fun getPatternCode(app: Int): Int = if (app == -1) PATTERN_CODE else (PATTERN_CODE_APP.toString() + app.toString()).toInt()
 }
 
-private var WALLPAPER = SoftReference<Drawable>(null)
+private var WALLPAPER = SoftReference<Drawable?>(null)
 
 class WallpaperDrawableLoader(context: Context) : AsyncTaskLoader<Drawable>(context) {
     override fun onStartLoading() {
@@ -50,8 +50,8 @@ class WallpaperDrawableLoader(context: Context) : AsyncTaskLoader<Drawable>(cont
         forceLoad()
     }
 
-    override fun loadInBackground(): Drawable =
+    override fun loadInBackground(): Drawable? =
             WALLPAPER.get() ?: WallpaperManager.getInstance(context).run {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED) fastDrawable else drawable
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED) fastDrawable else null
             }.also { WALLPAPER = SoftReference(it) }
 }

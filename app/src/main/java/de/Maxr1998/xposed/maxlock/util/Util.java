@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
@@ -154,13 +155,13 @@ public final class Util {
     public static void getBackground(AppCompatActivity activity, final ImageView background) {
         switch (getPreferences(background.getContext()).getString(Common.BACKGROUND, "")) {
             case "color":
-                background.setImageDrawable(new ColorDrawable(getPreferences(background.getContext()).getInt(Common.BACKGROUND_COLOR, ContextCompat.getColor(background.getContext(), R.color.accent))));
+                int color = getPreferences(background.getContext()).getInt(Common.BACKGROUND_COLOR, -1);
+                if (color != -1) background.setImageDrawable(new ColorDrawable(color));
                 break;
             case "custom":
                 try {
                     background.setImageBitmap(BitmapFactory.decodeStream(background.getContext().openFileInput("background")));
                 } catch (IOException | OutOfMemoryError e) {
-                    background.setImageDrawable(new ColorDrawable(ContextCompat.getColor(background.getContext(), R.color.accent)));
                     Toast.makeText(background.getContext(), "Error loading background image, " + (e instanceof IOException ? ", IOException." : "is it to big?"), Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -175,8 +176,7 @@ public final class Util {
                     public void onLoadFinished(Loader<Drawable> loader, Drawable data) {
                         if (data != null) {
                             background.setImageDrawable(data);
-                        } else {
-                            background.setImageDrawable(new ColorDrawable(ContextCompat.getColor(background.getContext(), R.color.accent)));
+                        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
                             Toast.makeText(background.getContext(), "Failed to load system wallpaper!", Toast.LENGTH_SHORT).show();
                         }
                     }
