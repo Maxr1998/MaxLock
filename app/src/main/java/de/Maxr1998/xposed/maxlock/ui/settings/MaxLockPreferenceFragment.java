@@ -54,6 +54,7 @@ import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.preference.PreferenceFragmentCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -112,17 +113,17 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         if (manager.getBackStackEntryCount() > 0 || !((SettingsActivity) fragment.getActivity()).inLandscape())
             transaction.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_pop_in, R.anim.fragment_pop_out);
         transaction.replace(R.id.fragment_container, replacement).addToBackStack(null).commit();
-        if (fromRoot && !((MaxLockPreferenceFragment) fragment).isSecondPane())
+        if (fromRoot && ((MaxLockPreferenceFragment) fragment).isFirstPane())
             SettingsActivity.showMultipaneIfInLandscape((SettingsActivity) fragment.getActivity());
     }
 
-    private boolean isSecondPane() {
-        return SettingsActivity.TAG_PREFERENCE_FRAGMENT_SECOND_PANE.equals(getTag());
+    private boolean isFirstPane() {
+        return SettingsActivity.TAG_PREFERENCE_FRAGMENT.equals(getTag());
     }
 
     private void setTitle() {
         // Only apply title for main screen if back stack is empty (prevent multipane from setting title)
-        if (!isSecondPane()) {
+        if (isFirstPane()) {
             if (screen == Screen.MAIN) {
                 getActivity().setTitle(getName());
             } else {
@@ -151,46 +152,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(screen.preferenceXML);
         switch (screen) {
             case MAIN:
-                // Show changelog and rating dialog
-                if (BuildConfig.VERSION_CODE > prefs.getInt(Common.LAST_VERSION_NUMBER, 0)) {
-                    showUpdatedMessage();
-                    prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE).apply();
-                } else {
-                    if (!isSecondPane() && allowRatingDialog()) {
-                        prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)
-                                .putLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()).apply();
-                        @SuppressLint("InflateParams") View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_like_app, null);
-                        if (prefs.getBoolean(Common.DONATED, false)) {
-                            TextView dialogText = dialogView.findViewById(R.id.dialog_like_app_text);
-                            dialogText.setText(R.string.dialog_like_app_text_pro);
-                        }
-                        @SuppressWarnings("ResourceType") final CheckBox checkBox = dialogView.findViewById(R.id.dialog_cb_never_again);
-                        DialogInterface.OnClickListener onClickListener = (dialogInterface, i) -> {
-                            if (checkBox.isChecked()) {
-                                prefs.edit().putBoolean(Common.RATING_DIALOG_SHOW_NEVER, true).apply();
-                            }
-                            switch (i) {
-                                case BUTTON_NEUTRAL:
-                                    try {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
-                                    } catch (ActivityNotFoundException e) {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
-                                    }
-                                    break;
-                                case BUTTON_POSITIVE:
-                                    startActivity(new Intent(getActivity(), DonateActivity.class));
-                                    break;
-                            }
-                        };
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                                .setTitle(R.string.dialog_like_app)
-                                .setView(dialogView);
-                        if (!prefs.getBoolean(Common.DONATED, false))
-                            builder.setPositiveButton(R.string.dialog_button_donate, onClickListener);
-                        builder.setNeutralButton(R.string.dialog_button_rate, onClickListener)
-                                .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
-                    }
-                }
                 updateImplementationStatus();
                 PreferenceCategory catAppUI = (PreferenceCategory) findPreference(Common.CATEGORY_APPLICATION_UI);
                 CheckBoxPreference useDark = (CheckBoxPreference) findPreference(Common.USE_DARK_STYLE);
@@ -255,6 +216,52 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         }
     }
 
+    public void onLockscreenDismissed() {
+        // Show changelog and rating dialog
+        int lastVersionNumber = prefs.getInt(Common.LAST_VERSION_NUMBER, -1);
+        if (BuildConfig.VERSION_CODE > lastVersionNumber) {
+            // Don't show updated dialog on first start
+            if (lastVersionNumber > 0)
+                showUpdatedMessage();
+            prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE).apply();
+        } else {
+            if (isFirstPane() && allowRatingDialog()) {
+                prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)
+                        .putLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()).apply();
+                @SuppressLint("InflateParams") View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_like_app, null);
+                if (prefs.getBoolean(Common.DONATED, false)) {
+                    TextView dialogText = dialogView.findViewById(R.id.dialog_like_app_text);
+                    dialogText.setText(R.string.dialog_like_app_text_pro);
+                }
+                @SuppressWarnings("ResourceType") final CheckBox checkBox = dialogView.findViewById(R.id.dialog_cb_never_again);
+                DialogInterface.OnClickListener onClickListener = (dialogInterface, i) -> {
+                    if (checkBox.isChecked()) {
+                        prefs.edit().putBoolean(Common.RATING_DIALOG_SHOW_NEVER, true).apply();
+                    }
+                    switch (i) {
+                        case BUTTON_NEUTRAL:
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
+                            } catch (ActivityNotFoundException e) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                            }
+                            break;
+                        case BUTTON_POSITIVE:
+                            startActivity(new Intent(getActivity(), DonateActivity.class));
+                            break;
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.dialog_like_app)
+                        .setView(dialogView);
+                if (!prefs.getBoolean(Common.DONATED, false))
+                    builder.setPositiveButton(R.string.dialog_button_donate, onClickListener);
+                builder.setNeutralButton(R.string.dialog_button_rate, onClickListener)
+                        .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
+            }
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -282,7 +289,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         }
 
         // Show Snackbars if no password and/or packages set up
-        if (screen == Screen.MAIN && !isSecondPane()) {
+        if (screen == Screen.MAIN && isFirstPane()) {
             @StringRes int stringId = 0;
             Fragment fragment = null;
             if (prefs.getString(Common.LOCKING_TYPE, "").equals("")) {

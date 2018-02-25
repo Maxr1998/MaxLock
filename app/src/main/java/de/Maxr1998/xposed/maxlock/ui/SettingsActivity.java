@@ -70,8 +70,8 @@ import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
 public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener, LoaderManager.LoaderCallbacks<Void> {
 
+    public static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
-    private static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     private static boolean UNLOCKED = false;
 
     static {
@@ -226,10 +226,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public void onAuthenticationSucceeded() {
         UNLOCKED = true;
         contentView.removeView(lockscreen);
-        ObjectAnimator animator = ObjectAnimator.ofFloat(toolbar, "translationY", 0f);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(toolbar, "translationY", 0f).setDuration(200);
         animator.setInterpolator(new DecelerateInterpolator());
-        animator.setDuration(200);
         animator.start();
+        MaxLockPreferenceFragment settingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT);
+        contentView.postDelayed(settingsFragment::onLockscreenDismissed, 250);
     }
 
     @Override
