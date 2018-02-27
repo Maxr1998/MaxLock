@@ -3,6 +3,8 @@
     <string name="sb_no_locking_type">No locking type specified</string>
     <string name="sb_no_locked_apps">No apps chosen to lock</string>
     <string name="sb_action_setup">SET UP</string>
+    <string name="dialog_need_storage_permission_oreo">MaxLock needs the storage permission to read your wallpaper since Android 8.1 Oreo.
+        Please grant it in the next dialog.</string>
     <string name="dialog_maxlock_updated">MaxLock was updated!</string>
     <string name="dialog_button_whats_new">What\'s new</string>
     <string name="dialog_button_got_it">Got it</string>

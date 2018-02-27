@@ -46,6 +46,7 @@ import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -87,8 +88,11 @@ import de.Maxr1998.xposed.maxlock.util.KUtil;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.os.Build.VERSION.SDK_INT;
 import static android.support.v4.content.FileProvider.getUriForFile;
 
 public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
@@ -147,7 +151,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         if (screen == Screen.IMOD) {
             getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
         }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+        if (SDK_INT < Build.VERSION_CODES.N)
             getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
         addPreferencesFromResource(screen.preferenceXML);
         switch (screen) {
@@ -158,7 +162,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 if (!useDark.isChecked()) {
                     catAppUI.removePreference(findPreference(Common.USE_AMOLED_BLACK));
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (SDK_INT >= Build.VERSION_CODES.O) {
                     catAppUI.removePreference(findPreference(Common.NEW_APP_NOTIFICATION));
                 }
                 break;
@@ -260,6 +264,14 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                         .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
             }
         }
+        if (SDK_INT > Build.VERSION_CODES.O && ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            new AlertDialog.Builder(getActivity())
+                    .setMessage(R.string.dialog_need_storage_permission_oreo)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) ->
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE}, 0))
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
+        }
     }
 
     @Override
@@ -332,7 +344,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public void onViewCreated(View v, Bundle savedInstanceState) {
         getListView().setPadding(0, 0, 0, 0);
         getListView().setOverscrollFooter(new ColorDrawable(v.getContext().obtainStyledAttributes(new int[]{R.attr.windowBackground}).getColor(0, ContextCompat.getColor(v.getContext(), R.color.default_window_background))));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             getListView().setSelector(v.getContext().obtainStyledAttributes(new int[]{R.attr.highlightDrawable}).getDrawable(0));
             ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_edge", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
             ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_glow", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
@@ -429,13 +441,13 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             FileUtils.writeStringToFile(new File(tempDirectory, "device-info.txt"),
                                     "App Version: " + BuildConfig.VERSION_NAME + "\n\n" +
                                             "Device: " + Build.MANUFACTURER + " " + Build.MODEL + " (" + Build.PRODUCT + ")\n" +
-                                            "API: " + Build.VERSION.SDK_INT + ", Fingerprint: " + Build.FINGERPRINT,
+                                            "API: " + SDK_INT + ", Fingerprint: " + Build.FINGERPRINT,
                                     Charset.forName("UTF-8"));
                             FileUtils.copyFileToDirectory(getActivity().getFileStreamPath("history.json"), tempDirectory);
                             Process process = Runtime.getRuntime().exec("logcat -d");
                             FileUtils.copyInputStreamToFile(process.getInputStream(), new File(tempDirectory, "logcat.txt"));
                             try {
-                                String xposedDir = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? "/data/user_de/0/" + Common.XPOSED_PACKAGE_NAME :
+                                String xposedDir = SDK_INT >= Build.VERSION_CODES.N ? "/data/user_de/0/" + Common.XPOSED_PACKAGE_NAME :
                                         getActivity().getPackageManager().getApplicationInfo(Common.XPOSED_PACKAGE_NAME, 0).dataDir;
                                 File xposedLog = new File(xposedDir + "/log", "error.log");
                                 if (xposedLog.exists())
@@ -546,7 +558,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
                     File zipFile = new File(getActivity().getCacheDir() + File.separator + "export", "report.zip");
 
                     // Move files and send email
