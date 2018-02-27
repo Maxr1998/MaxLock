@@ -52,7 +52,7 @@ class SystemUI {
             if (LOLLIPOP) {
                 hookAllMethods(findClass(PACKAGE_NAME + ".recents.model.Task", lPParam.classLoader), "notifyTaskDataLoaded", new XC_MethodHook() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    protected void beforeHookedMethod(MethodHookParam param) {
                         String packageName = ((Intent) getObjectField(getObjectField(param.thisObject, "key"), "baseIntent")).getComponent().getPackageName();
                         if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
                             Bitmap replacement;
@@ -64,7 +64,8 @@ class SystemUI {
                                 replacement.eraseColor(color.getAsColor());
                             }
                             if (OREO) {
-                                setObjectField(param.args[0], "thumbnail", replacement);
+                                if (param.args[0] != null)
+                                    setObjectField(param.args[0], "thumbnail", replacement);
                             } else param.args[0] = replacement;
                         }
                     }
@@ -72,7 +73,7 @@ class SystemUI {
             } else {
                 findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    protected void beforeHookedMethod(MethodHookParam param) {
                         if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
                             param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(color.getAsColor()) : Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565));
                         }
@@ -99,7 +100,7 @@ class SystemUI {
 
         final XC_MethodHook hook = new XC_MethodHook() {
             @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+            protected void beforeHookedMethod(MethodHookParam param) {
                 if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
                     prefsHistory.edit().clear().apply();
                     log("ML: Screen turned off, locked apps.");
