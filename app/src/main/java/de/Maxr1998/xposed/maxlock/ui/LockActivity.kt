@@ -25,6 +25,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.annotation.Keep
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
@@ -56,35 +57,40 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         prefs = MLPreferences.getPreferences(this)
-        val lockActivityMode = intent.getStringExtra(Common.LOCK_ACTIVITY_MODE)
-        val fakeCrash = lockActivityMode != null && lockActivityMode == Common.MODE_FAKE_CRASH || prefs.getBoolean(Common.FC_ENABLE_FOR_ALL_APPS, false) && (lockActivityMode == null || lockActivityMode != Common.MODE_UNLOCK)
-        if (!fakeCrash) {
-            if (prefs.getBoolean(Common.HIDE_STATUS_BAR, false)) {
-                setTheme(R.style.TranslucentStatusBar_Full)
-            } else {
-                setTheme(R.style.TranslucentStatusBar)
-            }
-        } else {
-            setTheme(R.style.FakeDieDialog)
-            window.setBackgroundDrawable(ColorDrawable(0))
-        }
+        val isFakeCrash = isFakeCrash(intent)
+        val themeId = if (!isFakeCrash) {
+            if (prefs.getBoolean(Common.HIDE_STATUS_BAR, false)) R.style.TranslucentStatusBar_Full else R.style.TranslucentStatusBar
+        } else R.style.FakeDieDialog
+        setTheme(themeId)
+        if (isFakeCrash) window.setBackgroundDrawable(ColorDrawable(0))
         super.onCreate(savedInstanceState)
-        // Intent extras
-        names = intent.getStringArrayExtra(Common.INTENT_EXTRAS_NAMES) ?: arrayOf("", "")
+        setup(intent, isFakeCrash)
+    }
 
-        if (!fakeCrash) {
-            defaultSetup()
-        } else {
-            fakeDieSetup()
+    override fun onNewIntent(newIntent: Intent) {
+        super.onNewIntent(newIntent)
+        val fakeCrashNow = isFakeCrash(newIntent)
+        if (isFakeCrash(intent) != fakeCrashNow) {
+            recreate()
+            return
         }
+        setup(newIntent, fakeCrashNow)
     }
 
-    private fun defaultSetup() {
-        // Authentication fragment/UI
-        setContentView(LockView(this, null, names[0], names[1]), RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+    private fun isFakeCrash(intent: Intent): Boolean {
+        val lockActivityMode = intent.getStringExtra(Common.LOCK_ACTIVITY_MODE)
+        return lockActivityMode == Common.MODE_FAKE_CRASH || prefs.getBoolean(Common.FC_ENABLE_FOR_ALL_APPS, false) && lockActivityMode != Common.MODE_UNLOCK
     }
 
-    private fun fakeDieSetup() {
+    private fun setup(intent: Intent, isFakeCrash: Boolean) {
+        names = intent.getStringArrayExtra(Common.INTENT_EXTRAS_NAMES) ?: arrayOf("", "")
+        if (!isFakeCrash) {
+            val lockView = LockView(this, null, names[0], names[1])
+            setContentView(lockView, RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+            ViewCompat.requestApplyInsets(lockView)
+            return
+        }
+
         val pm = packageManager
         val requestPkgInfo = try {
             pm.getApplicationInfo(names[0], 0)
@@ -126,15 +132,13 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
                                     }
                                 }
                                 .setNegativeButton(android.R.string.cancel) { _, _ -> onBackPressed() }
-                                .setOnCancelListener { _ -> onBackPressed() }
-                                .create()
-                        reportDialog!!.show()
+                                .setOnCancelListener { onBackPressed() }
+                                .create().apply { show() }
                     }
                 }
                 .setPositiveButton(android.R.string.ok) { _, _ -> onBackPressed() }
-                .setOnCancelListener { _ -> onBackPressed() }
-                .create()
-        fakeDieDialog!!.show()
+                .setOnCancelListener { onBackPressed() }
+                .create().apply { show() }
     }
 
     private fun launchLockView() {
@@ -142,6 +146,7 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
         it.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
         it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_UNLOCK)
         it.putExtra(Common.INTENT_EXTRAS_NAMES, names)
+        finish()
         startActivity(it)
     }
 
@@ -158,9 +163,7 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
         if (MLImplementation.getImplementation(prefs) == MLImplementation.DEFAULT) {
             appClosed(names[0], MLPreferences.getPrefsHistory(this))
         } else {
-            val home = Intent(ACTION_MAIN)
-                    .addCategory(CATEGORY_HOME)
-            startActivity(home)
+            startActivity(Intent(ACTION_MAIN).addCategory(CATEGORY_HOME))
         }
         super.onBackPressed()
     }

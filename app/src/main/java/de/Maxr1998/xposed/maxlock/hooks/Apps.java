@@ -70,7 +70,7 @@ class Apps {
                     logD("Show lockscreen for " + activityName);
                     Intent i = new Intent()
                             .setComponent(new ComponentName(MAXLOCK_PACKAGE_NAME, MAXLOCK_PACKAGE_NAME + ".ui.LockActivity"))
-                            .setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            .setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                             .putExtra(Common.INTENT_EXTRAS_NAMES, new String[]{lPParam.packageName, activityName});
                     if (prefsApps.getBoolean(lPParam.packageName + Common.APP_FAKE_CRASH_PREFERENCE, false)) {
                         i.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH);
@@ -80,7 +80,7 @@ class Apps {
             });
             findAndHookMethod(Activity.class, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(MethodHookParam param) {
                     if ((boolean) param.args[0]) {
                         if (wasAppClosed(lPParam.packageName, prefsHistory)) {
                             final Activity activity = (Activity) param.thisObject;
@@ -138,7 +138,7 @@ class Apps {
         try {
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(MethodHookParam param) {
                     addToHistory(((Activity) param.thisObject).getTaskId(), lPParam.packageName, prefsHistory);
                     if (launcherPackage == null) {
                         launcherPackage = AppLockHelpers.getLauncherPackage(((Activity) param.thisObject).getPackageManager());
