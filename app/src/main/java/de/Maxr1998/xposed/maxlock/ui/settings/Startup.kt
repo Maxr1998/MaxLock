@@ -64,6 +64,7 @@ class Startup(context: Context) : AsyncTaskLoader<Void>(context) {
         val prefsAppsEditor = prefsApps.edit()
         val defaultCustomisations = arrayOf(
                 "com.instagram.mainactivity.MainTabActivity",
+                "com.laurencedawson.reddit_sync.ui.activities.HomeActivity",
                 "com.whatsapp.Main"
         )
         @Suppress("LoopToCallChain")
