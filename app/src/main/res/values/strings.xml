@@ -165,6 +165,7 @@
     <string name="notification_hidden_by_maxlock">Content hidden by MaxLock</string>
     <string name="dialog_button_exclude_activities">Activities</string>
     <string name="dialog_title_exclude_activities">Exclude Activities from lock</string>
+    <string name="dialog_button_invert_activities">Invert</string>
     <!-- UI settings -->
     <string name="pref_category_ui">UI settings</string>
     <string name="pref_hide_from_launcher">Hide app from launcher</string>

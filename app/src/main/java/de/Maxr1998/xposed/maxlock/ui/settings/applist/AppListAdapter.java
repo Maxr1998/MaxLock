@@ -19,6 +19,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings.applist;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -302,6 +303,18 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
         public int getItemCount() {
             return activities.size();
         }
+
+        public void invert() {
+            for (int i = 0; i < activities.size(); i++) {
+                String s = activities.get(i);
+                SharedPreferences.Editor edit = prefsApps.edit();
+                if (prefsApps.getBoolean(s, true)) {
+                    edit.putBoolean(s, false);
+                } else edit.remove(s);
+                edit.commit();
+            }
+            notifyDataSetChanged();
+        }
     }
 
     private static class ActivityListViewHolder extends RecyclerView.ViewHolder {
@@ -405,10 +418,17 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
         protected void onPostExecute(List<String> list) {
             super.onPostExecute(list);
             RecyclerView recyclerView = new RecyclerView(mContext);
-            recyclerView.setAdapter(new ActivityListAdapter(mContext, list));
+            ActivityListAdapter adapter = new ActivityListAdapter(mContext, list);
+            recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            new AlertDialog.Builder(mContext).setTitle(R.string.dialog_title_exclude_activities).setView(recyclerView).show();
+            AlertDialog dialog = new AlertDialog.Builder(mContext)
+                    .setTitle(R.string.dialog_title_exclude_activities)
+                    .setView(recyclerView)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setNeutralButton(R.string.dialog_button_invert_activities, null).create();
+            dialog.setOnShowListener(d -> dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> adapter.invert()));
+            dialog.show();
         }
     }
 }
