@@ -43,6 +43,7 @@ class Main : IXposedHookZygoteInit, IXposedHookLoadPackage {
     @Throws(Throwable::class)
     override fun handleLoadPackage(lPParam: LoadPackageParam) {
         findAndHookMethod(Application::class.java, "attach", Context::class.java, object : XC_MethodHook() {
+            @Throws(Throwable::class)
             override fun afterHookedMethod(param: MethodHookParam) {
                 val ctx = param.args[0] as Context
                 val prefsApps = ctx.getRemotePreferences(PREFS_APPS)

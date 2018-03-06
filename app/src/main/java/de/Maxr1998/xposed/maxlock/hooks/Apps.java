@@ -42,6 +42,7 @@ import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
+@SuppressWarnings("RedundantThrows")
 class Apps {
 
     private static String launcherPackage;
@@ -80,7 +81,7 @@ class Apps {
             });
             findAndHookMethod(Activity.class, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(MethodHookParam param) {
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if ((boolean) param.args[0]) {
                         if (wasAppClosed(lPParam.packageName, prefsHistory)) {
                             final Activity activity = (Activity) param.thisObject;
@@ -138,7 +139,7 @@ class Apps {
         try {
             findAndHookMethod("android.app.Activity", lPParam.classLoader, "onStart", new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(MethodHookParam param) {
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     addToHistory(((Activity) param.thisObject).getTaskId(), lPParam.packageName, prefsHistory);
                     if (launcherPackage == null) {
                         launcherPackage = AppLockHelpers.getLauncherPackage(((Activity) param.thisObject).getPackageManager());
