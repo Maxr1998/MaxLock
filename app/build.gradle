@@ -4,13 +4,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jakewharton.hugo'
 
 ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "pt", "ru", "tr", "zh-rCN", "zh-rTW"]
-ext.supportLibraryVersion = "27.0.2"
+ext.supportLibraryVersion = "27.1.0"
 ext.c_languages = ["de", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "pt-PT", "ru", "tr", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 16
