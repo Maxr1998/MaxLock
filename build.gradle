@@ -7,9 +7,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha04'
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha05'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
     }
 }
 
@@ -21,4 +21,8 @@ allprojects {
             url "https://jitpack.io"
         }
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
