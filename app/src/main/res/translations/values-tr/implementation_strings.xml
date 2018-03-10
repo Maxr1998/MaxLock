@@ -2,6 +2,11 @@
 <resources>
     <string name="ml_implementation">MaxLock uygulaması</string>
     <string name="ml_status">MaxLock durumu</string>
+    <string name="applock_accessibility_service_summary">Uygulamalarınızı kilitlemenizi sağlayan hizmet</string>
+    <string name="applock_accessibility_service_description">MaxLock\'un Xposed uygulaması kullanmıyorsanız, uygulamaların değişimini algılamak için bu erişilebilirlik servisi kullanılacaktır. Herhangi bir durumda veri alınamaz veya alınmayacaktır. \n Bu hizmet herhangi bir erişilebilirlik özelliği sunmasa da, uygulamanın temel özelliklerinin çalışması için çok önemlidir.
+\n varsayılan Xposed uygulamasını kullanmıyorsanız.        \n  
+        İzinler:
+        - İşlemlerinizi gözlemleyin: Bu izin tüm erişilebilirlik hizmetleri için varsayılan olarak istenir ve doğrudan MaxLock tarafından gerekli değildir.    </string>
     <string name="implementation_default">Varsayılan - Xposed\'a ihtiyaç duyar</string>
     <string name="implementation_no_xposed">Root veya Xposed yok</string>
     <string name="xposed_success_information">Xposed yüklü &amp; etkin, müthiş!</string>

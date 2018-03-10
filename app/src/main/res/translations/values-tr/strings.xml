@@ -3,6 +3,7 @@
     <string name="sb_no_locking_type">Kilitleme tipi belirtilmedi</string>
     <string name="sb_no_locked_apps">Kilitlemek için herhangi bir uygulama seçilmedi</string>
     <string name="sb_action_setup">KURULUM</string>
+    <string name="dialog_need_storage_permission_oreo">MaxLock, Android 8.1 Oreo\'dan bu yana duvar kağıdınızı okumak için depolama iznine ihtiyaç duyar. Lütfen bir sonraki seçeneği de kabul edin.</string>
     <string name="dialog_maxlock_updated">MaxLock güncellendi!</string>
     <string name="dialog_button_whats_new">Yenilikler</string>
     <string name="dialog_button_got_it">Anladım</string>
@@ -31,7 +32,7 @@
     <string name="pref_screen_locking_type">Kilitleme tipi</string>
     <string name="pref_locking_type_password">Şifre</string>
     <string name="pref_locking_type_pin">PIN</string>
-    <string name="pref_locking_type_knockcode">Knock code</string>
+    <string name="pref_locking_type_knockcode">Tıklama Kodu</string>
     <string name="pref_locking_type_pattern">Desen</string>
     <string name="pref_set_password">Şifre belirle</string>
     <string name="toast_password_inconsistent">Şifre tutarsız!</string>
@@ -118,6 +119,13 @@
     <string name="pref_delay_per_app_input_summary">Uygulama başına gecikmeli yeniden kilit için gecikme zamanı değerini dakika olarak belirtmek için bir sayı girin</string>
     <string name="pref_delay_needpro">Gecikmeli tekrar kilitlenme - Pro sürümü</string>
     <string name="pref_category_reset_relock_timer">Zamanlayıcı seçeneklerini sıfırla</string>
+    <string name="pref_reset_relock_timer_description">Bu seçenek  bir sonraki uygulama başlangıcında kimlik doğrulaması yerine kilitleme zamanlayıcısı\'nın geçmesi  için kullanılabilinir</string>
+    <string name="pref_show_reset_notification">Sıfırlama bildirimlerini göster</string>
+    <string name="pref_show_reset_notification_summary">Tekrar kilitlemeye tıklandığında bildirimleri göster</string>
+    <string name="pref_reset_screen_off">Ekran kapalıyken sıfırla</string>
+    <string name="pref_reset_screen_off_summary">Ekran kapandığında yeniden kilitleme ekranını sıfırla</string>
+    <string name="pref_imod_reset_on_homescreen">Ana ekranda sıfırla</string>
+    <string name="pref_imod_reset_on_homescreen_summary">Ana ekrana giderken zamanlayıcıyı yeniden başlatmayı sıfırla</string>
     <string name="pref_hide_recents_thumbnails">En yeni küçük resimleri gizle</string>
     <string name="pref_hide_recents_thumbnails_summary">Kilitli uygulamalardan önizlenen küçük resimlerini en yeni ekranlardan kaldır</string>
     <!-- Apps settings -->
@@ -149,6 +157,7 @@
     <string name="notification_hidden_by_maxlock">MaxLock tarafından gizlenen içerik</string>
     <string name="dialog_button_exclude_activities">Etkinlikler</string>
     <string name="dialog_title_exclude_activities">Kilitten dışlanan etkinlikler</string>
+    <string name="dialog_button_invert_activities">Tersine çevir</string>
     <!-- UI settings -->
     <string name="pref_category_ui">Kullanıcı Arayüzü ayarları</string>
     <string name="pref_hide_from_launcher">Uygulamayı başlatıcıdan gizle</string>

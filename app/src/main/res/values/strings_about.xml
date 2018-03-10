@@ -27,7 +27,7 @@
 
     <!-- Translators -->
     <string name="translation_chinese_simple">liveasx</string>
-    <string name="translation_chinese_traditional">alexking99</string>
+    <string name="translation_chinese_traditional">alexking99, Johann Wu</string>
     <string name="translation_french">Intika</string>
     <string name="translation_german">Mihahn, Maxr1998</string>
     <string name="translation_indonesian">BhianzMuhh, Aliefian Damarizky, DheekeyCarey</string>
@@ -37,7 +37,7 @@
     <string name="translation_polish">pantinPL</string>
     <string name="translation_portuguese">Ronei de Sousa, Rhaysf15</string>
     <string name="translation_russian">Vernyak</string>
-    <string name="translation_turkish">Ilker Binzet</string>
+    <string name="translation_turkish">Ilker Binzet, Gökay Sirataş</string>
     <string name="translation_spanish">badkill, BeRniTo, eduard andres castellanos torres</string>
 
     <!-- Licenses -->

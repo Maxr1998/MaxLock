@@ -30,6 +30,7 @@
     <string name="pref_category_locking">锁定设置</string>
     <string name="pref_screen_locking_type">锁定类型</string>
     <string name="pref_locking_type_password">密码</string>
+    <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">轻敲代码</string>
     <string name="pref_locking_type_pattern">图案</string>
     <string name="pref_set_password">设置密码</string>
@@ -117,9 +118,13 @@
     <string name="pref_delay_per_app_input_summary">输入一个数字指定延迟时间,值为分钟,重新锁定每个应用</string>
     <string name="pref_delay_needpro">延迟重新锁定 - 专业版</string>
     <string name="pref_category_reset_relock_timer">重置计时器选项</string>
+    <string name="pref_show_reset_notification_summary">单击时显示通知重置重新锁定计时器</string>
+    <string name="pref_imod_reset_on_homescreen">在主屏幕上重置</string>
+    <string name="pref_imod_reset_on_homescreen_summary">导航到主屏幕时重置重新锁定计时器</string>
     <string name="pref_hide_recents_thumbnails">隐藏最近缩略图</string>
     <string name="pref_hide_recents_thumbnails_summary">在最近任务中移除锁定应用的预览缩略图</string>
     <!-- Apps settings -->
+    <string name="pref_category_apps">应用</string>
     <string name="pref_choose_apps">锁定应用</string>
     <string name="pref_choose_apps_summary">选择需要锁定的应用</string>
     <string name="menu_backup_list">备份列表</string>

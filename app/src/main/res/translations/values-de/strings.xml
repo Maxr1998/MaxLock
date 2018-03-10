@@ -3,6 +3,7 @@
     <string name="sb_no_locking_type">Keine Sperrart festgelegt</string>
     <string name="sb_no_locked_apps">Keine zu sperrenden Apps ausgewählt</string>
     <string name="sb_action_setup">FESTLEGEN</string>
+    <string name="dialog_need_storage_permission_oreo">MaxLock benötigt seit Android 8.1 Oreo eine Berechtigung, um dein Hintergrundbild lesen zu können. Bitte erlaube im folgenden Dialog für diese Zwecke den Zugriff auf den Speicher.</string>
     <string name="dialog_maxlock_updated">MaxLock wurde aktualisiert!</string>
     <string name="dialog_button_whats_new">Was ist neu</string>
     <string name="dialog_button_got_it">Verstanden</string>
@@ -156,6 +157,7 @@
     <string name="notification_hidden_by_maxlock">Inhalt versteckt von MaxLock</string>
     <string name="dialog_button_exclude_activities">Aktivitäten</string>
     <string name="dialog_title_exclude_activities">Aktivitäten von Sperre ausschließen</string>
+    <string name="dialog_button_invert_activities">Umkehren</string>
     <!-- UI settings -->
     <string name="pref_category_ui">Oberfläche</string>
     <string name="pref_hide_from_launcher">Verstecke App im Launcher</string>

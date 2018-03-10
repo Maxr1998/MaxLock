@@ -66,7 +66,7 @@
     <string name="pref_hide_status_bar">ステータスバーの非表示</string>
     <string name="pref_invert_color">表示色の反転</string>
     <string name="pref_invert_color_summary">テキストと分割線の色を黒にします</string>
-    <string name="pref_hide_title_bar">タイトルバーの消去</string>
+    <string name="pref_hide_title_bar">タイトルバーの非表示</string>
     <string name="pref_category_password_and_pin">バスワードと PIN コード</string>
     <string name="pref_quick_unlock">即時解除</string>
     <string name="pref_category_pin_only">PIN コード</string>
@@ -100,7 +100,7 @@
     <string name="pref_fake_crash_instant_lockscreen_summary">「問題が発生したためアプリを終了します」ダイアログの「レポート」ボタンをタップしたら直ぐにロック画面へ移行するようにします</string>
     <string name="pref_fake_crash_enable_passphrase_unlock">パスフレーズでロック解除</string>
     <string name="pref_fake_crash_enable_passphrase_unlock_summary">正しいパスフレーズが入力されたらロック画面を経由せずに直ぐにロック解除するようにします\n
-        (注意 : パスフレーズはアプリのプライベートストレージにプレーンテキストで保存されます。したがって潜在的に安全ではありません)</string>
+        (注意 : パスフレーズはアプリのプライベートストレージに平文で保存されます。したがって潜在的に安全ではありません)</string>
     <string name="pref_category_other">その他</string>
     <string name="pref_enable_tasker">Tasker 機能の有効化</string>
     <!-- I.Mod settings -->
@@ -118,6 +118,13 @@
     <string name="pref_delay_per_app_input_summary">アプリの再ロック延期時間(分)を設定してください</string>
     <string name="pref_delay_needpro">再ロックの延期 - Pro 版</string>
     <string name="pref_category_reset_relock_timer">再ロックの延期のリセット</string>
+    <string name="pref_reset_relock_timer_description">これらのオプションを有効にすると、再ロック延期時間が経過するまで待つことなく、直ちにアプリをロックできるようになります</string>
+    <string name="pref_show_reset_notification">通知領域からリセット</string>
+    <string name="pref_show_reset_notification_summary">通知領域から再ロックの延期をリセットできるようにします</string>
+    <string name="pref_reset_screen_off">画面オフでリセット</string>
+    <string name="pref_reset_screen_off_summary">画面をオフにしたら再ロックの延期をリセットします</string>
+    <string name="pref_imod_reset_on_homescreen">ホーム画面でリセット</string>
+    <string name="pref_imod_reset_on_homescreen_summary">ホーム画面を表示したら再ロックの延期をリセットします</string>
     <string name="pref_hide_recents_thumbnails">アプリ履歴のサムネイルの非表示</string>
     <string name="pref_hide_recents_thumbnails_summary">ロックしたアプリのプレビュー画面(サムネイル)をアプリ履歴に表示しないようにします</string>
     <!-- Apps settings -->

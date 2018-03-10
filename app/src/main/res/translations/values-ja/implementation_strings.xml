@@ -2,16 +2,22 @@
 <resources>
     <string name="ml_implementation">MaxLock の動作モード</string>
     <string name="ml_status">MaxLock の状態</string>
+    <string name="applock_accessibility_service_summary">アプリに起動ロックをかけるサービス</string>
+    <string name="applock_accessibility_service_description">MaxLock の Xposed モードを使用しない場合は、アプリの変更を検知するためにこのユーザー補助サービスが使用されます。画面に表示されている内容からデータが収集されることはありません\n
+このサービスはユーザー補助の機能を何も提供しませんが、デフォルトの Xposed モードを使用しない場合、MaxLock の中心的な機能のために必要になります\n
+\n
+権限:
+- 操作の監視: この権限は、すべてのユーザー補助サービスにデフォルトで要求されます。MaxLock には直接は必要ありません</string>
     <string name="implementation_default">デフォルト - Xposed が必要です</string>
     <string name="implementation_no_xposed">Root/Xposed なし</string>
     <string name="xposed_success_information">Xposed がインストール済みで動作しています。素晴らしい!</string>
-    <string name="implementation_alert">Root/Xposed なしモードではアクセシビリティサービスを使用します。
-このモードはシステムを変更することなくすべての端末で動作しますが、より多くのメモリとバッテリーを消費します。
-それなので、Xposed がインストール済みかインストール可能な場合はデフォルトモードでの使用を強くおすすめします!</string>
+    <string name="implementation_alert"><i>Root/Xposed なしモードではユーザー補助サービスを使用します。
+このモードはシステムを変更することなくすべての端末で動作しますが、より多くの RAM(システムメモリ) とバッテリーを消費します\n
+それなので、Xposed がインストール済みかインストール可能な場合はデフォルトモードでの使用を強くおすすめします!</i></string>
     <string name="xposed_inactive_warning">MaxLock の動作に必要となる Android のシステムメソッドをフックできませんでした。次のような原因が考えられます\n
 • <i>Xposed Framework がインストールされていない</i>\n
 • <i>Xposed がインストールされ動作しているけれども、Xposed installer で MaxLock を有効化していないか、有効化した後で端末を再起動していない</i>\n
 • <i>Xposed のセーフモードにより Xposed Framework が無効化されている。これについての詳しい情報は XDA の Xposed スレッドを参照してください</i>\n
 • <i>MaxLock がクラッシュを起こした。お手数ですが、この画面の下部からバグレポートを送信してください</i></string>
-    <string name="accessibility_inactive_warning">アクセシビリティサービスが有効になっていません。ここをタップしてシステム設定で有効にしてください。有効にしないとアプリのロックが機能しません!</string>
+    <string name="accessibility_inactive_warning">ユーザー補助サービスが有効になっていません。ここをタップしてシステム設定で有効にしてください。有効にしないとアプリのロックが機能しません!</string>
 </resources>
