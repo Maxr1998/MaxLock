@@ -122,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         secondFragmentContainer = findViewById(R.id.second_fragment_container);
 
         Fragment settingsFragment = getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT);
-        if (settingsFragment == null) {
+        if (settingsFragment == null || !UNLOCKED) {
             // Main fragment doesn't exist, app just opened
             // → Show lockscreen
             UNLOCKED = false;
