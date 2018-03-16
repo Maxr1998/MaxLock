@@ -157,7 +157,11 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             public void onServiceDisconnected(ComponentName name) {
             }
         };
-        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", mConnection);
+        String cctPackageName = CustomTabsClient.getPackageName(this, Arrays.asList(
+                "com.android.chrome", "com.chrome.beta", "com.chrome.dev", "org.mozilla.firefox", "org.mozilla.firefox_beta"
+        ));
+        if (cctPackageName != null)
+            CustomTabsClient.bindCustomTabsService(this, cctPackageName, mConnection);
         getSupportLoaderManager().initLoader(Common.STARTUP_LOADER, null, this);
     }
 
