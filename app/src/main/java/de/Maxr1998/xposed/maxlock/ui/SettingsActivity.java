@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -165,17 +166,18 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         getSupportLoaderManager().initLoader(Common.STARTUP_LOADER, null, this);
     }
 
+    @NonNull
     @Override
     public Loader<Void> onCreateLoader(int id, Bundle args) {
         return new Startup(this);
     }
 
     @Override
-    public void onLoadFinished(Loader loader, Void data) {
+    public void onLoadFinished(@NonNull Loader loader, Void data) {
     }
 
     @Override
-    public void onLoaderReset(Loader loader) {
+    public void onLoaderReset(@NonNull Loader loader) {
     }
 
     @SuppressLint("WorldReadableFiles")
