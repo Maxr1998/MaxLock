@@ -85,6 +85,11 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
     private fun setup(intent: Intent, isFakeCrash: Boolean) {
         names = intent.getStringArrayExtra(Common.INTENT_EXTRAS_NAMES) ?: arrayOf("", "")
         if (!isFakeCrash) {
+            if (MLPreferences.getPreferences(this).getString(Common.LOCKING_TYPE, "").isEmpty()) {
+                Toast.makeText(this, R.string.sb_no_locking_type, Toast.LENGTH_SHORT).show()
+                onAuthenticationSucceeded()
+                return
+            }
             val lockView = LockView(this, null, names[0], names[1])
             setContentView(lockView, RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
             ViewCompat.requestApplyInsets(lockView)
