@@ -115,7 +115,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         }
         FragmentTransaction transaction = manager.beginTransaction();
         if (manager.getBackStackEntryCount() > 0 || !((SettingsActivity) fragment.getActivity()).inLandscape())
-            transaction.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_pop_in, R.anim.fragment_pop_out);
+            transaction.setCustomAnimations(R.anim.fragment_in, 0, R.anim.fragment_pop_in, R.anim.fragment_pop_out);
         transaction.replace(R.id.fragment_container, replacement).addToBackStack(null).commit();
         if (fromRoot && ((MaxLockPreferenceFragment) fragment).isFirstPane())
             SettingsActivity.showMultipaneIfInLandscape((SettingsActivity) fragment.getActivity());
