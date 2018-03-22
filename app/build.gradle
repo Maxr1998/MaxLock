@@ -100,7 +100,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     implementation "com.android.support:support-fragment:$supportLibraryVersion"
-    implementation 'com.google.android.gms:play-services-analytics:11.8.0'
+    implementation 'com.google.android.gms:play-services-analytics:12.0.0'
     // Local files
     implementation(name: 'PatternLock', ext: 'aar')
 }
