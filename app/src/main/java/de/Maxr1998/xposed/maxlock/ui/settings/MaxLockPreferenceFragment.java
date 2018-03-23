@@ -443,7 +443,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                             "Device: " + Build.MANUFACTURER + " " + Build.MODEL + " (" + Build.PRODUCT + ")\n" +
                                             "API: " + SDK_INT + ", Fingerprint: " + Build.FINGERPRINT,
                                     Charset.forName("UTF-8"));
-                            FileUtils.copyFileToDirectory(getActivity().getFileStreamPath("history.json"), tempDirectory);
                             Process process = Runtime.getRuntime().exec("logcat -d");
                             FileUtils.copyInputStreamToFile(process.getInputStream(), new File(tempDirectory, "logcat.txt"));
                             try {
