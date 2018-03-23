@@ -52,7 +52,7 @@ class SystemUI {
 
     static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
         try {
-            ColorSupplier color = () -> !prefs.getBoolean(Common.USE_DARK_STYLE, false) ? Color.WHITE : 0xFF212121;
+            ColorSupplier color = () -> prefs.getBoolean(Common.USE_DARK_STYLE, false) ? 0xFF212121 : Color.WHITE;
             final Paint paint = new Paint();
             if (LOLLIPOP) {
                 String methodName = (NOUGAT ? "" : "re") + "bindToTask";

@@ -29,6 +29,6 @@ public class SharedPreferencesProvider extends RemotePreferenceProvider {
 
     @Override
     protected boolean checkAccess(String prefName, String prefKey, boolean write) {
-        return prefName.equals(Common.PREFS_HISTORY) || (!write && (prefName.equals(Common.PREFS_APPS) || prefKey.equals(Common.HIDE_RECENTS_THUMBNAILS) || prefKey.equals(Common.INVERT_COLOR)));
+        return prefName.equals(Common.PREFS_HISTORY) || (!write && (prefName.equals(Common.PREFS_APPS) || prefKey.equals(Common.HIDE_RECENTS_THUMBNAILS) || prefKey.equals(Common.USE_DARK_STYLE)));
     }
 }
