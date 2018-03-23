@@ -50,6 +50,9 @@ class Main : IXposedHookZygoteInit, IXposedHookLoadPackage {
                 val prefsHistory = ctx.getRemotePreferences(PREFS_HISTORY)
                 when (lPParam.packageName) {
                     SystemUI.PACKAGE_NAME -> {
+                        // Clear delayed relock on boot
+                        prefsHistory?.run { edit().clear().apply() }
+
                         val prefs = ctx.getRemotePreferences(Common.MAXLOCK_PACKAGE_NAME + "_preferences")
                         SystemUI.init(lPParam, prefs, prefsApps, prefsHistory)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
