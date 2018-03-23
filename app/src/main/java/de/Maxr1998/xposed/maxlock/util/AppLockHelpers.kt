@@ -54,18 +54,25 @@ object AppLockHelpers {
         }
 
         // Activity not locked
-        if (activityName != null && !prefsApps.getBoolean(activityName, true)) {
-            return true
+        activityName?.let {
+            if (!prefsApps.getBoolean(it, true))
+                return true
         }
 
         // I.Mod active
+        return iModActive(packageName, prefsApps, prefsHistory)
+    }
+
+    @JvmStatic
+    fun iModActive(packageName: String, prefsApps: SharedPreferences, prefsHistory: SharedPreferences): Boolean {
         val iModDelayGlobalEnabled = prefsApps.getBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false)
         val iModDelayAppEnabled = prefsApps.getBoolean(Common.ENABLE_IMOD_DELAY_APP, false)
         val iModLastUnlockGlobal = prefsHistory.getLong(IMOD_LAST_UNLOCK_GLOBAL, 0)
         val iModPerApp = JSONObject(prefsHistory.getString(IMOD_APPS, JSONObject().toString()))
         val iModLastUnlockApp = iModPerApp.optLong(packageName)
 
-        return iModDelayGlobalEnabled && System.currentTimeMillis() - iModLastUnlockGlobal <= prefsApps.getInt(IMOD_DELAY_GLOBAL, 600000) || iModDelayAppEnabled && System.currentTimeMillis() - iModLastUnlockApp <= prefsApps.getInt(IMOD_DELAY_APP, 600000)
+        return iModDelayGlobalEnabled && System.currentTimeMillis() - iModLastUnlockGlobal <= prefsApps.getInt(IMOD_DELAY_GLOBAL, 600000) ||
+                iModDelayAppEnabled && System.currentTimeMillis() - iModLastUnlockApp <= prefsApps.getInt(IMOD_DELAY_APP, 600000)
     }
 
     @JvmStatic

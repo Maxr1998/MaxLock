@@ -51,7 +51,7 @@ class Main : IXposedHookZygoteInit, IXposedHookLoadPackage {
                 when (lPParam.packageName) {
                     SystemUI.PACKAGE_NAME -> {
                         val prefs = ctx.getRemotePreferences(Common.MAXLOCK_PACKAGE_NAME + "_preferences")
-                        SystemUI.init(lPParam, prefs, prefsApps)
+                        SystemUI.init(lPParam, prefs, prefsApps, prefsHistory)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             SystemUI.initScreenOff(lPParam, prefsApps, prefsHistory)
                         }

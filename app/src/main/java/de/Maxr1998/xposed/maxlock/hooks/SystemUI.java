@@ -20,9 +20,12 @@ package de.Maxr1998.xposed.maxlock.hooks;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.view.View;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.util.ColorSupplier;
@@ -30,43 +33,49 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF;
+import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.iModActive;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim;
 import static de.robv.android.xposed.XposedBridge.hookAllMethods;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getIntField;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
+@SuppressWarnings("RedundantThrows")
 class SystemUI {
 
     static final String PACKAGE_NAME = "com.android.systemui";
     static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
     private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    private static final boolean MARSHMALLOW = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    private static final boolean OREO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    private static final boolean NOUGAT = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
 
-    static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps) {
+    static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
         try {
-            ColorSupplier color = () -> !prefs.getBoolean(Common.INVERT_COLOR, false) ? Color.WHITE : Color.BLACK;
+            ColorSupplier color = () -> !prefs.getBoolean(Common.USE_DARK_STYLE, false) ? Color.WHITE : 0xFF212121;
+            final Paint paint = new Paint();
             if (LOLLIPOP) {
-                hookAllMethods(findClass(PACKAGE_NAME + ".recents.model.Task", lPParam.classLoader), "notifyTaskDataLoaded", new XC_MethodHook() {
+                String methodName = (NOUGAT ? "" : "re") + "bindToTask";
+                hookAllMethods(findClass(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader), methodName, new XC_MethodHook() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) {
-                        String packageName = ((Intent) getObjectField(getObjectField(param.thisObject, "key"), "baseIntent")).getComponent().getPackageName();
-                        if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
-                            Bitmap replacement;
-                            if (MARSHMALLOW) {
-                                replacement = Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565);
-                            } else {
-                                Bitmap thumbnail = (Bitmap) param.args[0];
-                                replacement = Bitmap.createBitmap(thumbnail.getWidth(), thumbnail.getHeight(), Bitmap.Config.RGB_565);
-                                replacement.eraseColor(color.getAsColor());
-                            }
-                            if (OREO) {
-                                if (param.args[0] != null)
-                                    setObjectField(param.args[0], "thumbnail", replacement);
-                            } else param.args[0] = replacement;
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        Object task = getObjectField(param.thisObject, "mTask");
+                        String packageName = ((Intent) getObjectField(getObjectField(task, "key"), "baseIntent")).getComponent().getPackageName();
+                        paint.setColor(color.getAsColor());
+                        ((View) param.thisObject).setTag(
+                                prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) &&
+                                        prefsApps.getBoolean(packageName, false) && !iModActive(packageName, prefsApps, prefsHistory)
+                        );
+                    }
+                });
+                findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "onDraw", Canvas.class, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        if (Boolean.TRUE.equals(((View) param.thisObject).getTag())) {
+                            Canvas canvas = (Canvas) param.args[0];
+                            int cornerRadius = getIntField(param.thisObject, "mCornerRadius") + 1;
+                            canvas.drawRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), cornerRadius, cornerRadius, paint);
+                            param.setResult(null);
                         }
                     }
                 });
@@ -74,7 +83,10 @@ class SystemUI {
                 findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
-                        if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(getObjectField(param.thisObject, "packageName").toString(), false)) {
+                        String packageName = getObjectField(param.thisObject, "packageName").toString();
+                        if (iModActive(packageName, prefsApps, prefsHistory))
+                            return;
+                        if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
                             param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(color.getAsColor()) : Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565));
                         }
                     }
