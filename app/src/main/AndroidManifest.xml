@@ -33,6 +33,11 @@
     <!-- For shortcuts -->
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
+    <!-- We don't need this -->
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
+        tools:node="remove" />
+
     <application
         android:name=".ThisApplication"
         android:allowBackup="true"
