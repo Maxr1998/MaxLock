@@ -14,8 +14,8 @@ android {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 52
-        versionName "7.0"
+        versionCode 53
+        versionName "7.0.1"
         resConfigs languages
         setProperty("archivesBaseName", "ML-$versionName")
 
