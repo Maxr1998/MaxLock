@@ -29,6 +29,7 @@ import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
+@SuppressWarnings("RedundantThrows")
 class MaxLock {
 
     static final String PACKAGE_NAME = MAXLOCK_PACKAGE_NAME;
