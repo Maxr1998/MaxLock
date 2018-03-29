@@ -12,7 +12,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "de.Maxr1998.xposed.maxlock"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 53
         versionName "7.0.1"
