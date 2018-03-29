@@ -147,7 +147,8 @@ class AppLockService : AccessibilityService() {
 
     override fun onDestroy() {
         unregisterReceiver(screenOffReceiver)
-        performGlobalAction(GLOBAL_ACTION_HOME)
+        if (MLImplementation.getImplementation(prefs) != MLImplementation.DEFAULT && MLImplementation.isActiveAndWorking(this, prefs))
+            performGlobalAction(GLOBAL_ACTION_HOME)
         super.onDestroy()
     }
 }
