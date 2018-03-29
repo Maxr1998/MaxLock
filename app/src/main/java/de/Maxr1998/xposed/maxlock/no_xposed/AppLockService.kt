@@ -95,7 +95,7 @@ class AppLockService : AccessibilityService() {
             return
         }
 
-        Log.d(TAG, "Window state changed: " + packageName)
+        Log.d(TAG, "Window state changed: $packageName")
         try {
             if (prefsApps.getBoolean(packageName, false)) {
                 handlePackage(packageName)
@@ -133,7 +133,7 @@ class AppLockService : AccessibilityService() {
             return
         }
 
-        Log.d(TAG, "Show lockscreen: " + packageName)
+        Log.d(TAG, "Show lockscreen: $packageName")
         val i = Intent(this, LockActivity::class.java)
                 .setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_FROM_BACKGROUND or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 .putExtra(Common.INTENT_EXTRAS_NAMES, arrayOf(packageName, ""))

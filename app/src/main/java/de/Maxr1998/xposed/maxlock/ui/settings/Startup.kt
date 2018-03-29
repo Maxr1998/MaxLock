@@ -108,5 +108,5 @@ class Startup(context: Context) : AsyncTaskLoader<Void>(context) {
         return null
     }
 
-    private fun xml(name: String): String = name + ".xml"
+    private fun xml(name: String): String = "$name.xml"
 }
