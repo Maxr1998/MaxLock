@@ -109,13 +109,16 @@ class Apps {
                             String appName = appContext.getPackageManager().getApplicationInfo(packageName, 0).loadLabel(appContext.getPackageManager()).toString();
                             Notification.Builder replacementBuilder = (SDK_INT > Build.VERSION_CODES.O ?
                                     new Notification.Builder(appContext, notification.getChannelId()) : new Notification.Builder(appContext))
-                                    .setContentTitle(appName)
-                                    .setContentText(replacementText)
                                     .setLights(notification.ledARGB, notification.ledOnMS, notification.ledOffMS)
                                     .setSound(notification.sound)
                                     .setContentIntent(notification.contentIntent)
                                     .setDeleteIntent(notification.deleteIntent)
                                     .setWhen(notification.when);
+                            if (SDK_INT >= Build.VERSION_CODES.N) {
+                                replacementBuilder.setContentTitle(replacementText);
+                            } else replacementBuilder.setContentTitle(appName)
+                                    .setContentText(replacementText);
+
                             if (SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 replacementBuilder.setColor(mlColor)
                                         .setGroup(notification.getGroup())
