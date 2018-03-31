@@ -67,7 +67,7 @@ class Main : IXposedHookZygoteInit, IXposedHookLoadPackage {
                     MaxLock.PACKAGE_NAME -> MaxLock.init(lPParam, prefsHistory)
                     DeviceAdminProtection.PACKAGE_NAME -> DeviceAdminProtection.init(lPParam)
                 }
-                Apps.init(lPParam, prefsApps, prefsHistory)
+                Apps.init(lPParam.packageName, ctx, prefsApps, prefsHistory)
             }
         })
     }
@@ -79,7 +79,7 @@ class Main : IXposedHookZygoteInit, IXposedHookLoadPackage {
         @JvmStatic
         fun logD(message: String) {
             if (BuildConfig.DEBUG)
-                log("ML: " + message)
+                log("ML: $message")
         }
     }
 }

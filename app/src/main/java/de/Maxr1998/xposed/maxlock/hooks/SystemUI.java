@@ -32,6 +32,7 @@ import de.Maxr1998.xposed.maxlock.util.ColorSupplier;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+import static android.os.Build.VERSION.SDK_INT;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.iModActive;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim;
@@ -47,8 +48,8 @@ class SystemUI {
 
     static final String PACKAGE_NAME = "com.android.systemui";
     static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
-    private static final boolean LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    private static final boolean NOUGAT = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    private static final boolean LOLLIPOP = SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    private static final boolean NOUGAT = SDK_INT >= Build.VERSION_CODES.N;
 
     static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
         try {
@@ -124,7 +125,7 @@ class SystemUI {
         };
         // Hook
         try {
-            findAndHookMethod(hookedClass, lPParam.classLoader, "onScreenTurnedOff", Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? new Object[]{hook} : new Object[]{int.class, hook});
+            findAndHookMethod(hookedClass, lPParam.classLoader, "onScreenTurnedOff", SDK_INT >= Build.VERSION_CODES.M ? new Object[]{hook} : new Object[]{int.class, hook});
         } catch (Throwable t) {
             log(t);
         }
