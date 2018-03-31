@@ -23,7 +23,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Loader
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.customtabs.*
@@ -131,11 +130,7 @@ class DonateActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Billin
                         return v
                     }
                     tv.text = productName
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        tv.setCompoundDrawablesRelativeWithIntrinsicBounds(productIcons[position], 0, 0, 0)
-                    } else {
-                        tv.setCompoundDrawablesWithIntrinsicBounds(productIcons[position], 0, 0, 0)
-                    }
+                    tv.setCompoundDrawablesRelativeWithIntrinsicBounds(productIcons[position], 0, 0, 0)
                     tv.compoundDrawablePadding = Util.dpToPx(this@DonateActivity, 12)
                     return v
                 }

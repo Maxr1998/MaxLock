@@ -9,7 +9,6 @@
         android:id="@+id/activity_switch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:maxLines="3"
         android:padding="8dp"

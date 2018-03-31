@@ -59,7 +59,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:text="@string/tasker_imod_reset_summary"
                 android:textSize="12sp" />
@@ -74,7 +73,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:text="@string/tasker_button_apply" />
         </RelativeLayout>
     </LinearLayout>

@@ -90,7 +90,11 @@
 
     <style name="FakeDieDialog" parent="android:Theme.DeviceDefault.Dialog.NoActionBar" />
 
-    <style name="TranslucentStatusBar" parent="AppTheme.Dark" />
+    <style name="TranslucentStatusBar" parent="AppTheme.Dark">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
     <style name="TranslucentStatusBar.Full" parent="TranslucentStatusBar">
         <item name="android:windowFullscreen">true</item>

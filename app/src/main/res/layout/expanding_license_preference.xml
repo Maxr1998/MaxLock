@@ -11,8 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/preference_margin"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="@dimen/preference_margin"
         android:layout_marginStart="8dp"
         android:contentDescription="expand"
         android:scaleType="center"

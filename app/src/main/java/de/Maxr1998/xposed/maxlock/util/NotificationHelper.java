@@ -72,10 +72,8 @@ public final class NotificationHelper {
                 .setSmallIcon(R.drawable.ic_apps_24dp)
                 .setContentIntent(PendingIntent.getActivity(context.getApplicationContext(), 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                 .setOngoing(true)
-                .setAutoCancel(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            builder.setShowWhen(false);
-        }
+                .setAutoCancel(true)
+                .setShowWhen(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setPriority(NotificationCompat.PRIORITY_MIN)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)

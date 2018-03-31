@@ -4,10 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height"
-    android:layout_marginEnd="20dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="20dp"
     android:layout_marginStart="8dp"
+    android:layout_marginEnd="20dp"
     android:baselineAligned="false"
     android:gravity="center_vertical"
     android:orientation="horizontal">
@@ -17,7 +15,6 @@
         android:layout_width="@dimen/toolbar_height"
         android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:gravity="center"
         android:padding="8dp"
         tools:ignore="ContentDescription" />
@@ -28,11 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_weight="1"
         android:ellipsize="marquee"
         android:fontFamily="sans-serif"
-        android:maxLines="1"
+        android:singleLine="true"
         android:textAppearance="?textAppearanceListItem" />
 
     <ImageButton
@@ -40,7 +36,6 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:background="@drawable/applist_gear_background"
         android:padding="6dp"
         app:srcCompat="@drawable/ic_settings_36dp"

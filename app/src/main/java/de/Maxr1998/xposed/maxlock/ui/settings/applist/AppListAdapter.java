@@ -26,7 +26,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -324,9 +323,7 @@ class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppsListViewHol
         ActivityListViewHolder(View itemView) {
             super(itemView);
             switchCompat = itemView.findViewById(R.id.activity_switch);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                switchCompat.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-            }
+            switchCompat.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         }
     }
 

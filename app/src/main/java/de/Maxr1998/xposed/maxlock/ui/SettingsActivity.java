@@ -249,7 +249,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             StatusBarTintApi.sendColorChangeIntent(ContextCompat.getColor(this, R.color.primary_red_dark), -3, Color.BLACK, -3, this);
         }
     }

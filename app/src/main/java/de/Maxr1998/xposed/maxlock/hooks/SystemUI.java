@@ -17,9 +17,9 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -69,6 +69,7 @@ class SystemUI {
                     }
                 });
                 findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "onDraw", Canvas.class, new XC_MethodHook() {
+                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         if (Boolean.TRUE.equals(((View) param.thisObject).getTag())) {
@@ -87,7 +88,7 @@ class SystemUI {
                         if (iModActive(packageName, prefsApps, prefsHistory))
                             return;
                         if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
-                            param.setResult(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? new ColorDrawable(color.getAsColor()) : Bitmap.createBitmap(new int[]{color.getAsColor()}, 1, 1, Bitmap.Config.RGB_565));
+                            param.setResult(new ColorDrawable(color.getAsColor()));
                         }
                     }
                 });

@@ -2,7 +2,6 @@ package de.Maxr1998.xposed.maxlock.preference;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -76,9 +75,7 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
         LinearLayout.LayoutParams textContainer = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         int endMargin = (int) (16 * view.getContext().getResources().getDisplayMetrics().density);
         textContainer.setMargins(0, 0, endMargin, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            textContainer.setMarginEnd(endMargin);
-        }
+        textContainer.setMarginEnd(endMargin);
         layout.getChildAt(0).setLayoutParams(textContainer);
         return view;
     }
