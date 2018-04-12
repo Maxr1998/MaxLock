@@ -44,12 +44,15 @@ public final class NotificationHelper {
     public static final int IMOD_NOTIFICATION_ID = 0x130D;
     public static final int APP_INSTALLED_NOTIFICATION_ID = 0x2EE;
     private static final String IMOD_CHANNEL = "notification_imod";
+    public static final String TASKER_CHANNEL = "notification_tasker";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private static void createNotificationChannels(Context context) {
+    public static void createNotificationChannels(Context context) {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel iMod = new NotificationChannel(IMOD_CHANNEL, context.getString(R.string.pref_screen_delayed_relock), NotificationManager.IMPORTANCE_MIN);
+        NotificationChannel tasker = new NotificationChannel(TASKER_CHANNEL, "Tasker", NotificationManager.IMPORTANCE_MIN);
         nm.createNotificationChannel(iMod);
+        nm.createNotificationChannel(tasker);
     }
 
     public static void postIModNotification(Context context) {

@@ -176,6 +176,33 @@
             </intent-filter>
         </receiver>
 
+        <service
+            android:name=".ui.actions.tasker.TaskerActionService"
+            android:exported="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".ui.actions.tasker.TaskerEventQueryReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".ui.actions.tasker.TaskerEventQueryService"
+            android:exported="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".ui.actions.tasker.TaskerEventConfigActivity"
             android:exported="true"
@@ -210,15 +237,6 @@
                 <action android:name="net.dinglisch.android.tasker.ACTION_EDIT_EVENT" />
             </intent-filter>
         </activity-alias>
-
-        <receiver
-            android:name=".ui.actions.tasker.TaskerEventQueryReceiver"
-            android:exported="true"
-            tools:ignore="ExportedReceiver">
-            <intent-filter>
-                <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
-            </intent-filter>
-        </receiver>
 
         <!-- New app install -->
         <receiver

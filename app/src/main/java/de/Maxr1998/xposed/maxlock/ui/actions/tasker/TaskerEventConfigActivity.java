@@ -27,10 +27,10 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE;
 import static com.twofortyfouram.locale.api.Intent.EXTRA_STRING_BLURB;
-import static de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerEventQueryReceiver.EVENT_TYPE_EXTRA_KEY;
-import static de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerEventQueryReceiver.EVENT_UNLOCK_ATTEMPT;
-import static de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerEventQueryReceiver.EVENT_UNLOCK_FAILED;
-import static de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerEventQueryReceiver.EVENT_UNLOCK_SUCCESS;
+import static de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper.EVENT_TYPE_EXTRA_KEY;
+import static de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper.EVENT_UNLOCK_ATTEMPT;
+import static de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper.EVENT_UNLOCK_FAILED;
+import static de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper.EVENT_UNLOCK_SUCCESS;
 
 public class TaskerEventConfigActivity extends AppCompatActivity {
 

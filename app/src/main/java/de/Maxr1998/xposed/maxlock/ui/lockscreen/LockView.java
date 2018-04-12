@@ -53,7 +53,7 @@ import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
-import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerEventQueryReceiver;
+import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
@@ -284,7 +284,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     public void handleAuthenticationSuccess() {
         getPrefs().edit().putInt(Common.FAILED_ATTEMPTS_COUNTER, 0).apply();
         authenticationSucceededListener.onAuthenticationSucceeded();
-        TaskerEventQueryReceiver.sendRequest(getActivity(), true, mPackageName);
+        TaskerHelper.sendQueryRequest(getActivity(), true, mPackageName);
     }
 
     public void handleFailedAttempt() {
@@ -299,7 +299,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
             getPrefs().edit().putLong(Common.FAILED_ATTEMPTS_TIMER, System.currentTimeMillis()).apply();
             handleTimer();
         }
-        TaskerEventQueryReceiver.sendRequest(getActivity(), false, mPackageName);
+        TaskerHelper.sendQueryRequest(getActivity(), false, mPackageName);
     }
 
     private void handleTimer() {

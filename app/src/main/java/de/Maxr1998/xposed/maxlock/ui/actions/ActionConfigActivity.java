@@ -60,7 +60,8 @@ public class ActionConfigActivity extends AppCompatActivity {
             return;
         }
 
-        if (getCallingActivity().getPackageName().startsWith("net.dinglisch.android.taskerm") || getCallingActivity().getPackageName().startsWith("com.twofortyfouram.locale")) {
+        String action = getIntent().getAction();
+        if (action != null && action.equals("com.twofortyfouram.locale.intent.action.EDIT_SETTING")) {
             taskerMode = true;
         }
 

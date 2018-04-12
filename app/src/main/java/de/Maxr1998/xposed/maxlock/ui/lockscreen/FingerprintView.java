@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerEventQueryReceiver;
+import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
@@ -64,7 +64,7 @@ public final class FingerprintView extends AppCompatImageView {
                 mCancelFingerprint.cancel();
                 setOnClickListener(mNotAllowedToast);
             }
-            TaskerEventQueryReceiver.sendRequest(getContext(), false, mLockView.getPackageName());
+            TaskerHelper.sendQueryRequest(getContext(), false, mLockView.getPackageName());
         }
     };
 
