@@ -236,8 +236,9 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         ObjectAnimator animator = ObjectAnimator.ofFloat(toolbar, "translationY", 0f).setDuration(200);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.start();
-        MaxLockPreferenceFragment settingsFragment = (MaxLockPreferenceFragment) getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT);
-        contentView.postDelayed(settingsFragment::onLockscreenDismissed, 250);
+        Fragment settingsFragment = getSupportFragmentManager().findFragmentByTag(TAG_PREFERENCE_FRAGMENT);
+        if (settingsFragment instanceof MaxLockPreferenceFragment)
+            contentView.postDelayed(((MaxLockPreferenceFragment) settingsFragment)::onLockscreenDismissed, 250);
     }
 
     @Override
