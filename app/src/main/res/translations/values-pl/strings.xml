@@ -3,6 +3,8 @@
     <string name="sb_no_locking_type">Brak wybranego typu blokowania</string>
     <string name="sb_no_locked_apps">Brak wybranych aplikacji do zablokowania</string>
     <string name="sb_action_setup">USTAW</string>
+    <string name="dialog_need_storage_permission_oreo">MaxLock wymaga uprawnienia dostępu do pamięci, aby odczytać tapetę na wersji Android 8.1 Oreo.
+        Przyznaj je w następnym oknie.</string>
     <string name="dialog_maxlock_updated">MaxLock został zaktualizowany!</string>
     <string name="dialog_button_whats_new">Co nowego</string>
     <string name="dialog_button_got_it">Rozumiem</string>
@@ -157,6 +159,7 @@
     <string name="notification_hidden_by_maxlock">Zawartość ukryta przez MaxLock</string>
     <string name="dialog_button_exclude_activities">Aktywności</string>
     <string name="dialog_title_exclude_activities">Wyklucz aktywności do zablokowania</string>
+    <string name="dialog_button_invert_activities">Odwróć</string>
     <!-- UI settings -->
     <string name="pref_category_ui">Ustawienia</string>
     <string name="pref_hide_from_launcher">Ukryj aplikację na liście</string>

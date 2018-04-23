@@ -3,6 +3,7 @@
     <string name="sb_no_locking_type">ロック方法が未設定です</string>
     <string name="sb_no_locked_apps">ロックするアプリが未選択です</string>
     <string name="sb_action_setup">設定する</string>
+    <string name="dialog_need_storage_permission_oreo">Android 8.1 Oreo 以降では、壁紙の画像を読み込むためにストレージへのアクセス許可が必要になります。次のダイアログで許可してください</string>
     <string name="dialog_maxlock_updated">MaxLock が更新されました!</string>
     <string name="dialog_button_whats_new">新着情報</string>
     <string name="dialog_button_got_it">了解</string>
@@ -156,6 +157,7 @@
     <string name="notification_hidden_by_maxlock">通知内容は MaxLock が非表示にしています</string>
     <string name="dialog_button_exclude_activities">アクティビティ</string>
     <string name="dialog_title_exclude_activities">アクティビティ個別のロック設定</string>
+    <string name="dialog_button_invert_activities">反転</string>
     <!-- UI settings -->
     <string name="pref_category_ui">UI 設定</string>
     <string name="pref_hide_from_launcher">アプリアイコンの非表示</string>
