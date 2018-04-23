@@ -11,10 +11,10 @@
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/title_margin_bottom"
         android:layout_marginLeft="@dimen/title_margin_sides"
-        android:layout_marginRight="@dimen/title_margin_sides"
         android:layout_marginTop="36dp"
+        android:layout_marginRight="@dimen/title_margin_sides"
+        android:layout_marginBottom="@dimen/title_margin_bottom"
         android:drawablePadding="20dp"
         android:maxLines="2"
         android:textColor="?android:textColorPrimary"
@@ -33,12 +33,12 @@
     <LinearLayout
         android:id="@+id/input_bar"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="@dimen/input_height"
         android:layout_marginLeft="@dimen/input_margin_sides"
         android:layout_marginRight="@dimen/input_margin_sides">
 
         <Space
-            android:layout_width="64dp"
+            android:layout_width="@dimen/input_height"
             android:layout_height="match_parent" />
 
         <TextView
@@ -57,10 +57,10 @@
 
         <ImageButton
             android:id="@+id/delete_input"
-            android:layout_width="64dp"
+            android:layout_width="@dimen/input_height"
             android:layout_height="match_parent"
             android:background="?highlightDrawable"
             android:contentDescription="@string/content_description_lockscreen_delete"
-            app:srcCompat="@drawable/ic_delete_36dp" />
+            app:srcCompat="@drawable/ic_backspace_24dp" />
     </LinearLayout>
 </LinearLayout>
