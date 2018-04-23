@@ -18,20 +18,13 @@
 package de.Maxr1998.xposed.maxlock.ui.actions.tasker
 
 import android.app.Activity
-import android.app.Notification
 import android.content.Intent
-import android.os.Build
 import com.joaomgcd.common.tasker.IntentServiceParallel
-import de.Maxr1998.xposed.maxlock.util.NotificationHelper
 import net.dinglisch.android.tasker.TaskerPlugin
 
 class TaskerActionService : IntentServiceParallel("ML-TaskerActionService") {
     override fun onHandleIntent(intent: Intent) {
-        val notification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationHelper.createNotificationChannels(this)
-            Notification.Builder(this, NotificationHelper.TASKER_CHANNEL).build()
-        } else Notification.Builder(this).build()
-        startForeground(1, notification)
+        startInForeground()
         handleActionIntent(this, intent)
         TaskerPlugin.Setting.signalFinish(this, intent, Activity.RESULT_OK, null)
     }
