@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jakewharton.hugo'
 
 ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "pt", "ru", "tr", "zh-rCN", "zh-rTW"]
-ext.supportLibraryVersion = "27.1.0"
+ext.supportLibraryVersion = "27.1.1"
 ext.c_languages = ["de", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "pt-PT", "ru", "tr", "zh-CN", "zh-TW"]
 ext.crowdinKey = null
 
@@ -84,7 +84,7 @@ dependencies {
     implementation 'com.crossbowffs.remotepreferences:remotepreferences:0.5'
     implementation 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     implementation 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
-    implementation 'com.google.guava:guava:22.0'
+    implementation 'com.google.guava:guava:23.0'
     implementation 'com.heinrichreimersoftware:material-intro:1.6'
     implementation 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     implementation 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
@@ -93,14 +93,14 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82:sources'
     //-- Android support and Google Services
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation "com.android.support:customtabs:$supportLibraryVersion"
     implementation "com.android.support:design:$supportLibraryVersion"
     implementation "com.android.support:gridlayout-v7:$supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     implementation "com.android.support:support-fragment:$supportLibraryVersion"
-    implementation 'com.google.android.gms:play-services-analytics:12.0.1'
+    implementation 'com.google.android.gms:play-services-analytics:15.0.0'
     // Local files
     implementation(name: 'PatternLock', ext: 'aar')
 }
