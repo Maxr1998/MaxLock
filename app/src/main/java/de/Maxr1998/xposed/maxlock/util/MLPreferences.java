@@ -22,22 +22,22 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 
 import de.Maxr1998.xposed.maxlock.Common;
 
 public class MLPreferences {
 
-    private static WeakReference<SharedPreferences> PREFS = new WeakReference<>(null);
-    private static WeakReference<SharedPreferences> PREFS_APPS = new WeakReference<>(null);
-    private static WeakReference<SharedPreferences> PREFS_HISTORY = new WeakReference<>(null);
-    private static WeakReference<SharedPreferences> PREFS_KEY = new WeakReference<>(null);
-    private static WeakReference<SharedPreferences> PREFS_KEYS_PER_APP = new WeakReference<>(null);
+    private static SoftReference<SharedPreferences> PREFS = new SoftReference<>(null);
+    private static SoftReference<SharedPreferences> PREFS_APPS = new SoftReference<>(null);
+    private static SoftReference<SharedPreferences> PREFS_HISTORY = new SoftReference<>(null);
+    private static SoftReference<SharedPreferences> PREFS_KEY = new SoftReference<>(null);
+    private static SoftReference<SharedPreferences> PREFS_KEYS_PER_APP = new SoftReference<>(null);
 
     @NonNull
     public static SharedPreferences getPreferences(Context context) {
         if (PREFS.get() == null) {
-            PREFS = new WeakReference<>(PreferenceManager.getDefaultSharedPreferences(context));
+            PREFS = new SoftReference<>(PreferenceManager.getDefaultSharedPreferences(context));
         }
         return PREFS.get();
     }
@@ -45,7 +45,7 @@ public class MLPreferences {
     @NonNull
     public static SharedPreferences getPrefsApps(Context context) {
         if (PREFS_APPS.get() == null) {
-            PREFS_APPS = new WeakReference<>(context.getSharedPreferences(Common.PREFS_APPS, Context.MODE_PRIVATE));
+            PREFS_APPS = new SoftReference<>(context.getSharedPreferences(Common.PREFS_APPS, Context.MODE_PRIVATE));
         }
         return PREFS_APPS.get();
     }
@@ -53,7 +53,7 @@ public class MLPreferences {
     @NonNull
     public static SharedPreferences getPrefsHistory(Context context) {
         if (PREFS_HISTORY.get() == null) {
-            PREFS_HISTORY = new WeakReference<>(context.getSharedPreferences(Common.PREFS_HISTORY, Context.MODE_PRIVATE));
+            PREFS_HISTORY = new SoftReference<>(context.getSharedPreferences(Common.PREFS_HISTORY, Context.MODE_PRIVATE));
         }
         return PREFS_HISTORY.get();
     }
@@ -61,7 +61,7 @@ public class MLPreferences {
     @NonNull
     public static SharedPreferences getPreferencesKeys(Context context) {
         if (PREFS_KEY.get() == null) {
-            PREFS_KEY = new WeakReference<>(context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE));
+            PREFS_KEY = new SoftReference<>(context.getSharedPreferences(Common.PREFS_KEY, Context.MODE_PRIVATE));
         }
         return PREFS_KEY.get();
     }
@@ -69,7 +69,7 @@ public class MLPreferences {
     @NonNull
     public static SharedPreferences getPreferencesKeysPerApp(Context context) {
         if (PREFS_KEYS_PER_APP.get() == null) {
-            PREFS_KEYS_PER_APP = new WeakReference<>(context.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE));
+            PREFS_KEYS_PER_APP = new SoftReference<>(context.getSharedPreferences(Common.PREFS_KEYS_PER_APP, Context.MODE_PRIVATE));
         }
         return PREFS_KEYS_PER_APP.get();
     }
