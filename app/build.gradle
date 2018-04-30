@@ -76,8 +76,12 @@ repositories {
 }
 
 dependencies {
-    // Kotlin support
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    // Kotlin extras
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.22.5"
+    implementation "androidx.core:core-ktx:0.3"
+
     // From JCenter or other repositories
     //-- 3rd-party
     implementation 'com.anjlab.android.iab.v3:library:1.0.38@aar'
@@ -101,8 +105,16 @@ dependencies {
     /* includes all other support-v4 libraries */
     implementation "com.android.support:support-fragment:$supportLibraryVersion"
     implementation 'com.google.android.gms:play-services-analytics:15.0.0'
+    //-- Android Architecture components
+    implementation "android.arch.lifecycle:extensions:1.1.1"
     // Local files
     implementation(name: 'PatternLock', ext: 'aar')
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }
 
 task updateTranslations() {

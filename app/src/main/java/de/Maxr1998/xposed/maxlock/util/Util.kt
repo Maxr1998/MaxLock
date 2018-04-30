@@ -18,7 +18,11 @@
 package de.Maxr1998.xposed.maxlock.util
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.annotation.SuppressLint
 import android.app.WallpaperManager
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -26,12 +30,32 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
+import android.support.v4.app.Fragment
 import android.support.v4.content.AsyncTaskLoader
 import android.support.v4.content.ContextCompat.checkSelfPermission
+import android.support.v7.app.AlertDialog
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import de.Maxr1998.xposed.maxlock.Common.SETTINGS_PACKAGE_NAME
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE_APP
 import java.lang.ref.SoftReference
+
+fun ViewGroup.inflate(id: Int, attachToRoot: Boolean = false): View =
+        LayoutInflater.from(context).inflate(id, this, attachToRoot)
+
+fun AlertDialog.showWithLifecycle(fragment: Fragment) {
+    val observer = object : LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        fun paused() {
+            dismiss()
+        }
+    }
+    setOnDismissListener { fragment.lifecycle.removeObserver(observer) }
+    show()
+    fragment.lifecycle.addObserver(observer)
+}
 
 object KUtil {
     @JvmStatic
@@ -52,6 +76,7 @@ class WallpaperDrawableLoader(context: Context) : AsyncTaskLoader<Drawable>(cont
         forceLoad()
     }
 
+    @SuppressLint("MissingPermission")
     override fun loadInBackground(): Drawable? =
             WALLPAPER.get() ?: WallpaperManager.getInstance(context).run {
                 when {

@@ -18,10 +18,10 @@
 package de.Maxr1998.xposed.maxlock.ui.settings.applist;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -29,8 +29,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -66,16 +64,15 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
-import static de.Maxr1998.xposed.maxlock.ui.settings.applist.SetupAppListLoader.LOAD_ALL;
-
-public class AppListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<ApplicationInfo>> {
+public class AppListFragment extends Fragment {
 
     private static final int BACKUP_STORAGE_PERMISSION_REQUEST_CODE = 101;
     private static final int RESTORE_STORAGE_PERMISSION_REQUEST_CODE = 102;
     private ViewGroup rootView;
     private SharedPreferences prefs;
-    private AppListAdapter mAdapter;
+    private AppListAdapter adapter;
     private ArrayAdapter<String> restoreAdapter;
+    private AppListModel appListModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,43 +80,11 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         setRetainInstance(true);
         setHasOptionsMenu(true);
         prefs = MLPreferences.getPreferences(getActivity());
-        mAdapter = new AppListAdapter(this);
+        adapter = new AppListAdapter(this);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        startLoading();
-    }
-
-    private void startLoading() {
-        rootView.findViewById(android.R.id.progress).setVisibility(View.VISIBLE);
-        getLoaderManager().initLoader(Common.APPLIST_LOADER, null, this);
-    }
-
-    @Override
-    public Loader<List<ApplicationInfo>> onCreateLoader(int id, Bundle args) {
-        return new SetupAppListLoader(getActivity());
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<ApplicationInfo>> loader) {
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<ApplicationInfo>> loader, List<ApplicationInfo> data) {
-        if (data != null) {
-            ListHolder.getInstance().setItems(data);
-        }
-        String pkg = getActivity().getIntent().getStringExtra("pkg");
-        if (pkg == null)
-            pkg = "";
-        mAdapter.getFilter().filter(pkg);
-        rootView.findViewById(android.R.id.progress).setVisibility(View.GONE);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle(getString(R.string.pref_screen_apps));
         //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -128,8 +93,22 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         FastScrollRecyclerView recyclerView = rootView.findViewById(R.id.app_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(adapter);
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivity() != null) {
+            appListModel = ViewModelProviders.of(getActivity()).get(AppListModel.class);
+            appListModel.getAppsLoadedListener().observe(this, b -> {
+                if (b != null && b) {
+                    rootView.findViewById(android.R.id.progress).setVisibility(View.GONE);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     @Override
@@ -148,7 +127,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
             @Override
             public boolean onQueryTextChange(String s) {
-                mAdapter.getFilter().filter(s);
+                adapter.getFilter().filter(s);
                 return true;
             }
         });
@@ -157,7 +136,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
             return false;
         });
         filterIcon(menu.findItem(R.id.toolbar_filter_activated));
-        menu.findItem(R.id.toolbar_load_all).setTitle(LOAD_ALL ? R.string.menu_only_openable : R.string.menu_all_apps);
+        menu.findItem(R.id.toolbar_load_all).setTitle(appListModel.getLoadAll() ? R.string.menu_only_openable : R.string.menu_all_apps);
     }
 
     @SuppressLint("ApplySharedPref")
@@ -180,7 +159,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                         break;
                 }
                 filterIcon(item);
-                mAdapter.getFilter().filter("");
+                adapter.getFilter().filter("");
                 return true;
             case R.id.toolbar_backup_list:
                 if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
@@ -202,14 +181,14 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 ((SettingsActivity) getActivity()).restart();
                 return true;
             case R.id.toolbar_load_all:
-                LOAD_ALL = !LOAD_ALL;
-                item.setTitle(LOAD_ALL ? R.string.menu_only_openable : R.string.menu_all_apps);
+                appListModel.setLoadAll(!appListModel.getLoadAll());
+                item.setTitle(appListModel.getLoadAll() ? R.string.menu_only_openable : R.string.menu_all_apps);
                 // Clear up old data
-                ListHolder.getInstance().wipe();
-                mAdapter.notifyDataSetChanged();
-                // Stop and restart loader
-                getLoaderManager().destroyLoader(0);
-                startLoading();
+                appListModel.wipeLists();
+                adapter.notifyDataSetChanged();
+                // Load new data with animation
+                rootView.findViewById(android.R.id.progress).setVisibility(View.VISIBLE);
+                appListModel.loadData();
                 return true;
             default:
                 return false;
@@ -320,7 +299,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (String.valueOf(requestCode).startsWith(String.valueOf(Util.PATTERN_CODE_APP))) {
             if (resultCode == LockPatternActivity.RESULT_OK) {
-                String app = ListHolder.getInstance().get(Integer.parseInt(String.valueOf(requestCode).substring(1))).packageName;
+                String app = appListModel.getAppList().get(Integer.parseInt(String.valueOf(requestCode).substring(1))).getPackageName();
                 Util.receiveAndSetPattern(getActivity(), data.getCharArrayExtra(LockPatternActivity.EXTRA_PATTERN), app);
             }
         } else super.onActivityResult(requestCode, resultCode, data);
