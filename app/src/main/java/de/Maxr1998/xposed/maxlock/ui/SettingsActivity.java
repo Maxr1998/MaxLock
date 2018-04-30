@@ -21,13 +21,13 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -36,9 +36,7 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -61,7 +59,6 @@ import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity;
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
-import de.Maxr1998.xposed.maxlock.ui.settings.Startup;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
@@ -69,7 +66,7 @@ import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static de.Maxr1998.xposed.maxlock.util.Util.LOG_TAG_ADMIN;
 
-public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener, LoaderManager.LoaderCallbacks<Void> {
+public class SettingsActivity extends AppCompatActivity implements AuthenticationSucceededListener {
 
     public static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
@@ -80,6 +77,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     }
 
     public ComponentName deviceAdmin;
+    private SettingsViewModel settingsViewModel;
     private Toolbar toolbar;
     private ViewGroup contentView;
     private LockView lockscreen;
@@ -112,6 +110,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         if (MLPreferences.getPreferences(this).getInt(FirstStartActivity.FIRST_START_LAST_VERSION_KEY, 0) != FirstStartActivity.FIRST_START_LATEST_VERSION) {
             startActivity(new Intent(this, FirstStartActivity.class));
         }
+
+        settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
 
         devicePolicyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(this, UninstallProtectionReceiver.class);
@@ -164,21 +164,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         if (cctPackageName != null) {
             CustomTabsClient.bindCustomTabsService(this, cctPackageName, mConnection);
         } else mConnection = null;
-        getSupportLoaderManager().initLoader(Common.STARTUP_LOADER, null, this);
-    }
-
-    @NonNull
-    @Override
-    public Loader<Void> onCreateLoader(int id, Bundle args) {
-        return new Startup(this);
-    }
-
-    @Override
-    public void onLoadFinished(@NonNull Loader loader, Void data) {
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader loader) {
     }
 
     @SuppressLint("WorldReadableFiles")
