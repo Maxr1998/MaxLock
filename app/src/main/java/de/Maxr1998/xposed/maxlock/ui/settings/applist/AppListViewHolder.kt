@@ -17,7 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings.applist
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.widget.RecyclerView
@@ -33,7 +32,6 @@ import android.widget.ToggleButton
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 
-@SuppressLint("ApplySharedPref")
 class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     var appIcon: ImageView = itemView.findViewById(R.id.icon)
@@ -58,11 +56,11 @@ class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         toggle.setOnClickListener { v ->
             val value = (v as ToggleButton).isChecked
             if (value) {
-                prefsApps.edit().putBoolean(packageName, true).commit()
+                prefsApps.edit().putBoolean(packageName, true).apply()
                 options.startAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings))
                 options.visibility = View.VISIBLE
             } else {
-                prefsApps.edit().remove(packageName).commit()
+                prefsApps.edit().remove(packageName).apply()
                 val out = AnimationUtils.loadAnimation(v.getContext(), R.anim.applist_settings_out) as AnimationSet
                 out.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {}

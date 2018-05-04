@@ -17,7 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings.applist
 
-import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.DialogInterface
@@ -59,7 +58,6 @@ class AppListAdapter(val fragment: Fragment) : RecyclerView.Adapter<AppListViewH
         return AppListViewHolder(v)
     }
 
-    @SuppressLint("ApplySharedPref")
     override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
         val appInfo = appListModel.appList[position]
         holder.bind(appInfo)
@@ -67,7 +65,7 @@ class AppListAdapter(val fragment: Fragment) : RecyclerView.Adapter<AppListViewH
         async(UI) {
             val iconRef = holder.appIcon.asReference()
             val drawable = async { appInfo.loadIcon(appListModel.iconCache) }
-            iconRef.invoke().setImageDrawable(drawable.await())
+            iconRef().setImageDrawable(drawable.await())
         }
         holder.options.setOnClickListener {
             var items = it.resources.getTextArray(R.array.dialog_multi_select_items_options)
@@ -93,7 +91,7 @@ class AppListAdapter(val fragment: Fragment) : RecyclerView.Adapter<AppListViewH
                             3 -> prefKey = appInfo.packageName + Common.APP_HIDE_NOTIFICATION_CONTENT_PREFERENCE
                         }
                         prefKey?.let {
-                            prefsApps.edit(true) {
+                            prefsApps.edit {
                                 if (isChecked) putBoolean(it, true)
                                 else remove(it)
                             }

@@ -26,18 +26,16 @@ import org.json.JSONObject
 
 object AppLockHelpers {
 
-    private val PROCESS_HISTORY_ARRAY = "procs"
-    private val PACKAGE_HISTORY_ARRAY = "pkgs"
-    private val UNLOCK_ID = -0x3A8
-    private val IMOD_APPS = "iModPerApp"
-    private val CLOSE_APPS = "close"
-    private val IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer"
-    @JvmField
-    val IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off"
-    @JvmField
-    val IMOD_RESET_ON_HOMESCREEN = "imod_reset_on_homescreen"
-    private val IMOD_DELAY_APP = "delay_inputperapp"
-    private val IMOD_DELAY_GLOBAL = "delay_inputgeneral"
+    private const val PROCESS_HISTORY_ARRAY = "procs"
+    private const val PACKAGE_HISTORY_ARRAY = "pkgs"
+    private const val UNLOCK_ID = -0x3A8
+    private const val IMOD_APPS = "iModPerApp"
+    private const val CLOSE_APPS = "close"
+    private const val IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer"
+    const val IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off"
+    const val IMOD_RESET_ON_HOMESCREEN = "imod_reset_on_homescreen"
+    private const val IMOD_DELAY_APP = "delay_inputperapp"
+    private const val IMOD_DELAY_GLOBAL = "delay_inputgeneral"
 
     @JvmStatic
     @Throws(Throwable::class)

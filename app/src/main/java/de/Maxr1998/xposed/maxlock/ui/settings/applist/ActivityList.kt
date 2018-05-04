@@ -45,7 +45,7 @@ fun showActivities(fragment: Ref<Fragment>, context: Ref<Context>, packageName: 
         val deferredActivities = async {
             ArrayList<String>().apply {
                 try {
-                    val activities = context.invoke().packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES).activities
+                    val activities = context().packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES).activities
                     for (info in activities) {
                         add(info.name)
                     }
@@ -56,7 +56,7 @@ fun showActivities(fragment: Ref<Fragment>, context: Ref<Context>, packageName: 
             }
         }
         val activities = deferredActivities.await()
-        val ctx = context.invoke()
+        val ctx = context()
         val recyclerView = RecyclerView(ctx)
         val adapter = ActivityListAdapter(ctx, activities)
         recyclerView.apply {
@@ -72,7 +72,7 @@ fun showActivities(fragment: Ref<Fragment>, context: Ref<Context>, packageName: 
                     setOnShowListener { _ ->
                         getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener { _ -> adapter.invert() }
                     }
-                    showWithLifecycle(fragment.invoke())
+                    showWithLifecycle(fragment())
                 }
         null
     }

@@ -144,6 +144,7 @@ public class AppListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                adapter.getFilter().filter("");
                 return Util.hideKeyboardFromWindow(getActivity(), getView());
             case R.id.toolbar_filter_activated:
                 String appListFilter = prefs.getString("app_list_filter", "");
