@@ -17,12 +17,10 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings.applist
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -41,17 +39,19 @@ import de.Maxr1998.xposed.maxlock.util.KUtil.getPatternCode
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
 import de.Maxr1998.xposed.maxlock.util.asReference
-import de.Maxr1998.xposed.maxlock.util.showWithLifecycle
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import java.util.*
 
-class AppListAdapter(val fragment: Fragment) : RecyclerView.Adapter<AppListViewHolder>(), Filterable, FastScrollRecyclerView.SectionedAdapter {
-    val appListModel: AppListModel by lazy { ViewModelProviders.of(fragment.activity!!).get(AppListModel::class.java) }
-    private val prefs = MLPreferences.getPreferences(fragment.activity)
-    private val prefsApps = MLPreferences.getPrefsApps(fragment.activity)
-    private var prefsKeysPerApp = MLPreferences.getPreferencesKeysPerApp(fragment.activity)
+class AppListAdapter(val appListModel: AppListModel, context: Context) : RecyclerView.Adapter<AppListViewHolder>(), Filterable, FastScrollRecyclerView.SectionedAdapter {
+    private val prefs = MLPreferences.getPreferences(context)
+    private val prefsApps = MLPreferences.getPrefsApps(context)
+    private var prefsKeysPerApp = MLPreferences.getPreferencesKeysPerApp(context)
     private val filter = AppFilter(this, prefs, prefsApps)
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppListViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.app_list_item, parent, false)
@@ -61,7 +61,6 @@ class AppListAdapter(val fragment: Fragment) : RecyclerView.Adapter<AppListViewH
     override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
         val appInfo = appListModel.appList[position]
         holder.bind(appInfo)
-        holder.appIcon.setImageDrawable(null)
         async(UI) {
             val iconRef = holder.appIcon.asReference()
             val drawable = async { appInfo.loadIcon(appListModel.iconCache) }
@@ -100,15 +99,19 @@ class AppListAdapter(val fragment: Fragment) : RecyclerView.Adapter<AppListViewH
                     .setPositiveButton(android.R.string.ok, null)
             if (MLImplementation.getImplementation(MLPreferences.getPreferences(it.context)) == MLImplementation.DEFAULT)
                 optionsDialog.setNeutralButton(R.string.dialog_button_exclude_activities) { _, _ ->
-                    showActivities(fragment.asReference(), it.context.asReference(), appInfo.packageName)
+                    showActivities(appListModel, it.context.asReference(), appInfo.packageName)
                 }
-            optionsDialog.create().showWithLifecycle(fragment)
+            optionsDialog.create().let { appListModel.dialogDispatcher.value = it }
         }
     }
 
-    override fun getItemCount(): Int {
-        return appListModel.appList.size
+    override fun onViewRecycled(holder: AppListViewHolder) {
+        holder.appIcon.setImageDrawable(null)
     }
+
+    override fun getItemId(position: Int) = appListModel.appList[position].id.toLong()
+
+    override fun getItemCount() = appListModel.appList.size()
 
     override fun getFilter(): Filter = filter
 
@@ -119,7 +122,7 @@ class AppListAdapter(val fragment: Fragment) : RecyclerView.Adapter<AppListViewH
             } else c.toString()
         }
         return appListModel.appList.run {
-            val pos = if (position < size) position else if (size > 0) size - 1 else 0
+            val pos = if (position < size()) position else if (size() > 0) size() - 1 else 0
             transformLetter(get(pos).name[0])
         }
     }
@@ -145,16 +148,20 @@ class AppListAdapter(val fragment: Fragment) : RecyclerView.Adapter<AppListViewH
                             2 -> extras.putString(Common.LOCKING_TYPE, Common.LOCKING_TYPE_KNOCK_CODE)
                             3 -> {
                                 val intent = Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, context, LockPatternActivity::class.java)
-                                fragment.startActivityForResult(intent, getPatternCode(adapterPosition))
+                                appListModel.fragmentFunctionDispatcher.value = {
+                                    startActivityForResult(intent, getPatternCode(adapterPosition))
+                                }
                                 return@setItems
                             }
                         }
                         extras.putString(Common.INTENT_EXTRAS_CUSTOM_APP, packageName)
                         LockSetupFragment().let {
                             it.arguments = extras
-                            MaxLockPreferenceFragment.launchFragment(fragment, it, false)
+                            appListModel.fragmentFunctionDispatcher.value = {
+                                MaxLockPreferenceFragment.launchFragment(this, it, false)
+                            }
                         }
-                    }.create().showWithLifecycle(fragment)
+                    }.create().let { appListModel.dialogDispatcher.value = it }
         } else {
             prefsKeysPerApp.edit {
                 remove(packageName)

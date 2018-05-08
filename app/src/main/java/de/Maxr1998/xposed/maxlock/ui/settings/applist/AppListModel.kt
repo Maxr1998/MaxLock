@@ -27,16 +27,24 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
+import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
+import android.support.v7.util.SortedList
 import android.util.LruCache
 import de.Maxr1998.xposed.maxlock.BuildConfig
 import de.Maxr1998.xposed.maxlock.util.KUtil.getLauncherPackages
 import java.text.Collator
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AppListModel(application: Application) : AndroidViewModel(application) {
-    val appList = ArrayList<AppInfo>()
+    val adapter = AppListAdapter(this, application)
+    private val appListCallback = AppListCallback(adapter)
+    val appList = SortedList(AppInfo::class.java, appListCallback)
     val appListBackup = ArrayList<AppInfo>()
-    val appsLoadedListener = MutableLiveData<Boolean>()
+    val appsLoadedListener = MutableLiveData<Any?>()
+    val dialogDispatcher = MutableLiveData<AlertDialog?>()
+    val fragmentFunctionDispatcher = MutableLiveData<(Fragment.() -> Any)?>()
     var loadAll = false
     val iconCache = LruCache<String, Drawable>(
             if ((application.getSystemService(ACTIVITY_SERVICE) as ActivityManager).isLowRamDevice) 80 else 300
@@ -51,9 +59,6 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
     fun loadData() {
         object : AsyncTask<Any, Int, List<AppInfo>?>() {
             override fun doInBackground(vararg params: Any?): List<AppInfo>? {
-                if (appList.isNotEmpty() || appListBackup.isNotEmpty()) {
-                    return null
-                }
                 val pm = getApplication<Application>().packageManager
                 launcherPackages = getLauncherPackages(pm)
                 val allApps = pm.getInstalledApplications(0)
@@ -61,7 +66,7 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
                 for (i in allApps.indices) {
                     val info = allApps[i]
                     if (includeApp(pm, info.packageName)) {
-                        result.add(AppInfo(info, pm))
+                        result.add(AppInfo(i, info, pm))
                     }
                 }
                 Collections.sort(result, object : Comparator<AppInfo> {
@@ -76,17 +81,13 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
 
             override fun onPostExecute(result: List<AppInfo>?) {
                 result?.let {
-                    appList.addAll(it)
+                    appListBackup.clear()
                     appListBackup.addAll(it)
-                    appsLoadedListener.value = true
+                    appsLoadedListener.value = null
+                    appList.replaceAll(it)
                 }
             }
         }.execute()
-    }
-
-    fun wipeLists() {
-        appList.clear()
-        appListBackup.clear()
     }
 
     private fun includeApp(pm: PackageManager, packageName: String): Boolean {
@@ -99,7 +100,7 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    data class AppInfo(private val appInfo: ApplicationInfo, private val pm: PackageManager) {
+    data class AppInfo(val id: Int, private val appInfo: ApplicationInfo, private val pm: PackageManager) {
         val packageName: String = appInfo.packageName
         val name: String by lazy { appInfo.loadLabel(pm).toString() }
 

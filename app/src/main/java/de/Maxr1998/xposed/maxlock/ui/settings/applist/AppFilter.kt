@@ -80,10 +80,8 @@ class AppFilter(private val adapter: AppListAdapter, private val prefs: SharedPr
             val resultList = if (results != null) {
                 results.values as ArrayList<AppListModel.AppInfo>
             } else adapter.appListModel.appListBackup
-            if (size != resultList.size) {
-                clear()
-                addAll(resultList)
-                adapter.notifyDataSetChanged()
+            if (size() != resultList.size) {
+                replaceAll(resultList)
             }
         }
     }

@@ -22,7 +22,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -35,12 +34,11 @@ import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Ref
 import de.Maxr1998.xposed.maxlock.util.inflate
-import de.Maxr1998.xposed.maxlock.util.showWithLifecycle
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import java.util.*
 
-fun showActivities(fragment: Ref<Fragment>, context: Ref<Context>, packageName: String) {
+fun showActivities(appListModel: AppListModel, context: Ref<Context>, packageName: String) {
     async(UI) {
         val deferredActivities = async {
             ArrayList<String>().apply {
@@ -64,7 +62,7 @@ fun showActivities(fragment: Ref<Fragment>, context: Ref<Context>, packageName: 
             layoutManager = LinearLayoutManager(ctx)
             itemAnimator = DefaultItemAnimator()
         }
-        AlertDialog.Builder(ctx)
+        appListModel.dialogDispatcher.value = AlertDialog.Builder(ctx)
                 .setTitle(R.string.dialog_title_exclude_activities)
                 .setView(recyclerView)
                 .setPositiveButton(android.R.string.ok, null)
@@ -72,7 +70,6 @@ fun showActivities(fragment: Ref<Fragment>, context: Ref<Context>, packageName: 
                     setOnShowListener { _ ->
                         getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener { _ -> adapter.invert() }
                     }
-                    showWithLifecycle(fragment())
                 }
         null
     }

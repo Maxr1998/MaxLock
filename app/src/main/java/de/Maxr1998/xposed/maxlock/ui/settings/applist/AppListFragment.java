@@ -26,7 +26,6 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -63,6 +62,7 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
+import de.Maxr1998.xposed.maxlock.util.UtilKt;
 
 public class AppListFragment extends Fragment {
 
@@ -70,9 +70,9 @@ public class AppListFragment extends Fragment {
     private static final int RESTORE_STORAGE_PERMISSION_REQUEST_CODE = 102;
     private ViewGroup rootView;
     private SharedPreferences prefs;
-    private AppListAdapter adapter;
     private ArrayAdapter<String> restoreAdapter;
     private AppListModel appListModel;
+    private FastScrollRecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,28 @@ public class AppListFragment extends Fragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
         prefs = MLPreferences.getPreferences(getActivity());
-        adapter = new AppListAdapter(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() != null) {
+            appListModel = ViewModelProviders.of(getActivity()).get(AppListModel.class);
+            appListModel.getAppsLoadedListener().observe(this, o ->
+                    rootView.findViewById(android.R.id.progress).setVisibility(View.GONE));
+            appListModel.getDialogDispatcher().observe(this, dialog -> {
+                if (dialog != null) {
+                    UtilKt.showWithLifecycle(dialog, this);
+                    appListModel.getDialogDispatcher().setValue(null);
+                }
+            });
+            appListModel.getFragmentFunctionDispatcher().observe(this, f -> {
+                if (f != null) {
+                    f.invoke(this);
+                    appListModel.getFragmentFunctionDispatcher().setValue(null);
+                }
+            });
+        }
     }
 
     @Override
@@ -90,25 +111,11 @@ public class AppListFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         // Setup layout
-        FastScrollRecyclerView recyclerView = rootView.findViewById(R.id.app_list);
+        recyclerView = rootView.findViewById(R.id.app_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(appListModel.getAdapter());
         return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() != null) {
-            appListModel = ViewModelProviders.of(getActivity()).get(AppListModel.class);
-            appListModel.getAppsLoadedListener().observe(this, b -> {
-                if (b != null && b) {
-                    rootView.findViewById(android.R.id.progress).setVisibility(View.GONE);
-                    adapter.notifyDataSetChanged();
-                }
-            });
-        }
     }
 
     @Override
@@ -127,7 +134,7 @@ public class AppListFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                adapter.getFilter().filter(s);
+                appListModel.getAdapter().getFilter().filter(s);
                 return true;
             }
         });
@@ -144,7 +151,7 @@ public class AppListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                adapter.getFilter().filter("");
+                appListModel.getAdapter().getFilter().filter("");
                 return Util.hideKeyboardFromWindow(getActivity(), getView());
             case R.id.toolbar_filter_activated:
                 String appListFilter = prefs.getString("app_list_filter", "");
@@ -160,7 +167,7 @@ public class AppListFragment extends Fragment {
                         break;
                 }
                 filterIcon(item);
-                adapter.getFilter().filter("");
+                appListModel.getAdapter().getFilter().filter("");
                 return true;
             case R.id.toolbar_backup_list:
                 if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
@@ -184,9 +191,6 @@ public class AppListFragment extends Fragment {
             case R.id.toolbar_load_all:
                 appListModel.setLoadAll(!appListModel.getLoadAll());
                 item.setTitle(appListModel.getLoadAll() ? R.string.menu_only_openable : R.string.menu_all_apps);
-                // Clear up old data
-                appListModel.wipeLists();
-                adapter.notifyDataSetChanged();
                 // Load new data with animation
                 rootView.findViewById(android.R.id.progress).setVisibility(View.VISIBLE);
                 appListModel.loadData();
