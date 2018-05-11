@@ -88,7 +88,7 @@ dependencies {
     implementation 'com.crossbowffs.remotepreferences:remotepreferences:0.5'
     implementation 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     implementation 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
-    implementation 'com.google.guava:guava:23.0'
+    implementation 'com.google.guava:guava:24.1-jre'
     implementation 'com.heinrichreimersoftware:material-intro:1.6'
     implementation 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
     implementation 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
@@ -104,7 +104,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     /* includes all other support-v4 libraries */
     implementation "com.android.support:support-fragment:$supportLibraryVersion"
-    implementation 'com.google.android.gms:play-services-analytics:15.0.0'
+    implementation 'com.google.android.gms:play-services-analytics:15.0.2'
     //-- Android Architecture components
     implementation "android.arch.lifecycle:extensions:1.1.1"
     // Local files
