@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true">
 
-    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/app_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/fragment_horizontal_padding"
         android:layout_marginRight="@dimen/fragment_horizontal_padding"
         android:clipToPadding="false"
-        android:paddingBottom="8dp"
         android:paddingTop="8dp"
-        custom:fastScrollPopupBgColor="?colorAccent"
-        custom:fastScrollThumbColor="?colorAccent" />
+        android:paddingBottom="8dp"
+        app:fastScrollEnabled="true"
+        app:fastScrollHorizontalThumbDrawable="@drawable/thumb"
+        app:fastScrollHorizontalTrackDrawable="@drawable/track"
+        app:fastScrollVerticalThumbDrawable="@drawable/thumb"
+        app:fastScrollVerticalTrackDrawable="@drawable/track"
+        tools:listitem="@layout/app_list_item" />
 
     <ProgressBar
         android:id="@android:id/progress"

@@ -104,11 +104,6 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
         val packageName: String = appInfo.packageName
         val name: String by lazy { appInfo.loadLabel(pm).toString() }
 
-        fun loadIcon(cache: LruCache<String, Drawable>): Drawable {
-            if (cache[packageName] == null) {
-                cache.put(packageName, appInfo.loadIcon(pm))
-            }
-            return cache[packageName]
-        }
+        fun loadIcon(): Drawable = appInfo.loadIcon(pm)
     }
 }

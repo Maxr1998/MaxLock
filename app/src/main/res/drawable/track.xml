@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <item>
+        <aapt:attr name="android:drawable">
+            <vector android:width="24dp" android:height="1px" android:viewportWidth="3.0" android:viewportHeight="1.0">
+                <path android:fillColor="?colorControlHighlight" android:pathData="M2,0h1v1h-1z" />
+            </vector>
+        </aapt:attr>
+    </item>
+</selector>

@@ -17,7 +17,8 @@
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:padding="8dp"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/title"
@@ -29,7 +30,8 @@
         android:ellipsize="marquee"
         android:fontFamily="sans-serif"
         android:singleLine="true"
-        android:textAppearance="?textAppearanceListItem" />
+        android:textAppearance="?textAppearanceListItem"
+        tools:text="@tools:sample/first_names" />
 
     <ImageButton
         android:id="@+id/edit"

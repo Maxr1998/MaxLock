@@ -32,6 +32,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,7 +44,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.haibison.android.lockpattern.LockPatternActivity;
-import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import org.apache.commons.io.FileUtils;
 
@@ -72,12 +72,10 @@ public class AppListFragment extends Fragment {
     private SharedPreferences prefs;
     private ArrayAdapter<String> restoreAdapter;
     private AppListModel appListModel;
-    private FastScrollRecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
         setHasOptionsMenu(true);
         prefs = MLPreferences.getPreferences(getActivity());
     }
@@ -111,7 +109,7 @@ public class AppListFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_appslist, container, false);
         // Setup layout
-        recyclerView = rootView.findViewById(R.id.app_list);
+        RecyclerView recyclerView = rootView.findViewById(R.id.app_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(appListModel.getAdapter());

@@ -19,7 +19,9 @@ package de.Maxr1998.xposed.maxlock.ui.settings.applist
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
+import android.util.LruCache
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
@@ -31,6 +33,9 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
+import de.Maxr1998.xposed.maxlock.util.asReference
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 
 class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -84,8 +89,17 @@ class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun bind(app: AppListModel.AppInfo) {
+    fun bind(app: AppListModel.AppInfo, cache: LruCache<String, Drawable>) {
         packageName = app.packageName
+        appIcon.apply {
+            if (cache[packageName] != null) {
+                setImageDrawable(cache[packageName])
+            } else async(UI) {
+                val iconRef = appIcon.asReference()
+                val drawable = async { app.loadIcon() }
+                iconRef().setImageDrawable(drawable.await().also { cache.put(packageName, it) })
+            }
+        }
         appIcon.contentDescription = appIcon.resources.getString(R.string.content_description_applist_icon, app.name)
         appName.text = app.name
         val locked = prefsApps.getBoolean(packageName, false)

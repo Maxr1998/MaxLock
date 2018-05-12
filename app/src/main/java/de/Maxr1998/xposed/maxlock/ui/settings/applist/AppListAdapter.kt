@@ -23,13 +23,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.core.content.edit
 import com.haibison.android.lockpattern.LockPatternActivity
-import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.MLImplementation
 import de.Maxr1998.xposed.maxlock.R
@@ -39,11 +39,9 @@ import de.Maxr1998.xposed.maxlock.util.KUtil.getPatternCode
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
 import de.Maxr1998.xposed.maxlock.util.asReference
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
 import java.util.*
 
-class AppListAdapter(val appListModel: AppListModel, context: Context) : RecyclerView.Adapter<AppListViewHolder>(), Filterable, FastScrollRecyclerView.SectionedAdapter {
+class AppListAdapter(val appListModel: AppListModel, context: Context) : RecyclerView.Adapter<AppListViewHolder>(), Filterable {
     private val prefs = MLPreferences.getPreferences(context)
     private val prefsApps = MLPreferences.getPrefsApps(context)
     private var prefsKeysPerApp = MLPreferences.getPreferencesKeysPerApp(context)
@@ -53,26 +51,24 @@ class AppListAdapter(val appListModel: AppListModel, context: Context) : Recycle
         setHasStableIds(true)
     }
 
+    private var count = 0 // TODO REMOVE
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppListViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.app_list_item, parent, false)
+        Log.d("TAG", "Created ViewHolder ${count++}") // TODO: THIS HAPPENS TOO OFTEN IN LANDSCAPE
         return AppListViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
         val appInfo = appListModel.appList[position]
-        holder.bind(appInfo)
-        async(UI) {
-            val iconRef = holder.appIcon.asReference()
-            val drawable = async { appInfo.loadIcon(appListModel.iconCache) }
-            iconRef().setImageDrawable(drawable.await())
-        }
+        holder.bind(appInfo, appListModel.iconCache)
         holder.options.setOnClickListener {
             var items = it.resources.getTextArray(R.array.dialog_multi_select_items_options)
             if (MLImplementation.getImplementation(prefs) != MLImplementation.DEFAULT)
                 items = Arrays.copyOf<CharSequence>(items, items.size - 2)
             val optionsDialog = AlertDialog.Builder(it.context)
                     .setTitle(it.resources.getString(R.string.dialog_title_options))
-                    .setIcon(appInfo.loadIcon(appListModel.iconCache))
+                    .setIcon(appListModel.iconCache[appInfo.packageName] ?: appInfo.loadIcon())
                     .setMultiChoiceItems(items, booleanArrayOf(
                             prefsKeysPerApp.contains(appInfo.packageName),
                             prefsApps.getBoolean(appInfo.packageName + Common.APP_FAKE_CRASH_PREFERENCE, false),
@@ -115,7 +111,8 @@ class AppListAdapter(val appListModel: AppListModel, context: Context) : Recycle
 
     override fun getFilter(): Filter = filter
 
-    override fun getSectionName(position: Int): String {
+    @Suppress("unused")
+    fun getSectionName(position: Int): String {
         fun transformLetter(c: Char): String {
             return if (c.isDigit()) {
                 "#"
