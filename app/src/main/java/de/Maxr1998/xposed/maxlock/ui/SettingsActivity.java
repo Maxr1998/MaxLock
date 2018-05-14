@@ -129,6 +129,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             UNLOCKED = false;
             if (!MLPreferences.getPreferences(this).getString(Common.LOCKING_TYPE, "").isEmpty()) {
                 contentView.addView(lockscreen = new LockView(this, null), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                lockscreen.forceFocus();
 
                 // → Hide Action bar
                 toolbar.setTranslationY(-getResources().getDimensionPixelSize(R.dimen.toolbar_height));

@@ -33,7 +33,6 @@ import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
-import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 
@@ -46,7 +45,6 @@ public final class FingerprintView extends AppCompatImageView {
     private final FingerprintManagerCompat.AuthenticationCallback mFPAuthenticationCallback = new FingerprintManagerCompat.AuthenticationCallback() {
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-            Util.hideKeyboardFromWindow(mLockView.getActivity(), FingerprintView.this);
             if (mLockView.allowFingerprint()) {
                 handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation);
                 mLockView.handleAuthenticationSuccess();

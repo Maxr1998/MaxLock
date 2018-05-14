@@ -226,6 +226,10 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         }
     }
 
+    public void forceFocus() {
+        mInputTextView.requestFocus();
+    }
+
     /**
      * Must be used as ContextThemeWrapper context for this LockView
      */
@@ -283,6 +287,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
     public void handleAuthenticationSuccess() {
         getPrefs().edit().putInt(Common.FAILED_ATTEMPTS_COUNTER, 0).apply();
+        Util.hideKeyboardFromWindow(getActivity(), this);
         authenticationSucceededListener.onAuthenticationSucceeded();
         TaskerHelper.sendQueryRequest(getActivity(), true, mPackageName);
     }
