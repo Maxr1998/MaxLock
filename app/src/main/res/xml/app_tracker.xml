@@ -5,8 +5,11 @@
     <bool name="ga_autoActivityTracking">true</bool>
     <bool name="ga_reportUncaughtExceptions">true</bool>
     <integer name="ga_sessionTimeout">300</integer>
+    <screenName name="de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity">First start</screenName>
     <screenName name="de.Maxr1998.xposed.maxlock.ui.SettingsActivity">Settings</screenName>
     <screenName name="de.Maxr1998.xposed.maxlock.ui.LockActivity">Lock screen</screenName>
-    <sceenName name="de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity">First start
-    </sceenName>
+    <screenName name="de.Maxr1998.xposed.maxlock.ui.settings.DonateActivity">Donate screen</screenName>
+    <screenName name="de.Maxr1998.xposed.maxlock.ui.actions.ActionActivity">Tasker</screenName>
+    <screenName name="de.Maxr1998.xposed.maxlock.ui.actions.ActionConfigActivity">Tasker</screenName>
+    <screenName name="com.haibison.android.lockpattern.LockPatternActivity">Others</screenName>
 </resources>

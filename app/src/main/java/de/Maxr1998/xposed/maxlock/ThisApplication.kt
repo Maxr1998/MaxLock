@@ -30,7 +30,7 @@ class ThisApplication : Application() {
         super.onCreate()
         if (!Util.isDevMode() || !File(Common.EXTERNAL_FILES_DIR, "disable-ga").exists()) {
             tracker = GoogleAnalytics.getInstance(this).newTracker(R.xml.app_tracker)
-            tracker.enableAdvertisingIdCollection(true)
+            tracker.setAnonymizeIp(true)
         }
     }
 }
