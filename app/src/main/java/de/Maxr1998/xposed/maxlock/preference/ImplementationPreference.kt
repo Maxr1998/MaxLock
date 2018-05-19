@@ -17,16 +17,13 @@
 
 package de.Maxr1998.xposed.maxlock.preference
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.preference.Preference
 import android.util.AttributeSet
 import android.view.View
-
 import de.Maxr1998.xposed.maxlock.R
 
-class ImplementationPreference @SuppressLint("WorldReadableFiles")
-constructor(context: Context, attr: AttributeSet) : Preference(context, attr) {
+class ImplementationPreference(context: Context, attr: AttributeSet) : Preference(context, attr) {
 
     private var warningVisible = false
     private var statusIcon: View? = null
