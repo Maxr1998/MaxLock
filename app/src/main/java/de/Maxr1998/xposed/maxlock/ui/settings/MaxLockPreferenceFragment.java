@@ -28,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -55,6 +56,7 @@ import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.preference.PreferenceFragmentCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
@@ -110,6 +112,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     public static void launchFragment(@NonNull Fragment fragment, @NonNull Fragment replacement, boolean fromRoot) {
         FragmentManager manager = fragment.getFragmentManager();
+        assert manager != null;
         if (fromRoot) {
             manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
@@ -126,7 +129,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setTitle() {
-        // Only apply title for main screen if back stack is empty (prevent multipane from setting title)
+        // Only apply title for main screen (prevent multipane from setting title)
         if (isFirstPane()) {
             if (screen == Screen.MAIN) {
                 getActivity().setTitle(getName());
@@ -187,9 +190,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                             intent.setType("image/*");
                             startActivityForResult(intent, WALLPAPER_REQUEST_CODE);
-                        } else {
+                        } else
                             FileUtils.deleteQuietly(new File(getActivity().getFilesDir(), "background"));
-                        }
                         findPreference(Common.BACKGROUND_COLOR).setEnabled(newValue.toString().equals("color"));
                     }
                     return true;
@@ -207,7 +209,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 }
                 break;
             case IMOD:
-                //Intika I.Mod - Pro setup
+                // I.Mod - Pro setup
                 Preference iModDelayGlobal = findPreference(Common.ENABLE_IMOD_DELAY_GLOBAL);
                 Preference iModDelayPerApp = findPreference(Common.ENABLE_IMOD_DELAY_APP);
                 iModDelayGlobal.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
@@ -247,6 +249,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             try {
                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
                             } catch (ActivityNotFoundException e) {
+                                Log.w(Util.LOG_TAG, "Couldn't start 'market://' Intent");
                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
                             }
                             break;
@@ -279,7 +282,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         super.onStart();
         setTitle();
         if (screen == Screen.MAIN) {
-            findPreference(Common.ABOUT).setTitle(getName() + " " + BuildConfig.VERSION_NAME);
+            findPreference(Common.ABOUT).setTitle(getName().append(" ").append(BuildConfig.VERSION_NAME));
             if (prefs.getBoolean(Common.DONATED, false)) {
                 Preference donate = findPreference(Common.DONATE);
                 donate.setTitle(R.string.pref_donate_thanks_for_donation);
@@ -343,9 +346,13 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         getListView().setPadding(0, 0, 0, 0);
-        getListView().setOverscrollFooter(new ColorDrawable(v.getContext().obtainStyledAttributes(new int[]{R.attr.windowBackground}).getColor(0, ContextCompat.getColor(v.getContext(), R.color.default_window_background))));
+        TypedArray windowBackgroundColor = v.getContext().obtainStyledAttributes(new int[]{R.attr.windowBackground});
+        getListView().setOverscrollFooter(new ColorDrawable(windowBackgroundColor.getColor(0, ContextCompat.getColor(v.getContext(), R.color.default_window_background))));
+        windowBackgroundColor.recycle();
         if (SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            getListView().setSelector(v.getContext().obtainStyledAttributes(new int[]{R.attr.highlightDrawable}).getDrawable(0));
+            TypedArray selector = v.getContext().obtainStyledAttributes(new int[]{R.attr.highlightDrawable});
+            getListView().setSelector(selector.getDrawable(0));
+            selector.recycle();
             ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_edge", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
             ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_glow", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
         }
@@ -353,22 +360,18 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     private StringBuilder getName() {
         StringBuilder name = new StringBuilder(getString(R.string.app_name));
-        if (!Util.isDevMode()) {
-            if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
-                name.append(" ");
-                name.append(getString(prefs.getBoolean(Common.DONATED, false) ? R.string.name_pro : R.string.name_pseudo_pro));
-            }
-        } else {
+        if (Util.isDevMode()) {
             name.append(" Indev");
+        } else if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
+            name.append(" ").append(getString(prefs.getBoolean(Common.DONATED, false) ? R.string.name_pro : R.string.name_pseudo_pro));
         }
         return name;
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        if (preference.getKey() == null) {
+        if (preference.getKey() == null)
             return false;
-        }
         switch (screen) {
             case MAIN:
                 switch (preference.getKey()) {
@@ -456,6 +459,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             }
                             // Create zip
                             File zipFile = new File(getActivity().getCacheDir() + File.separator + "export", "report.zip");
+                            //noinspection ResultOfMethodCallIgnored
                             zipFile.getParentFile().mkdir();
                             FileUtils.deleteQuietly(zipFile);
                             ZipOutputStream stream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
