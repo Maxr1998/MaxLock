@@ -121,6 +121,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
             case Common.PREF_VALUE_PASS_PIN:
                 inputBar.removeAllViews();
                 mInputTextView = new AppCompatEditText(getContext());
+                mInputTextView.setId(R.id.input_view);
                 LinearLayout.LayoutParams mInputTextParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
                 mInputTextParams.weight = 1;
                 mInputTextView.setLayoutParams(mInputTextParams);
@@ -226,16 +227,16 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         }
     }
 
-    public void forceFocus() {
-        mInputTextView.requestFocus();
-    }
-
     /**
      * Must be used as ContextThemeWrapper context for this LockView
      */
     @SuppressLint("RestrictedApi")
     public static ContextThemeWrapper getThemedContext(Context baseContext) {
         return new ContextThemeWrapper(baseContext, MLPreferences.getPreferences(baseContext).getBoolean(Common.INVERT_COLOR, false) ? R.style.AppTheme : R.style.AppTheme_Dark);
+    }
+
+    public void forceFocus() {
+        mInputTextView.requestFocus();
     }
 
     public SharedPreferences getPrefs() {

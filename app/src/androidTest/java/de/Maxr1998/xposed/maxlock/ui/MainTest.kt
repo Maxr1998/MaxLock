@@ -18,21 +18,17 @@
 package de.Maxr1998.xposed.maxlock.ui
 
 
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.swipeLeft
-import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import android.view.ViewGroup
+import com.zhuinden.espressohelper.*
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
 import org.junit.Test
@@ -47,19 +43,17 @@ class MainTest {
     var activityTestRule = ActivityTestRule(SettingsActivity::class.java)
 
     @Test
-    fun mainTest() {
+    fun setupTest() {
         Thread.sleep(1000)
 
         val prefsApps = MLPreferences.getPrefsApps(activityTestRule.activity)
 
         // Skip welcome
-        val viewPager = onView(allOf(withId(R.id.mi_pager), isDisplayed()))
-        viewPager.perform(swipeLeft())
+        R.id.mi_pager.performSwipeLeft()
         Thread.sleep(250)
 
         // Skip info
-        val nextButton = onView(allOf(withId(R.id.mi_button_next), isDisplayed()))
-        nextButton.perform(click())
+        R.id.mi_button_next.performClick()
         Thread.sleep(50)
 
         // Setup initial packages
@@ -69,22 +63,26 @@ class MainTest {
                 Pair(R.id.first_start_app_xposed, R.string.fs_app_xposed_installer)
         )
         for (i in items) {
-            checkAndAssert(i)
+            checkCheckbox(i)
         }
-        checkAndAssert(items[1], false)
+        checkCheckbox(items[1], false)
         assert(prefsApps.getBoolean(Common.XPOSED_PACKAGE_NAME, false), { "Xposed isn't locked!" })
         Thread.sleep(20)
 
         // Finish first start
-        nextButton.perform(click())
+        R.id.mi_button_next.performClick()
     }
 
-    private fun checkAndAssert(info: Pair<Int, Int>, checked: Boolean = true) {
-        val checkbox = onView(allOf(withId(info.first), withText(info.second), isDisplayed()))
-        checkbox.perform(click())
-        checkbox.check { view, noViewFoundException ->
-            assert(noViewFoundException == null)
-            assertThat(view, if (checked) isChecked() else isNotChecked())
+    @Test
+    fun mainTest() {
+
+    }
+
+    private fun checkCheckbox(info: Pair<Int, Int>, checked: Boolean = true) {
+        info.first.apply {
+            checkHasText(info.second)
+            checkIsDisplayed()
+            performSetCheckableChecked(checked)
         }
     }
 

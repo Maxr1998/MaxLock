@@ -93,7 +93,9 @@ dependencies {
     implementation 'com.crossbowffs.remotepreferences:remotepreferences:0.5'
     implementation 'com.github.attenzione:android-ColorPickerPreference:e3aa301016'
     implementation 'com.github.shkschneider:android_PreferenceFragmentCompat:1.0.0@aar'
-    implementation 'com.google.guava:guava:24.1-jre'
+    implementation('com.google.guava:guava:24.1-jre') {
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
     implementation 'com.heinrichreimersoftware:material-intro:1.6'
     implementation 'com.twofortyfouram:android-plugin-api-for-locale:1.0.2'
     implementation 'commons-io:commons-io:2.5'
@@ -120,6 +122,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
+    androidTestImplementation('com.github.Zhuinden:espresso-helper:0.1.3') {
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     }
 }
