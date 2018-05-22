@@ -65,7 +65,9 @@ class SystemUI {
                         paint.setColor(color.getAsColor());
                         ((View) param.thisObject).setTag(
                                 prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) &&
-                                        prefsApps.getBoolean(packageName, false) && !iModActive(packageName, prefsApps, prefsHistory)
+                                        prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) &&
+                                        prefsApps.getBoolean(packageName, false) &&
+                                        !iModActive(packageName, prefsApps, prefsHistory)
                         );
                     }
                 });
@@ -86,9 +88,10 @@ class SystemUI {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
                         String packageName = getObjectField(param.thisObject, "packageName").toString();
-                        if (iModActive(packageName, prefsApps, prefsHistory))
-                            return;
-                        if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) && prefsApps.getBoolean(packageName, false)) {
+                        if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) &&
+                                prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) &&
+                                prefsApps.getBoolean(packageName, false) &&
+                                !iModActive(packageName, prefsApps, prefsHistory)) {
                             param.setResult(new ColorDrawable(color.getAsColor()));
                         }
                     }
