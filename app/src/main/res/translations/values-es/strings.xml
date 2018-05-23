@@ -3,6 +3,8 @@
     <string name="sb_no_locking_type">No se especificó un tipo de bloqueo.</string>
     <string name="sb_no_locked_apps">No se seleccionaron aplicaciones para bloquear.</string>
     <string name="sb_action_setup">PREPARAR</string>
+    <string name="dialog_need_storage_permission_oreo">MaxLock necesita permisos de almacenamiento para leer tu fondo de pantalla desde Android 8.1 Oreo.
+Porfavor concede el permiso en el siguiente diálogo.</string>
     <string name="dialog_maxlock_updated">¡MaxLock fue actualizado!</string>
     <string name="dialog_button_whats_new">Qué hay de nuevo</string>
     <string name="dialog_button_got_it">Lo tengo</string>
@@ -118,6 +120,13 @@
     <string name="pref_delay_per_app_input_summary">Ingrese un número para especificar el tiempo de retraso en minutos para el rebloqueo por aplicación</string>
     <string name="pref_delay_needpro">Retraso de rebloqueo - versión Pro</string>
     <string name="pref_category_reset_relock_timer">Restablecer opciones</string>
+    <string name="pref_reset_relock_timer_description">Estas opciones se pueden usar para solicitar autenticación al instante en el siguiente inicio de la aplicación, en lugar de esperar a que pase el temporizador de re-bloqueo</string>
+    <string name="pref_show_reset_notification">Mostrar notificación de reinicio</string>
+    <string name="pref_show_reset_notification_summary">Muestra una notificación para restablecer el temporizador de re-bloqueo al hace clic</string>
+    <string name="pref_reset_screen_off">Restablecer al apagar la pantalla</string>
+    <string name="pref_reset_screen_off_summary">Restablece el temporizador de re-bloqueo al apagarse la pantalla</string>
+    <string name="pref_imod_reset_on_homescreen">Restablecer en la pantalla de inicio</string>
+    <string name="pref_imod_reset_on_homescreen_summary">Restablece el temporizador de re-bloqueo al dirigirse a la pantalla de inicio</string>
     <string name="pref_hide_recents_thumbnails">Ocultar miniaturas recientes</string>
     <string name="pref_hide_recents_thumbnails_summary">Elimina la vista previa de las miniaturas de las aplicaciones bloqueadas en la multitarea</string>
     <!-- Apps settings -->
@@ -149,6 +158,7 @@
     <string name="notification_hidden_by_maxlock">Contenido oculto por MaxLock</string>
     <string name="dialog_button_exclude_activities">Actividades</string>
     <string name="dialog_title_exclude_activities">Excluir del bloqueo ciertas Actividades</string>
+    <string name="dialog_button_invert_activities">Invertir</string>
     <!-- UI settings -->
     <string name="pref_category_ui">Opciones de la UI</string>
     <string name="pref_hide_from_launcher">Ocultar aplicación del launcher</string>

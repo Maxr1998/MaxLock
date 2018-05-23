@@ -3,9 +3,20 @@
     <string name="ml_implementation">Implementacja MaxLock</string>
     <string name="ml_status">Status MaxLock</string>
     <string name="applock_accessibility_service_summary">Usługa, dzięki której możesz zablokować swoje aplikacje</string>
+    <string name="applock_accessibility_service_description">Jeśli używasz MaxLock bez Xposed, ta usługa ułatwienia dostępu będzie używana
+        aby wykryć zmiany aplikacji. Żadne dane nie będą zbierane.\n
+        Usługa nie zapewnia żadnych funkcji ułatwień dostępu, jest wymagana, aby główna funkcja aplikacji działała,
+        jeśli nie używasz razez z Xposed.\n
+        \n
+        Uprawnienia:
+        - Obserwuj swoje działania: Wymagane domyślnie dla wszystkich usług ułatwień dostępu i nie jest potrzebne MaxLock.
+    </string>
     <string name="implementation_default">Domyślnie - wymagany Xposed</string>
     <string name="implementation_no_xposed">Bez \"Root-a\"/ Xposed</string>
     <string name="xposed_success_information">Zainstalowany Xposed &amp; aktywny, super!</string>
+    <string name="implementation_alert"><i>Odkąd wersja bez Xposed używa usługę ułatwienia dostępu, działa na każdym urządzeniu bez modyfikacji systemowych,
+        ale zużywa więcej pamięci RAM (pamięci systemu) i baterii.\nRekomendowane jest używanie domyślnie z Xposed, 
+        jeśli masz możliwość zainstalowania lub już zainstalowałeś!</i></string>
     <string name="xposed_inactive_warning">MaxLock nie mógł wykorzystać metod systemu Android potrzebnych do jego pracy. Może to wynikać z kilku powodów:\n
     &#x2022; <i>Xposed Framework nie jest zainstalowany</i>\n
     &#x2022; <i>Xposed jest zainstalowany i aktywny, ale nie jest włączony w Xposed Installer ("Moduły") lub urządzenie nie zostało ponownie uruchomione.</i>\n
