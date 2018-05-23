@@ -60,7 +60,7 @@ class SystemUI {
                 hookAllMethods(findClass(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader), methodName, new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) {
-                        Object task = getObjectField(param.thisObject, "mTask");
+                        Object task = param.args[0];
                         String packageName = ((Intent) getObjectField(getObjectField(task, "key"), "baseIntent")).getComponent().getPackageName();
                         paint.setColor(color.getAsColor());
                         ((View) param.thisObject).setTag(
@@ -108,9 +108,9 @@ class SystemUI {
         try {
             if (LOLLIPOP) throw new Error();
             // Handle MIUI Keyguard class
-            findClass(PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator", lPParam.classLoader);
-            hookedClass = PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator";
+            findClass(PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator", lPParam.classLoader); // Throws Error if not found
             log("ML: Recognized MIUI device.");
+            hookedClass = PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator";
         } catch (Error e) {
             hookedClass = lPParam.packageName.replace(".keyguard", "") + ".keyguard.KeyguardViewMediator";
         }
