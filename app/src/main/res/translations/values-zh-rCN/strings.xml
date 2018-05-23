@@ -3,6 +3,8 @@
     <string name="sb_no_locking_type">没有锁定特定类型</string>
     <string name="sb_no_locked_apps">没有选择锁定应用</string>
     <string name="sb_action_setup">向导</string>
+    <string name="dialog_need_storage_permission_oreo">从Android 8.1 Oreo开始,MaxLock需要存储权限才能读取您的壁纸.
+    	请在下一个对话框中授权它</string>
     <string name="dialog_maxlock_updated">MaxLock已更新!</string>
     <string name="dialog_button_whats_new">更新日志</string>
     <string name="dialog_button_got_it">获取</string>
@@ -33,20 +35,24 @@
     <string name="pref_locking_type_pin">PIN</string>
     <string name="pref_locking_type_knockcode">轻敲代码</string>
     <string name="pref_locking_type_pattern">图案</string>
+	
     <string name="pref_set_password">设置密码</string>
     <string name="toast_password_inconsistent">密码不一致!</string>
     <string name="toast_password_null">密码不能为空!</string>
     <string name="toast_password_changed">密码已更改!</string>
     <string name="dialog_text_password">密码: </string>
     <string name="dialog_text_re_password">确认密码: </string>
+	
     <string name="choose_pin">输入您的PIN</string>
     <string name="pin_too_short">PIN必须至少4位数</string>
     <string name="continue_done">完成后按继续</string>
     <string name="confirm_pin">再次确认PIN</string>
     <string name="button_continue">继续</string>
+	
     <string name="choose_knock_code">输入您的轻敲代码</string>
     <string name="knock_code_too_short">轻敲代码必须至少4点</string>
     <string name="confirm_knock_code">再次确认轻敲代码</string>
+	
     <string name="pref_category_fingerprint">指纹</string>
     <string name="pref_disable_fingerprint">禁用指纹解锁</string>
     <string name="pref_disable_fingerprint_summary">当您将指纹录入到设备时,默认情况下会启用指纹解锁
@@ -109,7 +115,7 @@
     <string name="pref_category_delay_general">一般</string>
     <string name="pref_delay_general">一般延迟重新锁定</string>
     <string name="pref_delay_general_summary">避免在一段时间内再次要求解锁应用</string>
-    <string name="pref_delay_general_input">一般延迟重锁定时器</string>
+    <string name="pref_delay_general_input">一般延迟重锁计时器</string>
     <string name="pref_delay_general_input_summary">给全局锁定输入一个数字指定延迟时间,值为分钟</string>
     <string name="pref_category_delay_per_app">每个应用</string>
     <string name="pref_delay_per_app">每个应用延迟重新锁定</string>
@@ -118,7 +124,12 @@
     <string name="pref_delay_per_app_input_summary">输入一个数字指定延迟时间,值为分钟,重新锁定每个应用</string>
     <string name="pref_delay_needpro">延迟重新锁定 - 专业版</string>
     <string name="pref_category_reset_relock_timer">重置计时器选项</string>
+    <string name="pref_reset_relock_timer_description">这些选项可用于在下一次应用启动时立即要求认证,
+	而不是等待重新锁定计时器过期</string>
+    <string name="pref_show_reset_notification">显示重置通知</string>
     <string name="pref_show_reset_notification_summary">单击时显示通知重置重新锁定计时器</string>
+    <string name="pref_reset_screen_off">在屏幕关闭时重置</string>
+    <string name="pref_reset_screen_off_summary">屏幕关闭时重新锁定计时器</string>
     <string name="pref_imod_reset_on_homescreen">在主屏幕上重置</string>
     <string name="pref_imod_reset_on_homescreen_summary">导航到主屏幕时重置重新锁定计时器</string>
     <string name="pref_hide_recents_thumbnails">隐藏最近缩略图</string>
@@ -127,6 +138,8 @@
     <string name="pref_category_apps">应用</string>
     <string name="pref_choose_apps">锁定应用</string>
     <string name="pref_choose_apps_summary">选择需要锁定的应用</string>
+	
+	
     <string name="menu_backup_list">备份列表</string>
     <string name="menu_restore_list">恢复列表</string>
     <string name="menu_clear_list">清除列表</string>
@@ -146,12 +159,13 @@
     <string-array name="dialog_multi_select_items_options">
         <item>自定义密码</item>
         <item>显示假死窗口</item>
-        <item>Hide notifications</item>
+        <item>隐藏通知</item>
         <item>隐藏通知栏内容</item>
     </string-array>
     <string name="notification_hidden_by_maxlock">隐藏内容来自MaxLock</string>
     <string name="dialog_button_exclude_activities">活动</string>
     <string name="dialog_title_exclude_activities">排除锁定活动</string>
+    <string name="dialog_button_invert_activities">颠倒</string>
     <!-- UI settings -->
     <string name="pref_category_ui">界面设置</string>
     <string name="pref_hide_from_launcher">隐藏桌面图标</string>
@@ -164,6 +178,7 @@
     <!-- About information -->
     <string name="pref_category_about">关于</string>
     <string name="pref_about_summary">点击这里查看贡献, 使用的库和许可证!</string>
+	
     <string name="pref_visit_website">访问Maxr1998网站</string>
     <string name="pref_show_changelog">显示更新日志</string>
     <string name="pref_category_credits">贡献</string>
@@ -172,6 +187,7 @@
     <string name="pref_donate_upgrade_pro">捐赠后将升级为专业版</string>
     <string name="pref_donate_thanks_for_donation">非常感谢您的捐赠!</string>
     <string name="pref_donate_again_on_pro_summary">如果您愿意您可以在这里再次捐赠 :)</string>
+	
     <string name="donate_status_not_donated">考虑捐赠以支持进一步开发, 谢谢:）</string>
     <string name="donate_status_error">错误:无法加载可用产品</string>
     <string name="dialog_message_already_bought">您已经拥有这个捐赠选项
@@ -212,8 +228,10 @@
     <string name="unlock_master_switch">解锁主开关</string>
     <string name="toast_master_switch_off">主开关已关闭</string>
     <string name="toast_master_switch_on">主开关已重新启用</string>
+	
     <!-- Device admin external -->
     <string name="maxlock_protected_admin">此管理保护被禁用!您可以从MaxLock应用程序内点击\"%1$s\"选项时禁用它</string>
+	
     <!-- Accessibility -->
     <string name="content_description_fs_phone">手机图片</string>
     <string name="content_description_fs_lock">锁定这个手机</string>
