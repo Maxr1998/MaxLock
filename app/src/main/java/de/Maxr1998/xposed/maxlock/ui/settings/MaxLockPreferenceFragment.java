@@ -106,6 +106,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     private Snackbar snackCache;
 
+    private boolean intentValid = true;
+
     @VisibleForTesting
     public MaxLockPreferenceFragment() {
     }
@@ -405,6 +407,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                             Toast.makeText(getActivity(), R.string.reboot_required, Toast.LENGTH_SHORT).show();
                             ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.Main");
                             getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                            intentValid = false;
                         } else {
                             ComponentName componentName = new ComponentName(getActivity(), "de.Maxr1998.xposed.maxlock.Main");
                             getActivity().getPackageManager().setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
@@ -413,7 +416,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     case Common.USE_DARK_STYLE:
                     case Common.USE_AMOLED_BLACK:
                     case Common.ENABLE_PRO:
-                        getActivity().recreate();
+                        if (intentValid) getActivity().recreate();
+                        else ((SettingsActivity) getActivity()).restart();
                         return true;
                     case Common.ABOUT:
                         launchFragment(this, Screen.ABOUT.getScreen(), true);

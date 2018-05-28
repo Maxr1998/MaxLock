@@ -262,7 +262,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
         builder.setMessage(R.string.dialog_text_restart_required);
         builder.setTitle(R.string.app_name)
                 .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
-                    Intent intent = getIntent();
+                    Intent intent = new Intent(this, getClass());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     finish();
                     startActivity(intent);
