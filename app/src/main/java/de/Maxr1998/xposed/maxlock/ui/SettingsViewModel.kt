@@ -28,7 +28,7 @@ import androidx.core.content.edit
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
@@ -36,7 +36,7 @@ import java.util.*
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
     init {
-        async {
+        launch {
             val prefs = MLPreferences.getPreferences(application)
             application.packageManager.setComponentEnabledSetting(
                     ComponentName(Common.MAXLOCK_PACKAGE_NAME, NewAppInstalledBroadcastReceiver::class.java.name),

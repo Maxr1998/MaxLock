@@ -36,6 +36,7 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.asReference
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 
 class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -94,7 +95,7 @@ class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         appIcon.apply {
             if (cache[packageName] != null) {
                 setImageDrawable(cache[packageName])
-            } else async(UI) {
+            } else launch(UI) {
                 val iconRef = appIcon.asReference()
                 val drawable = async { app.loadIcon() }
                 iconRef().setImageDrawable(drawable.await().also { cache.put(packageName, it) })
