@@ -83,8 +83,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     private LockView lockscreen;
     private FrameLayout secondFragmentContainer;
     private DevicePolicyManager devicePolicyManager;
-    private CustomTabsServiceConnection mConnection;
-    private CustomTabsSession mSession;
+    private CustomTabsServiceConnection ctConnection;
+    private CustomTabsSession ctSession;
 
     public static void showMultipaneIfInLandscape(SettingsActivity activity) {
         if (activity.secondFragmentContainer != null) {
@@ -140,19 +140,18 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settingsFragment, TAG_PREFERENCE_FRAGMENT).commit();
         }
 
-        mConnection = new CustomTabsServiceConnection() {
+        ctConnection = new CustomTabsServiceConnection() {
             @Override
             public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
                 customTabsClient.warmup(0);
-                mSession = customTabsClient.newSession(new CustomTabsCallback());
-                if (mSession == null) {
+                ctSession = customTabsClient.newSession(new CustomTabsCallback());
+                if (ctSession == null)
                     return;
-                }
                 Bundle maxr1998Website = new Bundle();
                 maxr1998Website.putParcelable(CustomTabsService.KEY_URL, Common.MAXR1998_URI);
                 Bundle technoSparksProfile = new Bundle();
                 technoSparksProfile.putParcelable(CustomTabsService.KEY_URL, Common.TECHNO_SPARKS_URI);
-                mSession.mayLaunchUrl(Common.WEBSITE_URI, null, Arrays.asList(maxr1998Website, technoSparksProfile));
+                ctSession.mayLaunchUrl(Common.WEBSITE_URI, null, Arrays.asList(maxr1998Website, technoSparksProfile));
             }
 
             @Override
@@ -163,8 +162,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
                 "com.android.chrome", "com.chrome.beta", "com.chrome.dev", "org.mozilla.firefox", "org.mozilla.firefox_beta"
         ));
         if (cctPackageName != null) {
-            CustomTabsClient.bindCustomTabsService(this, cctPackageName, mConnection);
-        } else mConnection = null;
+            CustomTabsClient.bindCustomTabsService(this, cctPackageName, ctConnection);
+        } else ctConnection = null;
     }
 
     @SuppressLint("WorldReadableFiles")
@@ -189,7 +188,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_info:
-                @SuppressWarnings("deprecation") CustomTabsIntent intent = new CustomTabsIntent.Builder(mSession)
+                @SuppressWarnings("deprecation") CustomTabsIntent intent = new CustomTabsIntent.Builder(ctSession)
                         .setShowTitle(true)
                         .enableUrlBarHiding()
                         .setToolbarColor(getResources().getColor(R.color.primary_red))
@@ -236,9 +235,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             StatusBarTintApi.sendColorChangeIntent(ContextCompat.getColor(this, R.color.primary_red_dark), -3, Color.BLACK, -3, this);
-        }
     }
 
     @Override
@@ -251,9 +249,8 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
 
     @Override
     protected void onDestroy() {
-        if (mConnection != null) {
-            unbindService(mConnection);
-        }
+        if (ctConnection != null)
+            unbindService(ctConnection);
         super.onDestroy();
     }
 
@@ -270,7 +267,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     }
 
     public CustomTabsSession getSession() {
-        return mSession;
+        return ctSession;
     }
 
     public DevicePolicyManager getDevicePolicyManager() {
