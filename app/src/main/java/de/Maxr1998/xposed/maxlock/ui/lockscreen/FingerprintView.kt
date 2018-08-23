@@ -37,12 +37,14 @@ import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
+import java.util.concurrent.atomic.AtomicBoolean
 
 @TargetApi(Build.VERSION_CODES.M)
 @SuppressLint("ViewConstructor")
 class FingerprintView(context: Context, private val lockView: LockView) : AppCompatImageView(context) {
     private val fingerprintManager = FingerprintManagerCompat.from(context)
-    private var cancellationSignal = CancellationSignal()
+    private val authenticating = AtomicBoolean(false)
+    private var cancellationSignal: CancellationSignal? = null
     private val authenticationCallback = object : FingerprintManagerCompat.AuthenticationCallback() {
         override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult?) {
             if (lockView.allowFingerprint()) {
@@ -58,7 +60,7 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
             if (lockView.allowFingerprint()) {
                 postDelayed({ handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_error_state_to_fp_animation) }, 800)
             } else {
-                cancellationSignal.cancel()
+                cancellationSignal?.cancel()
                 setOnClickListener(fpDisabledToast)
             }
             TaskerHelper.sendQueryRequest(getContext(), false, lockView.packageName)
@@ -86,6 +88,8 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
     }
 
     private fun authenticate() {
+        if (!authenticating.compareAndSet(false, true))
+            return
         Log.d(Util.LOG_TAG_FINGERPRINT, "Starting authentication..")
         if (fingerprintManager.isHardwareDetected && fingerprintManager.hasEnrolledFingerprints()) {
             if (!lockView.allowFingerprint()) {
@@ -93,8 +97,11 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
                 setOnClickListener(fpDisabledToast)
                 return
             }
-            if (cancellationSignal.isCanceled)
-                cancellationSignal = CancellationSignal()
+            if (cancellationSignal == null || cancellationSignal!!.isCanceled) {
+                cancellationSignal = CancellationSignal().apply {
+                    setOnCancelListener { authenticating.set(false) }
+                }
+            }
             fingerprintManager.authenticate(null, 0, cancellationSignal, authenticationCallback, null)
             handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_on_animation)
         } else visibility = View.GONE
@@ -109,11 +116,11 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
         super.onWindowFocusChanged(hasWindowFocus)
         if (hasWindowFocus) {
             authenticate()
-        } else cancellationSignal.cancel()
+        } else cancellationSignal?.cancel()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        cancellationSignal.cancel()
+        cancellationSignal?.cancel()
     }
 }
