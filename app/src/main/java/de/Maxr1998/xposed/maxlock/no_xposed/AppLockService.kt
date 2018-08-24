@@ -38,7 +38,6 @@ import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getLauncherPackage
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
-import hugo.weaving.DebugLog
 
 @TargetApi(Build.VERSION_CODES.N)
 class AppLockService : AccessibilityService() {
@@ -111,7 +110,6 @@ class AppLockService : AccessibilityService() {
         }
     }
 
-    @DebugLog
     private fun ignoreEvent(event: AccessibilityEvent, packageName: String): Boolean {
         return packageName.isEmpty() ||
                 event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || !isApplication(event) ||
@@ -119,7 +117,6 @@ class AppLockService : AccessibilityService() {
                 Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD).startsWith(packageName)
     }
 
-    @DebugLog
     private fun isApplication(accessibilityEvent: AccessibilityEvent): Boolean {
         windows
                 .filter { it.id == accessibilityEvent.windowId }
