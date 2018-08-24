@@ -135,7 +135,7 @@ class AppLockService : AccessibilityService() {
 
         Log.d(TAG, "Show lockscreen: $packageName")
         val i = Intent(this, LockActivity::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_FROM_BACKGROUND or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_FROM_BACKGROUND or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 .putExtra(Common.INTENT_EXTRAS_NAMES, arrayOf(packageName, ""))
         if (prefsApps.getBoolean(packageName + "_fake", false)) {
             i.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH)
