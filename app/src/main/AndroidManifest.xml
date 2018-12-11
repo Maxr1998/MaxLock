@@ -21,9 +21,12 @@
 
     <uses-sdk tools:overrideLibrary="xyz.danoz.recyclerviewfastscroller" />
 
+    <!--suppress DeprecatedClassUsageInspection -->
     <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT" />
     <!-- For wallpaper on Samsung devices -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <!-- For backups -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- For IAPs -->
