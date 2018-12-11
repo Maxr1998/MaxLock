@@ -33,7 +33,7 @@ class ImplementationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
         group.check(if (MLImplementation.getImplementation(MLPreferences.getPreferences(context)) == MLImplementation.DEFAULT) R.id.implementation_item_default else R.id.implementation_item_no_xposed)
         group.setOnCheckedChangeListener { _, _ -> updateView() }
 
-        if (!MLImplementation.isAccessibilitySupported()) {
+        if (!MLImplementation.isAccessibilitySupported) {
             group.visibility = View.GONE
         }
 
