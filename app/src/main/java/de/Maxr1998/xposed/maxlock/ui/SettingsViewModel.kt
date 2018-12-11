@@ -28,13 +28,19 @@ import androidx.core.content.edit
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.Main
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
-class SettingsViewModel(application: Application) : AndroidViewModel(application) {
+class SettingsViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
     init {
         launch {
             val prefs = MLPreferences.getPreferences(application)
@@ -67,35 +73,37 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 }
             }
 
-            // Clean up
-            val backgroundFolder = File(Util.dataDir(application), "background")
-            if (backgroundFolder.exists()) {
-                try {
-                    FileUtils.copyFile(File(backgroundFolder, "image"), application.openFileOutput("background", 0))
-                    FileUtils.deleteQuietly(backgroundFolder)
-                } catch (e: IOException) {
-                    e.printStackTrace()
+            withContext(Dispatchers.IO) {
+                // Clean up
+                val backgroundFolder = File(Util.dataDir(application), "background")
+                if (backgroundFolder.exists()) {
+                    try {
+                        FileUtils.copyFile(File(backgroundFolder, "image"), application.openFileOutput("background", 0))
+                        FileUtils.deleteQuietly(backgroundFolder)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
                 }
-            }
 
-            val filesToDelete = ArrayList<File>()
-            File(Util.dataDir(application), "shared_prefs").listFiles { _, filename ->
-                !Arrays.asList("com.google.android.gms.analytics.prefs.xml",
-                        xml(Common.MAXLOCK_PACKAGE_NAME + "_preferences"),
-                        xml(Common.PREFS_KEY), xml(Common.PREFS_APPS), xml(Common.MAXLOCK_PACKAGE_NAME), xml(Common.PREFS_KEYS_PER_APP),
-                        xml("WebViewChromiumPrefs")).contains(filename)
-            }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
-            application.filesDir.listFiles { _, filename ->
-                !Arrays.asList("background", "gaClientId", "gaClientIdData").contains(filename)
-            }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
-            File(Common.EXTERNAL_FILES_DIR).listFiles { _, filename ->
-                !Arrays.asList("Backup", "dev_mode.key").contains(filename)
-            }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
-            for (f in filesToDelete) {
-                FileUtils.deleteQuietly(f)
+                val filesToDelete = ArrayList<File>()
+                File(Util.dataDir(application), "shared_prefs").listFiles { _, filename ->
+                    !Arrays.asList("com.google.android.gms.analytics.prefs.xml",
+                            xml(Common.MAXLOCK_PACKAGE_NAME + "_preferences"),
+                            xml(Common.PREFS_KEY), xml(Common.PREFS_APPS), xml(Common.MAXLOCK_PACKAGE_NAME), xml(Common.PREFS_KEYS_PER_APP),
+                            xml("WebViewChromiumPrefs")).contains(filename)
+                }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
+                application.filesDir.listFiles { _, filename ->
+                    !Arrays.asList("background", "gaClientId", "gaClientIdData").contains(filename)
+                }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
+                File(Common.EXTERNAL_FILES_DIR).listFiles { _, filename ->
+                    !Arrays.asList("Backup", "dev_mode.key").contains(filename)
+                }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
+                for (f in filesToDelete) {
+                    FileUtils.deleteQuietly(f)
+                }
+                FileUtils.deleteQuietly(File(Environment.getExternalStorageDirectory().toString() + "/MaxLock_Backup/"))
+                prefs.edit().putBoolean(Common.FIRST_START, false).apply()
             }
-            FileUtils.deleteQuietly(File(Environment.getExternalStorageDirectory().toString() + "/MaxLock_Backup/"))
-            prefs.edit().putBoolean(Common.FIRST_START, false).apply()
             Log.i(Util.LOG_TAG_STARTUP, "Finished!")
         }
     }

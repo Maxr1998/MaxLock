@@ -34,13 +34,13 @@ import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Ref
 import de.Maxr1998.xposed.maxlock.util.inflate
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.Main
 import java.util.*
 
 fun showActivities(appListModel: AppListModel, context: Ref<Context>, packageName: String) {
-    async(UI) {
-        val deferredActivities = async {
+    CoroutineScope(Dispatchers.Main).launch {
+        val activities = withContext(Dispatchers.IO) {
             ArrayList<String>().apply {
                 try {
                     val activities = context().packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES).activities
@@ -53,7 +53,6 @@ fun showActivities(appListModel: AppListModel, context: Ref<Context>, packageNam
                 sort()
             }
         }
-        val activities = deferredActivities.await()
         val ctx = context()
         val recyclerView = RecyclerView(ctx)
         val adapter = ActivityListAdapter(ctx, activities)
@@ -71,7 +70,6 @@ fun showActivities(appListModel: AppListModel, context: Ref<Context>, packageNam
                         getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener { _ -> adapter.invert() }
                     }
                 }
-        null
     }
 }
 

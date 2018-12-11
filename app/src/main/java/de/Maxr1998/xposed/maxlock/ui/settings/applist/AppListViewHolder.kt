@@ -34,11 +34,15 @@ import android.widget.ToggleButton
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.asReference
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.Main
+import kotlin.coroutines.CoroutineContext
 
-class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view), CoroutineScope {
+
+    var job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     var appIcon: ImageView = itemView.findViewById(R.id.icon)
     private val appName: TextView = itemView.findViewById(R.id.title)
@@ -95,10 +99,12 @@ class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         appIcon.apply {
             if (cache[packageName] != null) {
                 setImageDrawable(cache[packageName])
-            } else launch(UI) {
+            } else launch {
                 val iconRef = appIcon.asReference()
-                val drawable = async { app.loadIcon() }
-                iconRef().setImageDrawable(drawable.await().also { cache.put(packageName, it) })
+                withContext(Dispatchers.IO) { app.loadIcon() }.also {
+                    iconRef().setImageDrawable(it)
+                    cache.put(packageName, it)
+                }
             }
         }
         appIcon.contentDescription = appIcon.resources.getString(R.string.content_description_applist_icon, app.name)
