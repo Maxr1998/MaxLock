@@ -19,8 +19,8 @@ package de.Maxr1998.xposed.maxlock.ui.actions.tasker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.actions.BundleScrubber;
 import de.Maxr1998.xposed.maxlock.util.Util;

@@ -3,8 +3,6 @@ package de.Maxr1998.xposed.maxlock.preference;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.Preference;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatSeekBar;
 import de.Maxr1998.xposed.maxlock.R;
 
 /**

@@ -18,13 +18,13 @@
 package de.Maxr1998.xposed.maxlock.ui
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
 import android.util.Log
 import androidx.core.content.edit
+import androidx.lifecycle.AndroidViewModel
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util

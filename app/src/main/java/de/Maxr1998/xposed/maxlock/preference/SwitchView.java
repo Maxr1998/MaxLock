@@ -18,10 +18,11 @@
 package de.Maxr1998.xposed.maxlock.preference;
 
 import android.content.Context;
-import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 public class SwitchView extends SwitchCompat {
 

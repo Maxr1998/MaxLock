@@ -17,7 +17,7 @@
 
 package de.Maxr1998.xposed.maxlock.util;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 @FunctionalInterface
 public interface ColorSupplier {

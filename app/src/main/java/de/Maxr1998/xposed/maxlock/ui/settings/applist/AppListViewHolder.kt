@@ -20,7 +20,6 @@ package de.Maxr1998.xposed.maxlock.ui.settings.applist
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.RecyclerView
 import android.util.LruCache
 import android.view.View
 import android.view.animation.Animation
@@ -31,6 +30,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
+import androidx.recyclerview.widget.RecyclerView
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.asReference

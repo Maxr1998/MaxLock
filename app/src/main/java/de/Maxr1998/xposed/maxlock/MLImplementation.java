@@ -24,8 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.Settings;
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +33,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 import static android.accessibilityservice.AccessibilityServiceInfo.FEEDBACK_GENERIC;

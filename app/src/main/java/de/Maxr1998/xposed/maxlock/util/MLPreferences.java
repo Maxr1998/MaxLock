@@ -20,10 +20,10 @@ package de.Maxr1998.xposed.maxlock.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 
 import java.lang.ref.SoftReference;
 
+import androidx.annotation.NonNull;
 import de.Maxr1998.xposed.maxlock.Common;
 
 public class MLPreferences {

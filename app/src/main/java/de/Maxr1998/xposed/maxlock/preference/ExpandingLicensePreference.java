@@ -19,13 +19,13 @@ package de.Maxr1998.xposed.maxlock.preference;
 
 import android.content.Context;
 import android.preference.Preference;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import de.Maxr1998.xposed.maxlock.R;
 
 public class ExpandingLicensePreference extends Preference {

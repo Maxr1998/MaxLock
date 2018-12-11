@@ -20,10 +20,10 @@ package de.Maxr1998.xposed.maxlock.ui.actions;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.IdRes;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.IdRes;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;

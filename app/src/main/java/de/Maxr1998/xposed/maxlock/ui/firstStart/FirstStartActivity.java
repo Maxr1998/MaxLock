@@ -18,12 +18,12 @@
 package de.Maxr1998.xposed.maxlock.ui.firstStart;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
+import androidx.viewpager.widget.ViewPager;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.firstStart.views.InformationView;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;

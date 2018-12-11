@@ -20,9 +20,9 @@ package de.Maxr1998.xposed.maxlock.ui;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationManagerCompat;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;

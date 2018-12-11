@@ -10,7 +10,7 @@
         <item
             android:id="@+id/toolbar_master_switch"
             android:title="@string/action_toggle_ms"
-            app:actionViewClass="android.support.v7.widget.SwitchCompat"
+            app:actionViewClass="androidx.appcompat.widget.SwitchCompat"
             app:showAsAction="always" />
     </group>
 </menu>

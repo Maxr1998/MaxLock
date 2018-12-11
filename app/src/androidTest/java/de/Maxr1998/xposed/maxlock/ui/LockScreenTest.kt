@@ -19,18 +19,18 @@ package de.Maxr1998.xposed.maxlock.ui
 
 
 import android.content.Intent
-import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.ViewAction
-import android.support.test.espresso.action.CoordinatesProvider
-import android.support.test.espresso.action.GeneralClickAction
-import android.support.test.espresso.action.Press
-import android.support.test.espresso.action.Tap
-import android.support.test.espresso.matcher.ViewMatchers
-import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
 import androidx.core.content.edit
+import androidx.test.InstrumentationRegistry
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.CoordinatesProvider
+import androidx.test.espresso.action.GeneralClickAction
+import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Tap
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.filters.LargeTest
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import com.zhuinden.espressohelper.*
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.R
@@ -39,7 +39,6 @@ import de.Maxr1998.xposed.maxlock.util.Util
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.StringBuilder
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)

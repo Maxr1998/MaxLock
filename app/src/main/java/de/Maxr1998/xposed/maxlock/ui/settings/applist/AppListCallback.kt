@@ -17,7 +17,7 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings.applist
 
-import android.support.v7.util.SortedList
+import androidx.recyclerview.widget.SortedList
 import java.text.Collator
 
 class AppListCallback(private val adapter: AppListAdapter) : SortedList.Callback<AppListModel.AppInfo>() {

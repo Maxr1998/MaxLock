@@ -20,17 +20,17 @@ package de.Maxr1998.xposed.maxlock.ui.settings.applist
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
 import android.content.Context.ACTIVITY_SERVICE
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.util.SortedList
 import android.util.LruCache
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.SortedList
 import de.Maxr1998.xposed.maxlock.BuildConfig
 import de.Maxr1998.xposed.maxlock.util.KUtil.getLauncherPackages
 import java.text.Collator
@@ -70,7 +70,7 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
                     }
                 }
                 Collections.sort(result, object : Comparator<AppInfo> {
-                    internal var sCollator = Collator.getInstance()
+                    var sCollator = Collator.getInstance()
 
                     override fun compare(one: AppInfo, two: AppInfo): Int {
                         return sCollator.compare(one.name, two.name)
