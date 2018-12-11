@@ -18,16 +18,12 @@ package de.Maxr1998.xposed.maxlock.util
 
 import java.lang.ref.WeakReference
 import java.util.concurrent.CancellationException
-import kotlin.coroutines.experimental.intrinsics.suspendCoroutineOrReturn
 
 class Ref<out T : Any> internal constructor(obj: T) {
     private val weakRef = WeakReference(obj)
 
-    suspend operator fun invoke(): T {
-        return suspendCoroutineOrReturn {
-            val ref = weakRef.get() ?: throw CancellationException()
-            ref
-        }
+    operator fun invoke(): T {
+        return weakRef.get() ?: throw CancellationException()
     }
 }
 
