@@ -15,22 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Maxr1998.xposed.maxlock.ui
+package de.Maxr1998.xposed.maxlock.ui.settings_new
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import de.Maxr1998.xposed.maxlock.ui.settings_new.startup
+import de.Maxr1998.modernpreferences.PreferencesAdapter
+import de.Maxr1998.modernpreferences.helpers.screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class SettingsViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+class SettingsViewModel(app: Application) : AndroidViewModel(app), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     init {
-        launch { startup(application) }
+        launch { startup(app) }
     }
+
+    val preferencesAdapter = PreferencesAdapter(screen(app) { })
 }
