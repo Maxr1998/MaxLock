@@ -18,24 +18,14 @@
 package de.Maxr1998.xposed.maxlock;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.Settings;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
-import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 import static android.accessibilityservice.AccessibilityServiceInfo.FEEDBACK_GENERIC;
 import static android.accessibilityservice.AccessibilityServiceInfo.FEEDBACK_VISUAL;
@@ -45,7 +35,7 @@ import static android.os.Build.VERSION_CODES.N;
 public final class MLImplementation {
 
     public static final int DEFAULT = 1;
-    private static final int NO_XPOSED = 2;
+    public static final int NO_XPOSED = 2;
 
     private MLImplementation() {
     }
@@ -89,73 +79,5 @@ public final class MLImplementation {
 
     public static boolean isActiveAndWorking(Context c, SharedPreferences prefs) {
         return (getImplementation(prefs) == DEFAULT && isXposedActive()) || (getImplementation(prefs) == NO_XPOSED && isAccessibilityEnabled(c));
-    }
-
-    public static View createImplementationDialog(final Context c) {
-        class ImplementationDialog {
-
-            private SharedPreferences prefs;
-            private ViewGroup implementationView;
-            private RadioGroup group;
-            private View accessibilityAlert;
-            private TextView implementationError;
-
-            @SuppressLint("InflateParams")
-            private ImplementationDialog() {
-                prefs = MLPreferences.getPreferences(c);
-                implementationView = (ViewGroup) LayoutInflater.from(c).inflate(R.layout.dialog_implementation, null);
-                group = implementationView.findViewById(R.id.implementation_group);
-                accessibilityAlert = implementationView.findViewById(R.id.implementation_alert);
-                implementationError = implementationView.findViewById(R.id.implementation_error);
-                group.check(getImplementation(MLPreferences.getPreferences(c)) == DEFAULT ? R.id.implementation_item_default : R.id.implementation_item_no_xposed);
-                group.setOnCheckedChangeListener((radioGroup, i) -> updateView());
-
-                if (!isAccessibilitySupported()) {
-                    group.setVisibility(View.GONE);
-                }
-
-                implementationError.setOnClickListener(v -> {
-                    if (MLImplementation.getImplementation(prefs) == NO_XPOSED)
-                        try {
-                            c.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-                        } catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                });
-
-                implementationView.addView(new View(c) {
-                    @Override
-                    public void onWindowFocusChanged(boolean hasWindowFocus) {
-                        super.onWindowFocusChanged(hasWindowFocus);
-                        updateView();
-                    }
-
-                    @Override
-                    public int getVisibility() {
-                        return GONE;
-                    }
-                });
-                updateView();
-            }
-
-            private void updateView() {
-                boolean defaultChecked = group.getCheckedRadioButtonId() == R.id.implementation_item_default;
-                prefs.edit().putInt(Common.ML_IMPLEMENTATION, defaultChecked ? DEFAULT : NO_XPOSED).apply();
-                accessibilityAlert.setVisibility(!defaultChecked ? View.VISIBLE : View.GONE);
-                implementationError.setText(defaultChecked ? R.string.xposed_inactive_warning : R.string.accessibility_inactive_warning);
-                implementationError.setVisibility(!isActiveAndWorking(c, prefs) ? View.VISIBLE : View.GONE);
-                if (isXposedActive()) {
-                    implementationView.findViewById(R.id.xposed_success_information).setVisibility(View.VISIBLE);
-                    for (int i = 0; i < group.getChildCount(); i++) {
-                        group.getChildAt(i).setEnabled(false);
-                    }
-                }
-            }
-
-            public View getView() {
-                return implementationView;
-            }
-        }
-        return new ImplementationDialog().getView();
     }
 }

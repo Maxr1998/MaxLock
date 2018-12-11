@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -69,7 +70,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.XmlRes;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.app.ActivityCompat;
@@ -380,7 +380,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                     case Common.ML_IMPLEMENTATION:
                         AlertDialog implementation = new AlertDialog.Builder(getContext())
                                 .setTitle(preference.getTitle())
-                                .setView(MLImplementation.createImplementationDialog(getContext()))
+                                .setView(View.inflate(getContext(), R.layout.dialog_implementation, null))
                                 .setNegativeButton(android.R.string.ok, null)
                                 .setOnDismissListener(dialog -> updateImplementationStatus())
                                 .create();
