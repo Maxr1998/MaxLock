@@ -2,6 +2,7 @@
 <de.Maxr1998.xposed.maxlock.ui.settings_new.implementation.ImplementationView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@null"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingTop="8dp"
