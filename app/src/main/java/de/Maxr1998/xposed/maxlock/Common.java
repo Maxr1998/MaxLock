@@ -49,6 +49,7 @@ public abstract class Common {
 
     public static final String ML_IMPLEMENTATION = "ml_implementation";
 
+    public static final String CATEGORY_LOCKING_TYPE = "cat_locking_type";
     public static final String LOCKING_TYPE_SETTINGS = "locking_type_settings";
     /* TYPE */
     public static final String LOCKING_TYPE = "locking_type";
@@ -103,6 +104,7 @@ public abstract class Common {
     public static final String USE_AMOLED_BLACK = "use_amoled_black";
     public static final String NEW_APP_NOTIFICATION = "new_app_notification";
 
+    public static final String CATEGORY_ABOUT = "cat_about";
     public static final String ABOUT = "about";
     /* ABOUT */
     public static final String SHOW_CHANGELOG = "show_changelog";
