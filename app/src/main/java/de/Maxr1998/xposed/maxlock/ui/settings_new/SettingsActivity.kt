@@ -67,9 +67,9 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         viewModel = ViewModelProviders.of(this).get()
 
         // Preferences
-        recyclerView.adapter = preferencesAdapter
-        onScreenChanged(preferencesAdapter.currentScreen, preferencesAdapter.isInSubScreen())
-        preferencesAdapter.onScreenChangeListener = this
+        recyclerView.adapter = preferencesAdapter.apply {
+            onScreenChangeListener = this@SettingsActivity
+        }
 
         // Show lockscreen if needed
         if (!prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {

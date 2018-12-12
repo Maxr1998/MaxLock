@@ -101,7 +101,7 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
 
-    implementation "com.github.Maxr1998:ModernAndroidPreferences:30a6658ae6"
+    implementation "com.github.Maxr1998:ModernAndroidPreferences:19ebbb1aba"
     //-- Android support and Google Services
     implementation "androidx.appcompat:appcompat:1.0.2"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
