@@ -62,7 +62,8 @@
 
         <activity
             android:name=".ui.settings_new.SettingsActivity"
-            android:label="MaxLock Settings">
+            android:label="MaxLock Settings"
+            android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
