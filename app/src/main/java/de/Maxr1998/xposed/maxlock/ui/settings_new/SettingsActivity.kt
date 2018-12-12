@@ -34,18 +34,23 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.RecyclerView
+import de.Maxr1998.modernpreferences.PreferenceScreen
+import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener
 import de.Maxr1998.xposed.maxlock.util.Util
+import de.Maxr1998.xposed.maxlock.util.prefs
 import de.Maxr1998.xposed.maxlock.util.prefsApps
 import java.util.*
 
-class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener {
+class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, PreferencesAdapter.OnScreenChangeListener {
     private lateinit var viewModel: SettingsViewModel
+    private lateinit var originalTitle: String
     private val preferencesAdapter get() = viewModel.preferencesAdapter
     private val viewRoot by lazy { findViewById<ViewGroup>(R.id.content_view_settings) }
+    private val recyclerView by lazy { findViewById<RecyclerView>(android.R.id.list) }
     private val lockscreen by lazy { LockView(this, null) }
     private var ctConnection: CustomTabsServiceConnection? = null
     private var ctSession: CustomTabsSession? = null
@@ -53,17 +58,26 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         Util.setTheme(this)
         super.onCreate(savedInstanceState)
+        // Setup UI and Toolbar
         setContentView(R.layout.activity_new_settings)
         setSupportActionBar(findViewById(R.id.toolbar))
+        originalTitle = title.toString()
 
+        // ViewModel
         viewModel = ViewModelProviders.of(this).get()
 
-        val recycler = findViewById<RecyclerView>(android.R.id.list)
-        recycler.adapter = preferencesAdapter
+        // Preferences
+        recyclerView.adapter = preferencesAdapter
+        onScreenChanged(preferencesAdapter.currentScreen, preferencesAdapter.isInSubScreen())
+        preferencesAdapter.onScreenChangeListener = this
 
-        viewRoot.forEach { it.isVisible = false }
-        viewRoot.addView(lockscreen, MATCH_PARENT, MATCH_PARENT)
+        // Show lockscreen if needed
+        if (!prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {
+            viewRoot.forEach { it.isVisible = false }
+            viewRoot.addView(lockscreen, MATCH_PARENT, MATCH_PARENT)
+        }
 
+        // Initialize custom tabs service
         bindCustomTabsService()
     }
 
@@ -110,12 +124,24 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener {
         lockscreen.isVisible = false
     }
 
+    override fun onScreenChanged(screen: PreferenceScreen, subScreen: Boolean) {
+        supportActionBar?.setDisplayHomeAsUpEnabled(subScreen)
+        title = when {
+            screen.titleRes != -1 -> getString(screen.titleRes)
+            screen.title.isNotEmpty() -> screen.title
+            else -> originalTitle
+        }
+        preferencesAdapter.restoreAndObserveScrollPosition(recyclerView)
+    }
+
     override fun onBackPressed() {
         if (!preferencesAdapter.goBack())
             super.onBackPressed()
     }
 
     override fun onDestroy() {
+        preferencesAdapter.onScreenChangeListener = null
+        recyclerView.adapter = null
         ctConnection?.let(this::unbindService)
         super.onDestroy()
     }
