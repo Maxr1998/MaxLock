@@ -32,6 +32,7 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.os.CancellationSignal
+import androidx.core.view.isVisible
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper
@@ -109,13 +110,13 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        authenticate()
+        if (isVisible) authenticate()
     }
 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
         if (hasWindowFocus) {
-            authenticate()
+            if (isVisible) authenticate()
         } else cancellationSignal?.cancel()
     }
 
