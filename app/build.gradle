@@ -35,6 +35,8 @@ android {
         }
         debug {
             debuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
             versionNameSuffix "-beta"
         }
     }
@@ -106,7 +108,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.0.2"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "androidx.browser:browser:1.0.0"
-    implementation "com.google.android.material:material:1.1.0-alpha01"
+    implementation "com.google.android.material:material:1.1.0-alpha02"
     implementation "androidx.gridlayout:gridlayout:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0-alpha01"
     /* includes all other support-v4 libraries */

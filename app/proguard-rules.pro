@@ -1,5 +1,9 @@
 -dontwarn **
 
+-keepclassmembers class ** {
+    void <init>(android.content.Context);
+}
+
 -keep class de.Maxr1998.xposed.maxlock.hooks.** {*;}
 
 -keep class de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper {
@@ -15,8 +19,6 @@
     private int mSuccessColor;
 }
 
--keep class android.support.v7.widget.SearchView { *; }
-
--assumenosideeffects class kotlin.jvm.internal.Intrinsics {
-    static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
+-assumevalues class android.os.Build$VERSION {
+    int SDK_INT return 21..2147483647;
 }
