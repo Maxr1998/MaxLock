@@ -20,7 +20,6 @@ package de.Maxr1998.xposed.maxlock.hooks
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import androidx.core.content.edit
 import com.crossbowffs.remotepreferences.RemotePreferences
 import de.Maxr1998.xposed.maxlock.BuildConfig
@@ -58,12 +57,6 @@ class Main : IXposedHookZygoteInit, IXposedHookLoadPackage {
 
                         val prefs = ctx.getRemotePreferences(Common.MAXLOCK_PACKAGE_NAME + "_preferences")
                         SystemUI.init(lPParam, prefs, prefsApps, prefsHistory)
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            SystemUI.initScreenOff(lPParam, prefsApps, prefsHistory)
-                        }
-                        return
-                    }
-                    SystemUI.PACKAGE_NAME_KEYGUARD -> if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                         SystemUI.initScreenOff(lPParam, prefsApps, prefsHistory)
                         return
                     }

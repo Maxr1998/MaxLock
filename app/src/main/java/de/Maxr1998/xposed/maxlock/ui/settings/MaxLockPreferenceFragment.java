@@ -351,13 +351,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         TypedArray windowBackgroundColor = v.getContext().obtainStyledAttributes(new int[]{R.attr.windowBackground});
         getListView().setOverscrollFooter(new ColorDrawable(windowBackgroundColor.getColor(0, ContextCompat.getColor(v.getContext(), R.color.default_window_background))));
         windowBackgroundColor.recycle();
-        if (SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            TypedArray selector = v.getContext().obtainStyledAttributes(new int[]{R.attr.highlightDrawable});
-            getListView().setSelector(selector.getDrawable(0));
-            selector.recycle();
-            ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_edge", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
-            ContextCompat.getDrawable(v.getContext(), getResources().getIdentifier("overscroll_glow", "drawable", "android")).setColorFilter(ContextCompat.getColor(v.getContext(), R.color.primary_red), PorterDuff.Mode.SRC_ATOP);
-        }
     }
 
     private StringBuilder getName() {

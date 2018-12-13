@@ -17,13 +17,11 @@
 
 package de.Maxr1998.xposed.maxlock.hooks;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.View;
 
@@ -47,74 +45,45 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 class SystemUI {
 
     static final String PACKAGE_NAME = "com.android.systemui";
-    static final String PACKAGE_NAME_KEYGUARD = "com.android.keyguard";
-    private static final boolean LOLLIPOP = SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     private static final boolean NOUGAT = SDK_INT >= Build.VERSION_CODES.N;
 
     static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
         try {
             ColorSupplier color = () -> prefs.getBoolean(Common.USE_DARK_STYLE, false) ? 0xFF212121 : Color.WHITE;
             final Paint paint = new Paint();
-            if (LOLLIPOP) {
-                String methodName = (NOUGAT ? "" : "re") + "bindToTask";
-                hookAllMethods(findClass(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader), methodName, new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) {
-                        Object task = param.args[0];
-                        String packageName = ((Intent) getObjectField(getObjectField(task, "key"), "baseIntent")).getComponent().getPackageName();
-                        paint.setColor(color.getAsColor());
-                        ((View) param.thisObject).setTag(
-                                prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) &&
-                                        prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) &&
-                                        prefsApps.getBoolean(packageName, false) &&
-                                        !iModActive(packageName, prefsApps, prefsHistory)
-                        );
+            String methodName = (NOUGAT ? "" : "re") + "bindToTask";
+            hookAllMethods(findClass(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader), methodName, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    Object task = param.args[0];
+                    String packageName = ((Intent) getObjectField(getObjectField(task, "key"), "baseIntent")).getComponent().getPackageName();
+                    paint.setColor(color.getAsColor());
+                    ((View) param.thisObject).setTag(
+                            prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) &&
+                                    prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) &&
+                                    prefsApps.getBoolean(packageName, false) &&
+                                    !iModActive(packageName, prefsApps, prefsHistory)
+                    );
+                }
+            });
+            findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "onDraw", Canvas.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    if (Boolean.TRUE.equals(((View) param.thisObject).getTag())) {
+                        Canvas canvas = (Canvas) param.args[0];
+                        int cornerRadius = getIntField(param.thisObject, "mCornerRadius") + 1;
+                        canvas.drawRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), cornerRadius, cornerRadius, paint);
+                        param.setResult(null);
                     }
-                });
-                findAndHookMethod(PACKAGE_NAME + ".recents.views.TaskViewThumbnail", lPParam.classLoader, "onDraw", Canvas.class, new XC_MethodHook() {
-                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        if (Boolean.TRUE.equals(((View) param.thisObject).getTag())) {
-                            Canvas canvas = (Canvas) param.args[0];
-                            int cornerRadius = getIntField(param.thisObject, "mCornerRadius") + 1;
-                            canvas.drawRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), cornerRadius, cornerRadius, paint);
-                            param.setResult(null);
-                        }
-                    }
-                });
-            } else {
-                findAndHookMethod(PACKAGE_NAME + ".recent.TaskDescription", lPParam.classLoader, "getThumbnail", new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) {
-                        String packageName = getObjectField(param.thisObject, "packageName").toString();
-                        if (prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) &&
-                                prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) &&
-                                prefsApps.getBoolean(packageName, false) &&
-                                !iModActive(packageName, prefsApps, prefsHistory)) {
-                            param.setResult(new ColorDrawable(color.getAsColor()));
-                        }
-                    }
-                });
-            }
+                }
+            });
         } catch (Throwable t) {
             log(t);
         }
     }
 
     static void initScreenOff(final XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
-        // Resolve vars
-        String hookedClass;
-        try {
-            if (LOLLIPOP) throw new Error();
-            // Handle MIUI Keyguard class
-            findClass(PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator", lPParam.classLoader); // Throws Error if not found
-            log("ML: Recognized MIUI device.");
-            hookedClass = PACKAGE_NAME_KEYGUARD + ".MiuiKeyguardViewMediator";
-        } catch (Error e) {
-            hookedClass = lPParam.packageName.replace(".keyguard", "") + ".keyguard.KeyguardViewMediator";
-        }
-
+        String hookedClass = lPParam.packageName + ".KeyguardViewMediator";
         final XC_MethodHook hook = new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) {

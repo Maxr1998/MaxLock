@@ -19,14 +19,7 @@ package de.Maxr1998.xposed.maxlock.ui.lockscreen;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RadialGradient;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
+import android.content.res.TypedArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,57 +29,35 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import androidx.core.content.ContextCompat;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 
 public class KnockCodeHelper {
     private final ArrayList<Float> knockCodeX;
     private final ArrayList<Float> knockCodeY;
-    private final LockView mLockView;
-    private final FrameLayout mContainer;
-    private final Context mContext;
-    private final Paint touchColorLegacy;
+    private final LockView lockView;
+    private final FrameLayout container;
     private int containerX, containerY;
-    private Bitmap highlightLegacy;
 
-    @SuppressWarnings("deprecation")
-    public KnockCodeHelper(LockView lockView, FrameLayout container) {
-        mLockView = lockView;
-        mContainer = container;
-        mContext = mContainer.getContext();
+    @SuppressLint("ClickableViewAccessibility")
+    KnockCodeHelper(LockView lv, FrameLayout c) {
+        lockView = lv;
+        container = c;
+        Context context = container.getContext();
 
         knockCodeX = new ArrayList<>();
         knockCodeY = new ArrayList<>();
 
-        if (mLockView.getPrefs().getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mContainer.setForeground(mContext.obtainStyledAttributes(new int[]{R.attr.highlightDrawable}).getDrawable(0));
-                // Destroy others
-                touchColorLegacy = null;
-            } else {
-                touchColorLegacy = new Paint();
-                touchColorLegacy.setColor(ContextCompat.getColor(mContext, R.color.legacy_highlight_dark));
-                touchColorLegacy.setStrokeWidth(1);
-                touchColorLegacy.setStyle(Paint.Style.FILL_AND_STROKE);
-            }
-        } else {
-            touchColorLegacy = null;
+        if (lockView.getPrefs().getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true)) {
+            TypedArray a = context.obtainStyledAttributes(new int[]{R.attr.highlightDrawable});
+            container.setForeground(a.getDrawable(0));
+            a.recycle();
         }
-        mContainer.setOnTouchListener((v, e) -> {
+        container.setOnTouchListener((v, e) -> {
             if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                if (touchColorLegacy != null) {
-                    float x = e.getRawX(), y = e.getRawY();
-                    touchColorLegacy.setShader(new RadialGradient(x - containerX, y - containerY, 200,
-                            ContextCompat.getColor(mContext, R.color.legacy_highlight_dark), Color.TRANSPARENT, Shader.TileMode.CLAMP));
-                    Canvas c = new Canvas(highlightLegacy);
-                    c.drawCircle(x - containerX, y - containerY, 100, touchColorLegacy);
-                    mContainer.invalidate();
-                }
-
                 // Center values
-                int viewCenterX = containerX + mContainer.getWidth() / 2;
-                int viewCenterY = containerY + mContainer.getHeight() / 2;
+                int viewCenterX = containerX + container.getWidth() / 2;
+                int viewCenterY = containerY + container.getHeight() / 2;
 
                 // Track touch positions
                 knockCodeX.add(e.getRawX());
@@ -122,51 +93,37 @@ public class KnockCodeHelper {
                         b.append('4');
                     }
                 }
-                mLockView.setKey(b.toString(), false);
-                mLockView.appendToInput("\u2022");
-                mLockView.checkInput();
-            } else if (e.getActionMasked() == MotionEvent.ACTION_UP) {
-                if (mLockView.getPrefs().getBoolean(Common.MAKE_KC_TOUCH_VISIBLE, true) && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    highlightLegacy.eraseColor(Color.TRANSPARENT);
-                    mContainer.invalidate();
-                }
+                lockView.setKey(b.toString(), false);
+                lockView.appendToInput("\u2022");
+                lockView.checkInput();
             }
             return false;
         });
-        if (mLockView.getPrefs().getBoolean(Common.SHOW_KC_DIVIDER, true) && !mLockView.isLandscape()) {
-            View divider = new View(mContext);
-            divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(mContext.getResources().getDisplayMetrics().density)));
-            if (mLockView.getPrefs().getBoolean(Common.INVERT_COLOR, false)) {
-                divider.setBackground(mContext.getResources().getDrawable(android.R.color.black));
+        if (lockView.getPrefs().getBoolean(Common.SHOW_KC_DIVIDER, true) && !this.lockView.isLandscape()) {
+            View divider = new View(context);
+            divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(context.getResources().getDisplayMetrics().density)));
+            if (lockView.getPrefs().getBoolean(Common.INVERT_COLOR, false)) {
+                divider.setBackground(context.getResources().getDrawable(android.R.color.black));
             } else {
-                divider.setBackgroundColor(mContext.getResources().getColor(R.color.divider_dark));
+                divider.setBackgroundColor(context.getResources().getColor(R.color.divider_dark));
             }
-            mContainer.addView(divider);
+            container.addView(divider);
         }
 
-        mLockView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        lockView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @SuppressLint("NewApi")
             @SuppressWarnings("deprecation")
             @Override
             public void onGlobalLayout() {
                 // Remove layout listener
-                mLockView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                lockView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 // Center values
                 int[] loc = new int[2];
-                mContainer.getLocationOnScreen(loc);
+                container.getLocationOnScreen(loc);
                 containerX = loc[0];
                 containerY = loc[1];
-
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-                    setHighlightLegacy();
-                }
             }
         });
-    }
-
-    private void setHighlightLegacy() {
-        highlightLegacy = Bitmap.createBitmap(mContainer.getWidth(), mContainer.getHeight(), Bitmap.Config.ARGB_8888);
-        mContainer.setBackground(new BitmapDrawable(mContainer.getResources(), highlightLegacy));
     }
 
     public void clear(boolean full) {

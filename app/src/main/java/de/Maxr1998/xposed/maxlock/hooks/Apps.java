@@ -118,14 +118,11 @@ class Apps {
                                 replacementBuilder.setContentTitle(replacementText);
                             } else replacementBuilder.setContentTitle(appName)
                                     .setContentText(replacementText);
-
-                            if (SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                replacementBuilder.setColor(mlColor)
-                                        .setGroup(notification.getGroup())
-                                        .setSortKey(notification.getSortKey())
-                                        .setSound(notification.sound, notification.audioAttributes)
-                                        .setVisibility(Notification.VISIBILITY_SECRET);
-                            }
+                            replacementBuilder.setColor(mlColor)
+                                    .setGroup(notification.getGroup())
+                                    .setSortKey(notification.getSortKey())
+                                    .setSound(notification.sound, notification.audioAttributes)
+                                    .setVisibility(Notification.VISIBILITY_SECRET);
                             if (SDK_INT >= Build.VERSION_CODES.M)
                                 replacementBuilder.setSmallIcon(notification.getSmallIcon());
                             if (SDK_INT >= Build.VERSION_CODES.O)

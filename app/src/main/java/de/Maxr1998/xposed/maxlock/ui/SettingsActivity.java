@@ -55,7 +55,6 @@ import androidx.lifecycle.ViewModelProviders;
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
-import de.Maxr1998.xposed.maxlock.lib.StatusBarTintApi;
 import de.Maxr1998.xposed.maxlock.ui.firstStart.FirstStartActivity;
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
 import de.Maxr1998.xposed.maxlock.ui.settings.MaxLockPreferenceFragment;
@@ -230,13 +229,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     protected void onStart() {
         super.onStart();
         invalidateOptionsMenu();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            StatusBarTintApi.sendColorChangeIntent(ContextCompat.getColor(this, R.color.primary_red_dark), -3, Color.BLACK, -3, this);
     }
 
     @Override

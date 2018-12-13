@@ -43,14 +43,15 @@ public final class NotificationHelper {
 
     public static final int IMOD_NOTIFICATION_ID = 0x130D;
     public static final int APP_INSTALLED_NOTIFICATION_ID = 0x2EE;
-    private static final String IMOD_CHANNEL = "notification_imod";
     public static final String TASKER_CHANNEL = "notification_tasker";
+    private static final String IMOD_CHANNEL = "notification_imod";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void createNotificationChannels(Context context) {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel iMod = new NotificationChannel(IMOD_CHANNEL, context.getString(R.string.pref_screen_delayed_relock), NotificationManager.IMPORTANCE_MIN);
         NotificationChannel tasker = new NotificationChannel(TASKER_CHANNEL, "Tasker", NotificationManager.IMPORTANCE_MIN);
+        if (nm == null) return;
         nm.createNotificationChannel(iMod);
         nm.createNotificationChannel(tasker);
     }
@@ -76,12 +77,10 @@ public final class NotificationHelper {
                 .setContentIntent(PendingIntent.getActivity(context.getApplicationContext(), 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                 .setOngoing(true)
                 .setAutoCancel(true)
-                .setShowWhen(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setPriority(NotificationCompat.PRIORITY_MIN)
-                    .setCategory(NotificationCompat.CATEGORY_STATUS)
-                    .setColor(ContextCompat.getColor(context, R.color.accent));
-        }
+                .setShowWhen(false)
+                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .setColor(ContextCompat.getColor(context, R.color.accent));
         nm.notify(IMOD_NOTIFICATION_ID, builder.build());
     }
 
@@ -99,7 +98,7 @@ public final class NotificationHelper {
             appName = packageName;
         }
 
-        @SuppressWarnings("deprecation") NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, /* Whatever */ IMOD_CHANNEL)
                 .setContentTitle(context.getString(R.string.notification_lock_new_app_title))
                 .setContentText(appName)
                 .setSmallIcon(R.drawable.ic_lock_48dp)
@@ -107,16 +106,14 @@ public final class NotificationHelper {
                 .addAction(new NotificationCompat.Action(0, context.getString(R.string.notification_lock_new_app_action_never_again),
                         PendingIntent.getBroadcast(context, 0, neverShowAgain, PendingIntent.FLAG_UPDATE_CURRENT)))
                 .addAction(new NotificationCompat.Action(0, context.getString(R.string.notification_lock_new_app_action_lock),
-                        PendingIntent.getBroadcast(context, 0, lockApp, PendingIntent.FLAG_UPDATE_CURRENT)));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(NotificationCompat.CATEGORY_RECOMMENDATION)
-                    .setColor(ContextCompat.getColor(context, R.color.accent));
-            try {
-                builder.setVibrate(new long[0]);
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
+                        PendingIntent.getBroadcast(context, 0, lockApp, PendingIntent.FLAG_UPDATE_CURRENT)))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_RECOMMENDATION)
+                .setColor(ContextCompat.getColor(context, R.color.accent));
+        try {
+            // Show as heads-up
+            builder.setVibrate(new long[0]);
+        } catch (SecurityException ignored) {
         }
         NotificationManagerCompat nm = NotificationManagerCompat.from(context);
         nm.notify(APP_INSTALLED_NOTIFICATION_ID, builder.build());
