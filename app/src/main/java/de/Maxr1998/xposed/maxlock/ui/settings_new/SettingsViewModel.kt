@@ -35,8 +35,12 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app), CoroutineScop
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
+    internal var locked = true
+    private val lockLifecycleCallbacks = LockLifecycleCallbacks(this)
+
     init {
         launch { startup(app) }
+        app.registerActivityLifecycleCallbacks(lockLifecycleCallbacks)
     }
 
     val preferencesAdapter = PreferencesAdapter(screen(app) {

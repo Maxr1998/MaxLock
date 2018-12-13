@@ -72,7 +72,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         }
 
         // Show lockscreen if needed
-        if (!prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {
+        if (viewModel.locked && !prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {
             viewRoot.forEach { it.isVisible = false }
             viewRoot.addView(lockscreen, MATCH_PARENT, MATCH_PARENT)
         }
@@ -122,6 +122,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         TransitionManager.beginDelayedTransition(viewRoot, Fade())
         viewRoot.forEach { it.isVisible = true }
         lockscreen.isVisible = false
+        viewModel.locked = false
     }
 
     override fun onScreenChanged(screen: PreferenceScreen, subScreen: Boolean) {
