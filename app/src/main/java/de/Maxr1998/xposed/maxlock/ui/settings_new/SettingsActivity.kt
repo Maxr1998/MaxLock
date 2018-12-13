@@ -17,27 +17,33 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings_new
 
+import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.transition.Fade
 import android.transition.TransitionManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.browser.customtabs.*
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.RecyclerView
 import de.Maxr1998.modernpreferences.PreferenceScreen
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.xposed.maxlock.Common
+import de.Maxr1998.xposed.maxlock.Common.*
 import de.Maxr1998.xposed.maxlock.R
+import de.Maxr1998.xposed.maxlock.ui.SettingsActivity
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener
 import de.Maxr1998.xposed.maxlock.util.Util
@@ -54,6 +60,8 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     private val lockscreen by lazy { LockView(this, null) }
     private var ctConnection: CustomTabsServiceConnection? = null
     private var ctSession: CustomTabsSession? = null
+    private val devicePolicyManager by lazy { getSystemService<DevicePolicyManager>() }
+    private val deviceAdmin by lazy { ComponentName(this, SettingsActivity.UninstallProtectionReceiver::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Util.setTheme(this)
@@ -62,6 +70,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         setContentView(R.layout.activity_new_settings)
         setSupportActionBar(findViewById(R.id.toolbar))
         originalTitle = title.toString()
+        viewRoot.addView(lockscreen, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
         // ViewModel
         viewModel = ViewModelProviders.of(this).get()
@@ -70,15 +79,27 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         recyclerView.adapter = preferencesAdapter.apply {
             onScreenChangeListener = this@SettingsActivity
         }
+        observePreferenceClicks()
+
+        // Initialize custom tabs service
+        bindCustomTabsService()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (devicePolicyManager?.isAdminActive(deviceAdmin) == true) {
+            viewModel.prefUninstall.apply {
+                titleRes = R.string.pref_uninstall
+                summaryRes = -1
+                requestRebind()
+            }
+        }
 
         // Show lockscreen if needed
         if (viewModel.locked && !prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {
             viewRoot.forEach { it.isVisible = false }
-            viewRoot.addView(lockscreen, MATCH_PARENT, MATCH_PARENT)
+            lockscreen.isVisible = true
         }
-
-        // Initialize custom tabs service
-        bindCustomTabsService()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -133,6 +154,32 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
             else -> originalTitle
         }
         preferencesAdapter.restoreAndObserveScrollPosition(recyclerView)
+    }
+
+    private fun observePreferenceClicks() {
+        viewModel.activityPreferenceClickListener.observe(this, Observer { preferenceKey ->
+            when (preferenceKey) {
+                USE_DARK_STYLE, USE_AMOLED_BLACK -> recreate()
+                UNINSTALL -> {
+                    if (devicePolicyManager?.isAdminActive(deviceAdmin) != true) {
+                        val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+                        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, deviceAdmin)
+                        startActivity(intent)
+                    } else {
+                        devicePolicyManager?.removeActiveAdmin(deviceAdmin)
+                        viewModel.prefUninstall.apply {
+                            titleRes = R.string.pref_prevent_uninstall
+                            summaryRes = R.string.pref_prevent_uninstall_summary
+                            requestRebind()
+                        }
+                        val uninstall = Intent(Intent.ACTION_DELETE)
+                        uninstall.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        uninstall.data = Uri.parse("package:de.Maxr1998.xposed.maxlock")
+                        startActivity(uninstall)
+                    }
+                }
+            }
+        })
     }
 
     override fun onBackPressed() {

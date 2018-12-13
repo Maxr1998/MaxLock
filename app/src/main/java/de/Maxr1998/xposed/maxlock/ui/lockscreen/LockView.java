@@ -74,9 +74,13 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     private TextView mMessageArea;
     private KnockCodeHelper mKnockCodeHolder;
 
-    // For use in app layouts
+    /**
+     * Use only in settings
+     */
     public LockView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, context.getApplicationContext().getPackageName(), SettingsActivity.class.getName());
+        if (context instanceof de.Maxr1998.xposed.maxlock.ui.settings_new.SettingsActivity)
+            setVisibility(GONE);
     }
 
     public LockView(Context context, AttributeSet attributeSet, String packageName, String activityName) {

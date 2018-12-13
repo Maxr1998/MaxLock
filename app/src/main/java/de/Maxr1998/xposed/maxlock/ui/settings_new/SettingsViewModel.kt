@@ -18,25 +18,34 @@
 package de.Maxr1998.xposed.maxlock.ui.settings_new
 
 import android.app.Application
+import android.content.Intent
 import android.os.Build
 import androidx.lifecycle.AndroidViewModel
+import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.modernpreferences.helpers.*
+import de.Maxr1998.modernpreferences.preferences.TwoStatePreference
 import de.Maxr1998.xposed.maxlock.Common.*
 import de.Maxr1998.xposed.maxlock.R
+import de.Maxr1998.xposed.maxlock.ui.settings.DonateActivity
 import de.Maxr1998.xposed.maxlock.ui.settings_new.implementation.ImplementationDialogPreference
+import de.Maxr1998.xposed.maxlock.util.GenericEventLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class SettingsViewModel(app: Application) : AndroidViewModel(app), CoroutineScope {
+class SettingsViewModel(app: Application) : AndroidViewModel(app),
+        CoroutineScope, Preference.OnClickListener, TwoStatePreference.OnCheckedChangeListener {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
-
     internal var locked = true
     private val lockLifecycleCallbacks = LockLifecycleCallbacks(this)
+
+    val activityPreferenceClickListener = GenericEventLiveData<String>()
+
+    lateinit var prefUninstall: Preference
 
     init {
         launch { startup(app) }
@@ -78,11 +87,13 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app), CoroutineScop
         }
         switch(USE_DARK_STYLE) {
             titleRes = R.string.pref_use_dark_style
+            clickListener = this@SettingsViewModel
         }
         switch(USE_AMOLED_BLACK) {
             titleRes = R.string.pref_use_amoled_black
             summaryRes = R.string.pref_use_amoled_black_summary
             dependency = USE_DARK_STYLE
+            clickListener = this@SettingsViewModel
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
             switch(NEW_APP_NOTIFICATION) {
@@ -98,17 +109,39 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app), CoroutineScop
         }
         pref(DONATE) {
             titleRes = R.string.pref_donate_upgrade_pro
+            clickListener = this@SettingsViewModel
         }
         switch(ENABLE_PRO) {
             titleRes = R.string.pref_enable_pro
             summaryRes = R.string.pref_enable_pro_summary
         }
-        pref(UNINSTALL) {
+        prefUninstall = pref(UNINSTALL) {
             titleRes = R.string.pref_prevent_uninstall
             summaryRes = R.string.pref_prevent_uninstall_summary
+            clickListener = this@SettingsViewModel
         }
         pref(SEND_FEEDBACK) {
             titleRes = R.string.pref_send_feedback
         }
     })
+
+    override fun onClick(preference: Preference, holder: PreferencesAdapter.ViewHolder): Boolean {
+        val context = holder.root.context
+        when (preference.key) {
+            // Dispatch to activity
+            USE_DARK_STYLE,
+            USE_AMOLED_BLACK,
+            UNINSTALL -> activityPreferenceClickListener.call(preference.key)
+            DONATE -> context.startActivity(Intent(context, DonateActivity::class.java))
+        }
+        return false
+    }
+
+    override fun onCheckedChanged(preference: TwoStatePreference, holder: PreferencesAdapter.ViewHolder?, checked: Boolean): Boolean {
+        return true
+    }
+
+    override fun onCleared() {
+        getApplication<Application>().unregisterActivityLifecycleCallbacks(lockLifecycleCallbacks)
+    }
 }
