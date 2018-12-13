@@ -78,6 +78,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
             titleRes = R.string.pref_choose_apps
             summaryRes = R.string.pref_choose_apps_summary
             iconRes = R.drawable.ic_apps_24dp
+            clickListener = this@SettingsViewModel
         }
         categoryHeader(CATEGORY_APPLICATION_UI) {
             titleRes = R.string.pref_category_ui
@@ -129,6 +130,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
         val context = holder.root.context
         when (preference.key) {
             // Dispatch to activity
+            CHOOSE_APPS,
             USE_DARK_STYLE,
             USE_AMOLED_BLACK,
             UNINSTALL -> activityPreferenceClickListener.call(preference.key)

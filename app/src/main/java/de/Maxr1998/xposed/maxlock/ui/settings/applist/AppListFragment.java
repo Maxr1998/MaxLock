@@ -85,13 +85,12 @@ public class AppListFragment extends Fragment {
         super.onAttach(context);
         if (getActivity() != null) {
             appListModel = ViewModelProviders.of(getActivity()).get(AppListModel.class);
+            appListModel.loadIfNeeded();
             appListModel.getAppsLoadedListener().observe(this, o ->
                     rootView.findViewById(android.R.id.progress).setVisibility(View.GONE));
             appListModel.getDialogDispatcher().observe(this, dialog -> {
-                if (dialog != null) {
+                if (dialog != null)
                     UtilKt.showWithLifecycle(dialog, this);
-                    appListModel.getDialogDispatcher().setValue(null);
-                }
             });
             appListModel.getFragmentFunctionDispatcher().observe(this, f -> {
                 if (f != null) {

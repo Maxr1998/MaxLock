@@ -32,18 +32,20 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.SortedList
 import de.Maxr1998.xposed.maxlock.BuildConfig
+import de.Maxr1998.xposed.maxlock.util.GenericEventLiveData
 import de.Maxr1998.xposed.maxlock.util.KUtil.getLauncherPackages
 import java.text.Collator
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.collections.ArrayList
 
 class AppListModel(application: Application) : AndroidViewModel(application) {
-    val adapter = AppListAdapter(this, application)
+    val adapter: AppListAdapter by lazy { AppListAdapter(this, application) }
     private val appListCallback = AppListCallback(adapter)
     val appList = SortedList(AppInfo::class.java, appListCallback)
     val appListBackup = ArrayList<AppInfo>()
-    val appsLoadedListener = MutableLiveData<Any?>()
-    val dialogDispatcher = MutableLiveData<AlertDialog?>()
+    val appsLoadedListener = GenericEventLiveData<Any?>()
+    val dialogDispatcher = GenericEventLiveData<AlertDialog?>()
     val fragmentFunctionDispatcher = MutableLiveData<(Fragment.() -> Any)?>()
     var loadAll = false
     val iconCache = LruCache<String, Drawable>(
@@ -51,8 +53,14 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
     )
     private lateinit var launcherPackages: List<String>
 
-    init {
-        loadData()
+    private var loaded = AtomicBoolean(false)
+
+    fun loadIfNeeded(): Boolean {
+        if (loaded.compareAndSet(false, true)) {
+            loadData()
+            return true
+        }
+        return false
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -83,7 +91,7 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
                 result?.let {
                     appListBackup.clear()
                     appListBackup.addAll(it)
-                    appsLoadedListener.value = null
+                    appsLoadedListener.call(null)
                     appList.replaceAll(it)
                 }
             }

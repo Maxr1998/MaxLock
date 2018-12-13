@@ -27,12 +27,13 @@ import android.transition.TransitionManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.browser.customtabs.*
+import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -45,6 +46,8 @@ import de.Maxr1998.xposed.maxlock.Common.*
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView
+import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListAdapter
+import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListModel
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener
 import de.Maxr1998.xposed.maxlock.util.Util
 import de.Maxr1998.xposed.maxlock.util.prefs
@@ -52,12 +55,15 @@ import de.Maxr1998.xposed.maxlock.util.prefsApps
 import java.util.*
 
 class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, PreferencesAdapter.OnScreenChangeListener {
-    private lateinit var viewModel: SettingsViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
+    private lateinit var appListViewModel: AppListModel
     private lateinit var originalTitle: String
-    private val preferencesAdapter get() = viewModel.preferencesAdapter
+    private val preferencesAdapter get() = settingsViewModel.preferencesAdapter
     private val viewRoot by lazy { findViewById<ViewGroup>(R.id.content_view_settings) }
+    private val uiComponents by lazy { findViewById<Group>(R.id.ui_components) }
     private val recyclerView by lazy { findViewById<RecyclerView>(android.R.id.list) }
     private val lockscreen by lazy { LockView(this, null) }
+    private val progress by lazy { findViewById<ProgressBar>(android.R.id.progress) }
     private var ctConnection: CustomTabsServiceConnection? = null
     private var ctSession: CustomTabsSession? = null
     private val devicePolicyManager by lazy { getSystemService<DevicePolicyManager>() }
@@ -72,14 +78,30 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         originalTitle = title.toString()
         viewRoot.addView(lockscreen, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
-        // ViewModel
-        viewModel = ViewModelProviders.of(this).get()
+        // ViewModels
+        settingsViewModel = ViewModelProviders.of(this).get()
+        appListViewModel = ViewModelProviders.of(this).get()
+
+        // Restore state if possible/needed
+        savedInstanceState?.apply {
+            when (getInt(ADAPTER_SAVED_STATE)) {
+                ADAPTER_APP_LIST -> recyclerView.adapter = appListViewModel.adapter
+            }
+            // Restore preference adapter state from saved state, if needed
+            getParcelable<PreferencesAdapter.SavedState>(PREF_ADAPTER_SAVED_STATE)
+                    ?.let(preferencesAdapter::loadSavedState)
+        }
 
         // Preferences
-        recyclerView.adapter = preferencesAdapter.apply {
-            onScreenChangeListener = this@SettingsActivity
+        if (recyclerView.adapter == null) {
+            recyclerView.adapter = preferencesAdapter.apply {
+                onScreenChangeListener = this@SettingsActivity
+            }
         }
         observePreferenceClicks()
+        appListViewModel.appsLoadedListener.observe(this, Observer {
+            progress.isVisible = false
+        })
 
         // Initialize custom tabs service
         bindCustomTabsService()
@@ -88,7 +110,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     override fun onStart() {
         super.onStart()
         if (devicePolicyManager?.isAdminActive(deviceAdmin) == true) {
-            viewModel.prefUninstall.apply {
+            settingsViewModel.prefUninstall.apply {
                 titleRes = R.string.pref_uninstall
                 summaryRes = -1
                 requestRebind()
@@ -96,8 +118,8 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         }
 
         // Show lockscreen if needed
-        if (viewModel.locked && !prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {
-            viewRoot.forEach { it.isVisible = false }
+        if (settingsViewModel.locked && !prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {
+            uiComponents.isVisible = false
             lockscreen.isVisible = true
         }
     }
@@ -141,9 +163,9 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
 
     override fun onAuthenticationSucceeded() {
         TransitionManager.beginDelayedTransition(viewRoot, Fade())
-        viewRoot.forEach { it.isVisible = true }
+        uiComponents.isVisible = true
         lockscreen.isVisible = false
-        viewModel.locked = false
+        settingsViewModel.locked = false
     }
 
     override fun onScreenChanged(screen: PreferenceScreen, subScreen: Boolean) {
@@ -157,8 +179,13 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     }
 
     private fun observePreferenceClicks() {
-        viewModel.activityPreferenceClickListener.observe(this, Observer { preferenceKey ->
+        settingsViewModel.activityPreferenceClickListener.observe(this, Observer { preferenceKey ->
             when (preferenceKey) {
+                CHOOSE_APPS -> {
+                    recyclerView.adapter = appListViewModel.adapter
+                    if (appListViewModel.loadIfNeeded())
+                        progress.isVisible = true
+                }
                 USE_DARK_STYLE, USE_AMOLED_BLACK -> recreate()
                 UNINSTALL -> {
                     if (devicePolicyManager?.isAdminActive(deviceAdmin) != true) {
@@ -167,7 +194,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
                         startActivity(intent)
                     } else {
                         devicePolicyManager?.removeActiveAdmin(deviceAdmin)
-                        viewModel.prefUninstall.apply {
+                        settingsViewModel.prefUninstall.apply {
                             titleRes = R.string.pref_prevent_uninstall
                             summaryRes = R.string.pref_prevent_uninstall_summary
                             requestRebind()
@@ -183,8 +210,22 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     }
 
     override fun onBackPressed() {
-        if (!preferencesAdapter.goBack())
+        if (recyclerView.adapter != preferencesAdapter) {
+            recyclerView.apply {
+                progress.isVisible = false
+                adapter = preferencesAdapter
+            }
+        } else if (!preferencesAdapter.goBack())
             super.onBackPressed()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(ADAPTER_SAVED_STATE, when (recyclerView.adapter?.javaClass) {
+            AppListAdapter::class.java -> ADAPTER_APP_LIST
+            else -> 0
+        })
+        outState.putParcelable(PREF_ADAPTER_SAVED_STATE, preferencesAdapter.getSavedState())
     }
 
     override fun onDestroy() {
@@ -216,5 +257,11 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
             override fun onServiceDisconnected(name: ComponentName) {}
         }
         CustomTabsClient.bindCustomTabsService(this, ctPackageName, ctConnection)
+    }
+
+    companion object {
+        const val ADAPTER_SAVED_STATE = "adapter_state"
+        const val PREF_ADAPTER_SAVED_STATE = "pref_adapter_state"
+        const val ADAPTER_APP_LIST = 1
     }
 }

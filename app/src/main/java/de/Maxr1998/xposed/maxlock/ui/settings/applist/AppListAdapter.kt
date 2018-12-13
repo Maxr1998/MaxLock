@@ -85,10 +85,10 @@ class AppListAdapter(val appListModel: AppListModel, context: Context) : Recycle
                             2 -> prefKey = appInfo.packageName + Common.APP_HIDE_NOTIFICATIONS_PREFERENCE
                             3 -> prefKey = appInfo.packageName + Common.APP_HIDE_NOTIFICATION_CONTENT_PREFERENCE
                         }
-                        prefKey?.let {
+                        prefKey?.let { key ->
                             prefsApps.edit {
-                                if (isChecked) putBoolean(it, true)
-                                else remove(it)
+                                if (isChecked) putBoolean(key, true)
+                                else remove(key)
                             }
                         }
                     }
@@ -97,7 +97,7 @@ class AppListAdapter(val appListModel: AppListModel, context: Context) : Recycle
                 optionsDialog.setNeutralButton(R.string.dialog_button_exclude_activities) { _, _ ->
                     showActivities(appListModel, it.context.asReference(), appInfo.packageName)
                 }
-            optionsDialog.create().let { appListModel.dialogDispatcher.value = it }
+            optionsDialog.create().let { dialog -> appListModel.dialogDispatcher.call(dialog) }
         }
     }
 
@@ -158,7 +158,7 @@ class AppListAdapter(val appListModel: AppListModel, context: Context) : Recycle
                                 MaxLockPreferenceFragment.launchFragment(this, it, false)
                             }
                         }
-                    }.create().let { appListModel.dialogDispatcher.value = it }
+                    }.create().let { appListModel.dialogDispatcher.call(it) }
         } else {
             prefsKeysPerApp.edit {
                 remove(packageName)
