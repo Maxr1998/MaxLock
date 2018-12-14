@@ -37,10 +37,21 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.loader.content.AsyncTaskLoader
+import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.Common.SETTINGS_PACKAGE_NAME
+import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE_APP
 import java.lang.ref.SoftReference
+
+val Context.applicationName
+    get() = StringBuilder(getString(R.string.app_name)).apply {
+        if (Util.isDevMode()) {
+            append(" Indev")
+        } else if (prefs.getBoolean(Common.ENABLE_PRO, false)) {
+            append(" ").append(getString(if (prefs.getBoolean(Common.DONATED, false)) R.string.name_pro else R.string.name_pseudo_pro))
+        }
+    }
 
 fun ViewGroup.inflate(id: Int, attachToRoot: Boolean = false): View =
         LayoutInflater.from(context).inflate(id, this, attachToRoot)
@@ -61,7 +72,7 @@ object KUtil {
     @JvmStatic
     fun getLauncherPackages(pm: PackageManager): List<String> {
         return pm.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), PackageManager.MATCH_DEFAULT_ONLY)
-                .mapTo(ArrayList<String>(), { it.activityInfo.packageName }).apply { remove(SETTINGS_PACKAGE_NAME) }
+                .mapTo(ArrayList<String>()) { it.activityInfo.packageName }.apply { remove(SETTINGS_PACKAGE_NAME) }
     }
 
     @JvmStatic

@@ -48,16 +48,13 @@ import de.Maxr1998.xposed.maxlock.ui.SettingsActivity
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListAdapter
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListModel
-import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener
-import de.Maxr1998.xposed.maxlock.util.Util
-import de.Maxr1998.xposed.maxlock.util.prefs
-import de.Maxr1998.xposed.maxlock.util.prefsApps
+import de.Maxr1998.xposed.maxlock.util.*
 import java.util.*
 
 class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, PreferencesAdapter.OnScreenChangeListener {
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var appListViewModel: AppListModel
-    private lateinit var originalTitle: String
+    private val originalTitle by lazy { applicationName.toString() }
     private val preferencesAdapter get() = settingsViewModel.preferencesAdapter
     private val viewRoot by lazy { findViewById<ViewGroup>(R.id.content_view_settings) }
     private val uiComponents by lazy { findViewById<Group>(R.id.ui_components) }
@@ -75,29 +72,32 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         // Setup UI and Toolbar
         setContentView(R.layout.activity_new_settings)
         setSupportActionBar(findViewById(R.id.toolbar))
-        originalTitle = title.toString()
         viewRoot.addView(lockscreen, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
         // ViewModels
         settingsViewModel = ViewModelProviders.of(this).get()
         appListViewModel = ViewModelProviders.of(this).get()
 
+        // Setup Preferences
+        if (recyclerView.adapter == null) {
+            recyclerView.adapter = preferencesAdapter.apply {
+                onScreenChangeListener = this@SettingsActivity
+            }
+        }
+
         // Restore state if possible/needed
         savedInstanceState?.apply {
             when (getInt(ADAPTER_SAVED_STATE)) {
-                ADAPTER_APP_LIST -> recyclerView.adapter = appListViewModel.adapter
+                ADAPTER_APP_LIST -> {
+                    openAppList()
+                }
             }
             // Restore preference adapter state from saved state, if needed
             getParcelable<PreferencesAdapter.SavedState>(PREF_ADAPTER_SAVED_STATE)
                     ?.let(preferencesAdapter::loadSavedState)
         }
 
-        // Preferences
-        if (recyclerView.adapter == null) {
-            recyclerView.adapter = preferencesAdapter.apply {
-                onScreenChangeListener = this@SettingsActivity
-            }
-        }
+        // Setup event listeners
         observePreferenceClicks()
         appListViewModel.appsLoadedListener.observe(this, Observer {
             progress.isVisible = false
@@ -178,11 +178,17 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         preferencesAdapter.restoreAndObserveScrollPosition(recyclerView)
     }
 
+    private fun openAppList() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setTitle(R.string.pref_screen_apps)
+        recyclerView.adapter = appListViewModel.adapter
+    }
+
     private fun observePreferenceClicks() {
         settingsViewModel.activityPreferenceClickListener.observe(this, Observer { preferenceKey ->
             when (preferenceKey) {
                 CHOOSE_APPS -> {
-                    recyclerView.adapter = appListViewModel.adapter
+                    openAppList()
                     if (appListViewModel.loadIfNeeded())
                         progress.isVisible = true
                 }
@@ -213,6 +219,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         if (recyclerView.adapter != preferencesAdapter) {
             recyclerView.apply {
                 progress.isVisible = false
+                onScreenChanged(preferencesAdapter.currentScreen, preferencesAdapter.isInSubScreen())
                 adapter = preferencesAdapter
             }
         } else if (!preferencesAdapter.goBack())
