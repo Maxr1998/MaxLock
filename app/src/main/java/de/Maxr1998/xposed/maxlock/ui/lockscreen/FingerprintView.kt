@@ -110,13 +110,13 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if (isVisible) authenticate()
+        if (lockView.isVisible) authenticate()
     }
 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
         if (hasWindowFocus) {
-            if (isVisible) authenticate()
+            if (lockView.isVisible) authenticate()
         } else cancellationSignal?.cancel()
     }
 
