@@ -31,7 +31,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -45,8 +44,6 @@ import android.preference.TwoStatePreference;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +83,7 @@ import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.preference.ImplementationPreference;
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity;
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListFragment;
+import de.Maxr1998.xposed.maxlock.ui.settings_new.SettingsUtils;
 import de.Maxr1998.xposed.maxlock.util.KUtil;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
@@ -230,7 +228,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         if (BuildConfig.VERSION_CODE > lastVersionNumber) {
             // Don't show updated dialog on first start
             if (lastVersionNumber > 0)
-                showUpdatedMessage();
+                SettingsUtils.showUpdatedMessage(getActivity());
             prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE).apply();
         } else {
             if (isFirstPane() && allowRatingDialog()) {
@@ -505,7 +503,7 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             case ABOUT:
                 switch (preference.getKey()) {
                     case Common.SHOW_CHANGELOG:
-                        showChangelog();
+                        SettingsUtils.showChangelog(getActivity());
                         return true;
                     case Common.VISIT_WEBSITE:
                         CustomTabsIntent devWebsite = new CustomTabsIntent.Builder(((SettingsActivity) getActivity()).getSession())
@@ -588,27 +586,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     private boolean allowRatingDialog() {
         return !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) && (prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 25 ||
                 System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(14));
-    }
-
-    private void showUpdatedMessage() {
-        AlertDialog message = new AlertDialog.Builder(getActivity())
-                .setMessage(R.string.dialog_maxlock_updated)
-                .setNegativeButton(R.string.dialog_button_whats_new, (dialog, which) -> showChangelog())
-                .setPositiveButton(R.string.dialog_button_got_it, null)
-                .create();
-        message.setCanceledOnTouchOutside(false);
-        message.show();
-    }
-
-    private void showChangelog() {
-        AlertDialog.Builder changelog = new AlertDialog.Builder(getActivity());
-        WebView wv = new WebView(getContext());
-        wv.setWebViewClient(new WebViewClient());
-        wv.getSettings().setUserAgentString("MaxLock App v" + BuildConfig.VERSION_NAME);
-        wv.loadUrl("http://maxlock.maxr1998.de/files/changelog-base.php");
-        changelog.setView(wv);
-        changelog.setPositiveButton(android.R.string.ok, null);
-        changelog.create().show();
     }
 
     public enum Screen {
