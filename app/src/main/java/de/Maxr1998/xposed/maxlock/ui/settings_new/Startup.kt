@@ -12,7 +12,6 @@ import de.Maxr1998.xposed.maxlock.ui.NewAppInstalledBroadcastReceiver
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*

@@ -34,8 +34,10 @@ import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Ref
 import de.Maxr1998.xposed.maxlock.util.inflate
-import kotlinx.coroutines.*
-import kotlinx.coroutines.android.Main
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 fun showActivities(appListModel: AppListModel, context: Ref<Context>, packageName: String) {

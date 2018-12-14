@@ -36,7 +36,6 @@ import de.Maxr1998.xposed.maxlock.util.applicationName
 import de.Maxr1998.xposed.maxlock.util.prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 

@@ -35,7 +35,6 @@ import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.asReference
 import kotlinx.coroutines.*
-import kotlinx.coroutines.android.Main
 import kotlin.coroutines.CoroutineContext
 
 class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view), CoroutineScope {

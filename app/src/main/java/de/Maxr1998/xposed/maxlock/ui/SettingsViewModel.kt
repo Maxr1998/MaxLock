@@ -22,7 +22,6 @@ import androidx.lifecycle.AndroidViewModel
 import de.Maxr1998.xposed.maxlock.ui.settings_new.startup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 

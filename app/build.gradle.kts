@@ -80,15 +80,28 @@ repositories {
 }
 
 dependencies {
-    // Kotlin extras
+    // Kotlin stdlib & coroutines
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Config.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:0.27.0-eap13")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:0.27.0-eap13")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1")
+
+    // AndroidX
+    implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation("androidx.browser:browser:1.0.0")
+    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
+    implementation("androidx.fragment:fragment:1.1.0-alpha02")
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
+    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha01")
+    implementation("com.google.android.material:material:1.1.0-alpha02")
+    //-- KTX
     implementation("androidx.core:core-ktx:1.0.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0")
 
     // From JCenter or other repositories
     //-- 3rd-party
     implementation("com.anjlab.android.iab.v3:library:1.0.38@aar")
+    implementation("com.github.Maxr1998:ModernAndroidPreferences:19ebbb1aba")
     implementation("com.crossbowffs.remotepreferences:remotepreferences:0.5")
     implementation("com.github.attenzione:android-ColorPickerPreference:e3aa301016")
     implementation("com.heinrichreimersoftware:material-intro:1.6")
@@ -97,28 +110,14 @@ dependencies {
     compileOnly("de.robv.android.xposed:api:82")
     compileOnly("de.robv.android.xposed:api:82:sources")
 
-    implementation("com.github.Maxr1998:ModernAndroidPreferences:19ebbb1aba")
-    //-- Android support and Google Services
-    implementation("androidx.appcompat:appcompat:1.0.2")
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.browser:browser:1.0.0")
-    implementation("com.google.android.material:material:1.1.0-alpha02")
-    implementation("androidx.gridlayout:gridlayout:1.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha01")
-    /* includes all other support-v4 libraries */
-    implementation("androidx.fragment:fragment:1.1.0-alpha02")
-    //-- Android Architecture components
-    implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0")
     // Local files
-    implementation(group = "", name = "PatternLock", ext = "aar")
+    implementation("", "PatternLock", ext = "aar")
 
     // Testing dependencies
     androidTestUtil("androidx.test:orchestrator:1.1.1-beta01")
     androidTestImplementation("androidx.test:rules:1.1.1-beta01")
     androidTestImplementation("androidx.test:runner:1.1.1-beta01")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0-alpha4") {
-        exclude("com.android.support", "support-annotations")
         exclude("com.google.code.findbugs", "jsr305")
     }
     androidTestImplementation("com.github.Zhuinden:espresso-helper:0.1.3") {

@@ -28,7 +28,7 @@ class AppFilter(private val adapter: AppListAdapter, private val prefs: SharedPr
         val backup = adapter.appListModel.appListBackup
         val search = filter.toString().toLowerCase()
         val defaultFilter = prefs.getString("app_list_filter", "")
-        if (search.isEmpty() && defaultFilter.isEmpty()) {
+        if (search.isEmpty() && defaultFilter.isNullOrEmpty()) {
             return null
         } else {
             val filteredList = ArrayList<AppListModel.AppInfo>()
