@@ -84,6 +84,17 @@
                 android:resource="@xml/app_shortcuts" />
         </activity-alias>
 
+        <!-- Can be used to open MaxLock from the dialer -->
+        <receiver android:name=".ui.settings_new.HiddenSettingsReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE" />
+                <!-- MAXLOCK on T9 dial pad -->
+                <data
+                    android:host="6295625"
+                    android:scheme="android_secret_code" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="com.haibison.android.lockpattern.LockPatternActivity"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
