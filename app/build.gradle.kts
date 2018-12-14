@@ -107,7 +107,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha01")
     /* includes all other support-v4 libraries */
     implementation("androidx.fragment:fragment:1.1.0-alpha02")
-    implementation("com.google.android.gms:play-services-analytics:16.0.6")
     //-- Android Architecture components
     implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0")
