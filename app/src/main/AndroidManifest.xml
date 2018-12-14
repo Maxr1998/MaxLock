@@ -296,12 +296,7 @@
             android:value="Applocker for the Xposed Framework" />
         <meta-data
             android:name="xposedminversion"
-            android:value="42" />
-
-        <!-- Status bar tinting below Android Lollipop -->
-        <meta-data
-            android:name="override_tinted_status_bar_defaults"
-            android:value="true" />
+            android:value="72" />
 
         <!-- Google Play Services / Analytics -->
         <meta-data
