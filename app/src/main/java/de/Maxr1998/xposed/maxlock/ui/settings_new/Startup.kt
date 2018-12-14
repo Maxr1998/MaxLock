@@ -14,9 +14,7 @@ import de.Maxr1998.xposed.maxlock.util.Util
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
-import org.apache.commons.io.FileUtils
 import java.io.File
-import java.io.IOException
 import java.util.*
 
 suspend fun startup(context: Application) {
@@ -50,18 +48,8 @@ suspend fun startup(context: Application) {
         }
     }
 
+    // Clean up
     withContext(Dispatchers.IO) {
-        // Clean up
-        val backgroundFolder = File(Util.dataDir(context), "background")
-        if (backgroundFolder.exists()) {
-            try {
-                FileUtils.copyFile(File(backgroundFolder, "image"), context.openFileOutput("background", 0))
-                FileUtils.deleteQuietly(backgroundFolder)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-
         val filesToDelete = ArrayList<File>()
         File(Util.dataDir(context), "shared_prefs").listFiles { _, filename ->
             !Arrays.asList("com.google.android.gms.analytics.prefs.xml",
@@ -76,9 +64,9 @@ suspend fun startup(context: Application) {
             !Arrays.asList("Backup", "dev_mode.key").contains(filename)
         }?.let { filesToDelete.addAll(Arrays.asList(*it)) }
         for (f in filesToDelete) {
-            FileUtils.deleteQuietly(f)
+            f.deleteRecursively()
         }
-        FileUtils.deleteQuietly(File(Environment.getExternalStorageDirectory().toString() + "/MaxLock_Backup/"))
+        File(Environment.getExternalStorageDirectory(), "MaxLock_Backup").deleteRecursively()
         prefs.edit().putBoolean(Common.FIRST_START, false).apply()
     }
     Log.i(Util.LOG_TAG_STARTUP, "Finished!")
