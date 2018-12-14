@@ -3,6 +3,7 @@ apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
 //apply plugin: "com.jakewharton.hugo"
 
+ext.kotlin_version = "1.3.11"
 ext.languages = ["de", "es", "fa", "fr", "in", "it", "ja", "pl", "pt", "ru", "tr", "zh-rCN", "zh-rTW"]
 ext.supportLibraryVersion = "1.0.0"
 ext.c_languages = ["de", "es-ES", "fa", "fr", "id", "it", "ja", "pl", "pt-PT", "ru", "tr", "zh-CN", "zh-TW"]
