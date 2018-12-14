@@ -116,6 +116,8 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
                 requestRebind()
             }
         }
+        if (settingsViewModel.refreshPrefDonate())
+            settingsViewModel.prefDonate.requestRebind()
 
         // Show lockscreen if needed
         if (settingsViewModel.locked && !prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {
@@ -171,6 +173,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     override fun onScreenChanged(screen: PreferenceScreen, subScreen: Boolean) {
         supportActionBar?.setDisplayHomeAsUpEnabled(subScreen)
         title = when {
+            screen.title.startsWith(getString(R.string.app_name)) -> getString(R.string.pref_screen_about)
             screen.titleRes != -1 -> getString(screen.titleRes)
             screen.title.isNotEmpty() -> screen.title
             else -> originalTitle

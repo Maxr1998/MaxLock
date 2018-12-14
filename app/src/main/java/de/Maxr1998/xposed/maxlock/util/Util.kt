@@ -19,6 +19,7 @@ package de.Maxr1998.xposed.maxlock.util
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
+import android.app.Application
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
@@ -33,6 +34,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -52,6 +54,9 @@ val Context.applicationName
             append(" ").append(getString(if (prefs.getBoolean(Common.DONATED, false)) R.string.name_pro else R.string.name_pseudo_pro))
         }
     }
+
+inline val AndroidViewModel.application
+    get() = getApplication<Application>()
 
 fun ViewGroup.inflate(id: Int, attachToRoot: Boolean = false): View =
         LayoutInflater.from(context).inflate(id, this, attachToRoot)

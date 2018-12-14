@@ -25,11 +25,15 @@ import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.modernpreferences.helpers.*
 import de.Maxr1998.modernpreferences.preferences.TwoStatePreference
+import de.Maxr1998.xposed.maxlock.BuildConfig
 import de.Maxr1998.xposed.maxlock.Common.*
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.settings.DonateActivity
 import de.Maxr1998.xposed.maxlock.ui.settings_new.implementation.ImplementationDialogPreference
 import de.Maxr1998.xposed.maxlock.util.GenericEventLiveData
+import de.Maxr1998.xposed.maxlock.util.application
+import de.Maxr1998.xposed.maxlock.util.applicationName
+import de.Maxr1998.xposed.maxlock.util.prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.android.Main
@@ -45,6 +49,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
 
     val activityPreferenceClickListener = GenericEventLiveData<String>()
 
+    lateinit var prefDonate: Preference
     lateinit var prefUninstall: Preference
 
     init {
@@ -105,11 +110,12 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
             titleRes = R.string.pref_category_about
         }
         subScreen {
-            titleRes = R.string.pref_screen_about
+            title = app.applicationName.append(" ").append(BuildConfig.VERSION_NAME).toString()
             summaryRes = R.string.pref_about_summary
         }
         pref(DONATE) {
-            titleRes = R.string.pref_donate_upgrade_pro
+            prefDonate = this
+            refreshPrefDonate()
             clickListener = this@SettingsViewModel
         }
         switch(ENABLE_PRO) {
@@ -143,7 +149,19 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
         return true
     }
 
+    /**
+     * @return if we should rebind the preference
+     */
+    fun refreshPrefDonate(): Boolean {
+        val donated = application.prefs.getBoolean(DONATED, false)
+        if (!donated && prefDonate.summaryRes == -1)
+            return false
+        prefDonate.titleRes = if (donated) R.string.pref_donate_thanks_for_donation else R.string.pref_donate_upgrade_pro
+        prefDonate.summaryRes = if (donated) R.string.pref_donate_again_on_pro_summary else -1
+        return true
+    }
+
     override fun onCleared() {
-        getApplication<Application>().unregisterActivityLifecycleCallbacks(lockLifecycleCallbacks)
+        application.unregisterActivityLifecycleCallbacks(lockLifecycleCallbacks)
     }
 }
