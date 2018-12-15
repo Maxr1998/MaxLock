@@ -24,7 +24,6 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.view.LayoutInflater;
@@ -60,8 +59,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.ui.actions.ActionActivity;
@@ -165,27 +162,6 @@ public final class Util {
                 } catch (IOException | OutOfMemoryError e) {
                     Toast.makeText(background.getContext(), "Error loading background image, " + (e instanceof IOException ? ", IOException." : "is it to big?"), Toast.LENGTH_LONG).show();
                 }
-                break;
-            default:
-                activity.getSupportLoaderManager().initLoader(Common.WALLPAPER_LOADER, null, new LoaderManager.LoaderCallbacks<Drawable>() {
-                    @Override
-                    public Loader<Drawable> onCreateLoader(int id, Bundle args) {
-                        return new WallpaperDrawableLoader(background.getContext());
-                    }
-
-                    @Override
-                    public void onLoadFinished(Loader<Drawable> loader, Drawable data) {
-                        if (data != null) {
-                            background.setImageDrawable(data);
-                        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
-                            Toast.makeText(background.getContext(), "Failed to load system wallpaper!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onLoaderReset(Loader<Drawable> loader) {
-                    }
-                });
                 break;
         }
     }
