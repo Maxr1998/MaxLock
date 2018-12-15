@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="sb_no_locking_type">No locking type specified</string>
     <string name="sb_no_locked_apps">No apps chosen to lock</string>
     <string name="sb_action_setup">SET UP</string>
@@ -162,7 +162,7 @@
         <item>Hide notifications</item>
         <item>Hide notification content</item>
     </string-array>
-    <string name="notification_hidden_by_maxlock">Content hidden by MaxLock</string>
+    <string name="notification_hidden_by_maxlock" tools:ignore="unused">Content hidden by MaxLock</string>
     <string name="dialog_button_exclude_activities">Activities</string>
     <string name="dialog_title_exclude_activities">Exclude Activities from lock</string>
     <string name="dialog_button_invert_activities">Invert</string>
@@ -224,13 +224,12 @@
     <string name="tasker_imod_reset_summary">Lock all apps which were previously unlocked with I.Mod</string>
     <string name="tasker_button_apply">Apply</string>
     <string name="tasker_integration_disabled">Tasker integration is currently disabled. You can enable it via \"MaxLock → Locking options → Enable Tasker integration\".</string>
-    <string name="activity_label_toggle_ms_deprecated">Toggle MasterSwitch (Deprecated)</string>
     <string name="unlock_master_switch">Unlock MasterSwitch</string>
     <string name="toast_master_switch_off">MasterSwitch disabled</string>
     <string name="toast_master_switch_on">MasterSwitch re-enabled</string>
 
     <!-- Device admin external -->
-    <string name="maxlock_protected_admin">This admin is protected from being disabled. You can disable it from inside the MaxLock app, when tapping the \"%1$s\" option.</string>
+    <string name="maxlock_protected_admin" tools:ignore="unused">This admin is protected from being disabled. You can disable it from inside the MaxLock app, when tapping the \"%1$s\" option.</string>
 
     <!-- Accessibility -->
     <string name="content_description_fs_phone">Picture of a phone</string>
