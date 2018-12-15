@@ -3,7 +3,7 @@
     <string name="ml_implementation">Implementación de MaxLock</string>
     <string name="ml_status">Estado de MaxLock</string>
     <string name="applock_accessibility_service_summary">Servicio que le permite bloquear sus aplicaciones</string>
-    <string name="applock_accessibility_service_description">Si utilizas MaxLock sin Xposed, este servicio de accesibilidad se utilizará para detectar cambios de aplicación. No hay datos que puedan o sean recolectados del contenido en pantalla en cualquier situación.\n
+    <string name="applock_accessibility_service_description">Si utilizas MaxLock sin Xposed, este servicio de accesibilidad se utilizará para detectar cambios de aplicación. No hay datos que puedan o sean recolectados del contenido en pantalla en cualquier situación.\n 
 Aunque este servicio no proporciona las características de accesibilidad, es fuertemente necesario para que funcionamiento principal de la aplicación, si no se utiliza la implementación predeterminada de Xposed.\n
 \n 
 Permisos:

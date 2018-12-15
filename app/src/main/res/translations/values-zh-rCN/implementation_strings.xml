@@ -13,7 +13,7 @@
     <string name="implementation_default">默认 - 需要Xposed</string>
     <string name="implementation_no_xposed">没\"root\"/Xposed</string>
     <string name="xposed_success_information">Xposed已安装&amp;已激活,真棒!</string>
-    <string name="implementation_alert"><i>由于没-Xposed版本使用无障碍服务,它虽然可以在没有系统修改的每个设备上运行,
+    <string name="implementation_alert"><i>由于没-Xposed版本使用无障碍服务,它虽然可以在没有系统修改的每个设备上运行, 
         而且消耗更多的RAM(系统内存)和电池.\n因此建议使用默认的运行方式,如果您有
         安装Xposed的可能性最好安装它!</i></string>
     <string name="xposed_inactive_warning">MaxLock无法挂钩工作所需的Android系统方法.这可能有几个原因:\n
