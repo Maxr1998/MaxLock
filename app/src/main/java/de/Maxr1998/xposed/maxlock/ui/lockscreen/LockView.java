@@ -308,6 +308,8 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         Util.hideKeyboardFromWindow(getActivity(), this);
         authenticationSucceededListener.onAuthenticationSucceeded();
         TaskerHelper.sendQueryRequest(getActivity(), true, mPackageName);
+        // Reset
+        post(() -> setKey(null, false));
     }
 
     public void handleFailedAttempt() {
