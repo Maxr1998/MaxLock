@@ -47,7 +47,7 @@ public class ActionActivity extends AppCompatActivity implements AuthenticationS
         mode = getIntent().getIntExtra(ActionsHelper.ACTION_EXTRA_KEY, ActionsHelper.ACTION_TOGGLE_MASTER_SWITCH);
         if ((mode == ActionsHelper.ACTION_MASTER_SWITCH_OFF || mode == ActionsHelper.ACTION_TOGGLE_MASTER_SWITCH) && prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)) {
             super.onCreate(savedInstanceState);
-            setContentView(new LockView(this, null, Common.MASTER_SWITCH_ON, getClass().getName()), new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            setContentView(new LockView(this, Common.MASTER_SWITCH_ON, getClass().getName()), new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
             ActionsHelper.callAction(mode, this);
             fireIntentAndFinish();

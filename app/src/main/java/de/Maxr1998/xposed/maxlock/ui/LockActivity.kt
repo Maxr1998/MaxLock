@@ -90,7 +90,7 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
                 onAuthenticationSucceeded()
                 return
             }
-            val lockView = LockView(this, null, names[0], names[1])
+            val lockView = LockView(this, names[0], names[1])
             setContentView(lockView, RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
             ViewCompat.requestApplyInsets(lockView)
             return

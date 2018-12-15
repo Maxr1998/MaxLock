@@ -27,6 +27,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@android:id/list" />
 
+    <de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView
+        android:id="@+id/lockscreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <androidx.constraintlayout.widget.Group
         android:id="@+id/ui_components"
         android:layout_width="0dp"

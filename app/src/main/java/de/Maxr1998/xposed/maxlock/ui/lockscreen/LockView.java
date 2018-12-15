@@ -75,16 +75,29 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     private KnockCodeHelper mKnockCodeHolder;
 
     /**
-     * Use only in settings
+     * Used only in settings
      */
-    public LockView(Context context, AttributeSet attributeSet) {
-        this(context, attributeSet, context.getApplicationContext().getPackageName(), SettingsActivity.class.getName());
-        if (context instanceof de.Maxr1998.xposed.maxlock.ui.settings_new.SettingsActivity)
-            setVisibility(GONE);
+    public LockView(Context context) {
+        this(context, null, 0);
     }
 
-    public LockView(Context context, AttributeSet attributeSet, String packageName, String activityName) {
-        super(getThemedContext(context), attributeSet);
+    public LockView(Context context, AttributeSet attributeSet) {
+        this(context, attributeSet, 0);
+    }
+
+    public LockView(Context context, AttributeSet attributeSet, int defStyleAttr) {
+        this(context, attributeSet, defStyleAttr, context.getApplicationContext().getPackageName(), SettingsActivity.class.getName());
+    }
+
+    /**
+     * Used for lockscreen
+     */
+    public LockView(Context context, String packageName, String activityName) {
+        this(context, null, 0, packageName, activityName);
+    }
+
+    public LockView(Context context, @Nullable AttributeSet attributeSet, int defStyleAttr, String packageName, String activityName) {
+        super(getThemedContext(context), attributeSet, defStyleAttr);
         try {
             authenticationSucceededListener = (AuthenticationSucceededListener) getActivity();
         } catch (ClassCastException e) {

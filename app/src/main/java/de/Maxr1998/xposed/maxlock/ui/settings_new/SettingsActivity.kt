@@ -59,8 +59,8 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     private val viewRoot by lazy { findViewById<ViewGroup>(R.id.content_view_settings) }
     private val uiComponents by lazy { findViewById<Group>(R.id.ui_components) }
     private val recyclerView by lazy { findViewById<RecyclerView>(android.R.id.list) }
-    private val lockscreen by lazy { LockView(this, null) }
     private val progress by lazy { findViewById<ProgressBar>(android.R.id.progress) }
+    private val lockscreen by lazy { findViewById<LockView>(R.id.lockscreen) }
     private var ctConnection: CustomTabsServiceConnection? = null
     private var ctSession: CustomTabsSession? = null
     private val devicePolicyManager by lazy { getSystemService<DevicePolicyManager>() }
@@ -72,7 +72,6 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         // Setup UI and Toolbar
         setContentView(R.layout.activity_new_settings)
         setSupportActionBar(findViewById(R.id.toolbar))
-        viewRoot.addView(lockscreen, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
         // ViewModels
         settingsViewModel = ViewModelProviders.of(this).get()
@@ -82,6 +81,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         if (recyclerView.adapter == null) {
             recyclerView.adapter = preferencesAdapter.apply {
                 onScreenChangeListener = this@SettingsActivity
+                restoreAndObserveScrollPosition(recyclerView)
             }
         }
 
@@ -178,7 +178,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
             screen.title.isNotEmpty() -> screen.title
             else -> originalTitle
         }
-        preferencesAdapter.restoreAndObserveScrollPosition(recyclerView)
+        recyclerView.scrollToPosition(0)
     }
 
     private fun openAppList() {
