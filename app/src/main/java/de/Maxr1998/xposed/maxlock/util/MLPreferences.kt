@@ -18,9 +18,58 @@
 package de.Maxr1998.xposed.maxlock.util
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
+import de.Maxr1998.xposed.maxlock.Common.*
+
+object MLPreferences {
+    private var prefs: SharedPreferences? by SoftReferenceDelegate()
+    private var prefsApps: SharedPreferences? by SoftReferenceDelegate()
+    private var prefsHistory: SharedPreferences? by SoftReferenceDelegate()
+    private var prefsKey: SharedPreferences? by SoftReferenceDelegate()
+    private var prefsKeysPerApp: SharedPreferences? by SoftReferenceDelegate()
+
+    @JvmStatic
+    fun getPreferences(context: Context): SharedPreferences {
+        return prefs ?: PreferenceManager.getDefaultSharedPreferences(context).apply {
+            prefs = this
+        }
+    }
+
+    @JvmStatic
+    fun getPrefsApps(context: Context): SharedPreferences {
+        return prefsApps ?: context.getSharedPreferences(PREFS_APPS, MODE_PRIVATE).apply {
+            prefsApps = this
+        }
+    }
+
+    @JvmStatic
+    fun getPrefsHistory(context: Context): SharedPreferences {
+        return prefsHistory ?: context.getSharedPreferences(PREFS_HISTORY, MODE_PRIVATE).apply {
+            prefsHistory = this
+        }
+    }
+
+    @JvmStatic
+    fun getPreferencesKeys(context: Context): SharedPreferences {
+        return prefsKey ?: context.getSharedPreferences(PREFS_KEY, MODE_PRIVATE).apply {
+            prefsKey = this
+        }
+    }
+
+    @JvmStatic
+    fun getPreferencesKeysPerApp(context: Context): SharedPreferences {
+        return prefsKeysPerApp ?: context.getSharedPreferences(PREFS_KEYS_PER_APP, MODE_PRIVATE)
+                .apply { prefsKeysPerApp = this }
+    }
+}
 
 inline val Context.prefs: SharedPreferences
     get() = MLPreferences.getPreferences(this)
 inline val Context.prefsApps: SharedPreferences
     get() = MLPreferences.getPrefsApps(this)
+inline val Context.prefsKey: SharedPreferences
+    get() = MLPreferences.getPreferencesKeys(this)
+inline val Context.prefsKeysPerApp: SharedPreferences
+    get() = MLPreferences.getPreferencesKeysPerApp(this)

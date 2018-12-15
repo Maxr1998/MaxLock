@@ -17,7 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -34,8 +33,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.R
-import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
+import de.Maxr1998.xposed.maxlock.util.prefs
+import de.Maxr1998.xposed.maxlock.util.prefsKey
+import de.Maxr1998.xposed.maxlock.util.prefsKeysPerApp
 import kotlinx.android.synthetic.main.fragment_lock_setup.view.*
 import kotlinx.android.synthetic.main.split_button.view.*
 import java.util.*
@@ -45,9 +46,6 @@ class LockSetupFragment : Fragment(), View.OnClickListener {
 
     private val lockType by lazy { arguments?.getString(Common.LOCKING_TYPE, null) }
     private val customApp: String  by lazy { arguments?.getString(Common.INTENT_EXTRAS_CUSTOM_APP, "") ?: "" }
-    private val prefs: SharedPreferences by lazy { MLPreferences.getPreferences(activity) }
-    private val prefsKey: SharedPreferences by lazy { MLPreferences.getPreferencesKeys(activity) }
-    private val prefsPerApp: SharedPreferences by lazy { MLPreferences.getPreferencesKeysPerApp(activity) }
     private var mUiStage = "first"
     private var currentValue
         get() = if (isPin()) pinInputView.text.toString() else key.toString()
@@ -191,10 +189,10 @@ class LockSetupFragment : Fragment(), View.OnClickListener {
         } else if (mUiStage == "second") {
             if (currentValue == keyFromFirst) {
                 if (customApp.isEmpty()) {
-                    prefs.edit().putString(Common.LOCKING_TYPE, selectByType(Common.PREF_VALUE_PIN, Common.PREF_VALUE_KNOCK_CODE)).apply()
-                    prefsKey.edit().putString(Common.KEY_PREFERENCE, Util.shaHash(currentValue)).apply()
+                    activity!!.prefs.edit().putString(Common.LOCKING_TYPE, selectByType(Common.PREF_VALUE_PIN, Common.PREF_VALUE_KNOCK_CODE)).apply()
+                    activity!!.prefsKey.edit().putString(Common.KEY_PREFERENCE, Util.shaHash(currentValue)).apply()
                 } else {
-                    prefsPerApp.edit().putString(customApp, selectByType(Common.PREF_VALUE_PIN, Common.PREF_VALUE_KNOCK_CODE))
+                    activity!!.prefsKeysPerApp.edit().putString(customApp, selectByType(Common.PREF_VALUE_PIN, Common.PREF_VALUE_KNOCK_CODE))
                             .putString(customApp + Common.APP_KEY_PREFERENCE, Util.shaHash(currentValue)).apply()
                 }
             } else {
