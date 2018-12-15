@@ -14,9 +14,13 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
+        google().includes(
+                "androidx.*",
+                "com\\.android.*",
+                "com\\.google\\.android.*"
+        )
         maven { setUrl("https://jitpack.io") }
-        jcenter()
+        jcenter().excludes("com\\.github.*")
     }
 }
 
