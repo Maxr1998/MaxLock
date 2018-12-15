@@ -1,6 +1,6 @@
 /*
  * MaxLock, an Xposed applock module for Android
- * Copyright (C) 2014-2016 Max Rumpf alias Maxr1998
+ * Copyright (C) 2014-2018  Max Rumpf alias Maxr1998
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
