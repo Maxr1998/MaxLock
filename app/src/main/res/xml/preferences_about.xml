@@ -100,10 +100,6 @@
             android:title="@string/google_play_services_name"
             maxlock:license="@string/license_google_play_services" />
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
-            android:summary="@string/guava_author"
-            android:title="@string/guava_name"
-            maxlock:license="@string/license_guava" />
-        <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
             android:summary="@string/material_intro_author"
             android:title="@string/material_intro_name"
             maxlock:license="@string/license_material_intro" />

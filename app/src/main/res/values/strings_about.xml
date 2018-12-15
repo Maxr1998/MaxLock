@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?><!-- DO NOT TRANSLATE -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation,TypographyOther">
     <string name="maxlock_author">by Max Rumpf alias Maxr1998</string>
-    <string name="license_maxlock">MaxLock, an Xposed applock module for Android\n
-Copyright (C) 2015  Max Rumpf alias Maxr1998\n
-\n
-This program is free software: you can redistribute it and/or modify\n
-it under the terms of the GNU General Public License as published by\n
-the Free Software Foundation, either version 3 of the License, or any later version.\n
-\n
-This program is distributed in the hope that it will be useful,\n
-but WITHOUT ANY WARRANTY; without even the implied warranty of\n
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n
-GNU General Public License for more details.\n
-\n
-You should have received a copy of the GNU General Public License\n
-along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</string>
+    <string name="license_maxlock">"MaxLock, an Xposed applock module for Android
+Copyright (C) 2015-2018  Max Rumpf alias Maxr1998
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;."</string>
     <!-- Thanks -->
     <string name="credits_fmm">FatMinMin</string>
     <string name="credits_fmm_summary">Original module</string>
@@ -41,135 +41,170 @@ along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</str
     <!-- Licenses -->
     <string name="android_in_app_billing_v3_name">Android In-App Billing v3 Library</string>
     <string name="android_in_app_billing_v3_author">by AnjLab</string>
-    <string name="license_android_in_app_billing_v3">Copyright 2014 AnjLab\n
-\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-You may obtain a copy of the License at\n
-\n
-     http://www.apache.org/licenses/LICENSE-2.0\n
-\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+    <string name="license_android_in_app_billing_v3">"Copyright 2014 AnjLab
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
 
     <string name="android_lockpattern_name">android-lockpattern</string>
     <string name="android_lockpattern_author">by Hai Bison, Max Rumpf alias Maxr1998 (modified)</string>
-    <string name="license_android_lockpattern">Copyright 2012 Hai Bison\n
-\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-You may obtain a copy of the License at\n
-\n
-     http://www.apache.org/licenses/LICENSE-2.0\n
-\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+    <string name="license_android_lockpattern">"Copyright 2012 Hai Bison
 
-    <string name="android_support_library_name">Android Support Library</string>
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
+
+    <string name="android_support_library_name">AndroidX support libraries</string>
     <string name="the_android_open_source_project_author">by The Android Open Source Project</string>
-    <string name="license_the_android_open_source_project">Copyright (C) 2015 The Android Open Source Project\n
-\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-You may obtain a copy of the License at\n
-\n
-     http://www.apache.org/licenses/LICENSE-2.0\n
-\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+    <string name="license_the_android_open_source_project">"Copyright (C) 2011-2018 The Android Open Source Project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
 
     <string name="apache_commons_io_name">Apache Commons IO ™</string>
     <string name="apache_commons_io_author">by Apache Software Foundation (ASF)</string>
-    <string name="license_apache_commons_io">Licensed to the Apache Software Foundation (ASF) under one or more\n
-contributor license agreements.  See the NOTICE file distributed with\n
-this work for additional information regarding copyright ownership.\n
-The ASF licenses this file to You under the Apache License, Version 2.0\n
-(the "License"); you may not use this file except in compliance with\n
-the License.  You may obtain a copy of the License at\n
-\n
-     http://www.apache.org/licenses/LICENSE-2.0\n
-\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+    <string name="license_apache_commons_io">"Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
 
     <string name="color_picker_preference_name">ColorPickerPreference</string>
     <string name="color_picker_preference_author">by Sergey Margaritov alias attenzione &amp; Daniel Nilsson</string>
-    <string name="license_color_picker_preference">Copyright (C) 2011 Sergey Margaritov &amp; Daniel Nilsson\n
-\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-You may obtain a copy of the License at\n
-\n
-     http://www.apache.org/licenses/LICENSE-2.0\n
-\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+    <string name="license_color_picker_preference">"Copyright (C) 2011 Sergey Margaritov &amp; Daniel Nilsson
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
 
     <string name="fingerprint_icon_name">Fingerprint icons and animations</string>
 
     <string name="google_play_services_name">Google Play Services</string>
     <string name="google_play_services_author">by Google</string>
-    <string name="license_google_play_services">This product includes software from the The Android Open Source Project\n
-Copyright (C) 2015 The Android Open Source Project\n
-\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+    <string name="license_google_play_services">"This product includes software from the The Android Open Source Project
+Copyright (C) 2015 The Android Open Source Project
 
-    <string name="guava_name">Guava</string>
-    <string name="guava_author">by The Guava Authors</string>
-    <string name="license_guava">Copyright (C) 2015 The Guava Authors\n
-\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-You may obtain a copy of the License at\n
-\n
-     http://www.apache.org/licenses/LICENSE-2.0\n
-\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
+
+    <string name="kotlin_libraries_name">Kotlin language and libraries</string>
+    <string name="kotlin_libraries_author">by JetBrains s.r.o.</string>
+    <string name="license_kotlin_libraries">"Copyright 2010-2018 JetBrains s.r.o.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
 
     <string name="material_intro_name">material-intro</string>
     <string name="material_intro_author">by Heinrich Reimer</string>
-    <string name="license_material_intro">Copyright 2016 Heinrich Reimer\n
-\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-You may obtain a copy of the License at\n
-\n
-     http://www.apache.org/licenses/LICENSE-2.0\n
-\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+    <string name="license_material_intro">"Copyright 2016 Heinrich Reimer
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
+
+    <string name="modern_android_preferences_name">ModernAndroidPreferences</string>
+    <string name="modern_android_preferences_author">@string/maxlock_author</string>
+    <string name="license_modern_android_preferences">"Copyright 2018 Max Rumpf alias Maxr1998
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
 
     <string name="preference_fragment_compat_name">PreferenceFragmentCompat</string>
-    <string name="preference_fragment_compat_author">by The Android Open Source Project, kolavar and shkschneider</string>
+    <string name="preference_fragment_compat_author">by The Android Open Source Project, kolavar, shkschneider, modified by Maxr1998</string>
     <string name="license_preference_fragment_compat">@string/license_the_android_open_source_project</string>
+
+    <string name="remote_preferences_name">RemotePreferences</string>
+    <string name="remote_preferences_author">by apsun</string>
+    <string name="license_remote_preferences">"Copyright 2016 apsun
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+and associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."</string>
 
     <string name="seek_bar_preference_name">SeekBarPreference.java</string>
     <string name="seek_bar_preference_author">by robobunny, Max Rumpf alias Maxr1998 (modified)</string>
@@ -179,17 +214,17 @@ limitations under the License.</string>
 
     <string name="xposed_bridge_name">XposedBridge</string>
     <string name="xposed_bridge_author">by rovo89, Tungstwenty</string>
-    <string name="license_xposed_bridge">Copyright 2013 rovo89, Tungstwenty\n
-\n
-Licensed under the Apache License, Version 2.0 (the "License");\n
-you may not use this file except in compliance with the License.\n
-You may obtain a copy of the License at\n
-\n
-     http://www.apache.org/licenses/LICENSE-2.0\n
-\n
-Unless required by applicable law or agreed to in writing, software\n
-distributed under the License is distributed on an "AS IS" BASIS,\n
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
-See the License for the specific language governing permissions and\n
-limitations under the License.</string>
+    <string name="license_xposed_bridge">"Copyright 2013 rovo89, Tungstwenty
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."</string>
 </resources>
