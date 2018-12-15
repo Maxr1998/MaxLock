@@ -59,10 +59,7 @@ public class ExpandingLicensePreference extends Preference {
         switch (licenseTextView.getVisibility()) {
             case View.GONE:
                 expandIcon.setVisibility(View.GONE);
-                int endMargin = view.getResources().getDimensionPixelSize(R.dimen.preference_margin) * 2;
                 titleContainerParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                titleContainerParams.rightMargin = endMargin;
-                titleContainerParams.setMarginEnd(endMargin);
                 view.setOrientation(LinearLayout.VERTICAL);
                 licenseTextView.setVisibility(View.VISIBLE);
                 break;
@@ -70,10 +67,10 @@ public class ExpandingLicensePreference extends Preference {
                 licenseTextView.setVisibility(View.GONE);
                 titleContainerParams.width = 0;
                 titleContainerParams.weight = 1;
-                titleContainerParams.rightMargin = 0;
-                titleContainerParams.setMarginEnd(0);
                 view.setOrientation(LinearLayout.HORIZONTAL);
                 expandIcon.setVisibility(View.VISIBLE);
+                break;
+            case View.INVISIBLE:
                 break;
         }
     }

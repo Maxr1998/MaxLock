@@ -7,6 +7,4 @@
     <include layout="@layout/toolbar" />
 
     <include layout="@layout/settings_fragment_containers" />
-
-    <include layout="@layout/toolbar_shadow" />
 </RelativeLayout>

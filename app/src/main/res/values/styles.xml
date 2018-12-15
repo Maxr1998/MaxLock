@@ -21,6 +21,13 @@
         <item name="windowActionModeOverlay">true</item>
         <!-- To see copy and paste options over Toolbar -->
         <item name="android:windowContentOverlay">@null</item>
+
+        <!-- Transitions -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
 
     <!-- Dark application theme. -->
@@ -47,6 +54,13 @@
         <item name="windowActionModeOverlay">true</item>
         <!-- To see copy and paste options over Toolbar -->
         <item name="android:windowContentOverlay">@null</item>
+
+        <!-- Transitions -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
 
     <style name="AppTheme.Dark.AMOLED">
@@ -67,7 +81,16 @@
         <item name="android:background">@android:color/black</item>
     </style>
 
-    <style name="AppTheme.FirstStart" parent="AppTheme.Base" />
+    <style name="AppTheme.FirstStart" parent="AppTheme.Base">
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <!-- Transitions -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+    </style>
 
     <style name="AppTheme.FirstStart.TitleText">
         <item name="android:layout_width">match_parent</item>
@@ -88,7 +111,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="FakeDieDialog" parent="android:Theme.DeviceDefault.Dialog.NoActionBar" />
+    <style name="FakeDieDialog" parent="android:Theme.DeviceDefault.Light.Dialog.NoActionBar" />
 
     <style name="TranslucentStatusBar" parent="AppTheme.Dark">
         <item name="android:windowTranslucentNavigation">true</item>
