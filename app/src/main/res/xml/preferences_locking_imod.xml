@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:maxlock="http://schemas.android.com/apk/res-auto"
     xmlns:robobunny="http://robobunny.com">
     <PreferenceCategory android:title="@string/pref_category_delay_general">
         <CheckBoxPreference
@@ -19,7 +18,6 @@
             robobunny:interval="30000"
             robobunny:min="60000" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_delay_per_app">
         <CheckBoxPreference
             android:defaultValue="false"
@@ -37,7 +35,6 @@
             robobunny:interval="30000"
             robobunny:min="60000" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_reset_relock_timer">
         <Preference android:summary="@string/pref_reset_relock_timer_description" />
         <CheckBoxPreference
@@ -53,5 +50,4 @@
             android:summary="@string/pref_imod_reset_on_homescreen_summary"
             android:title="@string/pref_imod_reset_on_homescreen" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>

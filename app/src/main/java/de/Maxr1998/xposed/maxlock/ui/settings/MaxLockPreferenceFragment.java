@@ -29,9 +29,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -346,9 +344,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         getListView().setPadding(0, 0, 0, 0);
-        TypedArray windowBackgroundColor = v.getContext().obtainStyledAttributes(new int[]{R.attr.windowBackground});
-        getListView().setOverscrollFooter(new ColorDrawable(windowBackgroundColor.getColor(0, ContextCompat.getColor(v.getContext(), R.color.default_window_background))));
-        windowBackgroundColor.recycle();
     }
 
     private StringBuilder getName() {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:maxlock="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/pref_screen_locking_type">
         <Preference
             android:key="locking_type_password"
@@ -15,7 +14,6 @@
             android:key="locking_type_pattern"
             android:title="@string/pref_locking_type_pattern" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference android:key="shadow_fingerprint" />
     <PreferenceCategory
         android:key="cat_fingerprint"
         android:title="@string/pref_category_fingerprint">
@@ -26,5 +24,4 @@
             android:summaryOn="@string/pref_disable_fingerprint_summary_on"
             android:title="@string/pref_disable_fingerprint" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>

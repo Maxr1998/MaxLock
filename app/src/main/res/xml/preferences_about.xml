@@ -13,7 +13,6 @@
             android:key="visit_website"
             android:title="@string/pref_visit_website" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_credits">
         <Preference
             android:summary="@string/credits_fmm_summary"
@@ -26,7 +25,6 @@
             android:summary="@string/credits_intika_summary"
             android:title="@string/credits_intika" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_translations">
         <!-- Sorted by English language name -->
         <de.Maxr1998.xposed.maxlock.preference.TranslationPreference
@@ -69,7 +67,6 @@
             android:summary="@string/translation_spanish"
             maxlock:language="es" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference />
     <PreferenceCategory android:title="@string/pref_category_licenses">
         <de.Maxr1998.xposed.maxlock.preference.ExpandingLicensePreference
             android:summary="@string/android_in_app_billing_v3_author"
@@ -118,5 +115,4 @@
             android:title="@string/xposed_bridge_name"
             maxlock:license="@string/license_xposed_bridge" />
     </PreferenceCategory>
-    <de.Maxr1998.xposed.maxlock.preference.SpacerPreference maxlock:topShadow="false" />
 </PreferenceScreen>
