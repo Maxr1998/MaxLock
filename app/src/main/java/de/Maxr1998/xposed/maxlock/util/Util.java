@@ -21,8 +21,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -32,7 +30,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
@@ -56,7 +53,6 @@ import java.util.zip.ZipOutputStream;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import de.Maxr1998.xposed.maxlock.Common;
@@ -148,22 +144,6 @@ public final class Util {
             e.printStackTrace();
         }
         return result.describeContents() == InputMethodManager.RESULT_HIDDEN;
-    }
-
-    public static void getBackground(AppCompatActivity activity, final ImageView background) {
-        switch (getPreferences(background.getContext()).getString(Common.BACKGROUND, "")) {
-            case "color":
-                int color = getPreferences(background.getContext()).getInt(Common.BACKGROUND_COLOR, -1);
-                if (color != -1) background.setImageDrawable(new ColorDrawable(color));
-                break;
-            case "custom":
-                try {
-                    background.setImageBitmap(BitmapFactory.decodeStream(background.getContext().openFileInput("background")));
-                } catch (IOException | OutOfMemoryError e) {
-                    Toast.makeText(background.getContext(), "Error loading background image, " + (e instanceof IOException ? ", IOException." : "is it to big?"), Toast.LENGTH_LONG).show();
-                }
-                break;
-        }
     }
 
     // Lock

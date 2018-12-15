@@ -129,9 +129,6 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         mMessageArea = findViewById(R.id.message_area);
         FrameLayout container = findViewById(R.id.container);
 
-        // Background
-        Util.getBackground(getActivity(), findViewById(R.id.background));
-
         // Locking type view setup
         switch (lockingType) {
             case Common.PREF_VALUE_PASSWORD:

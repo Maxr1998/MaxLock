@@ -17,14 +17,20 @@
 
 package de.Maxr1998.xposed.maxlock.util
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.TypedArray
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
+import android.media.ThumbnailUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -38,6 +44,7 @@ import de.Maxr1998.xposed.maxlock.Common.SETTINGS_PACKAGE_NAME
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE_APP
+import java.io.IOException
 
 val Context.applicationName
     get() = StringBuilder(getString(R.string.app_name)).apply {
@@ -74,6 +81,25 @@ fun AlertDialog.showWithLifecycle(fragment: Fragment) {
     setOnDismissListener { fragment.lifecycle.removeObserver(observer) }
     show()
     fragment.lifecycle.addObserver(observer)
+}
+
+fun Activity.applyCustomBackground() {
+    when (prefs.getString(Common.BACKGROUND, "")) {
+        "color" -> {
+            window.setBackgroundDrawable(ColorDrawable(prefs.getInt(Common.BACKGROUND_COLOR, R.color.accent)))
+        }
+        "custom" -> try {
+            val bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(openFileInput("background")),
+                    resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels,
+                    ThumbnailUtils.OPTIONS_RECYCLE_INPUT)
+            window.setBackgroundDrawable(BitmapDrawable(resources, bitmap))
+        } catch (e: IOException) {
+            Toast.makeText(this, "Error loading background image, IOException.", Toast.LENGTH_LONG).show()
+        } catch (e: OutOfMemoryError) {
+            Toast.makeText(this, "Error loading background image, is it to big?", Toast.LENGTH_LONG).show()
+        }
+        else -> window.setBackgroundDrawableResource(android.R.color.transparent) // system
+    }
 }
 
 object KUtil {

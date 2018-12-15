@@ -133,7 +133,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         window.setFlags(if (showWallpaper) FLAG_SHOW_WALLPAPER else 0, FLAG_SHOW_WALLPAPER)
         window.statusBarColor = if (showWallpaper) Color.TRANSPARENT else getColorCompat(R.color.primary_red_dark)
         if (showWallpaper) {
-            window.setBackgroundDrawableResource(android.R.color.transparent)
+            applyCustomBackground()
             window.navigationBarColor = Color.TRANSPARENT
         } else {
             withAttrs(R.attr.windowBackgroundBackup, R.attr.navigationBarBackgroundBackup) {

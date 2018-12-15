@@ -39,12 +39,9 @@ import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.MLImplementation
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView
+import de.Maxr1998.xposed.maxlock.util.*
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.appClosed
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.appUnlocked
-import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener
-import de.Maxr1998.xposed.maxlock.util.MLPreferences
-import de.Maxr1998.xposed.maxlock.util.NotificationHelper
-import de.Maxr1998.xposed.maxlock.util.Util
 
 class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
 
@@ -91,6 +88,7 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
                 return
             }
             val lockView = LockView(this, names[0], names[1])
+            applyCustomBackground()
             setContentView(lockView, RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
             ViewCompat.requestApplyInsets(lockView)
             return
