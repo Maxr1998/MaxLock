@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:targetApi="n_mr1">
     <shortcut
         android:enabled="true"
         android:icon="@mipmap/ic_launcher"
@@ -7,7 +9,7 @@
         android:shortcutShortLabel="@string/action_toggle_ms">
         <intent
             android:action="android.intent.action.MAIN"
-            android:targetClass="de.Maxr1998.xposed.maxlock.ui.actions.DeprecatedMasterSwitch"
+            android:targetClass="de.Maxr1998.xposed.maxlock.ui.actions.ActionActivity"
             android:targetPackage="de.Maxr1998.xposed.maxlock" />
     </shortcut>
 

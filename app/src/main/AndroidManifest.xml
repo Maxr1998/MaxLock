@@ -177,18 +177,6 @@
             android:taskAffinity=""
             android:theme="@style/TranslucentStatusBar" />
 
-        <activity
-            android:name=".ui.actions.DeprecatedMasterSwitch"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:label="@string/activity_label_toggle_ms_deprecated"
-            android:taskAffinity=""
-            android:theme="@style/TranslucentStatusBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-
         <!-- Tasker -->
         <receiver
             android:name=".ui.actions.tasker.TaskActionReceiver"
