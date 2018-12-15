@@ -109,7 +109,10 @@ public abstract class Common {
     /* ABOUT */
     public static final String SHOW_CHANGELOG = "show_changelog";
     public static final String VISIT_WEBSITE = "visit_website";
+    public static final String CATEGORY_CREDITS = "cat_credits";
     public static final String TECHNOSPARKS_PROFILE = "technosparks_profile";
+    public static final String CATEGORY_TRANSLATIONS = "cat_translations";
+    public static final String CATEGORY_LICENSES = "cat_licenses";
 
     public static final String DONATE = "donate_upgrade_pro";
     public static final String DONATED = "donated";

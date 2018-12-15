@@ -1,6 +1,6 @@
 /*
  * MaxLock, an Xposed applock module for Android
- * Copyright (C) 2014-2016 Max Rumpf alias Maxr1998
+ * Copyright (C) 2014-2018  Max Rumpf alias Maxr1998
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,8 +109,99 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
             titleRes = R.string.pref_category_about
         }
         subScreen {
+            collapseIcon = true
             title = app.applicationName.append(" ").append(BuildConfig.VERSION_NAME).toString()
             summaryRes = R.string.pref_about_summary
+            categoryHeader(CATEGORY_ABOUT) {
+                titleRes = R.string.pref_screen_about
+            }
+            expandText("ml_license") {
+                titleRes = R.string.app_name
+                summaryRes = R.string.maxlock_author
+                textRes = R.string.license_maxlock
+            }
+            pref(SHOW_CHANGELOG) {
+                titleRes = R.string.pref_show_changelog
+            }
+            pref(VISIT_WEBSITE) {
+                titleRes = R.string.pref_visit_website
+            }
+            categoryHeader(CATEGORY_CREDITS) {
+                titleRes = R.string.pref_category_credits
+            }
+            pref("credits_fmm") {
+                titleRes = R.string.credits_fmm
+                summaryRes = R.string.credits_fmm_summary
+            }
+            pref(TECHNOSPARKS_PROFILE) {
+                titleRes = R.string.credits_ts
+                summaryRes = R.string.credits_ts_summary
+            }
+            pref("credits_intika") {
+                titleRes = R.string.credits_intika
+                summaryRes = R.string.credits_intika_summary
+            }
+            categoryHeader(CATEGORY_TRANSLATIONS) {
+                titleRes = R.string.pref_category_translations
+            }
+            categoryHeader(CATEGORY_LICENSES) {
+                titleRes = R.string.pref_category_licenses
+            }
+            expandText("iab_license") {
+                titleRes = R.string.android_in_app_billing_v3_name
+                summaryRes = R.string.android_in_app_billing_v3_author
+                textRes = R.string.license_android_in_app_billing_v3
+            }
+            expandText("lp_license") {
+                titleRes = R.string.android_lockpattern_name
+                summaryRes = R.string.android_lockpattern_author
+                textRes = R.string.license_android_lockpattern
+            }
+            expandText("ax_license") {
+                titleRes = R.string.android_support_library_name
+                summaryRes = R.string.the_android_open_source_project_author
+                textRes = R.string.license_the_android_open_source_project
+            }
+            expandText("cio_license") {
+                titleRes = R.string.apache_commons_io_name
+                summaryRes = R.string.apache_commons_io_author
+                textRes = R.string.license_apache_commons_io
+            }
+            expandText("fpi_license") {
+                titleRes = R.string.fingerprint_icon_name
+                summaryRes = R.string.the_android_open_source_project_author
+                textRes = R.string.license_the_android_open_source_project
+            }
+            expandText("gps_license") {
+                titleRes = R.string.google_play_services_name
+                summaryRes = R.string.google_play_services_author
+                textRes = R.string.license_google_play_services
+            }
+            expandText("kt_license") {
+                titleRes = R.string.kotlin_libraries_name
+                summaryRes = R.string.kotlin_libraries_author
+                textRes = R.string.license_kotlin_libraries
+            }
+            expandText("mi_license") {
+                titleRes = R.string.material_intro_name
+                summaryRes = R.string.material_intro_author
+                textRes = R.string.license_material_intro
+            }
+            expandText("map_license") {
+                titleRes = R.string.modern_android_preferences_name
+                summaryRes = R.string.modern_android_preferences_author
+                textRes = R.string.license_modern_android_preferences
+            }
+            expandText("rp_license") {
+                titleRes = R.string.remote_preferences_name
+                summaryRes = R.string.remote_preferences_author
+                textRes = R.string.license_remote_preferences
+            }
+            expandText("xb_license") {
+                titleRes = R.string.xposed_bridge_name
+                summaryRes = R.string.xposed_bridge_author
+                textRes = R.string.license_xposed_bridge
+            }
         }
         pref(DONATE) {
             prefDonate = this
