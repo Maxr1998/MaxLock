@@ -23,10 +23,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.TypedArray
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.media.ThumbnailUtils
+import android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,15 +85,22 @@ fun AlertDialog.showWithLifecycle(fragment: Fragment) {
     fragment.lifecycle.addObserver(observer)
 }
 
+var cachedWallpaper: Bitmap? by SoftReferenceDelegate()
+
 fun Activity.applyCustomBackground() {
     when (prefs.getString(Common.BACKGROUND, "")) {
         "color" -> {
             window.setBackgroundDrawable(ColorDrawable(prefs.getInt(Common.BACKGROUND_COLOR, R.color.accent)))
         }
         "custom" -> try {
-            val bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(openFileInput("background")),
-                    resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels,
-                    ThumbnailUtils.OPTIONS_RECYCLE_INPUT)
+            val width = resources.displayMetrics.widthPixels
+            val height = resources.displayMetrics.heightPixels
+            val bitmap = cachedWallpaper ?: ThumbnailUtils.extractThumbnail(
+                    BitmapFactory.decodeStream(openFileInput("background")),
+                    width, height, OPTIONS_RECYCLE_INPUT)
+                    .apply {
+                        cachedWallpaper = this
+                    }
             window.setBackgroundDrawable(BitmapDrawable(resources, bitmap))
         } catch (e: IOException) {
             Toast.makeText(this, "Error loading background image, IOException.", Toast.LENGTH_LONG).show()
