@@ -21,10 +21,13 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.TypedArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Lifecycle
@@ -50,6 +53,16 @@ inline val AndroidViewModel.application
 
 fun ViewGroup.inflate(id: Int, attachToRoot: Boolean = false): View =
         LayoutInflater.from(context).inflate(id, this, attachToRoot)
+
+fun Context.withAttrs(vararg attrs: Int, block: TypedArray.() -> Unit) {
+    obtainStyledAttributes(attrs).apply {
+        block()
+        recycle()
+    }
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun Context.getColorCompat(@ColorRes id: Int) = ContextCompat.getColor(this, id)
 
 fun AlertDialog.showWithLifecycle(fragment: Fragment) {
     val observer = object : LifecycleObserver {

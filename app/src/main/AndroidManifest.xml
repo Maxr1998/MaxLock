@@ -145,7 +145,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
-            android:theme="@style/TranslucentStatusBar" />
+            android:theme="@style/AppTheme.Lockscreen" />
 
         <!-- MasterSwitch widget -->
         <receiver android:name=".ui.actions.widget.MasterSwitchWidget">
@@ -175,7 +175,7 @@
             android:exported="true"
             android:label="@string/activity_label_actions"
             android:taskAffinity=""
-            android:theme="@style/TranslucentStatusBar" />
+            android:theme="@style/AppTheme.Lockscreen" />
 
         <!-- Tasker -->
         <receiver

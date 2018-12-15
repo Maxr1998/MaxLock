@@ -59,7 +59,7 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
         prefs = MLPreferences.getPreferences(this)
         val isFakeCrash = isFakeCrash(intent)
         val themeId = if (!isFakeCrash) {
-            if (prefs.getBoolean(Common.HIDE_STATUS_BAR, false)) R.style.TranslucentStatusBar_Full else R.style.TranslucentStatusBar
+            if (prefs.getBoolean(Common.HIDE_STATUS_BAR, false)) R.style.AppTheme_Lockscreen_Full else R.style.AppTheme_Lockscreen
         } else R.style.FakeDieDialog
         setTheme(themeId)
         if (isFakeCrash) window.setBackgroundDrawable(ColorDrawable(0))

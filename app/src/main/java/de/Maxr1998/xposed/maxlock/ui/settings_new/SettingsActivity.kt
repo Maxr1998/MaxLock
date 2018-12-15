@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings_new
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.transition.Fade
@@ -27,6 +28,7 @@ import android.transition.TransitionManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -122,7 +124,23 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         // Show lockscreen if needed
         if (settingsViewModel.locked && !prefs.getString(Common.LOCKING_TYPE, "").isNullOrEmpty()) {
             uiComponents.isVisible = false
+            setupWindow(true)
             lockscreen.isVisible = true
+        }
+    }
+
+    private fun setupWindow(showWallpaper: Boolean) {
+        window.setFlags(if (showWallpaper) FLAG_SHOW_WALLPAPER else 0, FLAG_SHOW_WALLPAPER)
+        window.statusBarColor = if (showWallpaper) Color.TRANSPARENT else getColorCompat(R.color.primary_red_dark)
+        if (showWallpaper) {
+            window.setBackgroundDrawableResource(android.R.color.transparent)
+            window.navigationBarColor = Color.TRANSPARENT
+        } else {
+            withAttrs(R.attr.windowBackgroundBackup, R.attr.navigationBarBackgroundBackup) {
+                val res = getResourceId(0, R.color.windowBackground)
+                window.setBackgroundDrawableResource(res)
+                window.navigationBarColor = getColor(1, Color.BLACK)
+            }
         }
     }
 
@@ -164,7 +182,8 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     }
 
     override fun onAuthenticationSucceeded() {
-        TransitionManager.beginDelayedTransition(viewRoot, Fade())
+        TransitionManager.beginDelayedTransition(window.decorView as ViewGroup, Fade())
+        setupWindow(false)
         uiComponents.isVisible = true
         lockscreen.isVisible = false
         settingsViewModel.locked = false
