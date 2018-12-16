@@ -30,8 +30,8 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER
 import android.widget.ProgressBar
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import androidx.browser.customtabs.*
 import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
@@ -59,6 +59,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     private val originalTitle by lazy { applicationName.toString() }
     private val preferencesAdapter get() = settingsViewModel.preferencesAdapter
     private val viewRoot by lazy { findViewById<ViewGroup>(R.id.content_view_settings) }
+    private lateinit var masterSwitch: Switch
     private val uiComponents by lazy { findViewById<Group>(R.id.ui_components) }
     private val recyclerView by lazy { findViewById<RecyclerView>(android.R.id.list) }
     private val progress by lazy { findViewById<ProgressBar>(android.R.id.progress) }
@@ -146,7 +147,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
-        (menu.findItem(R.id.toolbar_master_switch).actionView as SwitchCompat).apply {
+        masterSwitch = (menu.findItem(R.id.toolbar_master_switch).actionView as Switch).apply {
             isChecked = prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)
             setOnCheckedChangeListener { _, b ->
                 prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, b).apply()
@@ -156,9 +157,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        (menu.findItem(R.id.toolbar_master_switch).actionView as SwitchCompat).apply {
-            isChecked = prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)
-        }
+        masterSwitch.isChecked = prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)
         return super.onPrepareOptionsMenu(menu)
     }
 

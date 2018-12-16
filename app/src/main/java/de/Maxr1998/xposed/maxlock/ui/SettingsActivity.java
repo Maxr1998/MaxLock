@@ -32,13 +32,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.Switch;
 
 import java.util.Arrays;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsCallback;
 import androidx.browser.customtabs.CustomTabsClient;
@@ -166,7 +166,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        SwitchCompat master_switch = (SwitchCompat) menu.findItem(R.id.toolbar_master_switch).getActionView();
+        Switch master_switch = (Switch) menu.findItem(R.id.toolbar_master_switch).getActionView();
         master_switch.setChecked(MLPreferences.getPrefsApps(this).getBoolean(Common.MASTER_SWITCH_ON, true));
         master_switch.setOnCheckedChangeListener((button, b) -> MLPreferences.getPrefsApps(SettingsActivity.this).edit().putBoolean(Common.MASTER_SWITCH_ON, b).apply());
         return super.onCreateOptionsMenu(menu);
@@ -175,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     @SuppressLint("WorldReadableFiles")
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        SwitchCompat master_switch = (SwitchCompat) menu.findItem(R.id.toolbar_master_switch).getActionView();
+        Switch master_switch = (Switch) menu.findItem(R.id.toolbar_master_switch).getActionView();
         master_switch.setChecked(MLPreferences.getPrefsApps(SettingsActivity.this).getBoolean(Common.MASTER_SWITCH_ON, true));
         return super.onPrepareOptionsMenu(menu);
     }
