@@ -8,8 +8,6 @@
         <item name="colorPrimaryDark">@color/primary_red_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:windowBackground">@color/windowBackground</item>
-        <!-- Backup for Settings -->
-        <item name="windowBackgroundBackup">@color/windowBackground</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="highlightDrawable">@drawable/highlight_light</item>
         <item name="dividerColor">@color/divider_light</item>
@@ -41,11 +39,8 @@
         <item name="colorPrimaryDark">@color/primary_red_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:windowBackground">@color/windowBackgroundDark</item>
-        <!-- Backup for Settings -->
-        <item name="windowBackgroundBackup">@color/windowBackgroundDark</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@color/windowBackgroundDark</item>
-        <item name="navigationBarBackgroundBackup">@color/windowBackgroundDark</item>
         <item name="highlightDrawable">@drawable/highlight_dark</item>
         <item name="dividerColor">@color/divider_dark</item>
         <item name="alertDialogTheme">@style/DialogTheme.Dark</item>
@@ -68,10 +63,8 @@
     </style>
 
     <style name="AppTheme.Dark.AMOLED">
-        <item name="windowBackgroundBackup">@android:color/black</item>
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:navigationBarColor">@android:color/black</item>
-        <item name="navigationBarBackgroundBackup">@android:color/black</item>
         <item name="alertDialogTheme">@style/DialogTheme.Dark.AMOLED</item>
     </style>
 

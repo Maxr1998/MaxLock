@@ -22,11 +22,13 @@ import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.transition.Fade
 import android.transition.TransitionManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER
 import android.widget.ProgressBar
@@ -134,13 +136,27 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         window.setFlags(if (showWallpaper) FLAG_SHOW_WALLPAPER else 0, FLAG_SHOW_WALLPAPER)
         window.statusBarColor = if (showWallpaper) Color.TRANSPARENT else getColorCompat(R.color.primary_red_dark)
         if (showWallpaper) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                window.decorView.apply {
+                    systemUiVisibility = systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+                }
+            }
             applyCustomBackground()
             window.navigationBarColor = Color.TRANSPARENT
         } else {
-            withAttrs(R.attr.windowBackgroundBackup, R.attr.navigationBarBackgroundBackup) {
+            withAttrs(android.R.attr.windowBackground, android.R.attr.navigationBarColor) {
                 val res = getResourceId(0, R.color.windowBackground)
                 window.setBackgroundDrawableResource(res)
                 window.navigationBarColor = getColor(1, Color.BLACK)
+            }
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                withAttrs(android.R.attr.windowLightNavigationBar) {
+                    if (getBoolean(0, false)) {
+                        window.decorView.apply {
+                            systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                        }
+                    }
+                }
             }
         }
     }
