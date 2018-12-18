@@ -109,6 +109,8 @@ class AppListAdapter(val appListModel: AppListModel, context: Context) : Recycle
 
     override fun getItemCount() = appListModel.appList.size()
 
+    override fun getItemViewType(position: Int) = R.layout.app_list_item
+
     override fun getFilter(): Filter = filter
 
     @Suppress("unused")
