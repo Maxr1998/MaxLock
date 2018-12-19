@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings_new
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -248,8 +249,19 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
                         startActivity(uninstall)
                     }
                 }
+                SEND_FEEDBACK -> prepareSendFeedback()
             }
         })
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED)
+                    finishSendFeedback()
+            }
+        }
     }
 
     override fun onBackPressed() {

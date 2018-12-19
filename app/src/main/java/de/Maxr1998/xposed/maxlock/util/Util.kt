@@ -46,6 +46,7 @@ import de.Maxr1998.xposed.maxlock.Common.SETTINGS_PACKAGE_NAME
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE_APP
+import java.io.File
 import java.io.IOException
 
 val Context.applicationName
@@ -69,6 +70,9 @@ fun Context.withAttrs(vararg attrs: Int, block: TypedArray.() -> Unit) {
         recycle()
     }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+inline operator fun File.invoke(sub: String) = File(this, sub)
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun Context.getColorCompat(@ColorRes id: Int) = ContextCompat.getColor(this, id)

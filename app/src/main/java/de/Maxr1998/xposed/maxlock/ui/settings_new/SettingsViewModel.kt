@@ -219,6 +219,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
         }
         pref(SEND_FEEDBACK) {
             titleRes = R.string.pref_send_feedback
+            clickListener = this@SettingsViewModel
         }
     })
 
@@ -229,7 +230,8 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
             CHOOSE_APPS,
             USE_DARK_STYLE,
             USE_AMOLED_BLACK,
-            UNINSTALL -> activityPreferenceClickListener.call(preference.key)
+            UNINSTALL,
+            SEND_FEEDBACK -> activityPreferenceClickListener.call(preference.key)
             DONATE -> context.startActivity(Intent(context, DonateActivity::class.java))
         }
         return false
