@@ -89,7 +89,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.0.2")
     implementation("androidx.browser:browser:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.fragment:fragment:1.1.0-alpha02")
+    implementation("androidx.fragment:fragment:1.1.0-alpha03")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha01")
@@ -101,7 +101,7 @@ dependencies {
     // From JCenter or other repositories
     //-- 3rd-party
     implementation("com.anjlab.android.iab.v3:library:1.0.38@aar")
-    implementation("de.Maxr1998.android:modernpreferences:0.1")
+    implementation("de.Maxr1998.android:modernpreferences:0.1.2")
     implementation("com.crossbowffs.remotepreferences:remotepreferences:0.5")
     implementation("com.github.attenzione:android-ColorPickerPreference:e3aa301016")
     implementation("com.heinrichreimersoftware:material-intro:1.6")
@@ -114,9 +114,9 @@ dependencies {
     implementation("", "PatternLock", ext = "aar")
 
     // Testing dependencies
-    androidTestUtil("androidx.test:orchestrator:1.1.1-beta01")
-    androidTestImplementation("androidx.test:rules:1.1.1-beta01")
-    androidTestImplementation("androidx.test:runner:1.1.1-beta01")
+    androidTestUtil("androidx.test:orchestrator:1.1.1")
+    androidTestImplementation("androidx.test:rules:1.1.1")
+    androidTestImplementation("androidx.test:runner:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0-alpha4") {
         exclude("com.google.code.findbugs", "jsr305")
     }
