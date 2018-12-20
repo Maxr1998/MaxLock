@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings_new
 import android.app.Application
 import android.content.Intent
 import android.os.Build
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.lifecycle.AndroidViewModel
 import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
@@ -63,6 +64,36 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
         }
         subScreen {
             titleRes = R.string.pref_screen_locking_type
+            collapseIcon = true
+            categoryHeader(CATEGORY_LOCKING_TYPE) {
+                titleRes = R.string.pref_screen_locking_type
+            }
+            pref(LOCKING_TYPE_PASSWORD) {
+                titleRes = R.string.pref_locking_type_password
+                clickListener = this@SettingsViewModel
+            }
+            pref(LOCKING_TYPE_PIN) {
+                titleRes = R.string.pref_locking_type_pin
+                clickListener = this@SettingsViewModel
+            }
+            pref(LOCKING_TYPE_KNOCK_CODE) {
+                titleRes = R.string.pref_locking_type_knockcode
+                clickListener = this@SettingsViewModel
+            }
+            pref(LOCKING_TYPE_PATTERN) {
+                titleRes = R.string.pref_locking_type_pattern
+                clickListener = this@SettingsViewModel
+            }
+            if (FingerprintManagerCompat.from(app).isHardwareDetected) {
+                categoryHeader(CATEGORY_FINGERPRINT) {
+                    titleRes = R.string.pref_category_fingerprint
+                }
+                switch(DISABLE_FINGERPRINT) {
+                    titleRes = R.string.pref_disable_fingerprint
+                    summaryRes = R.string.pref_disable_fingerprint_summary
+                    summaryOnRes = R.string.pref_disable_fingerprint_summary_on
+                }
+            }
         }
         subScreen {
             titleRes = R.string.pref_screen_locking_ui
@@ -109,9 +140,9 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
             titleRes = R.string.pref_category_about
         }
         subScreen {
-            collapseIcon = true
             title = app.applicationName.append(" ").append(BuildConfig.VERSION_NAME).toString()
             summaryRes = R.string.pref_about_summary
+            collapseIcon = true
             categoryHeader(CATEGORY_ABOUT) {
                 titleRes = R.string.pref_screen_about
             }
