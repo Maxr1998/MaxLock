@@ -36,6 +36,7 @@ import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Lifecycle
@@ -64,12 +65,8 @@ inline val AndroidViewModel.application
 fun ViewGroup.inflate(id: Int, attachToRoot: Boolean = false): View =
         LayoutInflater.from(context).inflate(id, this, attachToRoot)
 
-fun Context.withAttrs(vararg attrs: Int, block: TypedArray.() -> Unit) {
-    obtainStyledAttributes(attrs).apply {
-        block()
-        recycle()
-    }
-}
+fun Context.withAttrs(vararg attrs: Int, block: TypedArray.() -> Unit) =
+        withStyledAttributes(0, attrs, block)
 
 @Suppress("NOTHING_TO_INLINE")
 inline operator fun File.invoke(sub: String) = File(this, sub)
@@ -80,6 +77,7 @@ inline fun Context.getColorCompat(@ColorRes id: Int) = ContextCompat.getColor(th
 fun AlertDialog.showWithLifecycle(fragment: Fragment) {
     val observer = object : LifecycleObserver {
         @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        @Suppress("unused")
         fun paused() {
             dismiss()
         }

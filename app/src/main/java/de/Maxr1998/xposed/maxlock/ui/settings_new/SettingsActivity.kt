@@ -34,6 +34,7 @@ import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER
 import android.widget.ProgressBar
 import android.widget.Switch
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.*
 import androidx.constraintlayout.widget.Group
@@ -41,8 +42,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.RecyclerView
 import de.Maxr1998.modernpreferences.PreferenceScreen
 import de.Maxr1998.modernpreferences.PreferencesAdapter
@@ -57,8 +56,8 @@ import de.Maxr1998.xposed.maxlock.util.*
 import java.util.*
 
 class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, PreferencesAdapter.OnScreenChangeListener {
-    private lateinit var settingsViewModel: SettingsViewModel
-    private lateinit var appListViewModel: AppListModel
+    private val settingsViewModel by viewModels<SettingsViewModel>()
+    private val appListViewModel by viewModels<AppListModel>()
     private val originalTitle by lazy { applicationName.toString() }
     private val preferencesAdapter get() = settingsViewModel.preferencesAdapter
     private val viewRoot by lazy { findViewById<ViewGroup>(R.id.content_view_settings) }
@@ -78,10 +77,6 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         // Setup UI and Toolbar
         setContentView(R.layout.activity_new_settings)
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        // ViewModels
-        settingsViewModel = ViewModelProviders.of(this).get()
-        appListViewModel = ViewModelProviders.of(this).get()
 
         // Setup Preferences
         if (recyclerView.adapter == null) {

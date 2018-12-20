@@ -96,6 +96,7 @@ dependencies {
     implementation("com.google.android.material:material:1.1.0-alpha02")
     //-- KTX
     implementation("androidx.core:core-ktx:1.0.1")
+    implementation("androidx.activity:activity-ktx:1.0.0-alpha03")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0")
 
     // From JCenter or other repositories
