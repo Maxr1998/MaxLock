@@ -29,14 +29,18 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.media.ThumbnailUtils
 import android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.core.content.withStyledAttributes
+import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Lifecycle
@@ -110,6 +114,18 @@ fun Activity.applyCustomBackground() {
             Toast.makeText(this, "Error loading background image, is it to big?", Toast.LENGTH_LONG).show()
         }
         else -> window.setBackgroundDrawableResource(android.R.color.transparent) // system
+    }
+}
+
+fun View.showIme() {
+    val imm = context.getSystemService<InputMethodManager>()
+    imm?.showSoftInput(this, 0)
+}
+
+fun Activity.hideIme() {
+    val imm = getSystemService<InputMethodManager>()
+    Handler().postDelayed(20) {
+        imm?.hideSoftInputFromWindow(window.decorView.windowToken, 0)
     }
 }
 

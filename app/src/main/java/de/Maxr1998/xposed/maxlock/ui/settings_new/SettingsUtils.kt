@@ -87,20 +87,30 @@ fun SettingsActivity.setupPassword(app: String?) {
             .setNegativeButton(android.R.string.cancel, null)
             .setCancelable(false)
             .create().apply { show() }
-    val passwordView = dialogView.findViewById<EditText>(R.id.dialog_input_password)
+    val passwordView = dialogView.findViewById<EditText>(R.id.dialog_input_password).apply {
+        requestFocus()
+        showIme()
+    }
     val passwordConfirmView = dialogView.findViewById<EditText>(R.id.dialog_input_password_repeat)
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
         val password = passwordView.text.toString()
         val passwordConfirm = passwordConfirmView.text.toString()
         when {
-            password.isEmpty() -> Toast.makeText(this, R.string.toast_password_null, Toast.LENGTH_SHORT).show()
+            password.isEmpty() -> {
+                Toast.makeText(this, R.string.toast_password_null, Toast.LENGTH_SHORT).show()
+                passwordConfirmView.setText("")
+                passwordView.requestFocus()
+            }
             password != passwordConfirm -> {
+                Toast.makeText(this, R.string.toast_password_inconsistent, Toast.LENGTH_SHORT).show()
                 passwordView.setText("")
                 passwordConfirmView.setText("")
-                Toast.makeText(this, R.string.toast_password_inconsistent, Toast.LENGTH_SHORT).show()
+                passwordView.requestFocus()
             }
             else -> {
+                dialogView.findFocus()?.clearFocus()
                 dialog.dismiss()
+                hideIme()
                 if (app == null) {
                     prefs.edit {
                         putString(Common.LOCKING_TYPE, (
@@ -120,7 +130,11 @@ fun SettingsActivity.setupPassword(app: String?) {
             }
         }
     }
-    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dialog.dismiss() }
+    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+        dialogView.findFocus()?.clearFocus()
+        dialog.dismiss()
+        hideIme()
+    }
 }
 
 fun SettingsActivity.checkStoragePermission(code: Int, @StringRes dialogMessage: Int) {
