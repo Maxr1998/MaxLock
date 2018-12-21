@@ -37,8 +37,8 @@
     <string name="toast_password_inconsistent">A senha é inconsistente!</string>
     <string name="toast_password_null">A senha não pode estar vazia!</string>
     <string name="toast_password_changed">Senha alterada!</string>
-    <string name="dialog_text_password">Senha: </string>
-    <string name="dialog_text_re_password">Redigite a senha: </string>
+    <string name="dialog_text_password">Senha</string>
+    <string name="dialog_text_re_password">Redigite a senha</string>
     <string name="choose_pin">Escolha seu PIN</string>
     <string name="pin_too_short">O PIN deve ter pelo menos 4 dígitos</string>
     <string name="continue_done">Toque em continuar quando terminar</string>

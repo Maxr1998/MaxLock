@@ -39,8 +39,8 @@
     <string name="toast_password_inconsistent">Hasło jest niezgodne!</string>
     <string name="toast_password_null">Hasło nie może być puste!</string>
     <string name="toast_password_changed">Hasło zostało zmienione!</string>
-    <string name="dialog_text_password">Hasło: </string>
-    <string name="dialog_text_re_password">Wpisz ponownie hasło: </string>
+    <string name="dialog_text_password">Hasło</string>
+    <string name="dialog_text_re_password">Wpisz ponownie hasło</string>
     <string name="choose_pin">Wybierz PIN</string>
     <string name="pin_too_short">PIN musi mieć co najmniej 4 cyfry</string>
     <string name="continue_done">Dotknij kontynuuj po zakończeniu</string>

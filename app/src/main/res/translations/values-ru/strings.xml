@@ -31,8 +31,8 @@
     <string name="toast_password_inconsistent">Пароли не совпадают!</string>
     <string name="toast_password_null">Пароль не может быть пустым!</string>
     <string name="toast_password_changed">Пароль изменён!</string>
-    <string name="dialog_text_password">Пароль: </string>
-    <string name="dialog_text_re_password">Повторите пароль: </string>
+    <string name="dialog_text_password">Пароль</string>
+    <string name="dialog_text_re_password">Повторите пароль</string>
     <string name="choose_pin">Выберите PIN-код</string>
     <string name="pin_too_short">PIN-код должен быть минимум 4 цифры</string>
     <string name="continue_done">Нажмите \'Продолжить\' по окончании</string>

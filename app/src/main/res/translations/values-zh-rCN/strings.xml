@@ -39,8 +39,8 @@
     <string name="toast_password_inconsistent">密码不一致!</string>
     <string name="toast_password_null">密码不能为空!</string>
     <string name="toast_password_changed">密码已更改!</string>
-    <string name="dialog_text_password">密码: </string>
-    <string name="dialog_text_re_password">确认密码: </string>
+    <string name="dialog_text_password">密码</string>
+    <string name="dialog_text_re_password">确认密码</string>
     <string name="choose_pin">输入您的PIN</string>
     <string name="pin_too_short">PIN必须至少4位数</string>
     <string name="continue_done">完成后按继续</string>

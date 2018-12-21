@@ -198,8 +198,8 @@ public final class Util {
         dialog.show();
         ((ViewGroup) dialogView.getParent()).setPadding(10, 10, 10, 10);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            EditText p1 = dialogView.findViewById(R.id.edt_password);
-            EditText p2 = dialogView.findViewById(R.id.edt_re_password);
+            EditText p1 = dialogView.findViewById(R.id.dialog_input_password);
+            EditText p2 = dialogView.findViewById(R.id.dialog_input_password_repeat);
             String v1 = p1.getText().toString();
             String v2 = p2.getText().toString();
 

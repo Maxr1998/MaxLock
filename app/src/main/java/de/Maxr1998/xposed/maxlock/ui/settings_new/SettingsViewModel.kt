@@ -258,6 +258,8 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
         val context = holder.root.context
         when (preference.key) {
             // Dispatch to activity
+            LOCKING_TYPE_PASSWORD,
+            LOCKING_TYPE_PATTERN,
             CHOOSE_APPS,
             USE_DARK_STYLE,
             USE_AMOLED_BLACK,

@@ -40,8 +40,8 @@
     <string name="toast_password_inconsistent">Password is inconsistent!</string>
     <string name="toast_password_null">Password can not be empty!</string>
     <string name="toast_password_changed">Password was changed!</string>
-    <string name="dialog_text_password">Password: </string>
-    <string name="dialog_text_re_password">Retype password: </string>
+    <string name="dialog_text_password">Password</string>
+    <string name="dialog_text_re_password">Retype password</string>
 
     <string name="choose_pin">Choose your PIN</string>
     <string name="pin_too_short">PIN must have a least 4 digits</string>

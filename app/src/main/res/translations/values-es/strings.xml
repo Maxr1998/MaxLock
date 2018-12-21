@@ -39,8 +39,8 @@ Porfavor concede el permiso en el siguiente diálogo.</string>
     <string name="toast_password_inconsistent">La contraseña es inconsistente!</string>
     <string name="toast_password_null">La contraseña no puede ser vacía!</string>
     <string name="toast_password_changed">La contraseña fue cambiada!</string>
-    <string name="dialog_text_password">Contraseña: </string>
-    <string name="dialog_text_re_password">Reescribir contraseña: </string>
+    <string name="dialog_text_password">Contraseña</string>
+    <string name="dialog_text_re_password">Reescribir contraseña</string>
     <string name="choose_pin">Elige tu PIN</string>
     <string name="pin_too_short">El PIN debe tener al menos 4 dígitos</string>
     <string name="continue_done">Toca continuar al terminar</string>

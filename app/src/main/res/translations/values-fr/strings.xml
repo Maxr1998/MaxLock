@@ -38,8 +38,8 @@
     <string name="toast_password_inconsistent">Le mot de passe est incohérent!</string>
     <string name="toast_password_null">Le mot de passe ne peut pas être vide!</string>
     <string name="toast_password_changed">Mot de passe modifié avec succès!</string>
-    <string name="dialog_text_password">Mot de passe: </string>
-    <string name="dialog_text_re_password">Retaper le mot de passe: </string>
+    <string name="dialog_text_password">Mot de passe</string>
+    <string name="dialog_text_re_password">Retaper le mot de passe</string>
     <string name="choose_pin">Choisissez votre code PIN</string>
     <string name="pin_too_short">Le code PIN doit avoir au minimum 4 chiffres</string>
     <string name="continue_done">Appuyez sur continuer lorsque vous avez terminé</string>

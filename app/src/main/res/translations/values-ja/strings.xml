@@ -38,8 +38,8 @@
     <string name="toast_password_inconsistent">パスワードが一致しません!</string>
     <string name="toast_password_null">パスワードが入力されていません!</string>
     <string name="toast_password_changed">パスワードを変更しました!</string>
-    <string name="dialog_text_password">パスワード : </string>
-    <string name="dialog_text_re_password">確認 : </string>
+    <string name="dialog_text_password">パスワード </string>
+    <string name="dialog_text_re_password">確認 </string>
     <string name="choose_pin">PIN コードを入力してください</string>
     <string name="pin_too_short">少なくとも 4 桁の PIN コードを入力してください</string>
     <string name="continue_done">よろしければ続行をタップしてください</string>

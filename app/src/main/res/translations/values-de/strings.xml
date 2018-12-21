@@ -38,8 +38,8 @@
     <string name="toast_password_inconsistent">Passwörter stimmen nicht überein!</string>
     <string name="toast_password_null">Das Passwort darf nicht leer sein!</string>
     <string name="toast_password_changed">Passwort wurde geändert!</string>
-    <string name="dialog_text_password">Passwort: </string>
-    <string name="dialog_text_re_password">Passwort wiederholen: </string>
+    <string name="dialog_text_password">Passwort</string>
+    <string name="dialog_text_re_password">Passwort wiederholen</string>
     <string name="choose_pin">PIN festlegen</string>
     <string name="pin_too_short">Die PIN muss mindestens 4 Ziffern enthalten.</string>
     <string name="continue_done">Wählen Sie \"Weiter\", sobald Sie fertig sind.</string>

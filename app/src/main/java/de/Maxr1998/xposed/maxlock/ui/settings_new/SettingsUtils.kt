@@ -18,6 +18,7 @@
 package de.Maxr1998.xposed.maxlock.ui.settings_new
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -25,17 +26,23 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
+import android.view.LayoutInflater
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider.getUriForFile
+import androidx.core.content.edit
 import de.Maxr1998.xposed.maxlock.BuildConfig
 import de.Maxr1998.xposed.maxlock.Common
+import de.Maxr1998.xposed.maxlock.Common.PREF_VALUE_PASSWORD
+import de.Maxr1998.xposed.maxlock.Common.PREF_VALUE_PASS_PIN
 import de.Maxr1998.xposed.maxlock.R
-import de.Maxr1998.xposed.maxlock.util.Util
-import de.Maxr1998.xposed.maxlock.util.invoke
+import de.Maxr1998.xposed.maxlock.util.*
+import de.Maxr1998.xposed.maxlock.util.Util.shaHash
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.IOException
@@ -70,6 +77,51 @@ object SettingsUtils {
 }
 
 const val BUG_REPORT_STORAGE_PERMISSION_REQUEST_CODE = 100
+
+@SuppressLint("InflateParams")
+fun SettingsActivity.setupPassword(app: String?) {
+    val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_set_password, null)
+    val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setPositiveButton(android.R.string.ok, null)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setCancelable(false)
+            .create().apply { show() }
+    val passwordView = dialogView.findViewById<EditText>(R.id.dialog_input_password)
+    val passwordConfirmView = dialogView.findViewById<EditText>(R.id.dialog_input_password_repeat)
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+        val password = passwordView.text.toString()
+        val passwordConfirm = passwordConfirmView.text.toString()
+        when {
+            password.isEmpty() -> Toast.makeText(this, R.string.toast_password_null, Toast.LENGTH_SHORT).show()
+            password != passwordConfirm -> {
+                passwordView.setText("")
+                passwordConfirmView.setText("")
+                Toast.makeText(this, R.string.toast_password_inconsistent, Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                dialog.dismiss()
+                if (app == null) {
+                    prefs.edit {
+                        putString(Common.LOCKING_TYPE, (
+                                if (password.matches("[0-9]+".toRegex())) PREF_VALUE_PASS_PIN else PREF_VALUE_PASSWORD)
+                        )
+                    }
+                    prefsKey.edit {
+                        putString(Common.KEY_PREFERENCE, shaHash(password))
+                    }
+                } else {
+                    prefsKeysPerApp.edit {
+                        putString(app, if (password.matches("[0-9]+".toRegex())) PREF_VALUE_PASS_PIN else PREF_VALUE_PASSWORD)
+                        putString(app + Common.APP_KEY_PREFERENCE, shaHash(password))
+                    }
+                }
+                Toast.makeText(this, R.string.toast_password_changed, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dialog.dismiss() }
+}
 
 fun SettingsActivity.checkStoragePermission(code: Int, @StringRes dialogMessage: Int) {
     if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {

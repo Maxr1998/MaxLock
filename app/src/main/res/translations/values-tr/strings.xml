@@ -38,8 +38,8 @@
     <string name="toast_password_inconsistent">Şifre tutarsız!</string>
     <string name="toast_password_null">Şifre boş olamaz!</string>
     <string name="toast_password_changed">Şifre değiştirildi!</string>
-    <string name="dialog_text_password">Şifre: </string>
-    <string name="dialog_text_re_password">Şifreyi yeniden girin: </string>
+    <string name="dialog_text_password">Şifre</string>
+    <string name="dialog_text_re_password">Şifreyi yeniden girin</string>
     <string name="choose_pin">PIN numaranızı seçin</string>
     <string name="pin_too_short">PIN en az 4 haneli olmalıdır</string>
     <string name="continue_done">İşlem tamamlandığında Devam düğmesine dokunun</string>

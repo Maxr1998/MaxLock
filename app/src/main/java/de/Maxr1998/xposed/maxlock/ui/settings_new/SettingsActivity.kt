@@ -43,6 +43,7 @@ import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.haibison.android.lockpattern.LockPatternActivity
 import de.Maxr1998.modernpreferences.PreferenceScreen
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.xposed.maxlock.Common
@@ -220,6 +221,11 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     private fun observePreferenceClicks() {
         settingsViewModel.activityPreferenceClickListener.observe(this, Observer { preferenceKey ->
             when (preferenceKey) {
+                LOCKING_TYPE_PASSWORD -> setupPassword(null)
+                LOCKING_TYPE_PATTERN -> {
+                    val intent = Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, this, LockPatternActivity::class.java)
+                    startActivityForResult(intent, KUtil.getPatternCode(-1))
+                }
                 CHOOSE_APPS -> {
                     openAppList()
                     if (appListViewModel.loadIfNeeded())

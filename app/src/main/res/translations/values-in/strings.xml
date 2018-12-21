@@ -37,8 +37,8 @@
     <string name="toast_password_inconsistent">Kata sandi tidak sama!</string>
     <string name="toast_password_null">Kata sandi tidak boleh kosong!</string>
     <string name="toast_password_changed">Kata sandi telah diganti!</string>
-    <string name="dialog_text_password">Kata Sandi: </string>
-    <string name="dialog_text_re_password">Ketik ulang Kata sandi: </string>
+    <string name="dialog_text_password">Kata Sandi</string>
+    <string name="dialog_text_re_password">Ketik ulang Kata sandi</string>
     <string name="choose_pin">Pilih PIN anda</string>
     <string name="pin_too_short">PIN harus memiliki setidaknya 4 angka</string>
     <string name="continue_done">Sentuh lanjut ketika selesai</string>
