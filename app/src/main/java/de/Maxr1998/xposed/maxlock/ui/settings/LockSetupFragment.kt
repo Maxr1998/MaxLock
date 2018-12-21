@@ -33,10 +33,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.R
-import de.Maxr1998.xposed.maxlock.util.Util
-import de.Maxr1998.xposed.maxlock.util.prefs
-import de.Maxr1998.xposed.maxlock.util.prefsKey
-import de.Maxr1998.xposed.maxlock.util.prefsKeysPerApp
+import de.Maxr1998.xposed.maxlock.util.*
 import kotlinx.android.synthetic.main.fragment_lock_setup.view.*
 import kotlinx.android.synthetic.main.split_button.view.*
 import java.util.*
@@ -136,8 +133,10 @@ class LockSetupFragment : Fragment(), View.OnClickListener {
         when (view.id) {
             R.id.button_positive -> handleStage()
             R.id.button_cancel -> {
-                Util.hideKeyboardFromWindow(activity, getView())
-                activity?.onBackPressed()
+                activity?.run {
+                    hideIme()
+                    onBackPressed()
+                }
             }
             else -> {
                 if (currentValue.length < 20 || view.id == R.id.knock_code_text)
@@ -198,8 +197,10 @@ class LockSetupFragment : Fragment(), View.OnClickListener {
             } else {
                 Toast.makeText(activity, activity!!.resources.getString(R.string.toast_password_inconsistent), Toast.LENGTH_SHORT).show()
             }
-            Util.hideKeyboardFromWindow(activity, view)
-            activity?.onBackPressed()
+            activity?.run {
+                hideIme()
+                onBackPressed()
+            }
         }
     }
 

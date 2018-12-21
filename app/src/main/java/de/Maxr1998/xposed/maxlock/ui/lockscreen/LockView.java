@@ -42,6 +42,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import androidx.annotation.DimenRes;
@@ -57,6 +59,7 @@ import de.Maxr1998.xposed.maxlock.ui.actions.tasker.TaskerHelper;
 import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
+import de.Maxr1998.xposed.maxlock.util.UtilKt;
 
 import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeys;
 import static de.Maxr1998.xposed.maxlock.util.MLPreferences.getPreferencesKeysPerApp;
@@ -148,7 +151,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                 mInputTextView.setOnEditorActionListener((v, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         if (checkInput()) {
-                            Util.hideKeyboardFromWindow(getActivity(), LockView.this);
+                            UtilKt.hideIme(getActivity());
                         } else {
                             setKey(null, false);
                             v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
@@ -171,9 +174,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
                     public void afterTextChanged(Editable editable) {
                         setKey(editable.toString(), false);
                         if (getPrefs().getBoolean(Common.ENABLE_QUICK_UNLOCK, false)) {
-                            if (checkInput()) {
-                                Util.hideKeyboardFromWindow(getActivity(), LockView.this);
-                            }
+                            if (checkInput()) UtilKt.hideIme(getActivity());
                         }
                     }
                 });
@@ -244,6 +245,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     /**
      * Must be used as ContextThemeWrapper context for this LockView
      */
+    @NotNull
     @SuppressLint("RestrictedApi")
     public static ContextThemeWrapper getThemedContext(Context baseContext) {
         return new ContextThemeWrapper(baseContext, MLPreferences.getPreferences(baseContext).getBoolean(Common.INVERT_COLOR, false) ? R.style.AppTheme : R.style.AppTheme_Dark);
@@ -253,6 +255,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
         mInputTextView.requestFocus();
     }
 
+    @NotNull
     public SharedPreferences getPrefs() {
         return MLPreferences.getPreferences(getContext());
     }
@@ -284,7 +287,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
     }
 
-    public void setPattern(List pattern, PatternView patternView) {
+    public void setPattern(@NotNull List pattern, PatternView patternView) {
         setKey(pattern.toString(), false);
         if (!checkInput()) {
             patternView.setWrong();
@@ -293,7 +296,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
     }
 
     public boolean checkInput() {
-        if (!isTimeLeft() && Util.shaHash(mCurrentKey.toString()).equals(mPassword) || mPassword.equals("")) {
+        if (!isTimeLeft() && Util.shaHash(mCurrentKey.toString()).equals(mPassword) || mPassword.isEmpty()) {
             handleAuthenticationSuccess();
             return true;
         }
@@ -302,7 +305,7 @@ public final class LockView extends RelativeLayout implements View.OnClickListen
 
     public void handleAuthenticationSuccess() {
         getPrefs().edit().putInt(Common.FAILED_ATTEMPTS_COUNTER, 0).apply();
-        Util.hideKeyboardFromWindow(getActivity(), this);
+        UtilKt.hideIme(getActivity());
         authenticationSucceededListener.onAuthenticationSucceeded();
         TaskerHelper.sendQueryRequest(getActivity(), true, mPackageName);
         // Reset
