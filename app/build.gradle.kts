@@ -106,6 +106,7 @@ dependencies {
     implementation("com.crossbowffs.remotepreferences:remotepreferences:0.5")
     implementation("com.github.attenzione:android-ColorPickerPreference:e3aa301016")
     implementation("com.heinrichreimersoftware:material-intro:1.6")
+    implementation("${Config.Deps.splittiesBase}:splitties-dimensions:${Config.Deps.splittiesVersion}")
     implementation("com.twofortyfouram:android-plugin-api-for-locale:1.0.2")
     implementation("commons-io:commons-io:2.5")
     compileOnly("de.robv.android.xposed:api:82")

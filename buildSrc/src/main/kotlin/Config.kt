@@ -15,5 +15,7 @@ object Config {
 
     object Deps {
         const val kotlinAndroidStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        const val splittiesBase = "com.louiscad.splitties"
+        const val splittiesVersion = "2.1.1"
     }
 }
