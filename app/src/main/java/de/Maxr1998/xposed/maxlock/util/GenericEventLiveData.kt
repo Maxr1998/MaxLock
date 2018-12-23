@@ -27,10 +27,10 @@ class GenericEventLiveData<T> : MutableLiveData<T>() {
     private val pending = AtomicBoolean(false)
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
-        if (hasActiveObservers())
-            throw UnsupportedOperationException("EventLiveData only supports one Observer")
+        // EventLiveData only supports one Observer
+        if (hasActiveObservers()) return
 
-        // Observe the internal MutableLiveData
+        // Observe the internal MutableLiveData, dispatch changes to observer
         super.observe(owner, Observer { t ->
             if (pending.compareAndSet(true, false)) {
                 observer.onChanged(t)
