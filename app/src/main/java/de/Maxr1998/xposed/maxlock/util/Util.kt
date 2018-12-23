@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package de.Maxr1998.xposed.maxlock.util
 
 import android.app.Activity
@@ -25,8 +27,10 @@ import android.content.pm.PackageManager
 import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color.TRANSPARENT
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.media.ThumbnailUtils
 import android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT
 import android.os.Handler
@@ -34,6 +38,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
@@ -53,6 +58,9 @@ import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE
 import de.Maxr1998.xposed.maxlock.util.Util.PATTERN_CODE_APP
 import java.io.File
 import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 val Context.applicationName
     get() = StringBuilder(getString(R.string.app_name)).apply {
@@ -66,16 +74,14 @@ val Context.applicationName
 inline val AndroidViewModel.application
     get() = getApplication<Application>()
 
-fun ViewGroup.inflate(id: Int, attachToRoot: Boolean = false): View =
+inline fun ViewGroup.inflate(id: Int, attachToRoot: Boolean = false): View =
         LayoutInflater.from(context).inflate(id, this, attachToRoot)
 
 fun Context.withAttrs(vararg attrs: Int, block: TypedArray.() -> Unit) =
         withStyledAttributes(0, attrs, block)
 
-@Suppress("NOTHING_TO_INLINE")
 inline operator fun File.invoke(sub: String) = File(this, sub)
 
-@Suppress("NOTHING_TO_INLINE")
 inline fun Context.getColorCompat(@ColorRes id: Int) = ContextCompat.getColor(this, id)
 
 fun AlertDialog.showWithLifecycle(fragment: Fragment) {
@@ -117,6 +123,12 @@ fun Activity.applyCustomBackground() {
     }
 }
 
+fun Context.getApplicationIcon(packageName: String): Drawable = try {
+    packageManager.getApplicationIcon(packageName)
+} catch (e: PackageManager.NameNotFoundException) {
+    ContextCompat.getDrawable(this, R.mipmap.ic_launcher) ?: ColorDrawable(TRANSPARENT)
+}
+
 fun View.showIme() {
     val imm = context.getSystemService<InputMethodManager>()
     imm?.showSoftInput(this, 0)
@@ -127,6 +139,36 @@ fun Activity.hideIme() {
     Handler().postDelayed(20) {
         imm?.hideSoftInputFromWindow(window.decorView.windowToken, 0)
     }
+}
+
+inline fun TextView.clearText() {
+    text = ""
+}
+
+/**
+ * From [http://stackoverflow.com/a/11978976]. Thanks very much!
+ */
+fun String.toSha256(): String? = try {
+    val digest = MessageDigest.getInstance("SHA-256")
+    var bytes = toByteArray(StandardCharsets.UTF_8)
+    digest.update(bytes, 0, bytes.size)
+    bytes = digest.digest()
+    bytes.toHexString()
+} catch (e: NoSuchAlgorithmException) {
+    e.printStackTrace()
+    null
+}
+
+private val hexArray = "0123456789ABCDEF".toCharArray()
+
+private fun ByteArray.toHexString(): String {
+    val hexChars = CharArray(size * 2)
+    for (j in indices) {
+        val v = this[j].toInt() and 0xFF
+        hexChars[j * 2] = hexArray[v ushr 4]
+        hexChars[j * 2 + 1] = hexArray[v and 0x0F]
+    }
+    return String(hexChars)
 }
 
 object KUtil {

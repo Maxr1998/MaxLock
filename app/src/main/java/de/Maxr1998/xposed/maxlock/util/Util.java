@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.view.LayoutInflater;
@@ -270,14 +269,6 @@ public final class Util {
             }
         } catch (PackageManager.NameNotFoundException e) {
             return "(Not found)";
-        }
-    }
-
-    public static Drawable getApplicationIconFromPackage(String packageName, Context context) {
-        try {
-            return context.getPackageManager().getApplicationIcon(packageName);
-        } catch (PackageManager.NameNotFoundException e) {
-            return ContextCompat.getDrawable(context, R.mipmap.ic_launcher);
         }
     }
 

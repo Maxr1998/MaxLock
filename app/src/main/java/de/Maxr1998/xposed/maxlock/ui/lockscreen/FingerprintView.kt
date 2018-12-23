@@ -48,12 +48,10 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
     private var cancellationSignal: CancellationSignal? = null
     private val authenticationCallback = object : FingerprintManagerCompat.AuthenticationCallback() {
         override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult?) {
-            if (lockView.allowFingerprint()) {
+            if (lockView.allowFingerprint()) { // Make sure we're still allowed to authenticate
                 handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_draw_off_animation)
                 lockView.handleAuthenticationSuccess()
-            } else {
-                onWindowFocusChanged(true)
-            }
+            } else cancelAuthentication()
         }
 
         override fun onAuthenticationFailed() {
@@ -89,15 +87,14 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
     }
 
     private fun authenticate() {
-        if (!authenticating.compareAndSet(false, true))
+        if (!authenticating.compareAndSet(false, true) || !lockView.isVisible)
             return
+        if (!lockView.allowFingerprint()) {
+            cancelAuthentication()
+            return
+        }
         Log.d(Util.LOG_TAG_FINGERPRINT, "Starting authentication..")
         if (fingerprintManager.isHardwareDetected && fingerprintManager.hasEnrolledFingerprints()) {
-            if (!lockView.allowFingerprint()) {
-                handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_fp_to_error_state_animation)
-                setOnClickListener(fpDisabledToast)
-                return
-            }
             if (cancellationSignal == null || cancellationSignal!!.isCanceled) {
                 cancellationSignal = CancellationSignal().apply {
                     setOnCancelListener { authenticating.set(false) }
@@ -108,16 +105,28 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
         } else visibility = View.GONE
     }
 
+    /**
+     * Cancel the current authentication, if needed.
+     * This should only happen when a) the view is being dismissed (lockView invisible) or
+     * the user failed authentication through another way
+     */
+    fun cancelAuthentication() {
+        cancellationSignal?.cancel()
+        if (lockView.isVisible && !lockView.allowFingerprint()) {
+            handleFingerprintIndicator(R.drawable.lockscreen_fingerprint_fp_to_error_state_animation)
+            setOnClickListener(fpDisabledToast)
+        }
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if (lockView.isVisible) authenticate()
+        authenticate()
     }
 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
-        if (hasWindowFocus) {
-            if (lockView.isVisible) authenticate()
-        } else cancellationSignal?.cancel()
+        if (hasWindowFocus) authenticate()
+        else cancellationSignal?.cancel()
     }
 
     override fun onDetachedFromWindow() {
