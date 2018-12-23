@@ -15,13 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package de.Maxr1998.xposed.maxlock.util
 
+import android.app.Activity
 import android.view.View
 import androidx.annotation.IdRes
 
-inline fun <reified V : View> View.lazyView(@IdRes id: Int): Lazy<V> {
+inline fun <V : View> View.lazyView(@IdRes id: Int): Lazy<V> {
     return LazyView(this, id)
+}
+
+inline fun <V : View> Activity.lazyView(@IdRes id: Int): Lazy<V> {
+    return LazyView(window.decorView, id)
 }
 
 class LazyView<V : View>(private val rootView: View, @IdRes private val id: Int) : Lazy<V> {
