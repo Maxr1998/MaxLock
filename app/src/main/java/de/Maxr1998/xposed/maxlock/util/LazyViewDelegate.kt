@@ -24,18 +24,18 @@ import android.view.View
 import androidx.annotation.IdRes
 
 inline fun <V : View> View.lazyView(@IdRes id: Int): Lazy<V> {
-    return LazyView(this, id)
+    return LazyView({ this }, id)
 }
 
 inline fun <V : View> Activity.lazyView(@IdRes id: Int): Lazy<V> {
-    return LazyView(window.decorView, id)
+    return LazyView({ window.decorView }, id)
 }
 
-class LazyView<V : View>(private val rootView: View, @IdRes private val id: Int) : Lazy<V> {
+class LazyView<V : View>(private val getRoot: () -> View, @IdRes private val id: Int) : Lazy<V> {
     private var cached: V? = null
 
     override val value: V
-        get() = cached ?: rootView.findViewById<V>(id).also { cached = it }
+        get() = cached ?: getRoot().findViewById<V>(id).also { cached = it }
 
     override fun isInitialized() = cached != null
 }
