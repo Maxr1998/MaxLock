@@ -17,7 +17,6 @@
 
 package de.Maxr1998.xposed.maxlock.ui.settings.applist
 
-import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.Application
 import android.content.Context.ACTIVITY_SERVICE
@@ -34,12 +33,17 @@ import androidx.recyclerview.widget.SortedList
 import de.Maxr1998.xposed.maxlock.BuildConfig
 import de.Maxr1998.xposed.maxlock.util.GenericEventLiveData
 import de.Maxr1998.xposed.maxlock.util.KUtil.getLauncherPackages
+import kotlinx.coroutines.*
 import java.text.Collator
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.collections.ArrayList
+import kotlin.coroutines.CoroutineContext
 
-class AppListModel(application: Application) : AndroidViewModel(application) {
+class AppListModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
     val adapter: AppListAdapter by lazy { AppListAdapter(this, application) }
     private val appListCallback = AppListCallback(adapter)
     val appList = SortedList(AppInfo::class.java, appListCallback)
@@ -58,41 +62,33 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
         loadData()
     }
 
-    @SuppressLint("StaticFieldLeak")
     fun loadData() {
         loaded.set(false)
-        object : AsyncTask<Any, Int, List<AppInfo>?>() {
-            override fun doInBackground(vararg params: Any?): List<AppInfo>? {
+        launch {
+            withContext(AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()) {
                 val pm = getApplication<Application>().packageManager
                 launcherPackages = getLauncherPackages(pm)
                 val allApps = pm.getInstalledApplications(0)
-                val result = ArrayList<AppInfo>()
+                val result = ArrayList<AppInfo>(allApps.size * 3 / 4)
                 for (i in allApps.indices) {
                     val info = allApps[i]
                     if (includeApp(pm, info.packageName)) {
                         result.add(AppInfo(i, info, pm))
                     }
                 }
-                Collections.sort(result, object : Comparator<AppInfo> {
-                    var sCollator = Collator.getInstance()
-
-                    override fun compare(one: AppInfo, two: AppInfo): Int {
-                        return sCollator.compare(one.name, two.name)
-                    }
+                val collator = Collator.getInstance()
+                result.sortWith(Comparator { a, b ->
+                    compareValuesBy(a, b, collator, AppInfo::name)
                 })
-                return result
+                result
+            }.let {
+                appListBackup.clear()
+                appListBackup.addAll(it)
+                appsLoadedListener.call(null)
+                appList.replaceAll(it)
+                loaded.set(true)
             }
-
-            override fun onPostExecute(result: List<AppInfo>?) {
-                result?.let {
-                    appListBackup.clear()
-                    appListBackup.addAll(it)
-                    appsLoadedListener.call(null)
-                    appList.replaceAll(it)
-                    loaded.set(true)
-                }
-            }
-        }.execute()
+        }
     }
 
     private fun includeApp(pm: PackageManager, packageName: String): Boolean {
