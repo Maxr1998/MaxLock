@@ -35,12 +35,15 @@ import android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER
 import android.widget.ProgressBar
 import android.widget.Switch
 import androidx.activity.viewModels
+import androidx.annotation.IntDef
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.haibison.android.lockpattern.LockPatternActivity
@@ -52,21 +55,20 @@ import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.SettingsActivity
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView
 import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListAdapter
-import de.Maxr1998.xposed.maxlock.ui.settings.applist.AppListModel
+import de.Maxr1998.xposed.maxlock.ui.settings_new.screens.AppListScreen
 import de.Maxr1998.xposed.maxlock.util.*
 import java.util.*
 
 class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, PreferencesAdapter.OnScreenChangeListener {
     private val settingsViewModel by viewModels<SettingsViewModel>()
-    private val appListViewModel by viewModels<AppListModel>()
     private val originalTitle by lazy { applicationName.toString() }
     private val preferencesAdapter get() = settingsViewModel.preferencesAdapter
-    private val viewRoot by lazy { findViewById<ViewGroup>(R.id.content_view_settings) }
-    private lateinit var masterSwitch: Switch
-    private val uiComponents by lazy { findViewById<Group>(R.id.ui_components) }
-    private val recyclerView by lazy { findViewById<RecyclerView>(android.R.id.list) }
-    private val progress by lazy { findViewById<ProgressBar>(android.R.id.progress) }
-    private val lockscreen by lazy { findViewById<LockView>(R.id.lockscreen) }
+    private val viewRoot by lazyView<ViewGroup>(R.id.content_view_settings)
+    private var masterSwitch: Switch? = null
+    private val uiComponents by lazyView<Group>(R.id.ui_components)
+    private val recyclerView by lazyView<RecyclerView>(android.R.id.list)
+    private val progress by lazyView<ProgressBar>(android.R.id.progress)
+    private val lockscreen by lazyView<LockView>(R.id.lockscreen)
     private var ctConnection: CustomTabsServiceConnection? = null
     private var ctSession: CustomTabsSession? = null
     private val devicePolicyManager by lazy { getSystemService<DevicePolicyManager>() }
@@ -86,24 +88,26 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
                 restoreAndObserveScrollPosition(recyclerView)
             }
         }
+        // Applies the custom screen if needed
+        applyCurrentCustomScreen()
 
         // Restore state if possible/needed
         savedInstanceState?.apply {
-            when (getInt(ADAPTER_SAVED_STATE)) {
-                ADAPTER_APP_LIST -> {
-                    openAppList()
+            // Restore preference adapter state from saved state, if needed
+            getParcelable<PreferencesAdapter.SavedState>(PREFS_SAVED_STATE)
+                    ?.let(preferencesAdapter::loadSavedState)
+            // Restore screen
+            if (settingsViewModel.customScreenStack.isEmpty()) {
+                // TODO: Restore whole stack
+                when (val screen = getInt(SCREEN_SAVED_STATE)) {
+                    SCREEN_DEFAULT -> return@apply
+                    else -> openCustomScreen(screen)
                 }
             }
-            // Restore preference adapter state from saved state, if needed
-            getParcelable<PreferencesAdapter.SavedState>(PREF_ADAPTER_SAVED_STATE)
-                    ?.let(preferencesAdapter::loadSavedState)
         }
 
         // Setup event listeners
         observePreferenceClicks()
-        appListViewModel.appsLoadedListener.observe(this, Observer {
-            progress.isVisible = false
-        })
 
         // Initialize custom tabs service
         bindCustomTabsService()
@@ -160,7 +164,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
-        masterSwitch = (menu.findItem(R.id.toolbar_master_switch).actionView as Switch).apply {
+        masterSwitch = (menu.findItem(R.id.toolbar_master_switch)?.actionView as? Switch)?.apply {
             isChecked = prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)
             setOnCheckedChangeListener { _, b ->
                 prefsApps.edit().putBoolean(Common.MASTER_SWITCH_ON, b).apply()
@@ -170,7 +174,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        masterSwitch.isChecked = prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)
+        masterSwitch?.isChecked = prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true)
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -212,10 +216,39 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
         recyclerView.scrollToPosition(0)
     }
 
-    private fun openAppList() {
+    private fun openCustomScreen(@CustomScreen id: Int) {
+        val screen = settingsViewModel.customScreens.get(id) ?: when (id) {
+            SCREEN_APP_LIST -> AppListScreen(this)
+            else -> throw RuntimeException("The specified screen id doesn't exist")
+        }.also { settingsViewModel.customScreens.put(id, it) }
+        settingsViewModel.customScreenStack.push(screen)
+        applyCurrentCustomScreen()
+    }
+
+    private fun applyCurrentCustomScreen() {
+        if (settingsViewModel.customScreenStack.isEmpty())
+            return
+        val screen = settingsViewModel.customScreenStack.last()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        setTitle(R.string.pref_screen_apps)
-        recyclerView.adapter = appListViewModel.adapter
+        setTitle(screen.titleRes)
+        if (screen.hasOptionsMenu)
+            invalidateOptionsMenu()
+        screen.adapter?.let {
+            recyclerView.adapter = it
+        }
+        screen.view?.let {
+            viewRoot.addView(it, ViewGroup.LayoutParams.MATCH_PARENT, 0)
+            it.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = R.id.toolbar
+                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            }
+        }
+        screen.progressLiveData?.apply {
+            progress.isVisible = true
+            observe(this@SettingsActivity, Observer {
+                progress.isVisible = false
+            })
+        }
     }
 
     private fun observePreferenceClicks() {
@@ -226,11 +259,7 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
                     val intent = Intent(LockPatternActivity.ACTION_CREATE_PATTERN, null, this, LockPatternActivity::class.java)
                     startActivityForResult(intent, KUtil.getPatternCode(-1))
                 }
-                CHOOSE_APPS -> {
-                    openAppList()
-                    if (appListViewModel.loadIfNeeded())
-                        progress.isVisible = true
-                }
+                CHOOSE_APPS -> openCustomScreen(SCREEN_APP_LIST)
                 USE_DARK_STYLE, USE_AMOLED_BLACK -> recreate()
                 UNINSTALL -> {
                     if (devicePolicyManager?.isAdminActive(deviceAdmin) != true) {
@@ -266,10 +295,15 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     }
 
     override fun onBackPressed() {
-        if (recyclerView.adapter != preferencesAdapter) {
-            recyclerView.apply {
-                progress.isVisible = false
+        val stack = settingsViewModel.customScreenStack
+        if (stack.isNotEmpty()) {
+            progress.isVisible = false
+            stack.pop()
+            if (stack.isNotEmpty())
+                applyCurrentCustomScreen()
+            else recyclerView.apply {
                 onScreenChanged(preferencesAdapter.currentScreen, preferencesAdapter.isInSubScreen())
+                invalidateOptionsMenu()
                 adapter = preferencesAdapter
             }
         } else if (!preferencesAdapter.goBack())
@@ -278,11 +312,11 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(ADAPTER_SAVED_STATE, when (recyclerView.adapter?.javaClass) {
-            AppListAdapter::class.java -> ADAPTER_APP_LIST
-            else -> 0
+        outState.putInt(SCREEN_SAVED_STATE, when (recyclerView.adapter?.javaClass) {
+            AppListAdapter::class.java -> SCREEN_APP_LIST
+            else -> SCREEN_DEFAULT
         })
-        outState.putParcelable(PREF_ADAPTER_SAVED_STATE, preferencesAdapter.getSavedState())
+        outState.putParcelable(PREFS_SAVED_STATE, preferencesAdapter.getSavedState())
     }
 
     override fun onDestroy() {
@@ -317,8 +351,13 @@ class SettingsActivity : AppCompatActivity(), AuthenticationSucceededListener, P
     }
 
     companion object {
-        const val ADAPTER_SAVED_STATE = "adapter_state"
-        const val PREF_ADAPTER_SAVED_STATE = "pref_adapter_state"
-        const val ADAPTER_APP_LIST = 1
+        const val SCREEN_SAVED_STATE = "screen_state"
+        const val PREFS_SAVED_STATE = "prefs_state"
+        const val SCREEN_DEFAULT = 0
+        const val SCREEN_APP_LIST = 1
     }
+
+    @IntDef(SCREEN_DEFAULT, SCREEN_APP_LIST)
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class CustomScreen
 }

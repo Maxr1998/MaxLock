@@ -20,6 +20,7 @@ package de.Maxr1998.xposed.maxlock.ui.settings_new
 import android.app.Application
 import android.content.Intent
 import android.os.Build
+import android.util.SparseArray
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.lifecycle.AndroidViewModel
 import de.Maxr1998.modernpreferences.Preference
@@ -31,6 +32,7 @@ import de.Maxr1998.xposed.maxlock.Common.*
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.settings.DonateActivity
 import de.Maxr1998.xposed.maxlock.ui.settings_new.implementation.ImplementationDialogPreference
+import de.Maxr1998.xposed.maxlock.ui.settings_new.screens.CustomScreen
 import de.Maxr1998.xposed.maxlock.util.GenericEventLiveData
 import de.Maxr1998.xposed.maxlock.util.application
 import de.Maxr1998.xposed.maxlock.util.applicationName
@@ -38,6 +40,7 @@ import de.Maxr1998.xposed.maxlock.util.prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class SettingsViewModel(app: Application) : AndroidViewModel(app),
@@ -46,6 +49,9 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
         get() = Dispatchers.Main
     internal var locked = true
     private val lockLifecycleCallbacks = LockLifecycleCallbacks(this)
+
+    val customScreens = SparseArray<CustomScreen>(5)
+    val customScreenStack = Stack<CustomScreen>()
 
     val activityPreferenceClickListener = GenericEventLiveData<String>()
 

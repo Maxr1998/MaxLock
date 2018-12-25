@@ -52,19 +52,15 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
             if ((application.getSystemService(ACTIVITY_SERVICE) as ActivityManager).isLowRamDevice) 80 else 300
     )
     private lateinit var launcherPackages: List<String>
+    val loaded = AtomicBoolean(false)
 
-    private var loaded = AtomicBoolean(false)
-
-    fun loadIfNeeded(): Boolean {
-        if (loaded.compareAndSet(false, true)) {
-            loadData()
-            return true
-        }
-        return false
+    init {
+        loadData()
     }
 
     @SuppressLint("StaticFieldLeak")
     fun loadData() {
+        loaded.set(false)
         object : AsyncTask<Any, Int, List<AppInfo>?>() {
             override fun doInBackground(vararg params: Any?): List<AppInfo>? {
                 val pm = getApplication<Application>().packageManager
@@ -93,6 +89,7 @@ class AppListModel(application: Application) : AndroidViewModel(application) {
                     appListBackup.addAll(it)
                     appsLoadedListener.call(null)
                     appList.replaceAll(it)
+                    loaded.set(true)
                 }
             }
         }.execute()
