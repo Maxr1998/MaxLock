@@ -21,7 +21,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -51,11 +50,8 @@ class AppListAdapter(val appListModel: AppListModel, context: Context) : Recycle
         setHasStableIds(true)
     }
 
-    private var count = 0 // TODO REMOVE
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppListViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.app_list_item, parent, false)
-        Log.d("TAG", "Created ViewHolder ${count++}") // TODO: THIS HAPPENS TOO OFTEN IN LANDSCAPE
         return AppListViewHolder(v)
     }
 
