@@ -334,7 +334,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
      */
     fun refreshPrefDonate(): Boolean {
         val donated = application.prefs.getBoolean(DONATED, false)
-        if (!donated && prefDonate.summaryRes == -1)
+        if (!donated && prefDonate.titleRes != -1 && prefDonate.summaryRes == -1)
             return false
         prefDonate.titleRes = if (donated) R.string.pref_donate_thanks_for_donation else R.string.pref_donate_upgrade_pro
         prefDonate.summaryRes = if (donated) R.string.pref_donate_again_on_pro_summary else -1
