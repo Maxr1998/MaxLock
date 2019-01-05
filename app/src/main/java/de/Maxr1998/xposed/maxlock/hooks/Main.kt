@@ -57,13 +57,11 @@ class Main : IXposedHookZygoteInit, IXposedHookLoadPackage {
 
                         val prefs = ctx.getRemotePreferences(Common.MAXLOCK_PACKAGE_NAME + "_preferences")
                         SystemUI.init(lPParam, prefs, prefsApps, prefsHistory)
-                        SystemUI.initScreenOff(lPParam, prefsApps, prefsHistory)
                         return
                     }
-                    MaxLock.PACKAGE_NAME -> MaxLock.init(lPParam, prefsHistory)
                     DeviceAdminProtection.PACKAGE_NAME -> DeviceAdminProtection.init(lPParam)
                 }
-                Apps.init(lPParam.packageName, ctx, prefsApps, prefsHistory)
+                NotificationHiding.init(lPParam.packageName, ctx, prefsApps)
             }
         })
     }
