@@ -45,8 +45,8 @@ suspend fun startup(context: Application) {
     if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {
         prefs.edit {
             putBoolean(Common.ENABLE_LOGGING, false)
-            putBoolean(Common.ENABLE_IMOD_DELAY_APP, false)
-            putBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false)
+            putBoolean(Common.ENABLE_DELAY_PER_APP, false)
+            putBoolean(Common.ENABLE_DELAY_GENERAL, false)
         }
     }
 

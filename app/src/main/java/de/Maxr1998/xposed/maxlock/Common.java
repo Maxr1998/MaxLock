@@ -92,10 +92,18 @@ public abstract class Common {
 
     public static final String IMOD_OPTIONS = "intika_imod";
     /* IMOD */
-    public static final String ENABLE_IMOD_DELAY_GLOBAL = "enable_delaygeneral";
-    public static final String ENABLE_IMOD_DELAY_APP = "enable_delayperapp";
-    public static final String SHOW_IMOD_RESET_NOTIFICATION = "imod_show_reset_notification";
+    public static final String CATEGORY_DELAY_GENERAL = "cat_delay_general";
+    public static final String ENABLE_DELAY_GENERAL = "enable_delaygeneral";
+    public static final String DELAY_GENERAL = "delay_inputgeneral";
+    public static final String CATEGORY_DELAY_PER_APP = "cat_delay_per_app";
+    public static final String ENABLE_DELAY_PER_APP = "enable_delayperapp";
+    public static final String DELAY_PER_APP = "delay_inputperapp";
+    public static final String CATEGORY_RESET_RELOCK_TIMER = "cat_reset_relock_timer";
+    public static final String SHOW_RESET_RELOCK_TIMER_NOTIFICATION = "imod_show_reset_notification";
+    public static final String RESET_RELOCK_TIMER_ON_SCREEN_OFF = "reset_imod_screen_off";
+    public static final String RESET_RELOCK_TIMER_ON_HOMESCREEN = "imod_reset_on_homescreen";
 
+    public static final String CATEGORY_APPS = "cat_apps";
     public static final String CHOOSE_APPS = "choose_apps";
 
     public static final String CATEGORY_APPLICATION_UI = "cat_app_ui";

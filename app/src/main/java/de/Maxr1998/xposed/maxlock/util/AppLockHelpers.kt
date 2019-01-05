@@ -21,6 +21,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import de.Maxr1998.xposed.maxlock.Common
+import de.Maxr1998.xposed.maxlock.Common.DELAY_GENERAL
+import de.Maxr1998.xposed.maxlock.Common.DELAY_PER_APP
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -32,10 +34,6 @@ object AppLockHelpers {
     private const val IMOD_APPS = "iModPerApp"
     private const val CLOSE_APPS = "close"
     private const val IMOD_LAST_UNLOCK_GLOBAL = "IMoDGlobalDelayTimer"
-    const val IMOD_RESET_ON_SCREEN_OFF = "reset_imod_screen_off"
-    const val IMOD_RESET_ON_HOMESCREEN = "imod_reset_on_homescreen"
-    private const val IMOD_DELAY_APP = "delay_inputperapp"
-    private const val IMOD_DELAY_GLOBAL = "delay_inputgeneral"
 
     @JvmStatic
     @Throws(Throwable::class)
@@ -63,14 +61,14 @@ object AppLockHelpers {
 
     @JvmStatic
     fun iModActive(packageName: String, prefsApps: SharedPreferences, prefsHistory: SharedPreferences): Boolean {
-        val iModDelayGlobalEnabled = prefsApps.getBoolean(Common.ENABLE_IMOD_DELAY_GLOBAL, false)
-        val iModDelayAppEnabled = prefsApps.getBoolean(Common.ENABLE_IMOD_DELAY_APP, false)
+        val iModDelayGlobalEnabled = prefsApps.getBoolean(Common.ENABLE_DELAY_GENERAL, false)
+        val iModDelayAppEnabled = prefsApps.getBoolean(Common.ENABLE_DELAY_PER_APP, false)
         val iModLastUnlockGlobal = prefsHistory.getLong(IMOD_LAST_UNLOCK_GLOBAL, 0)
         val iModPerApp = JSONObject(prefsHistory.getString(IMOD_APPS, JSONObject().toString()))
         val iModLastUnlockApp = iModPerApp.optLong(packageName)
 
-        return iModDelayGlobalEnabled && System.currentTimeMillis() - iModLastUnlockGlobal <= prefsApps.getInt(IMOD_DELAY_GLOBAL, 600000) ||
-                iModDelayAppEnabled && System.currentTimeMillis() - iModLastUnlockApp <= prefsApps.getInt(IMOD_DELAY_APP, 600000)
+        return iModDelayGlobalEnabled && System.currentTimeMillis() - iModLastUnlockGlobal <= prefsApps.getInt(DELAY_GENERAL, 600000) ||
+                iModDelayAppEnabled && System.currentTimeMillis() - iModLastUnlockApp <= prefsApps.getInt(DELAY_PER_APP, 600000)
     }
 
     @JvmStatic

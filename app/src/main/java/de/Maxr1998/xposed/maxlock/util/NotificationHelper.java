@@ -62,7 +62,7 @@ public final class NotificationHelper {
         }
 
         NotificationManagerCompat nm = NotificationManagerCompat.from(context);
-        if (!MLPreferences.getPrefsApps(context).getBoolean(Common.SHOW_IMOD_RESET_NOTIFICATION, false)) {
+        if (!MLPreferences.getPrefsApps(context).getBoolean(Common.SHOW_RESET_RELOCK_TIMER_NOTIFICATION, false)) {
             nm.cancel(IMOD_NOTIFICATION_ID);
             return;
         }

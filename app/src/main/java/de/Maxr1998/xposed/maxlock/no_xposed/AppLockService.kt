@@ -29,10 +29,10 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityWindowInfo
 import de.Maxr1998.xposed.maxlock.Common
+import de.Maxr1998.xposed.maxlock.Common.RESET_RELOCK_TIMER_ON_HOMESCREEN
+import de.Maxr1998.xposed.maxlock.Common.RESET_RELOCK_TIMER_ON_SCREEN_OFF
 import de.Maxr1998.xposed.maxlock.MLImplementation
 import de.Maxr1998.xposed.maxlock.ui.LockActivity
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_HOMESCREEN
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getLauncherPackage
 import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass
@@ -52,7 +52,7 @@ class AppLockService : AccessibilityService() {
 
     private val screenOffReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
+            if (prefsApps.getBoolean(RESET_RELOCK_TIMER_ON_SCREEN_OFF, false)) {
                 prefsHistory.edit().clear().apply()
                 Log.d(TAG, "Screen turned off, locked apps.")
             } else {
@@ -100,7 +100,7 @@ class AppLockService : AccessibilityService() {
                 handlePackage(packageName)
             } else {
                 addToHistory(-1, packageName, prefsHistory)
-                if (packageName == launcherPackage && prefsApps.getBoolean(IMOD_RESET_ON_HOMESCREEN, false)) {
+                if (packageName == launcherPackage && prefsApps.getBoolean(RESET_RELOCK_TIMER_ON_HOMESCREEN, false)) {
                     prefsHistory.edit().clear().apply()
                     Log.d(TAG, "Returned to homescreen, locked apps")
                 }

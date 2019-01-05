@@ -208,8 +208,8 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                 break;
             case IMOD:
                 // I.Mod - Pro setup
-                Preference iModDelayGlobal = findPreference(Common.ENABLE_IMOD_DELAY_GLOBAL);
-                Preference iModDelayPerApp = findPreference(Common.ENABLE_IMOD_DELAY_APP);
+                Preference iModDelayGlobal = findPreference(Common.ENABLE_DELAY_GENERAL);
+                Preference iModDelayPerApp = findPreference(Common.ENABLE_DELAY_PER_APP);
                 iModDelayGlobal.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
                 iModDelayPerApp.setEnabled(prefs.getBoolean(Common.ENABLE_PRO, false));
                 if (!prefs.getBoolean(Common.ENABLE_PRO, false)) {

@@ -31,7 +31,7 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_SCREEN_OFF;
+import static de.Maxr1998.xposed.maxlock.Common.RESET_RELOCK_TIMER_ON_SCREEN_OFF;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.iModActive;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim;
 import static de.robv.android.xposed.XposedBridge.hookAllMethods;
@@ -87,7 +87,7 @@ class SystemUI {
         final XC_MethodHook hook = new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) {
-                if (prefsApps.getBoolean(IMOD_RESET_ON_SCREEN_OFF, false)) {
+                if (prefsApps.getBoolean(RESET_RELOCK_TIMER_ON_SCREEN_OFF, false)) {
                     prefsHistory.edit().clear().apply();
                     log("ML: Screen turned off, locked apps.");
                 } else {

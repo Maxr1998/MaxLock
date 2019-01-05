@@ -33,8 +33,8 @@ import de.robv.android.xposed.XC_MethodHook;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static de.Maxr1998.xposed.maxlock.Common.MAXLOCK_PACKAGE_NAME;
+import static de.Maxr1998.xposed.maxlock.Common.RESET_RELOCK_TIMER_ON_HOMESCREEN;
 import static de.Maxr1998.xposed.maxlock.hooks.Main.logD;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.IMOD_RESET_ON_HOMESCREEN;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass;
 import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.wasAppClosed;
@@ -149,7 +149,7 @@ class Apps {
                     if (launcherPackage == null) {
                         launcherPackage = AppLockHelpers.getLauncherPackage(((Activity) param.thisObject).getPackageManager());
                     }
-                    if (packageName.equals(launcherPackage) && prefsApps.getBoolean(IMOD_RESET_ON_HOMESCREEN, false)) {
+                    if (packageName.equals(launcherPackage) && prefsApps.getBoolean(RESET_RELOCK_TIMER_ON_HOMESCREEN, false)) {
                         prefsHistory.edit().clear().apply();
                         logD("Returned to homescreen, locked apps");
                     }

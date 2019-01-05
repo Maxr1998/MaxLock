@@ -111,8 +111,57 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
             titleRes = R.string.pref_screen_delayed_relock
             summaryRes = R.string.pref_screen_delayed_relock_summary
             iconRes = R.drawable.ic_access_time_24dp
+            preferenceFileName = PREFS_APPS
+            categoryHeader(CATEGORY_DELAY_GENERAL) {
+                titleRes = R.string.pref_category_delay_general
+            }
+            switch(ENABLE_DELAY_GENERAL) {
+                titleRes = R.string.pref_delay_general
+                summaryRes = R.string.pref_delay_general_summary
+            }
+            val timeFormatter = { i: Int -> "${i / 60000}:" + if (i % 60000 == 30000) "30" else "00" }
+            seekBar(DELAY_GENERAL) {
+                titleRes = R.string.pref_delay_general_input
+                summaryRes = R.string.pref_delay_general_input_summary
+                dependency = ENABLE_DELAY_GENERAL
+                min = 60000
+                max = 3600000
+                step = 30000
+                formatter = timeFormatter
+            }
+            categoryHeader(CATEGORY_DELAY_PER_APP) {
+                titleRes = R.string.pref_category_delay_per_app
+            }
+            switch(ENABLE_DELAY_PER_APP) {
+                titleRes = R.string.pref_delay_per_app
+                summaryRes = R.string.pref_delay_per_app_summary
+            }
+            seekBar(DELAY_PER_APP) {
+                titleRes = R.string.pref_delay_per_app_input
+                summaryRes = R.string.pref_delay_per_app_input_summary
+                dependency = ENABLE_DELAY_PER_APP
+                min = 60000
+                max = 3600000
+                step = 30000
+                formatter = timeFormatter
+            }
+            categoryHeader(CATEGORY_RESET_RELOCK_TIMER) {
+                titleRes = R.string.pref_category_reset_relock_timer
+            }
+            switch(SHOW_RESET_RELOCK_TIMER_NOTIFICATION) {
+                titleRes = R.string.pref_show_reset_notification
+                summaryRes = R.string.pref_show_reset_notification_summary
+            }
+            switch(RESET_RELOCK_TIMER_ON_SCREEN_OFF) {
+                titleRes = R.string.pref_reset_screen_off
+                summaryRes = R.string.pref_reset_screen_off_summary
+            }
+            switch(RESET_RELOCK_TIMER_ON_HOMESCREEN) {
+                titleRes = R.string.pref_imod_reset_on_homescreen
+                summaryRes = R.string.pref_imod_reset_on_homescreen_summary
+            }
         }
-        categoryHeader("apps") {
+        categoryHeader(CATEGORY_APPS) {
             titleRes = R.string.pref_category_apps
         }
         pref(CHOOSE_APPS) {
