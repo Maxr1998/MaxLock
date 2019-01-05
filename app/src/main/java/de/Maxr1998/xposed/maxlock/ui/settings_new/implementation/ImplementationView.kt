@@ -29,14 +29,16 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.MLImplementation
+import de.Maxr1998.xposed.maxlock.MLImplementation.DEFAULT
+import de.Maxr1998.xposed.maxlock.MLImplementation.NO_XPOSED
 import de.Maxr1998.xposed.maxlock.R
-import de.Maxr1998.xposed.maxlock.util.MLPreferences
+import de.Maxr1998.xposed.maxlock.util.prefs
 
-class ImplementationView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : LinearLayout(context, attrs, defStyleAttr) {
+class ImplementationView(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) : LinearLayout(ctx, attrs, defStyleAttr) {
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, androidx.appcompat.R.attr.editTextStyle)
     constructor(context: Context) : this(context, null)
 
-    private val prefs: SharedPreferences = MLPreferences.getPreferences(context)
+    private val prefs: SharedPreferences = context.prefs
     private lateinit var group: RadioGroup
     private lateinit var accessibilityAlert: View
     private lateinit var implementationError: TextView
@@ -47,27 +49,34 @@ class ImplementationView(context: Context, attrs: AttributeSet?, defStyleAttr: I
         accessibilityAlert = findViewById(R.id.implementation_alert)
         implementationError = findViewById(R.id.implementation_error)
 
-        group.check(if (MLImplementation.getImplementation(MLPreferences.getPreferences(context)) == MLImplementation.DEFAULT) R.id.implementation_item_default else R.id.implementation_item_no_xposed)
-        group.setOnCheckedChangeListener { _, _ -> updateView() }
+        val currentImplementation = MLImplementation.getImplementation(prefs)
+        group.check(if (currentImplementation == DEFAULT) R.id.implementation_item_default else R.id.implementation_item_no_xposed)
+        group.setOnCheckedChangeListener { _, _ ->
+            val checkedImplementation = when (group.checkedRadioButtonId) {
+                R.id.implementation_item_default -> DEFAULT
+                else -> NO_XPOSED
+            }
+            prefs.edit().putInt(Common.ML_IMPLEMENTATION, checkedImplementation).apply()
+            updateView(checkedImplementation)
+        }
 
         if (!MLImplementation.isAccessibilitySupported) {
             group.visibility = View.GONE
         }
 
         implementationError.setOnClickListener {
-            if (MLImplementation.getImplementation(prefs) == MLImplementation.NO_XPOSED)
+            if (MLImplementation.getImplementation(prefs) == NO_XPOSED)
                 try {
                     context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
                 } catch (e: ActivityNotFoundException) {
                     e.printStackTrace()
                 }
         }
-        updateView()
+        updateView(currentImplementation)
     }
 
-    private fun updateView() {
-        val defaultChecked = group.checkedRadioButtonId == R.id.implementation_item_default
-        prefs.edit().putInt(Common.ML_IMPLEMENTATION, if (defaultChecked) MLImplementation.DEFAULT else MLImplementation.NO_XPOSED).apply()
+    private fun updateView(implementation: Int = MLImplementation.getImplementation(prefs)) {
+        val defaultChecked = implementation == DEFAULT
         accessibilityAlert.visibility = if (!defaultChecked) View.VISIBLE else View.GONE
         implementationError.setText(if (defaultChecked) R.string.xposed_inactive_warning else R.string.accessibility_inactive_warning)
         implementationError.visibility = if (!MLImplementation.isActiveAndWorking(context, prefs)) View.VISIBLE else View.GONE
