@@ -25,6 +25,9 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.N
 import android.view.accessibility.AccessibilityManager
 import androidx.annotation.Keep
+import com.topjohnwu.superuser.Shell
+import de.Maxr1998.xposed.maxlock.daemon.MaxLockDaemon
+import eu.chainfire.librootjavadaemon.RootDaemon
 
 object MLImplementation {
     const val DEFAULT = 1
@@ -49,6 +52,12 @@ object MLImplementation {
                 return true
         }
         return false
+    }
+
+    fun launchDaemon(context: Context) {
+        val script = RootDaemon.getLaunchScript(context, MaxLockDaemon::class.java,
+                null, null, null, "maxlockd")
+        Shell.su(*script.toTypedArray()).exec()
     }
 
     @JvmStatic

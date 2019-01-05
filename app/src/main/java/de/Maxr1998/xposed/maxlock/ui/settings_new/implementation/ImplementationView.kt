@@ -58,6 +58,8 @@ class ImplementationView(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
             prefs.edit().putInt(Common.ML_IMPLEMENTATION, checkedImplementation).apply()
             updateView(checkedImplementation)
+            if (checkedImplementation == DEFAULT)
+                MLImplementation.launchDaemon(context)
         }
 
         if (!MLImplementation.isAccessibilitySupported) {
