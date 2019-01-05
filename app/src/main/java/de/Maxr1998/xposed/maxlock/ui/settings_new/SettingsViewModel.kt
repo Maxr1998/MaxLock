@@ -18,9 +18,12 @@
 package de.Maxr1998.xposed.maxlock.ui.settings_new
 
 import android.app.Application
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.util.SparseArray
+import android.widget.Toast
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.lifecycle.AndroidViewModel
 import de.Maxr1998.modernpreferences.Preference
@@ -175,6 +178,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
         }
         switch(HIDE_APP_FROM_LAUNCHER) {
             titleRes = R.string.pref_hide_from_launcher
+            checkedChangeListener = this@SettingsViewModel
         }
         switch(USE_DARK_STYLE) {
             titleRes = R.string.pref_use_dark_style
@@ -326,6 +330,17 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
     }
 
     override fun onCheckedChanged(preference: TwoStatePreference, holder: PreferencesAdapter.ViewHolder?, checked: Boolean): Boolean {
+        when (preference.key) {
+            HIDE_APP_FROM_LAUNCHER -> {
+                val componentName = ComponentName(application, "de.Maxr1998.xposed.maxlock.Main")
+                if (checked) {
+                    Toast.makeText(application, R.string.reboot_required, Toast.LENGTH_SHORT).show()
+                    application.packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+                } else {
+                    application.packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+                }
+            }
+        }
         return true
     }
 
