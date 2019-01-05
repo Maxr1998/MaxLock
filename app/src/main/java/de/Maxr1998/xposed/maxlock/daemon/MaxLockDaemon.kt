@@ -18,14 +18,19 @@
 package de.Maxr1998.xposed.maxlock.daemon
 
 import android.os.Looper
+import android.util.Log
 import de.Maxr1998.xposed.maxlock.BuildConfig
 import eu.chainfire.librootjavadaemon.RootDaemon
 
 class MaxLockDaemon {
     companion object {
+        private const val TAG = "maxlockd"
+
         @JvmStatic
         fun main(args: Array<String>) {
             RootDaemon.daemonize(BuildConfig.APPLICATION_ID, 0, false, null)
+
+            Log.i(TAG, "Hello from the MaxLock daemon!")
 
             Looper.prepare()
             Looper.loop()
