@@ -33,10 +33,19 @@ import de.Maxr1998.xposed.maxlock.MLImplementation.DEFAULT
 import de.Maxr1998.xposed.maxlock.MLImplementation.NO_XPOSED
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.util.prefs
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class ImplementationView(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) : LinearLayout(ctx, attrs, defStyleAttr) {
+class ImplementationView(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) : LinearLayout(ctx, attrs, defStyleAttr), CoroutineScope {
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context) : this(context, null)
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+    private val job = Job()
 
     private val prefs: SharedPreferences = context.prefs
     private lateinit var group: RadioGroup
@@ -58,8 +67,9 @@ class ImplementationView(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
             prefs.edit().putInt(Common.ML_IMPLEMENTATION, checkedImplementation).apply()
             updateView(checkedImplementation)
-            if (checkedImplementation == DEFAULT)
+            if (checkedImplementation == DEFAULT) launch(Dispatchers.IO) {
                 MLImplementation.launchDaemon(context)
+            }
         }
 
         if (!MLImplementation.isAccessibilitySupported) {
@@ -93,5 +103,10 @@ class ImplementationView(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
         updateView()
+    }
+
+    override fun onDetachedFromWindow() {
+        job.cancel()
+        super.onDetachedFromWindow()
     }
 }
