@@ -105,10 +105,13 @@ dependencies {
     implementation("de.Maxr1998.android:modernpreferences:0.2.1")
     implementation("com.crossbowffs.remotepreferences:remotepreferences:0.5")
     implementation("com.github.attenzione:android-ColorPickerPreference:e3aa301016")
+    implementation("com.github.topjohnwu.libsu:core:2.2.0")
     implementation("com.heinrichreimersoftware:material-intro:1.6")
     implementation("${Config.Deps.splittiesBase}:splitties-dimensions:${Config.Deps.splittiesVersion}")
     implementation("com.twofortyfouram:android-plugin-api-for-locale:1.0.2")
     implementation("commons-io:commons-io:2.5")
+    implementation("eu.chainfire:librootjava:1.2.0")
+    implementation("eu.chainfire:librootjavadaemon:1.2.0")
     compileOnly("de.robv.android.xposed:api:82")
     compileOnly("de.robv.android.xposed:api:82:sources")
 
