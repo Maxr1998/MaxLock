@@ -102,7 +102,7 @@ dependencies {
     // From JCenter or other repositories
     //-- 3rd-party
     implementation("com.anjlab.android.iab.v3:library:1.0.38@aar")
-    implementation("de.Maxr1998.android:modernpreferences:0.1.2")
+    implementation("de.Maxr1998.android:modernpreferences:0.2.1")
     implementation("com.crossbowffs.remotepreferences:remotepreferences:0.5")
     implementation("com.github.attenzione:android-ColorPickerPreference:e3aa301016")
     implementation("com.heinrichreimersoftware:material-intro:1.6")
