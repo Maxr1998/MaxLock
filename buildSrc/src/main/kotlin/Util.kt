@@ -1,4 +1,6 @@
 import org.gradle.api.artifacts.repositories.ArtifactRepository
+import java.io.File
+import java.io.InputStream
 
 fun ArtifactRepository.includes(vararg includes: String): ArtifactRepository {
     content {
@@ -17,3 +19,5 @@ fun ArtifactRepository.excludes(vararg includes: String): ArtifactRepository {
     }
     return this
 }
+
+fun InputStream.copyTo(file: File): Long = file.outputStream().use { copyTo(it) }

@@ -1,4 +1,5 @@
 import java.util.Properties
+import java.util.zip.ZipFile
 import com.android.builder.model.SigningConfig
 
 plugins {
@@ -71,6 +72,7 @@ android {
     androidExtensions {
         isExperimental = true
     }
+    registerTransform(AndroidHiddenTransform())
 }
 
 repositories {
@@ -128,7 +130,22 @@ dependencies {
     androidTestImplementation("com.github.Zhuinden:espresso-helper:0.1.3") {
         exclude("com.google.code.findbugs", "jsr305")
     }
+    compileOnly(files(Config.Deps.androidJar))
 }
+
+val copyTask = tasks.register(Config.Tasks.copyAndroidJar) {
+    val apiProject = rootProject.project("androidhiddenapi")
+    dependsOn(apiProject.tasks["assembleDebug"])
+    doLast {
+        val output = project.file(Config.Deps.androidJar)
+        ZipFile(File(apiProject.buildDir, "outputs/aar/${apiProject.name}.aar")).use { zipFile ->
+            zipFile.getInputStream(zipFile.getEntry("classes.jar")).use {
+                it.copyTo(output)
+            }
+        }
+    }
+}
+tasks["preBuild"].dependsOn(copyTask)
 
 tasks.register("updateTranslations") {
     doLast {

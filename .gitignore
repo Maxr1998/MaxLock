@@ -1,6 +1,7 @@
 # Generated files
 *build/
 captures/
+app/libs/hidden-api.jar
 
 # Local configuration file (sdk path, etc)
 local.properties
