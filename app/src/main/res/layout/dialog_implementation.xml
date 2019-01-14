@@ -9,36 +9,23 @@
     android:paddingRight="16dp">
 
     <TextView
-        android:id="@+id/xposed_success_information"
+        android:id="@+id/implementation_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="12dp"
-        android:drawableStart="@drawable/ic_check_circle_green_24dp_wrapper"
-        android:drawablePadding="4dp"
         android:gravity="center_vertical"
-        android:text="@string/xposed_success_information"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/success"
-        android:visibility="gone" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <RadioGroup
-        android:id="@+id/implementation_group"
+    <TextView
+        android:id="@+id/implementation_alert"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RadioButton
-            android:id="@+id/implementation_item_default"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/implementation_default" />
-
-        <RadioButton
-            android:id="@+id/implementation_item_no_xposed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/implementation_no_xposed" />
-    </RadioGroup>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:gravity="center_vertical"
+        android:text="@string/accessibility_alert"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/implementation_error"
@@ -46,21 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/ic_error_outline_red_24dp_wrapper"
+        android:drawableStart="@drawable/ic_error_outline_red_24dp"
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
+        android:text="@string/accessibility_inactive_error"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/error"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/implementation_alert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center_vertical"
-        android:text="@string/implementation_alert"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:visibility="gone" />
 </de.Maxr1998.xposed.maxlock.ui.settings_new.implementation.ImplementationView>

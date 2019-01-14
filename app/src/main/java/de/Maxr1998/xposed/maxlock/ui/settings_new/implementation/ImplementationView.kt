@@ -23,20 +23,21 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.provider.Settings
 import android.util.AttributeSet
-import android.view.View
 import android.widget.LinearLayout
-import android.widget.RadioGroup
 import android.widget.TextView
-import de.Maxr1998.xposed.maxlock.Common
+import androidx.core.view.isVisible
 import de.Maxr1998.xposed.maxlock.MLImplementation
+import de.Maxr1998.xposed.maxlock.MLImplementation.ACCESSIBILITY
 import de.Maxr1998.xposed.maxlock.MLImplementation.DEFAULT
-import de.Maxr1998.xposed.maxlock.MLImplementation.NO_XPOSED
 import de.Maxr1998.xposed.maxlock.R
+import de.Maxr1998.xposed.maxlock.util.getColorCompat
+import de.Maxr1998.xposed.maxlock.util.lazyView
 import de.Maxr1998.xposed.maxlock.util.prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import splitties.dimensions.dip
 import kotlin.coroutines.CoroutineContext
 
 class ImplementationView(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) : LinearLayout(ctx, attrs, defStyleAttr), CoroutineScope {
@@ -48,55 +49,41 @@ class ImplementationView(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     private val job = Job()
 
     private val prefs: SharedPreferences = context.prefs
-    private lateinit var group: RadioGroup
-    private lateinit var accessibilityAlert: View
-    private lateinit var implementationError: TextView
+    private val implementationStatus: TextView by lazyView(R.id.implementation_status)
+    private val implementationAlert: TextView by lazyView(R.id.implementation_alert)
+    private val implementationError: TextView by lazyView(R.id.implementation_error)
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        group = findViewById(R.id.implementation_group)
-        accessibilityAlert = findViewById(R.id.implementation_alert)
-        implementationError = findViewById(R.id.implementation_error)
-
-        val currentImplementation = MLImplementation.getImplementation(prefs)
-        group.check(if (currentImplementation == DEFAULT) R.id.implementation_item_default else R.id.implementation_item_no_xposed)
-        group.setOnCheckedChangeListener { _, _ ->
-            val checkedImplementation = when (group.checkedRadioButtonId) {
-                R.id.implementation_item_default -> DEFAULT
-                else -> NO_XPOSED
-            }
-            prefs.edit().putInt(Common.ML_IMPLEMENTATION, checkedImplementation).apply()
-            updateView(checkedImplementation)
-            if (checkedImplementation == DEFAULT) launch(Dispatchers.IO) {
-                MLImplementation.launchDaemon(context)
-            }
-        }
-
-        if (!MLImplementation.isAccessibilitySupported) {
-            group.visibility = View.GONE
-        }
-
+        updateView()
         implementationError.setOnClickListener {
-            if (MLImplementation.getImplementation(prefs) == NO_XPOSED)
+            if (MLImplementation.getImplementation(prefs) == ACCESSIBILITY) {
                 try {
                     context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
                 } catch (e: ActivityNotFoundException) {
                     e.printStackTrace()
                 }
+            }
         }
-        updateView(currentImplementation)
     }
 
-    private fun updateView(implementation: Int = MLImplementation.getImplementation(prefs)) {
-        val defaultChecked = implementation == DEFAULT
-        accessibilityAlert.visibility = if (!defaultChecked) View.VISIBLE else View.GONE
-        implementationError.setText(if (defaultChecked) R.string.xposed_inactive_warning else R.string.accessibility_inactive_warning)
-        implementationError.visibility = if (!MLImplementation.isActiveAndWorking(context, prefs)) View.VISIBLE else View.GONE
-        if (MLImplementation.isXposedActive()) {
-            findViewById<TextView>(R.id.xposed_success_information).visibility = View.VISIBLE
-            for (i in 0 until group.childCount) {
-                group.getChildAt(i).isEnabled = false
+    private fun updateView() {
+        launch {
+            val default = MLImplementation.getImplementationCheckRoot(prefs) == DEFAULT
+            if (default) launch(Dispatchers.IO) {
+                MLImplementation.launchDaemon(context)
             }
+            implementationStatus.apply {
+                setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        if (default) R.drawable.ic_check_circle_green_24dp
+                        else R.drawable.ic_info_orange_24dp,
+                        0, 0, 0)
+                compoundDrawablePadding = dip(4)
+                setText(if (default) R.string.implementation_rooted else R.string.implementation_not_rooted)
+                setTextColor(context.getColorCompat(if (default) R.color.success else R.color.accent))
+            }
+            implementationAlert.isVisible = !default
+            implementationError.isVisible = !MLImplementation.isActiveAndWorking(context, prefs)
         }
     }
 

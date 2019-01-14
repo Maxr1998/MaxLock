@@ -24,40 +24,38 @@ import android.content.SharedPreferences
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.N
 import android.view.accessibility.AccessibilityManager
-import androidx.annotation.Keep
 import com.topjohnwu.superuser.Shell
 import de.Maxr1998.xposed.maxlock.daemon.MaxLockDaemon
 import eu.chainfire.librootjavadaemon.RootDaemon
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object MLImplementation {
     const val DEFAULT = 1
-    const val NO_XPOSED = 2
+    const val ACCESSIBILITY = 2
 
     @JvmStatic
     fun getImplementation(prefs: SharedPreferences): Int {
-        if (isXposedActive() || !isAccessibilitySupported) {
-            prefs.edit().putInt(Common.ML_IMPLEMENTATION, DEFAULT).apply() // Force DEFAULT if below N or Xposed is installed and module is activated
+        if (/*<daemon running> ||*/ !isAccessibilitySupported) {
+            prefs.edit().putInt(Common.ML_IMPLEMENTATION, DEFAULT).apply() // Force DEFAULT if below N or if the daemon is already running
         }
-        return prefs.getInt(Common.ML_IMPLEMENTATION, if (isXposedInstalled()) DEFAULT else NO_XPOSED) // Return NO_XPOSED as default only if Xposed isn't even installed
+        return prefs.getInt(Common.ML_IMPLEMENTATION, ACCESSIBILITY)
     }
 
-    @Keep
-    @JvmStatic
-    fun isXposedActive(): Boolean = false
-
-    private fun isXposedInstalled(): Boolean {
-        val stack = Thread.currentThread().stackTrace
-        for (i in stack.size - 3 until stack.size) {
-            if (stack[i].toString().contains("de.robv.android.xposed.XposedBridge"))
-                return true
+    suspend fun getImplementationCheckRoot(prefs: SharedPreferences): Int {
+        val rooted = withContext(Dispatchers.IO) { Shell.rootAccess() }
+        return (if (rooted || !isAccessibilitySupported) DEFAULT else ACCESSIBILITY).also {
+            prefs.edit().putInt(Common.ML_IMPLEMENTATION, it).apply()
         }
-        return false
     }
 
-    fun launchDaemon(context: Context) {
+    /**
+     * @return true if launched successfully
+     */
+    fun launchDaemon(context: Context): Boolean {
         val script = RootDaemon.getLaunchScript(context, MaxLockDaemon::class.java,
                 null, null, null, "maxlockd")
-        Shell.su(*script.toTypedArray()).exec()
+        return Shell.su(*script.toTypedArray()).exec().isSuccess
     }
 
     @JvmStatic
@@ -77,6 +75,6 @@ object MLImplementation {
 
     @JvmStatic
     fun isActiveAndWorking(c: Context, prefs: SharedPreferences): Boolean {
-        return getImplementation(prefs) == DEFAULT && isXposedActive() || getImplementation(prefs) == NO_XPOSED && isAccessibilityEnabled(c)
+        return getImplementation(prefs) == DEFAULT /*&& <daemon running>*/ || (getImplementation(prefs) == ACCESSIBILITY && isAccessibilityEnabled(c))
     }
 }
