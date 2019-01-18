@@ -31,7 +31,6 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static de.Maxr1998.xposed.maxlock.util.AppLockHelpers.iModActive;
 import static de.robv.android.xposed.XposedBridge.hookAllMethods;
 import static de.robv.android.xposed.XposedBridge.log;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
@@ -45,7 +44,7 @@ class SystemUI {
     static final String PACKAGE_NAME = "com.android.systemui";
     private static final boolean NOUGAT = SDK_INT >= Build.VERSION_CODES.N;
 
-    static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps, final SharedPreferences prefsHistory) {
+    static void init(XC_LoadPackage.LoadPackageParam lPParam, final SharedPreferences prefs, final SharedPreferences prefsApps) {
         try {
             ColorSupplier color = () -> prefs.getBoolean(Common.USE_DARK_STYLE, false) ? 0xFF212121 : Color.WHITE;
             final Paint paint = new Paint();
@@ -59,8 +58,8 @@ class SystemUI {
                     ((View) param.thisObject).setTag(
                             prefs.getBoolean(Common.HIDE_RECENTS_THUMBNAILS, false) &&
                                     prefsApps.getBoolean(Common.MASTER_SWITCH_ON, true) &&
-                                    prefsApps.getBoolean(packageName, false) &&
-                                    !iModActive(packageName, prefsApps, prefsHistory)
+                                    prefsApps.getBoolean(packageName, false)
+                            // TODO: && Delayed relock inactive
                     );
                 }
             });

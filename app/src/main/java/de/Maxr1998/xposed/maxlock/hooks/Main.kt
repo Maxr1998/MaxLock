@@ -25,7 +25,6 @@ import com.crossbowffs.remotepreferences.RemotePreferences
 import de.Maxr1998.xposed.maxlock.BuildConfig
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.Common.PREFS_APPS
-import de.Maxr1998.xposed.maxlock.Common.PREFS_HISTORY
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.XC_MethodHook
@@ -47,16 +46,12 @@ class Main : IXposedHookZygoteInit, IXposedHookLoadPackage {
             override fun afterHookedMethod(param: MethodHookParam) {
                 val ctx = param.args[0] as Context
                 val prefsApps = ctx.getRemotePreferences(PREFS_APPS)
-                val prefsHistory = ctx.getRemotePreferences(PREFS_HISTORY)
                 when (lPParam.packageName) {
                     SystemUI.PACKAGE_NAME -> {
                         // Enable MasterSwitch on boot
                         prefsApps?.edit { putBoolean(Common.MASTER_SWITCH_ON, true) }
-                        // Clear delayed relock on boot
-                        prefsHistory?.edit { clear() }
-
                         val prefs = ctx.getRemotePreferences(Common.MAXLOCK_PACKAGE_NAME + "_preferences")
-                        SystemUI.init(lPParam, prefs, prefsApps, prefsHistory)
+                        SystemUI.init(lPParam, prefs, prefsApps)
                         return
                     }
                     DeviceAdminProtection.PACKAGE_NAME -> DeviceAdminProtection.init(lPParam)

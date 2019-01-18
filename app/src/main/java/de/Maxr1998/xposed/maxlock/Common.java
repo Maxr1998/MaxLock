@@ -28,8 +28,15 @@ public abstract class Common {
     public static final String XPOSED_PACKAGE_NAME = "de.robv.android.xposed.installer";
     public static final String SETTINGS_PACKAGE_NAME = "com.android.settings";
 
-    public static final String INTENT_EXTRAS_NAMES = "intent_extras_pkg_name";
+    // Intent extras and keys
+    public static final String INTENT_EXTRA_BINDER_BUNDLE = "intent_extra_binder_bundle";
+    public static final String BUNDLE_KEY_BINDER = "bundle_binder";
+    public static final String INTENT_EXTRA_APP_NAMES = "intent_extra_app_names";
     public static final String INTENT_EXTRAS_CUSTOM_APP = "custom_app";
+
+    public static final String INTENT_EXTRA_LOCK_ACTIVITY_MODE = "extra_lock_activity_mode";
+    public static final String MODE_FAKE_CRASH = "mode_fake_crash";
+    public static final String MODE_REQUEST_UNLOCK = "mode_request_unlock";
 
     // Preference keys/ids //
     public static final String FIRST_START = "first_start";
@@ -142,11 +149,6 @@ public abstract class Common {
     public static final String PREFS_KEYS_PER_APP = "per_app_settings";
 
     public static final String PREFERENCE_PROVIDER_AUTHORITY = "de.Maxr1998.xposed.maxlock.preferences";
-
-    // Modes //
-    public static final String LOCK_ACTIVITY_MODE = "la_mode";
-    public static final String MODE_FAKE_CRASH = "fake-crash";
-    public static final String MODE_UNLOCK = "force-unlock";
 
     // Directories //
     public static final String EXTERNAL_FILES_DIR = Environment.getExternalStorageDirectory() + "/MaxLock/";

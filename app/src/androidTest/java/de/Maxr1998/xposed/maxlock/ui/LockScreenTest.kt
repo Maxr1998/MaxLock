@@ -59,7 +59,7 @@ class LockScreenTest {
             putString(testPackageName, lockingType)
             putString(testPackageName + Common.APP_KEY_PREFERENCE, Util.shaHash(password))
         }
-        rule.launchActivity(Intent().putExtra(Common.INTENT_EXTRAS_NAMES, arrayOf(testPackageName, "")))
+        rule.launchActivity(Intent().putExtra(Common.INTENT_EXTRA_APP_NAMES, arrayOf(testPackageName, "")))
 
         Thread.sleep(1000)
     }

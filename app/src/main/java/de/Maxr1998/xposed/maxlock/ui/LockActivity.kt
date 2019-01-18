@@ -23,7 +23,10 @@ import android.content.Intent.CATEGORY_HOME
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
+import android.os.Binder
 import android.os.Bundle
+import android.os.IBinder
+import android.os.Parcel
 import android.text.InputType
 import android.util.Log
 import android.view.ViewGroup
@@ -36,12 +39,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import de.Maxr1998.xposed.maxlock.Common
+import de.Maxr1998.xposed.maxlock.Common.BUNDLE_KEY_BINDER
+import de.Maxr1998.xposed.maxlock.Common.INTENT_EXTRA_BINDER_BUNDLE
 import de.Maxr1998.xposed.maxlock.MLImplementation
 import de.Maxr1998.xposed.maxlock.R
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView
 import de.Maxr1998.xposed.maxlock.util.*
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.appClosed
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.appUnlocked
 
 class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
 
@@ -52,6 +55,8 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
     private var fakeDieDialog: AlertDialog? = null
     private var reportDialog: AlertDialog? = null
 
+    private var binder: IBinder? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         prefs = MLPreferences.getPreferences(this)
         val isFakeCrash = isFakeCrash(intent)
@@ -61,6 +66,11 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
         setTheme(themeId)
         if (isFakeCrash) window.setBackgroundDrawable(ColorDrawable(0))
         super.onCreate(savedInstanceState)
+
+        if (intent.hasExtra(INTENT_EXTRA_BINDER_BUNDLE)) {
+            val bundle = intent.getBundleExtra(INTENT_EXTRA_BINDER_BUNDLE)
+            binder = bundle.getBinder(BUNDLE_KEY_BINDER)
+        }
         setup(intent, isFakeCrash)
     }
 
@@ -75,12 +85,12 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
     }
 
     private fun isFakeCrash(intent: Intent): Boolean {
-        val lockActivityMode = intent.getStringExtra(Common.LOCK_ACTIVITY_MODE)
-        return lockActivityMode == Common.MODE_FAKE_CRASH || prefs.getBoolean(Common.FC_ENABLE_FOR_ALL_APPS, false) && lockActivityMode != Common.MODE_UNLOCK
+        val lockActivityMode = intent.getStringExtra(Common.INTENT_EXTRA_LOCK_ACTIVITY_MODE)
+        return lockActivityMode == Common.MODE_FAKE_CRASH || prefs.getBoolean(Common.FC_ENABLE_FOR_ALL_APPS, false) && lockActivityMode != Common.MODE_REQUEST_UNLOCK
     }
 
     private fun setup(intent: Intent, isFakeCrash: Boolean) {
-        names = intent.getStringArrayExtra(Common.INTENT_EXTRAS_NAMES) ?: arrayOf("", "")
+        names = intent.getStringArrayExtra(Common.INTENT_EXTRA_APP_NAMES) ?: arrayOf("", "")
         if (!isFakeCrash) {
             if (MLPreferences.getPreferences(this).getString(Common.LOCKING_TYPE, null).isNullOrEmpty()) {
                 Toast.makeText(this, R.string.sb_no_locking_type, Toast.LENGTH_SHORT).show()
@@ -147,14 +157,20 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
     private fun launchLockView() {
         val it = Intent(this, LockActivity::class.java)
         it.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-        it.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_UNLOCK)
-        it.putExtra(Common.INTENT_EXTRAS_NAMES, names)
+        it.putExtra(Common.INTENT_EXTRA_LOCK_ACTIVITY_MODE, Common.MODE_REQUEST_UNLOCK)
+        it.putExtra(Common.INTENT_EXTRA_APP_NAMES, names)
         finish()
         startActivity(it)
     }
 
+    private fun replyBinder(code: Int) {
+        binder?.transact(code, Parcel.obtain().apply {
+            writeString(names[0])
+        }, null, Binder.FLAG_ONEWAY)
+    }
+
     override fun onAuthenticationSucceeded() {
-        appUnlocked(names[0], MLPreferences.getPrefsHistory(this))
+        replyBinder(AppLockHelper.UNLOCK_CODE)
         unlocked = true
         NotificationHelper.postIModNotification(this)
         finish()
@@ -164,10 +180,8 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
     override fun onBackPressed() {
         Log.d(Util.LOG_TAG_LOCKSCREEN, "Pressed back.")
         if (MLImplementation.getImplementation(prefs) == MLImplementation.DEFAULT) {
-            appClosed(names[0], MLPreferences.getPrefsHistory(this))
-        } else {
-            startActivity(Intent(ACTION_MAIN).addCategory(CATEGORY_HOME))
-        }
+            replyBinder(AppLockHelper.CLOSE_CODE)
+        } else startActivity(Intent(ACTION_MAIN).addCategory(CATEGORY_HOME))
         super.onBackPressed()
     }
 

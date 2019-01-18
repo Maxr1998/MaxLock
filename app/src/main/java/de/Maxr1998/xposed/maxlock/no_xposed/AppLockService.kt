@@ -23,7 +23,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
+import android.os.*
 import android.provider.Settings
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
@@ -33,10 +33,8 @@ import de.Maxr1998.xposed.maxlock.Common.RESET_RELOCK_TIMER_ON_HOMESCREEN
 import de.Maxr1998.xposed.maxlock.Common.RESET_RELOCK_TIMER_ON_SCREEN_OFF
 import de.Maxr1998.xposed.maxlock.MLImplementation
 import de.Maxr1998.xposed.maxlock.ui.LockActivity
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.addToHistory
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.getLauncherPackage
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.pass
-import de.Maxr1998.xposed.maxlock.util.AppLockHelpers.trim
+import de.Maxr1998.xposed.maxlock.util.AppLockHelper
+import de.Maxr1998.xposed.maxlock.util.AppLockHelper.Companion.getLauncherPackage
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 
 @TargetApi(Build.VERSION_CODES.N)
@@ -44,20 +42,33 @@ class AppLockService : AccessibilityService() {
 
     private val TAG = "AppLockService"
 
+    private val appLockHelper by lazy { AppLockHelper(prefsApps) }
+
     private val prefs by lazy { MLPreferences.getPreferences(this) }
     private val prefsApps by lazy { MLPreferences.getPrefsApps(this) }
-    private val prefsHistory by lazy { MLPreferences.getPrefsHistory(this) }
 
     private val launcherPackage by lazy { getLauncherPackage(packageManager) }
+
+    private val resultReceiver: IBinder = object : Binder() {
+        override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
+            return when (code) {
+                AppLockHelper.UNLOCK_CODE -> {
+                    val packageName = data.readString()
+                    if (packageName != null)
+                        appLockHelper.appUnlocked(packageName)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
 
     private val screenOffReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (prefsApps.getBoolean(RESET_RELOCK_TIMER_ON_SCREEN_OFF, false)) {
-                prefsHistory.edit().clear().apply()
+                appLockHelper.resetTimers()
                 Log.d(TAG, "Screen turned off, locked apps.")
-            } else {
-                trim(prefsHistory)
-            }
+            } else appLockHelper.relock()
         }
     }
 
@@ -70,8 +81,8 @@ class AppLockService : AccessibilityService() {
         Log.i(TAG, "Started up")
         try {
             rootInActiveWindow?.packageName?.toString()?.let {
-                if (prefsApps.getBoolean(it, false)) {
-                    handlePackage(it)
+                if (appLockHelper.isAppLocked(it, null)) {
+                    lockApp(it)
                 }
             }
         } catch (t: Throwable) {
@@ -96,14 +107,12 @@ class AppLockService : AccessibilityService() {
 
         Log.d(TAG, "Window state changed: $packageName")
         try {
-            if (prefsApps.getBoolean(packageName, false)) {
-                handlePackage(packageName)
-            } else {
-                addToHistory(-1, packageName, prefsHistory)
-                if (packageName == launcherPackage && prefsApps.getBoolean(RESET_RELOCK_TIMER_ON_HOMESCREEN, false)) {
-                    prefsHistory.edit().clear().apply()
-                    Log.d(TAG, "Returned to homescreen, locked apps")
-                }
+            if (appLockHelper.wasAppSwitch(-1, packageName) &&
+                    appLockHelper.isAppLocked(packageName, null)) {
+                lockApp(packageName)
+            } else if (packageName == launcherPackage && prefsApps.getBoolean(RESET_RELOCK_TIMER_ON_HOMESCREEN, false)) {
+                appLockHelper.resetTimers()
+                Log.d(TAG, "Returned to homescreen, locked apps")
             }
         } catch (t: Throwable) {
             Log.e(TAG, "Error in handling event", t)
@@ -125,17 +134,16 @@ class AppLockService : AccessibilityService() {
     }
 
     @Throws(Throwable::class)
-    private fun handlePackage(packageName: String) {
-        if (pass(-1, packageName, null, prefsApps, prefsHistory)) {
-            return
-        }
-
+    private fun lockApp(packageName: String) {
         Log.d(TAG, "Show lockscreen: $packageName")
         val i = Intent(this, LockActivity::class.java)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_FROM_BACKGROUND or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                .putExtra(Common.INTENT_EXTRAS_NAMES, arrayOf(packageName, ""))
+                .putExtra(Common.INTENT_EXTRA_APP_NAMES, arrayOf(packageName, ""))
+                .putExtra(Common.INTENT_EXTRA_BINDER_BUNDLE, Bundle().apply {
+                    putBinder(Common.BUNDLE_KEY_BINDER, resultReceiver)
+                })
         if (prefsApps.getBoolean(packageName + "_fake", false)) {
-            i.putExtra(Common.LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH)
+            i.putExtra(Common.INTENT_EXTRA_LOCK_ACTIVITY_MODE, Common.MODE_FAKE_CRASH)
         }
         startActivity(i)
     }
