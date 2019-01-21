@@ -1,5 +1,5 @@
 object Config {
-    const val androidGradleVersion = "3.3.0-rc03"
+    const val androidGradleVersion = "3.4.0-beta01"
     const val kotlinVersion = "1.3.11"
 
     val languages =
