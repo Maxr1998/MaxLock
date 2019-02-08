@@ -1,6 +1,5 @@
-import java.util.Properties
+import java.util.*
 import java.util.zip.ZipFile
-import com.android.builder.model.SigningConfig
 
 plugins {
     id("com.android.application")
@@ -138,7 +137,7 @@ val copyTask = tasks.register(Config.Tasks.copyAndroidJar) {
     dependsOn(apiProject.tasks["assembleDebug"])
     doLast {
         val output = project.file(Config.Deps.androidJar)
-        ZipFile(File(apiProject.buildDir, "outputs/aar/${apiProject.name}.aar")).use { zipFile ->
+        ZipFile(File(apiProject.buildDir, "outputs/aar/${apiProject.name}-debug.aar")).use { zipFile ->
             zipFile.getInputStream(zipFile.getEntry("classes.jar")).use {
                 it.copyTo(output)
             }
