@@ -26,6 +26,7 @@ import android.os.Build.VERSION_CODES.N
 import android.view.accessibility.AccessibilityManager
 import com.topjohnwu.superuser.Shell
 import de.Maxr1998.xposed.maxlock.daemon.MaxLockDaemon
+import eu.chainfire.librootjava.AppProcess
 import eu.chainfire.librootjavadaemon.RootDaemon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,6 +34,8 @@ import kotlinx.coroutines.withContext
 object MLImplementation {
     const val DEFAULT = 1
     const val ACCESSIBILITY = 2
+
+    private const val scriptPath = "/data/adb/service.d/maxlockd.sh"
 
     @JvmStatic
     fun getImplementation(prefs: SharedPreferences): Int {
@@ -53,8 +56,14 @@ object MLImplementation {
      * @return true if launched successfully
      */
     fun launchDaemon(context: Context): Boolean {
+        // Create maxlockd launch script
         val script = RootDaemon.getLaunchScript(context, MaxLockDaemon::class.java,
                 null, null, null, "maxlockd")
+        val scriptString = script.joinToString("\\n")
+        // Install launch script to /data/adb/service.d/
+        script.add(0, "${AppProcess.BOX} echo -e '#!/system/bin/sh\\n$scriptString' > $scriptPath")
+        script.add(1, "${AppProcess.BOX} chmod a+x $scriptPath")
+        // Execute!
         return Shell.su(*script.toTypedArray()).exec().isSuccess
     }
 
