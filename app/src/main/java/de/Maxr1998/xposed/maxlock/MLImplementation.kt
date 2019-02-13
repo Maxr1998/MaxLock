@@ -35,6 +35,7 @@ object MLImplementation {
     const val DEFAULT = 1
     const val ACCESSIBILITY = 2
 
+    private const val runtimePath = "/data/adb/maxlockd"
     private const val scriptPath = "/data/adb/service.d/maxlockd.sh"
 
     @JvmStatic
@@ -58,11 +59,12 @@ object MLImplementation {
     fun launchDaemon(context: Context): Boolean {
         // Create maxlockd launch script
         val script = RootDaemon.getLaunchScript(context, MaxLockDaemon::class.java,
-                null, null, null, "maxlockd")
+                null, runtimePath, null, "maxlockd")
         val scriptString = script.joinToString("\\n")
         // Install launch script to /data/adb/service.d/
-        script.add(0, "${AppProcess.BOX} echo -e '#!/system/bin/sh\\n$scriptString' > $scriptPath")
-        script.add(1, "${AppProcess.BOX} chmod a+x $scriptPath")
+        script.add(0, "${AppProcess.BOX} mkdir -p $runtimePath")
+        script.add(1, "${AppProcess.BOX} echo -e '#!/system/bin/sh\\n$scriptString' > $scriptPath")
+        script.add(2, "${AppProcess.BOX} chmod a+x $scriptPath")
         // Execute!
         return Shell.su(*script.toTypedArray()).exec().isSuccess
     }
