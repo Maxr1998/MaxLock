@@ -192,8 +192,6 @@
     <string name="donate_status_error">Error: Couldn\'t load available products.</string>
     <string name="dialog_message_already_bought">You already own this donation option.
         You can cancel and pick another product or purchase this one again with consuming (removing) the current purchase in before.\n\nConsume and repurchase?</string>
-    <string name="donate_paypal">Donate via PayPal</string>
-    <string name="donate_paypal_alert">A PayPal donation doesn\'t unlock the full Pro version</string>
     <string name="pref_enable_pro">Enable Pro</string>
     <string name="pref_enable_pro_summary">This will enable pro-features even if you haven\'t bought MaxLock Pro</string>
     <string name="pref_prevent_uninstall">Protect app from being uninstalled</string>

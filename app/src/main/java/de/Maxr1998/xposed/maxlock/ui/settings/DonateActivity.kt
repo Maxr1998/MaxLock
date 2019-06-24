@@ -19,13 +19,10 @@ package de.Maxr1998.xposed.maxlock.ui.settings
 
 import android.app.LoaderManager
 import android.content.AsyncTaskLoader
-import android.content.ComponentName
 import android.content.Context
 import android.content.Loader
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.support.customtabs.*
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -34,7 +31,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import com.anjlab.android.iab.v3.BillingProcessor
@@ -51,9 +47,6 @@ class DonateActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Billin
     private lateinit var bp: BillingProcessor
     private lateinit var donationStatusText: TextView
 
-    private var mConnection: CustomTabsServiceConnection? = null
-    private var mSession: CustomTabsSession? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Util.setTheme(this)
         super.onCreate(savedInstanceState)
@@ -62,35 +55,12 @@ class DonateActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Billin
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         donationStatusText = findViewById(R.id.donation_status)
-        val donatePayPal = findViewById<Button>(R.id.donate_paypal)
-        donatePayPal.setOnClickListener { _ ->
-            val intent = CustomTabsIntent.Builder(mSession)
-                    .setShowTitle(true)
-                    .enableUrlBarHiding()
-                    .setToolbarColor(Color.WHITE)
-                    .build()
-            intent.launchUrl(this@DonateActivity, Common.PAYPAL_DONATE_URI)
-        }
 
         loaderManager.apply {
             if (getLoader<BillingProcessor>(0).let { it != null && it.isReset })
                 restartLoader(0, null, this@DonateActivity)
             else initLoader(0, null, this@DonateActivity)
         }
-
-        mConnection = object : CustomTabsServiceConnection() {
-            override fun onCustomTabsServiceConnected(componentName: ComponentName, customTabsClient: CustomTabsClient) {
-                customTabsClient.warmup(0)
-                mSession = customTabsClient.newSession(CustomTabsCallback())
-                if (mSession == null) {
-                    return
-                }
-                mSession!!.mayLaunchUrl(Common.PAYPAL_DONATE_URI, null, null)
-            }
-
-            override fun onServiceDisconnected(name: ComponentName) {}
-        }
-        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", mConnection)
     }
 
     private fun setDonationStatus(donated: Boolean = bp.listOwnedProducts().size > 0) {
@@ -200,7 +170,6 @@ class DonateActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Billin
 
     override fun onDestroy() {
         unsafeBillingProcessor?.release()
-        mConnection?.let { unbindService(it) }
         super.onDestroy()
     }
 
