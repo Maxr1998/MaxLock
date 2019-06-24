@@ -83,34 +83,34 @@ repositories {
 dependencies {
     // Kotlin stdlib & coroutines
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Config.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.1")
 
     // AndroidX
     implementation("androidx.appcompat:appcompat:1.0.2")
     implementation("androidx.browser:browser:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.fragment:fragment:1.1.0-alpha03")
+    implementation("androidx.fragment:fragment:1.1.0-beta01")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha01")
-    implementation("com.google.android.material:material:1.1.0-alpha02")
+    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha06")
+    implementation("com.google.android.material:material:1.1.0-alpha07")
     //-- KTX
-    implementation("androidx.core:core-ktx:1.0.1")
-    implementation("androidx.activity:activity-ktx:1.0.0-alpha03")
+    implementation("androidx.core:core-ktx:1.0.2")
+    implementation("androidx.activity:activity-ktx:1.0.0-beta01")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0")
 
     // From JCenter or other repositories
     //-- 3rd-party
     implementation("com.anjlab.android.iab.v3:library:1.0.38@aar")
-    implementation("de.Maxr1998.android:modernpreferences:0.2.1")
+    implementation("de.Maxr1998.android:modernpreferences:0.3")
     implementation("com.crossbowffs.remotepreferences:remotepreferences:0.5")
     implementation("com.github.attenzione:android-ColorPickerPreference:e3aa301016")
     implementation("com.github.topjohnwu.libsu:core:2.2.0")
     implementation("com.heinrichreimersoftware:material-intro:1.6")
     implementation("${Config.Deps.splittiesBase}:splitties-dimensions:${Config.Deps.splittiesVersion}")
     implementation("com.twofortyfouram:android-plugin-api-for-locale:1.0.2")
-    implementation("commons-io:commons-io:2.5")
+    implementation("commons-io:commons-io:2.6")
     implementation("eu.chainfire:librootjava:1.2.0")
     implementation("eu.chainfire:librootjavadaemon:1.2.0")
     compileOnly("de.robv.android.xposed:api:82")
@@ -120,9 +120,9 @@ dependencies {
     implementation("", "PatternLock", ext = "aar")
 
     // Testing dependencies
-    androidTestUtil("androidx.test:orchestrator:1.1.1")
-    androidTestImplementation("androidx.test:rules:1.1.1")
-    androidTestImplementation("androidx.test:runner:1.1.1")
+    androidTestUtil("androidx.test:orchestrator:1.2.0")
+    androidTestImplementation("androidx.test:rules:1.2.0")
+    androidTestImplementation("androidx.test:runner:1.2.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0-alpha4") {
         exclude("com.google.code.findbugs", "jsr305")
     }
