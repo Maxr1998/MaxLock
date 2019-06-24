@@ -14,8 +14,8 @@ android {
         applicationId "de.Maxr1998.xposed.maxlock"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 56
-        versionName "7.0.4"
+        versionCode 57
+        versionName "7.0.5"
         resConfigs languages
         setProperty("archivesBaseName", "ML-$versionName")
         testInstrumentationRunner = 'android.support.test.runner.AndroidJUnitRunner'
