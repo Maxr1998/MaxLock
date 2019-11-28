@@ -37,23 +37,25 @@ class AndroidHiddenTransform : Transform() {
         println("$name finished.")
     }
 
-    fun processDirectory(directory: File, outputDir: File) {
+    private fun processDirectory(directory: File, outputDir: File) {
         println("Processing ${directory.absolutePath}")
         for (file in directory.walkTopDown()) {
             val target = File(outputDir, file.toRelativeString(directory))
-            if (file.isDirectory) {
-                target.mkdirs()
-            } else if (file.extension == "class") {
-                val classReader = file.inputStream().use { ClassReader(it) }
-                val classWriter = ClassWriter(classReader, 0)
-                val classVisitor = ClassRemapper(classWriter, AndroidHiddenClassRemapper())
+            when {
+                file.isDirectory -> target.mkdirs()
+                file.extension == "class" -> {
+                    val classReader = file.inputStream().use { ClassReader(it) }
+                    val classWriter = ClassWriter(classReader, 0)
+                    val classVisitor = ClassRemapper(classWriter, AndroidHiddenClassRemapper())
 
-                // Read data into visitor, and thus the writer
-                classReader.accept(classVisitor, 0)
+                    // Read data into visitor, and thus the writer
+                    classReader.accept(classVisitor, 0)
 
-                // Write output
-                target.writeBytes(classWriter.toByteArray())
-            } else file.copyTo(target)
+                    // Write output
+                    target.writeBytes(classWriter.toByteArray())
+                }
+                else -> file.copyTo(target)
+            }
         }
     }
 
