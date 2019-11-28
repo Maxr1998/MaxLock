@@ -21,8 +21,6 @@ import android.accessibilityservice.AccessibilityServiceInfo.FEEDBACK_GENERIC
 import android.accessibilityservice.AccessibilityServiceInfo.FEEDBACK_VISUAL
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.N
 import android.view.accessibility.AccessibilityManager
 import com.topjohnwu.superuser.Shell
 import de.Maxr1998.xposed.maxlock.daemon.MaxLockDaemon
@@ -40,15 +38,15 @@ object MLImplementation {
 
     @JvmStatic
     fun getImplementation(prefs: SharedPreferences): Int {
-        if (/*<daemon running> ||*/ !isAccessibilitySupported) {
-            prefs.edit().putInt(Common.ML_IMPLEMENTATION, DEFAULT).apply() // Force DEFAULT if below N or if the daemon is already running
+        if (isDaemonRunning()) {
+            prefs.edit().putInt(Common.ML_IMPLEMENTATION, DEFAULT).apply() // Force DEFAULT if the daemon is already running
         }
         return prefs.getInt(Common.ML_IMPLEMENTATION, ACCESSIBILITY)
     }
 
     suspend fun getImplementationCheckRoot(prefs: SharedPreferences): Int {
         val rooted = withContext(Dispatchers.IO) { Shell.rootAccess() }
-        return (if (rooted || !isAccessibilitySupported) DEFAULT else ACCESSIBILITY).also {
+        return (if (rooted) DEFAULT else ACCESSIBILITY).also {
             prefs.edit().putInt(Common.ML_IMPLEMENTATION, it).apply()
         }
     }
@@ -69,10 +67,6 @@ object MLImplementation {
         return Shell.su(*script.toTypedArray()).exec().isSuccess
     }
 
-    @JvmStatic
-    val isAccessibilitySupported: Boolean
-        get() = SDK_INT >= N
-
     private fun isAccessibilityEnabled(c: Context): Boolean {
         val manager = c.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
         val infos = manager.getEnabledAccessibilityServiceList(FEEDBACK_GENERIC or FEEDBACK_VISUAL)
@@ -86,6 +80,8 @@ object MLImplementation {
 
     @JvmStatic
     fun isActiveAndWorking(c: Context, prefs: SharedPreferences): Boolean {
-        return getImplementation(prefs) == DEFAULT /*&& <daemon running>*/ || (getImplementation(prefs) == ACCESSIBILITY && isAccessibilityEnabled(c))
+        return (getImplementation(prefs) == DEFAULT && isDaemonRunning()) || (getImplementation(prefs) == ACCESSIBILITY && isAccessibilityEnabled(c))
     }
+
+    private fun isDaemonRunning() = false // TODO
 }

@@ -24,7 +24,6 @@ import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +45,20 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.annotation.VisibleForTesting;
+import androidx.annotation.XmlRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
+import androidx.core.preference.PreferenceFragmentCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.haibison.android.lockpattern.LockPatternActivity;
 
@@ -61,19 +74,6 @@ import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipOutputStream;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.annotation.VisibleForTesting;
-import androidx.annotation.XmlRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
-import androidx.core.preference.PreferenceFragmentCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.MLImplementation;
@@ -152,8 +152,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         if (screen == Screen.IMOD) {
             getPreferenceManager().setSharedPreferencesName(Common.PREFS_APPS);
         }
-        if (SDK_INT < Build.VERSION_CODES.N)
-            getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
         addPreferencesFromResource(screen.preferenceXML);
         switch (screen) {
             case MAIN:
@@ -438,15 +436,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
                                     Charset.forName("UTF-8"));
                             Process process = Runtime.getRuntime().exec("logcat -d");
                             FileUtils.copyInputStreamToFile(process.getInputStream(), new File(tempDirectory, "logcat.txt"));
-                            try {
-                                String xposedDir = SDK_INT >= Build.VERSION_CODES.N ? "/data/user_de/0/" + Common.XPOSED_PACKAGE_NAME :
-                                        getActivity().getPackageManager().getApplicationInfo(Common.XPOSED_PACKAGE_NAME, 0).dataDir;
-                                File xposedLog = new File(xposedDir + "/log", "error.log");
-                                if (xposedLog.exists())
-                                    FileUtils.copyFileToDirectory(xposedLog, tempDirectory);
-                            } catch (PackageManager.NameNotFoundException e) {
-                                e.printStackTrace();
-                            }
                             // Create zip
                             File zipFile = new File(getActivity().getCacheDir() + File.separator + "export", "report.zip");
                             //noinspection ResultOfMethodCallIgnored
@@ -572,8 +561,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
 
     private void updateImplementationStatus() {
         ImplementationPreference implementationPreference = (ImplementationPreference) findPreference(Common.ML_IMPLEMENTATION);
-        if (!MLImplementation.isAccessibilitySupported())
-            implementationPreference.setTitle(R.string.ml_status);
         if (getContext() != null)
             implementationPreference.setWarningVisible(!MLImplementation.isActiveAndWorking(getContext(), prefs));
     }

@@ -18,11 +18,8 @@
 package de.Maxr1998.xposed.maxlock.ui.lockscreen
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.drawable.AnimatedVectorDrawable
-import android.os.Build
-import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
@@ -40,7 +37,6 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences
 import de.Maxr1998.xposed.maxlock.util.Util
 import java.util.concurrent.atomic.AtomicBoolean
 
-@TargetApi(Build.VERSION_CODES.M)
 @SuppressLint("ViewConstructor")
 class FingerprintView(context: Context, private val lockView: LockView) : AppCompatImageView(context) {
     private val fingerprintManager = FingerprintManagerCompat.from(context)
@@ -72,7 +68,6 @@ class FingerprintView(context: Context, private val lockView: LockView) : AppCom
         contentDescription = resources.getString(android.R.string.fingerprint_icon_content_description)
     }
 
-    @TargetApi(LOLLIPOP)
     private fun handleFingerprintIndicator(@DrawableRes id: Int) {
         if (MLPreferences.getPreferences(context).getBoolean(Common.HIDE_FINGERPRINT_ICON, false)) {
             return

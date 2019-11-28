@@ -113,8 +113,6 @@ dependencies {
     implementation("commons-io:commons-io:2.6")
     implementation("eu.chainfire:librootjava:1.2.0")
     implementation("eu.chainfire:librootjavadaemon:1.2.0")
-    compileOnly("de.robv.android.xposed:api:82")
-    compileOnly("de.robv.android.xposed:api:82:sources")
 
     // Local files
     implementation("", "PatternLock", ext = "aar")

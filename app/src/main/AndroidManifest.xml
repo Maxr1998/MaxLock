@@ -130,13 +130,6 @@
                 android:resource="@xml/provider_file_paths" />
         </provider>
 
-        <!-- Settings provider -->
-        <provider
-            android:name=".hooks.SharedPreferencesProvider"
-            android:authorities="de.Maxr1998.xposed.maxlock.preferences"
-            android:exported="true"
-            tools:ignore="ExportedContentProvider" />
-
         <!-- Lock screen -->
         <activity
             android:name=".ui.LockActivity"

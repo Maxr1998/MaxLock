@@ -21,7 +21,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Point
-import android.os.Build
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.InputType
@@ -201,9 +200,7 @@ class LockView private constructor(ctx: Context, attrs: AttributeSet?, defStyleA
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !prefs.getBoolean(DISABLE_FINGERPRINT, false)) {
-            fingerprintStub.addView(FingerprintView(context, this).also { fingerprintView = it })
-        }
+        fingerprintStub.addView(FingerprintView(context, this).also { fingerprintView = it })
 
         // Handle timer for previous wrong attempts
         if (isTimeLeft) startTimer()

@@ -161,18 +161,7 @@ fun SettingsActivity.prepareSendFeedback() {
         // Obtain data
         File(Util.dataDir(this), "shared_prefs").copyRecursively(outputCache("settings"))
         File(outputCache, "device-info.txt").writeText(deviceInfo(), Charset.forName("UTF-8"))
-        Runtime.getRuntime().exec("logcat -d").inputStream
-                .copyTo(outputCache("logcat.txt").outputStream())
-        try {
-            val xposedDir = if (SDK_INT >= Build.VERSION_CODES.N)
-                "/data/user_de/0/${Common.XPOSED_PACKAGE_NAME}/log"
-            else packageManager.getApplicationInfo(Common.XPOSED_PACKAGE_NAME, 0).dataDir + "/log"
-            File(xposedDir, "error.log").apply {
-                if (exists()) copyTo(outputCache)
-            }
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
+        Runtime.getRuntime().exec("logcat -d").inputStream.copyTo(outputCache("logcat.txt").outputStream())
 
         // Zip up all files
         val exportDir = cacheDir("export").apply { mkdir() }

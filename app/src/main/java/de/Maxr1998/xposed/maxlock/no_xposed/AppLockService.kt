@@ -18,12 +18,14 @@
 package de.Maxr1998.xposed.maxlock.no_xposed
 
 import android.accessibilityservice.AccessibilityService
-import android.annotation.TargetApi
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.*
+import android.os.Binder
+import android.os.Bundle
+import android.os.IBinder
+import android.os.Parcel
 import android.provider.Settings
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
@@ -37,7 +39,6 @@ import de.Maxr1998.xposed.maxlock.util.AppLockHelper
 import de.Maxr1998.xposed.maxlock.util.AppLockHelper.Companion.getLauncherPackage
 import de.Maxr1998.xposed.maxlock.util.MLPreferences
 
-@TargetApi(Build.VERSION_CODES.N)
 class AppLockService : AccessibilityService() {
 
     private val TAG = "AppLockService"
@@ -94,9 +95,7 @@ class AppLockService : AccessibilityService() {
         // If service is not disabled yet
         if (MLImplementation.getImplementation(prefs) == MLImplementation.DEFAULT) {
             stopSelf()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                disableSelf()
-            }
+            disableSelf()
             return
         }
 
