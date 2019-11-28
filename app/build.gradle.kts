@@ -11,11 +11,11 @@ plugins {
 val keyStoreFile = project.file("keyStore.properties")
 
 android {
-    compileSdkVersion(28)
+    compileSdkVersion(29)
     defaultConfig {
         applicationId = "de.Maxr1998.xposed.maxlock"
-        minSdkVersion(21)
-        targetSdkVersion(28)
+        minSdkVersion(24)
+        targetSdkVersion(29)
         versionCode = 56
         versionName = "7.0.4"
         resConfigs(*Config.languages)
@@ -59,7 +59,7 @@ android {
         }
         getByName("debug") {
             isDebuggable = true
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules-debug.pro")
             signingConfig = signingConfigMain
             versionNameSuffix = "-beta"

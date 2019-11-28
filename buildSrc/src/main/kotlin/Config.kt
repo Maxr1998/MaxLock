@@ -1,6 +1,6 @@
 object Config {
-    const val androidGradleVersion = "3.5.0-beta04"
-    const val kotlinVersion = "1.3.40"
+    const val androidGradleVersion = "3.6.0-beta04"
+    const val kotlinVersion = "1.3.61"
 
     val languages =
             arrayOf("de", "es", "fa", "fr", "in", "it", "ja", "pl", "pt", "ru", "tr", "zh-rCN", "zh-rTW")

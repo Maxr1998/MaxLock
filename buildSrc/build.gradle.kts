@@ -8,5 +8,5 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:3.5.0-beta04")
+    implementation("com.android.tools.build:gradle:3.6.0-beta04")
 }
