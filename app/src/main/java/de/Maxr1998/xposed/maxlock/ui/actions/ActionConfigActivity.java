@@ -26,8 +26,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
 import de.Maxr1998.xposed.maxlock.util.Util;
@@ -38,10 +38,6 @@ import static de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper.ACTION_EXTRA_K
 import static de.Maxr1998.xposed.maxlock.ui.actions.ActionsHelper.getKey;
 
 public class ActionConfigActivity extends AppCompatActivity {
-
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
 
     private Intent result;
     private boolean taskerMode = false;

@@ -34,11 +34,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Switch;
 
-import java.util.Arrays;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsCallback;
 import androidx.browser.customtabs.CustomTabsClient;
@@ -49,6 +46,9 @@ import androidx.browser.customtabs.CustomTabsSession;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.util.Arrays;
+
 import de.Maxr1998.xposed.maxlock.BuildConfig;
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.R;
@@ -67,10 +67,6 @@ public class SettingsActivity extends AppCompatActivity implements Authenticatio
     public static final String TAG_PREFERENCE_FRAGMENT = "MLPreferenceFragment";
     public static final String TAG_PREFERENCE_FRAGMENT_SECOND_PANE = "SecondPanePreferenceFragment";
     private static boolean UNLOCKED = false;
-
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
 
     public ComponentName deviceAdmin;
     private SettingsViewModel settingsViewModel;

@@ -36,7 +36,6 @@ import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import de.Maxr1998.xposed.maxlock.Common
 import de.Maxr1998.xposed.maxlock.Common.BUNDLE_KEY_BINDER
@@ -202,11 +201,5 @@ class LockActivity : AppCompatActivity(), AuthenticationSucceededListener {
             Util.logFailedAuthentication(this, names[0])
         }
         super.onStop()
-    }
-
-    companion object {
-        init {
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        }
     }
 }

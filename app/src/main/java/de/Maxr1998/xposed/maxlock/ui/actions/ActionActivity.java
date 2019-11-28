@@ -26,7 +26,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+
 import de.Maxr1998.xposed.maxlock.Common;
 import de.Maxr1998.xposed.maxlock.ui.actions.widget.MasterSwitchWidget;
 import de.Maxr1998.xposed.maxlock.ui.lockscreen.LockView;
@@ -34,10 +34,6 @@ import de.Maxr1998.xposed.maxlock.util.AuthenticationSucceededListener;
 import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 
 public class ActionActivity extends AppCompatActivity implements AuthenticationSucceededListener {
-
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
 
     private int mode;
 
