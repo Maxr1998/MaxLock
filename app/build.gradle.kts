@@ -86,27 +86,27 @@ repositories {
 dependencies {
     // Kotlin stdlib & coroutines
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Config.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2-1.3.60")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0")
 
     // AndroidX
-    implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.browser:browser:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.fragment:fragment:1.1.0-beta01")
+    implementation("androidx.fragment:fragment:1.2.0-rc02")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
-    implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha06")
-    implementation("com.google.android.material:material:1.1.0-alpha07")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation("com.google.android.material:material:1.2.0-alpha02")
     //-- KTX
-    implementation("androidx.core:core-ktx:1.0.2")
-    implementation("androidx.activity:activity-ktx:1.0.0-beta01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0")
+    implementation("androidx.core:core-ktx:1.1.0")
+    implementation("androidx.activity:activity-ktx:1.1.0-rc02")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0")
 
     // From JCenter or other repositories
     //-- 3rd-party
     implementation("com.anjlab.android.iab.v3:library:1.0.38@aar")
-    implementation("de.Maxr1998.android:modernpreferences:0.3")
+    implementation("de.Maxr1998.android:modernpreferences:0.4.1")
     implementation("com.crossbowffs.remotepreferences:remotepreferences:0.5")
     implementation("com.github.attenzione:android-ColorPickerPreference:e3aa301016")
     implementation("com.github.topjohnwu.libsu:core:2.2.0")
