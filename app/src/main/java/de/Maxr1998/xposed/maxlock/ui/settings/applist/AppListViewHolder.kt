@@ -39,7 +39,7 @@ import kotlin.coroutines.CoroutineContext
 
 class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view), CoroutineScope {
 
-    var job = Job()
+    private var job = Job()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
@@ -48,7 +48,7 @@ class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view), CoroutineSc
     val options: ImageButton = itemView.findViewById(R.id.edit)
     private val toggle: ToggleButton = itemView.findViewById(R.id.toggleLock)
 
-    var packageName: String? = null
+    lateinit var packageName: String
     private val prefsApps: SharedPreferences = MLPreferences.getPrefsApps(itemView.context)
 
     init {
