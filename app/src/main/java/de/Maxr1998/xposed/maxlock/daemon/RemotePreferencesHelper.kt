@@ -9,18 +9,16 @@ import de.Maxr1998.xposed.maxlock.Common.PREFERENCE_PROVIDER_AUTHORITY
 
 private val PREF_COLS = arrayOf("type", "value")
 
-class RemotePreferencesHelper(private val activityManager: ActivityManagerWrapper) {
+class RemotePreferencesHelper(private val activityManager: ActivityManagerWrapper) : IBinder.DeathRecipient {
     private var contentProvider: IContentProvider? = null
 
-    private fun getContentProvider(): IContentProvider? {
-        val provider = contentProvider ?: run {
-            val token: IBinder = Binder()
-            val userHandle = 0 /* UserHandle.USER_SYSTEM */
-            return activityManager.getContentProvider(PREFERENCE_PROVIDER_AUTHORITY, userHandle, token, "").apply {
-                contentProvider = this
-            }
+    private fun getContentProvider(): IContentProvider? = contentProvider ?: run {
+        val token: IBinder = Binder()
+        val userHandle = 0 /* UserHandle.USER_SYSTEM */
+        return activityManager.getContentProvider(PREFERENCE_PROVIDER_AUTHORITY, userHandle, token, "").apply {
+            contentProvider = this
+            asBinder().linkToDeath(this@RemotePreferencesHelper, 0)
         }
-        return if (provider.asBinder().isBinderAlive) provider else null
     }
 
     private fun query(preferenceFile: String, key: String) = getContentProvider()
@@ -39,4 +37,8 @@ class RemotePreferencesHelper(private val activityManager: ActivityManagerWrappe
             .appendPath(preferenceFile)
             .appendPath(pref)
             .build()
+
+    override fun binderDied() {
+        contentProvider = null
+    }
 }
