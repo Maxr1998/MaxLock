@@ -22,9 +22,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -38,11 +36,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.TwoStatePreference;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -71,7 +65,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipOutputStream;
 
 import de.Maxr1998.xposed.maxlock.BuildConfig;
@@ -87,8 +80,6 @@ import de.Maxr1998.xposed.maxlock.util.MLPreferences;
 import de.Maxr1998.xposed.maxlock.util.Util;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.content.DialogInterface.BUTTON_NEUTRAL;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.os.Build.VERSION.SDK_INT;
 import static androidx.core.content.FileProvider.getUriForFile;
@@ -226,42 +217,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
             if (lastVersionNumber > 0)
                 SettingsUtils.showUpdatedMessage(getActivity());
             prefs.edit().putInt(Common.LAST_VERSION_NUMBER, BuildConfig.VERSION_CODE).apply();
-        } else {
-            if (isFirstPane() && allowRatingDialog()) {
-                prefs.edit().putInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0)
-                        .putLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()).apply();
-                @SuppressLint("InflateParams") View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_like_app, null);
-                if (prefs.getBoolean(Common.DONATED, false)) {
-                    TextView dialogText = dialogView.findViewById(R.id.dialog_like_app_text);
-                    dialogText.setText(R.string.dialog_like_app_text_pro);
-                }
-                @SuppressWarnings("ResourceType") final CheckBox checkBox = dialogView.findViewById(R.id.dialog_cb_never_again);
-                DialogInterface.OnClickListener onClickListener = (dialogInterface, i) -> {
-                    if (checkBox.isChecked()) {
-                        prefs.edit().putBoolean(Common.RATING_DIALOG_SHOW_NEVER, true).apply();
-                    }
-                    switch (i) {
-                        case BUTTON_NEUTRAL:
-                            try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
-                            } catch (ActivityNotFoundException e) {
-                                Log.w(Util.LOG_TAG, "Couldn't start 'market://' Intent");
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
-                            }
-                            break;
-                        case BUTTON_POSITIVE:
-                            startActivity(new Intent(getActivity(), DonateActivity.class));
-                            break;
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.dialog_like_app)
-                        .setView(dialogView);
-                if (!prefs.getBoolean(Common.DONATED, false))
-                    builder.setPositiveButton(R.string.dialog_button_donate, onClickListener);
-                builder.setNeutralButton(R.string.dialog_button_rate, onClickListener)
-                        .setNegativeButton(android.R.string.cancel, onClickListener).create().show();
-            }
         }
         if (SDK_INT > Build.VERSION_CODES.O && ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
             new AlertDialog.Builder(getActivity())
@@ -563,11 +518,6 @@ public final class MaxLockPreferenceFragment extends PreferenceFragmentCompat {
         ImplementationPreference implementationPreference = (ImplementationPreference) findPreference(Common.ML_IMPLEMENTATION);
         if (getContext() != null)
             implementationPreference.setWarningVisible(!MLImplementation.isActiveAndWorking(getContext(), prefs));
-    }
-
-    private boolean allowRatingDialog() {
-        return !prefs.getBoolean(Common.RATING_DIALOG_SHOW_NEVER, false) && (prefs.getInt(Common.RATING_DIALOG_APP_OPENING_COUNTER, 0) >= 25 ||
-                System.currentTimeMillis() - prefs.getLong(Common.RATING_DIALOG_LAST_SHOWN, System.currentTimeMillis()) > TimeUnit.DAYS.toMillis(14));
     }
 
     public enum Screen {

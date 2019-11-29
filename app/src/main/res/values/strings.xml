@@ -8,12 +8,6 @@
     <string name="dialog_maxlock_updated">MaxLock was updated!</string>
     <string name="dialog_button_whats_new">What\'s new</string>
     <string name="dialog_button_got_it">Got it</string>
-    <string name="dialog_like_app">Do you love the app?</string>
-    <string name="dialog_like_app_text">If you do, please leave a review in Play Store and also consider donating :)</string>
-    <string name="dialog_like_app_text_pro">If you do, please leave a review in Play Store :)</string>
-    <string name="dialog_cb_never_again">Never show this again</string>
-    <string name="dialog_button_donate">Donate</string>
-    <string name="dialog_button_rate">Rate</string>
     <string name="notification_lock_new_app_title">Lock newly installed app?</string>
     <string name="notification_lock_new_app_action_never_again">Never show again</string>
     <string name="notification_lock_new_app_action_lock">Lock app</string>
