@@ -184,8 +184,6 @@
     <string name="donate_status_error">Błąd: Nie można załadować dostępnych produktów.</string>
     <string name="dialog_message_already_bought">Skorzystałeś z opcji dotacji.
         Możesz anulować i wybrać inny produkt lub zakupić ponownie ten przez usunięcie obecnego zakupu.\n\nUsunąć i odkupić?</string>
-    <string name="donate_paypal">Dotacja przez PayPal</string>
-    <string name="donate_paypal_alert">Dotacja PayPal nie odblokowuje pełnej wersji Pro</string>
     <string name="pref_enable_pro">Włącz Pro</string>
     <string name="pref_enable_pro_summary">Włącza funkcje wersji Pro, nawet jeśli nie dokonano zakupu MaxLock Pro</string>
     <string name="pref_prevent_uninstall">Chroń aplikację przed odinstalowaniem</string>

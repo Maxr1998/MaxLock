@@ -183,8 +183,6 @@ au lieu d\'attendre que le temps de ré-enclenchement s\'écoule</string>
     <string name="donate_status_error">Erreur : Impossible de charger les produits disponibles.</string>
     <string name="dialog_message_already_bought">Vous possédez déjà cette option de don.
         Vous pouvez annuler et choisir un autre produit ou acheter celui-ci à nouveau en remplaçant (supprimant) l\'ancien achat. \n\nRemplacer et racheter ?</string>
-    <string name="donate_paypal">Faire un don par PayPal</string>
-    <string name="donate_paypal_alert">Un don PayPal ne débloque pas la version Pro complète</string>
     <string name="pref_enable_pro">Activez la version pro</string>
     <string name="pref_enable_pro_summary">Cela permettra d\'activer les fonctionnalités de la version pro même si vous n\'avez pas acheté MaxLock Pro</string>
     <string name="pref_prevent_uninstall">Protéger la désinstallation de MaxLock</string>

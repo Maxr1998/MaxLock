@@ -181,8 +181,6 @@
     <string name="donate_status_error">Kesalahan: Tidak dapat memuat produk yang tersedia,.</string>
     <string name="dialog_message_already_bought">Kamu telah memiliki pilihan donasi ini.
         Kamu dapat membatalkan dan memilih produk lain atau membeli satu lagi dengan memakai (menghapus) pembelian sebelumnya.\n\nMemakai dan membeli ulang?</string>
-    <string name="donate_paypal">Donasi melalui PayPal</string>
-    <string name="donate_paypal_alert">Donasi melalui PayPal tidak akan membuka Versi Pro</string>
     <string name="pref_enable_pro">Aktifkan Pro</string>
     <string name="pref_enable_pro_summary">Ini akan mengaktifkan fitur Pro bahkan jika Kamu belum membeli MaxLock Pro</string>
     <string name="pref_prevent_uninstall">Melindungi App dari Pencopotan</string>

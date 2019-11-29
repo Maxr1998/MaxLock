@@ -184,8 +184,6 @@
     <string name="donate_status_error">错误:无法加载可用产品</string>
     <string name="dialog_message_already_bought">您已经拥有这个捐赠选项
 	您可以取消和选择其它产品或再次消费(删除)目前的购买,再次购买一个,\n\n消费和回购?</string>
-    <string name="donate_paypal">通过PayPal捐款</string>
-    <string name="donate_paypal_alert">PayPal捐款并不会解锁完整专业版</string>
     <string name="pref_enable_pro">开启专业版</string>
     <string name="pref_enable_pro_summary">即使您没有购买也可以使用专业版功能</string>
     <string name="pref_prevent_uninstall">保护应用程序被卸载</string>

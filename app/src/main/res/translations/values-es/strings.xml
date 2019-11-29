@@ -183,8 +183,6 @@ Porfavor concede el permiso en el siguiente diálogo.</string>
     <string name="donate_status_error">Error: no se pudieron cargar los productos disponibles.</string>
     <string name="dialog_message_already_bought">Ya tienes esta opción de donación.
         Puedes cancelar y elegir otro producto o comprar este nuevamente consumiéndolo previamente.\n\nConsumir y comprar nuevamente?</string>
-    <string name="donate_paypal">Donar vía PayPal</string>
-    <string name="donate_paypal_alert">Una donación de PayPal no desbloquea el Pro completo versión</string>
     <string name="pref_enable_pro">Activar Pro</string>
     <string name="pref_enable_pro_summary">Esto habilitará las características Pro incluso si no has comprado la versión Pro</string>
     <string name="pref_prevent_uninstall">Prevenir que la aplicación sea desinstalada</string>
