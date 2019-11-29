@@ -60,10 +60,11 @@ class MaxLockDaemon {
                     val taskId = stackInfo.taskIds[0]
                     val packageName = activity.packageName
                     val activityName = activity.className
+                    Log.d(TAG, "Launched Task [$taskId] $packageName")
                     if (appLockHelper.wasAppSwitch(taskId, packageName) &&
                             appLockHelper.isAppLocked(packageName, activityName)) {
                         val intent = Intent(LOCKSCREEN_BASE_INTENT)
-                                .putExtra(INTENT_EXTRA_APP_NAMES, arrayOf(packageName, activityName) as Array<String>)
+                                .putExtra(INTENT_EXTRA_APP_NAMES, arrayOf(packageName, activityName))
                                 .putExtra(INTENT_EXTRA_BINDER_BUNDLE, Bundle().apply {
                                     putBinder(BUNDLE_KEY_BINDER, resultReceiver)
                                 })
