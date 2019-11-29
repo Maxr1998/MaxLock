@@ -15,7 +15,16 @@ public interface IActivityManager {
                                     String resolvedType, IBinder resultTo, String resultWho, int requestCode,
                                     int flags, ProfilerInfo profilerInfo, Bundle options, int userId);
 
+    int startActivity(IApplicationThread caller, String callingPackage, Intent intent,
+                      String resolvedType, IBinder resultTo, String resultWho, int requestCode,
+                      int flags, ProfilerInfo profilerInfo, Bundle options);
+
     ContentProviderHolder getContentProviderExternal(String name, int userId, IBinder token);
+
+    /**
+     * Since API 29
+     */
+    ContentProviderHolder getContentProviderExternal(String name, int userId, IBinder token, String tag);
 
     int getFocusedStackId();
 
