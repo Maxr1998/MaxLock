@@ -71,7 +71,7 @@ class MaxLockDaemon {
                                 launchStackId = stackInfo.stackId
                             launchTaskId = taskId
                         }
-                        activityManager.startActivityAndWait(null, null, intent, null, null, TAG, 1, 0, null, options.toBundle(), 0)
+                        activityManager.startActivity(null, null, intent, null, null, TAG, 1, 0, null, options.toBundle())
                     }
                 }
             } catch (t: Throwable) {

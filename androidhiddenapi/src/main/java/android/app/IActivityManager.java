@@ -11,10 +11,6 @@ public interface IActivityManager {
 
     void unregisterProcessObserver(IProcessObserver observer);
 
-    WaitResult startActivityAndWait(IApplicationThread caller, String callingPackage, Intent intent,
-                                    String resolvedType, IBinder resultTo, String resultWho, int requestCode,
-                                    int flags, ProfilerInfo profilerInfo, Bundle options, int userId);
-
     int startActivity(IApplicationThread caller, String callingPackage, Intent intent,
                       String resolvedType, IBinder resultTo, String resultWho, int requestCode,
                       int flags, ProfilerInfo profilerInfo, Bundle options);
