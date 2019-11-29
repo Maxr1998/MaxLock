@@ -234,6 +234,46 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app),
             categoryHeader(CATEGORY_TRANSLATIONS) {
                 titleRes = R.string.pref_category_translations
             }
+            // Sorted by English language name
+            translation(Locale.SIMPLIFIED_CHINESE) {
+                summaryRes = R.string.translation_chinese_simple
+            }
+            translation(Locale.TRADITIONAL_CHINESE) {
+                summaryRes = R.string.translation_chinese_traditional
+            }
+            translation(Locale.FRENCH) {
+                summaryRes = R.string.translation_french
+            }
+            translation(Locale.GERMAN) {
+                summaryRes = R.string.translation_german
+            }
+            translation(Locale("in")) {
+                summaryRes = R.string.translation_indonesian
+            }
+            translation(Locale.ITALIAN) {
+                summaryRes = R.string.translation_italian
+            }
+            translation(Locale.JAPANESE) {
+                summaryRes = R.string.translation_japanese
+            }
+            translation(Locale("fa")) {
+                summaryRes = R.string.translation_persian
+            }
+            translation(Locale("pl")) {
+                summaryRes = R.string.translation_polish
+            }
+            translation(Locale("pt")) {
+                summaryRes = R.string.translation_portuguese
+            }
+            translation(Locale("ru")) {
+                summaryRes = R.string.translation_russian
+            }
+            translation(Locale("tr")) {
+                summaryRes = R.string.translation_turkish
+            }
+            translation(Locale("es")) {
+                summaryRes = R.string.translation_spanish
+            }
             categoryHeader(CATEGORY_LICENSES) {
                 titleRes = R.string.pref_category_licenses
             }
