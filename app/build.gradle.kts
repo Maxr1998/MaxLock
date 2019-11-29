@@ -16,7 +16,8 @@ android {
         versionCode = 57
         versionName = "8.0-indev"
         resConfigs(*Config.languages)
-        setProperty("archivesBaseName", "ML-$versionName")
+        val artifactName = if (System.getenv("GITHUB_ACTIONS") != null) "ML" else "ML-$versionName"
+        setProperty("archivesBaseName", artifactName)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
 
