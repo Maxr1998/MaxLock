@@ -38,7 +38,7 @@ sealed class ActivityManagerWrapper {
     abstract fun getForegroundStackInfo(): ActivityManager.StackInfo
 
     companion object {
-        fun get() = when {
+        fun get(): ActivityManagerWrapper = when {
             SDK_INT >= Q -> ActivityManagerWrapperApi29()
             SDK_INT >= P -> ActivityManagerWrapperApi28()
             else -> ActivityManagerWrapperBase()

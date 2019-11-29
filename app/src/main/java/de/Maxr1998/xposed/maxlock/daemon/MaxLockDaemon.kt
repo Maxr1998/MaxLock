@@ -17,13 +17,11 @@
 
 package de.Maxr1998.xposed.maxlock.daemon
 
-import android.app.IActivityManager
 import android.app.IProcessObserver
 import android.content.ComponentName
 import android.content.Intent
 import android.os.*
 import android.util.Log
-import android_hidden.app.ActivityManager
 import android_hidden.app.ActivityOptions
 import de.Maxr1998.xposed.maxlock.BuildConfig
 import de.Maxr1998.xposed.maxlock.Common.*
@@ -32,7 +30,7 @@ import de.Maxr1998.xposed.maxlock.util.AppLockHelper
 import eu.chainfire.librootjavadaemon.RootDaemon
 
 class MaxLockDaemon {
-    private var activityManager: IActivityManager = ActivityManager.getService()
+    private var activityManagerWrapper = ActivityManagerWrapper.get()
     private val resultReceiver: IBinder = object : Binder() {
         override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
             return when (code) {
@@ -54,7 +52,7 @@ class MaxLockDaemon {
         override fun onForegroundActivitiesChanged(pid: Int, uid: Int, foregroundActivities: Boolean) {
             try {
                 if (foregroundActivities) {
-                    val stackInfo = getForegroundStackInfo()
+                    val stackInfo = activityManagerWrapper.getForegroundStackInfo()
                     val activity = stackInfo.topActivity
                     val taskId = stackInfo.taskIds[0]
                     val packageName = activity.packageName
@@ -71,7 +69,7 @@ class MaxLockDaemon {
                                 launchStackId = stackInfo.stackId
                             launchTaskId = taskId
                         }
-                        activityManager.startActivity(null, null, intent, null, null, TAG, 1, 0, null, options.toBundle())
+                        activityManagerWrapper.startActivity(intent, TAG, 1, 0, options.toBundle())
                     }
                 }
             } catch (t: Throwable) {
@@ -81,24 +79,19 @@ class MaxLockDaemon {
 
         override fun onProcessDied(pid: Int, uid: Int) {}
     }
-    private val preferencesHelper = RemotePreferencesHelper(activityManager)
+    private val preferencesHelper = RemotePreferencesHelper(activityManagerWrapper)
     private val appLockHelper = AppLockHelper(preferencesHelper)
 
     init {
         // Unregister any old binder, register observer
-        activityManager.apply {
+        activityManagerWrapper.activityManager.apply {
             unregisterProcessObserver(processObserver)
             registerProcessObserver(processObserver)
         }
     }
 
     fun tearDown() {
-        activityManager.unregisterProcessObserver(processObserver)
-    }
-
-    fun getForegroundStackInfo(): ActivityManager.StackInfo = when {
-        Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1 -> activityManager.focusedStackInfo
-        else -> activityManager.getStackInfo(activityManager.focusedStackId)
+        activityManagerWrapper.activityManager.unregisterProcessObserver(processObserver)
     }
 
     companion object {

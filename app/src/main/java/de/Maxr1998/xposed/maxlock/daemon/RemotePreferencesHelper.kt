@@ -1,6 +1,5 @@
 package de.Maxr1998.xposed.maxlock.daemon
 
-import android.app.IActivityManager
 import android.content.IContentProvider
 import android.net.Uri
 import android.os.Binder
@@ -10,14 +9,14 @@ import de.Maxr1998.xposed.maxlock.Common.PREFERENCE_PROVIDER_AUTHORITY
 
 private val PREF_COLS = arrayOf("type", "value")
 
-class RemotePreferencesHelper(private val activityManager: IActivityManager) {
+class RemotePreferencesHelper(private val activityManager: ActivityManagerWrapper) {
     private var contentProvider: IContentProvider? = null
 
     private fun getContentProvider(): IContentProvider? {
         val provider = contentProvider ?: run {
             val token: IBinder = Binder()
             val userHandle = 0 /* UserHandle.USER_SYSTEM */
-            return activityManager.getContentProviderExternal(PREFERENCE_PROVIDER_AUTHORITY, userHandle, token).provider.apply {
+            return activityManager.getContentProvider(PREFERENCE_PROVIDER_AUTHORITY, userHandle, token, "").apply {
                 contentProvider = this
             }
         }
