@@ -4,9 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import java.util.List;
+
 import android_hidden.app.ActivityManager;
 
 public interface IActivityManager {
+    List<ActivityManager.RunningTaskInfo> getTasks(int maxNum);
+
+    void setFocusedTask(int taskId);
+
     void registerProcessObserver(IProcessObserver observer);
 
     void unregisterProcessObserver(IProcessObserver observer);

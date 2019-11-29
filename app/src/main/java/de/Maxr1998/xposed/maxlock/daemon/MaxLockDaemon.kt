@@ -33,15 +33,18 @@ class MaxLockDaemon {
     private var activityManagerWrapper = ActivityManagerWrapper.get()
     private val resultReceiver: IBinder = object : Binder() {
         override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
+            if (data.dataAvail() == 0)
+                return false
+            val packageName = data.readString() ?: return false
             return when (code) {
                 AppLockHelper.UNLOCK_CODE -> {
-                    val packageName = data.readString()
-                    if (packageName != null)
-                        appLockHelper.appUnlocked(packageName)
+                    appLockHelper.appUnlocked(packageName)
                     true
                 }
                 AppLockHelper.CLOSE_CODE -> {
-                    // TODO
+                    Log.d(TAG, "Received close for $packageName")
+                    val tasks = activityManagerWrapper.activityManager.getTasks(10)
+                    activityManagerWrapper.activityManager.setFocusedTask(tasks[1].id)
                     true
                 }
                 else -> false
