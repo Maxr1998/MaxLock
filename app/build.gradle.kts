@@ -1,4 +1,3 @@
-import java.util.*
 import java.util.zip.ZipFile
 
 plugins {
@@ -7,8 +6,6 @@ plugins {
     id("kotlin-android-extensions")
     //id("com.jakewharton.hugo")
 }
-
-val keyStoreFile = project.file("keyStore.properties")
 
 android {
     compileSdkVersion(29)
@@ -40,18 +37,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    val signingConfigMain = if (keyStoreFile.exists()) {
-        val props = Properties().apply {
-            load(keyStoreFile.inputStream())
-        }
-        Config.crowdinKey = props["crowdinKey"].toString()
-        signingConfigs.create("main") {
-            storeFile = project.file(props["keyStore"].toString())
-            storePassword = props["keyStorePassword"].toString()
-            keyAlias = props["keyAlias"].toString()
-            keyPassword = props["keyPassword"].toString()
-        }
-    } else null
+    val signingConfigMain = SigningConfigHelper.getConfig(project, this)
     buildTypes {
         getByName("release") {
             isDebuggable = false
