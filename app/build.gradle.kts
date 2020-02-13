@@ -32,7 +32,7 @@ android {
         isAbortOnError = false
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
