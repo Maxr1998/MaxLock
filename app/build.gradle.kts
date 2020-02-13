@@ -23,6 +23,7 @@ android {
 
         vectorDrawables.useSupportLibrary = true
     }
+    ndkVersion = "21.0.6113669"
     sourceSets {
         getByName("main") {
             res.srcDir("src/main/res/translations")
