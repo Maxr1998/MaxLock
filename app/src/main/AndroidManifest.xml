@@ -34,7 +34,6 @@
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <application
-        android:name=".ThisApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
@@ -278,32 +277,5 @@
         <meta-data
             android:name="override_tinted_status_bar_defaults"
             android:value="true" />
-
-        <!-- Google Play Services / Analytics -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <receiver
-            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
-            android:enabled="true"
-            tools:ignore="ExportedReceiver">
-            <intent-filter>
-                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
-            </intent-filter>
-        </receiver>
-        <service
-            android:name="com.google.android.gms.analytics.AnalyticsService"
-            android:enabled="true"
-            android:exported="false" />
-
-        <receiver
-            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
-            android:exported="true"
-            tools:ignore="ExportedReceiver">
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>
