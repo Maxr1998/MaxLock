@@ -1,6 +1,6 @@
 /*
  * MaxLock, an Xposed applock module for Android
- * Copyright (C) 2014-2018  Max Rumpf alias Maxr1998
+ * Copyright (C) 2014-2018 Max Rumpf alias Maxr1998
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@ import android.app.LoaderManager
 import android.content.AsyncTaskLoader
 import android.content.Context
 import android.content.Loader
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -33,6 +35,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.TransactionDetails
 import de.Maxr1998.xposed.maxlock.Common
@@ -100,7 +103,13 @@ class DonateActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Billin
                         return v
                     }
                     tv.text = productName
-                    tv.setCompoundDrawablesRelativeWithIntrinsicBounds(productIcons[position], 0, 0, 0)
+                    val drawable = ContextCompat.getDrawable(this@DonateActivity, productIcons[position])
+                    if (position < 2) {
+                        val array = obtainStyledAttributes(intArrayOf(android.R.attr.textColorPrimary))
+                        drawable?.setColorFilter(array.getColor(0, Color.BLACK), PorterDuff.Mode.SRC_ATOP)
+                        array.recycle()
+                    }
+                    tv.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null)
                     tv.compoundDrawablePadding = Util.dpToPx(this@DonateActivity, 12)
                     return v
                 }
@@ -189,6 +198,6 @@ class DonateActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Billin
 
     companion object {
         private val productIds = arrayOf("donate_coke", "donate_beer", "donate_5", "donate_10")
-        private val productIcons = intArrayOf(R.drawable.ic_coke_48dp, R.drawable.ic_beer_48dp, R.drawable.ic_favorite_small_48dp, R.drawable.ic_favorite_48dp)
+        private val productIcons = intArrayOf(R.drawable.ic_coffee_36dp, R.drawable.ic_beer_36dp, R.drawable.ic_favorite_small_48dp, R.drawable.ic_favorite_48dp)
     }
 }
