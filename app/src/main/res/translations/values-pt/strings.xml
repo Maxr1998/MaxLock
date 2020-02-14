@@ -173,8 +173,6 @@
     <string name="donate_status_error">Erro: Não foi possível carregar os produtos disponíveis.</string>
     <string name="dialog_message_already_bought">Você já possui essa opção de doação.
         Você pode cancelar e escolher outro produto ou comprar este novamente com a remoção da compra atual.\n\nRemover e recomprar?\"</string>
-    <string name="donate_paypal">Doe via PayPal</string>
-    <string name="donate_paypal_alert">Uma doação do PayPal não desbloqueia completamente a versão Pro</string>
     <string name="pref_enable_pro">Ativar Pro</string>
     <string name="pref_enable_pro_summary">Ativar recursos Pro mesmo que você não tenha comprado o MaxLock Pro</string>
     <string name="pref_prevent_uninstall">Proteger o aplicativo de ser desinstalado</string>

@@ -182,8 +182,6 @@
     <string name="donate_status_error">Hata: Kullanabilir ürünler yüklenemedi.</string>
     <string name="dialog_message_already_bought">Zaten bağış yapmışsınız.
         Daha önce satın aldığınız (kaldırdığınız) başka bir ürünü iptal edebilir ve alabilir veya satın alabilirsiniz.\n\nYeniden satın al ve harca?</string>
-    <string name="donate_paypal">PayPal ile bağış yap</string>
-    <string name="donate_paypal_alert">PayPal bağışı, tam sürümün kilidini açmaz</string>
     <string name="pref_enable_pro">Pro\'yu etkinleştir</string>
     <string name="pref_enable_pro_summary">Bu, MaxLock Pro\'yu satın almadıysanız bile özelliklerini etkinleştirecektir</string>
     <string name="pref_prevent_uninstall">Uygulamanın kaldırılmasını engelle</string>

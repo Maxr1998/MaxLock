@@ -180,8 +180,6 @@
     <string name="donate_status_error">錯誤：無產品可供加載。</string>
     <string name="dialog_message_already_bought">你已經採用過此捐贈方案。
         您可以取消和選擇其他產品或再次消費（並删除）目前的捐贈方案。\n\n消費和回購？</string>
-    <string name="donate_paypal">透過 PayPal 進行捐贈</string>
-    <string name="donate_paypal_alert">PayPal 捐贈並不會解鎖完全的專業版功能</string>
     <string name="pref_enable_pro">開啟專業版</string>
     <string name="pref_enable_pro_summary">這將開啟專業版功能，即使您沒有購買</string>
     <string name="pref_prevent_uninstall">保護應用程式不被移除</string>
