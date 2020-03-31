@@ -13,7 +13,7 @@ android {
         applicationId = "de.Maxr1998.xposed.maxlock"
         minSdkVersion(24)
         targetSdkVersion(29)
-        versionCode = 57
+        versionCode = 58
         versionName = "8.0-indev"
         resConfigs(*Config.languages)
         val artifactName = if (System.getenv("GITHUB_ACTIONS") != null) "ML" else "ML-$versionName"
