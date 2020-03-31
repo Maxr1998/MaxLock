@@ -31,6 +31,7 @@ android {
     }
     lintOptions {
         isAbortOnError = false
+        disable("ExtraTranslation")
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
